@@ -1,7 +1,7 @@
 """把本地 MCP 装进 agent（2026-11-08 用户选“一键安装”）：`pacxio mcp install` / `mcp doctor`。
 
 - 不给 --yes：只列出要改哪个文件、写什么，不动文件；给了才写，写之前把原文件备份成 `*.bak-时间`。
-- 命令统一用当前这个 Python 跑 `-m pacxio mcp serve`（装在哪个环境就用哪个，不依赖 PATH 上的 pacxio）。
+- 命令用安装时的 Python 启动轻量 launcher，再选择已验证的运行版本，不依赖 PATH 上的 pacxio。
 - Claude Code：项目级写项目根的 `.mcp.json`；用户级交给 `claude mcp add -s user`（不手改 ~/.claude.json）。
 - Codex：`~/.codex/config.toml` 的 `[mcp_servers.pacxio]` 一段（有就替换，没有就加在最后）。
 - Claude 桌面版：`claude_desktop_config.json` 的 mcpServers.pacxio。
@@ -28,7 +28,9 @@ DOCTOR_TIMEOUT_S = 60
 
 
 def server_command() -> tuple[str, list[str]]:
-    return sys.executable, ["-m", "pacxio", "mcp", "serve"]
+    from pacxio.launcher import bootstrap_python
+
+    return bootstrap_python(), ["-I", "-m", "pacxio.launcher", "mcp", "serve"]
 
 
 def _desktop_config() -> Path:
@@ -205,8 +207,10 @@ def _handshake(cmd: list[str]) -> dict[str, Any]:
         {"jsonrpc": "2.0", "id": 2, "method": "tools/list"},
         {"jsonrpc": "2.0", "id": 3, "method": "resources/list"},
     ]  # fmt: skip
+    environment = os.environ.copy()
+    environment["PACXIO_NO_UPDATE"] = "1"
     done = subprocess.run(cmd, input="\n".join(json.dumps(m) for m in msgs) + "\n", capture_output=True,
-                          text=True, timeout=DOCTOR_TIMEOUT_S)  # fmt: skip
+                          text=True, timeout=DOCTOR_TIMEOUT_S, env=environment)  # fmt: skip
     replies = {}
     for line in done.stdout.splitlines():
         try:

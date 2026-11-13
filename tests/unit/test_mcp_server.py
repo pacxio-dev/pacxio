@@ -180,7 +180,7 @@ def test_install_previews_then_writes_with_backup(tmp_path: Path, monkeypatch) -
 
     from pacxio import mcp_install
 
-    monkeypatch.setenv("CODEX_HOME", str(tmp_path / "codex"))
+    monkeypatch.setattr(mcp_install, "_codex_config", lambda: tmp_path / "codex" / "config.toml")
     monkeypatch.setattr(
         mcp_install, "_desktop_config", lambda: tmp_path / "desktop" / "claude_desktop_config.json"
     )
@@ -190,7 +190,7 @@ def test_install_previews_then_writes_with_backup(tmp_path: Path, monkeypatch) -
     assert r.ok and not (proj / ".mcp.json").exists() and "pacxio" in r.data["new_text"]
     r = mcp_install.install("claude-code", "project", yes=True, project=proj)
     entry = json.loads((proj / ".mcp.json").read_text())["mcpServers"]["pacxio"]
-    assert entry["args"] == ["-m", "pacxio", "mcp", "serve"] and entry["type"] == "stdio"
+    assert entry["args"] == ["-I", "-m", "pacxio.launcher", "mcp", "serve"] and entry["type"] == "stdio"
     # Codex：原有的配置保留，pacxio 一段装两次也只有一段
     codex = tmp_path / "codex" / "config.toml"
     codex.parent.mkdir()

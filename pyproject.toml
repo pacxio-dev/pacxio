@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pacxio"
-version = "0.0.2"
+version = "0.0.3"
 description = "Packaging prepress for coding agents: dielines, 3D, print-ready factory files"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -21,10 +21,11 @@ dependencies = [
     "pillow>=10.0",
     "fonttools>=4.50",
     "pikepdf>=9.0",
+    "packaging>=24",
 ]
 
 [project.scripts]
-pacxio = "pacxio.cli:main"
+pacxio = "pacxio.launcher:main"
 
 [dependency-groups]
 dev = [

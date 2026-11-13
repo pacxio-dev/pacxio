@@ -35,6 +35,9 @@ const cardEls = new Map(); // 卡片 id → { el, key }：内容没变就复用�
 let liveIds = new Set();
 let state = null;
 let placed = false; // 首次渲染后定好视角
+let agentLink = { status: "loading", stage: null, updated_at: null, expires_at: null };
+let savedConfirmation = null;
+let checkingAgent = null;
 
 // ---------------- 工具 ----------------
 
@@ -1014,11 +1017,143 @@ function setTab(name) {
 }
 for (const b of document.querySelectorAll(".tabs button")) b.addEventListener("click", () => setTab(b.dataset.tab));
 
+function agentStatus() {
+  if (["waiting", "notified"].includes(agentLink.status)
+      && (!Number.isFinite(agentLink.expires_at) || agentLink.expires_at <= Date.now() / 1000)) return "disconnected";
+  return agentLink.status;
+}
+
+function actionContinues(a) {
+  const stages = { content: "content", plan: "plan", concept: "concept", flats: "flat_concept", approve: "design" };
+  return a.enabled && agentStatus() === "waiting" && stages[a.id] === agentLink.stage;
+}
+
+function actionLabel(a) {
+  if (!actionContinues(a)) return a.label;
+  return a.id === "concept" ? tr("Choose this direction and continue") : tr("{1} and continue", a.label);
+}
+
+function recordConfirmation(result, action, startedAt) {
+  if (result.data?.already_confirmed === true) return false;
+  savedConfirmation = { started_at: startedAt, saved_at: Date.now() / 1000, action, revision: result.data?.revision };
+  return true;
+}
+
+function matchesConfirmation() {
+  if (!savedConfirmation) return true;
+  if (savedConfirmation.revision && agentLink.revision) return savedConfirmation.revision === agentLink.revision;
+  return agentLink.updated_at >= savedConfirmation.started_at;
+}
+
+function reconcileConfirmation(st, requestedAt = null) {
+  if (!savedConfirmation) return;
+  if (agentStatus() === "received" && matchesConfirmation()) {
+    savedConfirmation.received = true;
+  }
+  if (requestedAt !== null && requestedAt >= savedConfirmation.saved_at) {
+    savedConfirmation.review_pending = st.now_who === "user";
+  }
+  if (savedConfirmation.review_pending && st.now_who === "user"
+      && agentStatus() === "waiting" && agentLink.stage === st.next_stage
+      && agentLink.updated_at > savedConfirmation.started_at) savedConfirmation = null;
+}
+
+function handoffMessage() {
+  if (state && !state.now_who) return null;
+  const status = agentStatus();
+  const currentConfirmation = savedConfirmation && matchesConfirmation();
+  const received = status === "received" && (matchesConfirmation() || savedConfirmation?.received);
+  if (received) return {
+    tone: "ok", title: currentConfirmation ? tr("Agent received your confirmation") : tr("Agent received the Workbench update"),
+    detail: tr("Your agent can now continue. New results will appear here."),
+  };
+  if (status === "notified" && (matchesConfirmation() || savedConfirmation?.received)) return {
+    tone: "wait", title: currentConfirmation ? tr("Choice sent · waiting for your agent") : tr("Workbench update sent · waiting for your agent"),
+    detail: currentConfirmation ? tr("Your choice is saved. Waiting for your agent to read the next step.") : tr("Waiting for your agent to read the latest Workbench state."),
+  };
+  if (status === "waiting") return savedConfirmation ? {
+    tone: "wait", title: tr("Confirmation saved"),
+    detail: tr("Waiting for your agent to receive it. Keep the agent conversation open."),
+  } : {
+    tone: "wait", title: tr("Agent is waiting for your confirmation"),
+    detail: tr("Confirm here to let your agent continue automatically. Keep the agent conversation open."),
+  };
+  if (status === "loading") return {
+    tone: "mute", title: tr("Checking automatic continuation…"), detail: "",
+  };
+  if (savedConfirmation && !savedConfirmation.received && ["received", "notified", "idle"].includes(status)) return {
+    tone: "mute", title: tr("Confirmation saved"),
+    detail: tr("Return to the original agent conversation to continue from this updated choice."),
+  };
+  if (!state?.now_who && !savedConfirmation) return null;
+  if (status === "idle" && state?.now_who === "agent") return {
+    tone: "mute", title: tr("The next step is with your agent"),
+    detail: tr("Check the original agent conversation for progress. New results will appear here."),
+  };
+  return {
+    tone: "warn", title: savedConfirmation ? tr("Confirmation saved · agent disconnected") : tr("Automatic continuation is not connected"),
+    detail: tr("Return to the original agent conversation and ask it to reconnect. Your saved choices are kept."),
+  };
+}
+
+function refreshAgentUI() {
+  if (state) reconcileConfirmation(state);
+  const box = $("#agent-handoff");
+  const message = handoffMessage();
+  if (box) {
+    const key = JSON.stringify(message);
+    if (box.dataset.message !== key) {
+      box.dataset.message = key;
+      box.hidden = !message;
+      box.replaceChildren();
+      if (message) {
+        box.className = `agent-handoff ${message.tone}`;
+        box.append(el("div", "agent-handoff-title", message.title));
+        if (message.detail) box.append(el("p", "note", message.detail));
+      }
+    }
+  }
+  for (const button of document.querySelectorAll("button[data-confirm-action]")) {
+    if (button.dataset.submitting === "true") continue;
+    const a = { id: button.dataset.confirmAction, label: button.dataset.confirmLabel, enabled: button.dataset.confirmEnabled === "true" };
+    button.textContent = actionLabel(a) + (button.dataset.confirmDialog === "true" ? "" : a.enabled ? "…" : "");
+  }
+}
+
+function bindActionLabel(button, a, dialog = false) {
+  button.dataset.confirmAction = a.id;
+  button.dataset.confirmLabel = a.label;
+  button.dataset.confirmEnabled = String(a.enabled);
+  button.dataset.confirmDialog = String(dialog);
+}
+
+async function checkAgent() {
+  if (checkingAgent) return checkingAgent;
+  checkingAgent = (async () => {
+    try {
+      const response = await fetch(apiUrl("/api/agent"), { cache: "no-store", signal: AbortSignal.timeout(5000) });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      if (!["waiting", "notified", "received", "disconnected", "idle"].includes(data.status)) throw new Error("Invalid agent state");
+      agentLink = data;
+    } catch (_) {
+      agentLink = { status: "disconnected", stage: null, updated_at: null, expires_at: null };
+    }
+    refreshAgentUI();
+  })();
+  try { await checkingAgent; } finally { checkingAgent = null; }
+}
+
 function renderFlow(st) {
   const pane = $("#pane-flow");
   pane.replaceChildren();
   const now = el("div", `now${st.now_who === "user" ? "" : " agent"}`);
-  now.append(el("div", "eyebrow", tr("Now")), el("div", "now-text", st.now));
+  now.append(el("div", "eyebrow", tr(st.now_who === "user" ? "Your next step" : "Next step")), el("div", "now-text", st.next_action || st.now));
+  const handoff = el("div", "agent-handoff");
+  handoff.id = "agent-handoff";
+  handoff.setAttribute("role", "status");
+  handoff.setAttribute("aria-live", "polite");
+  now.append(handoff);
   const nowSec = el("div", "sec");
   nowSec.append(now);
   pane.append(nowSec);
@@ -1062,6 +1197,7 @@ function renderFlow(st) {
     info.append(dl, el("div", "note", tr("Use Pin or Box in the toolbar to add notes. Confirm above or tell the agent in chat.")));
     pane.append(info);
   }
+  refreshAgentUI();
 }
 
 function renderIssues(st) {
@@ -1202,7 +1338,7 @@ function setTool(t) {
 }
 for (const b of document.querySelectorAll("#tools button")) b.addEventListener("click", () => setTool(b.dataset.tool));
 
-async function post(path, body) {
+async function post(path, body, { refresh = true } = {}) {
   const res = await fetch(apiUrl(path), {
     method: "POST",
     headers: { "Content-Type": "application/json", "X-Studio-Token": TOKEN },
@@ -1219,7 +1355,7 @@ async function post(path, body) {
     const msg = data && data.errors && data.errors.length ? data.errors.map((e) => e.message).join(tr("; ")) : (data && data.error) || `HTTP ${res.status}`;
     throw new Error(msg);
   }
-  await load();
+  if (refresh) await load();
   return data;
 }
 
@@ -1707,7 +1843,8 @@ function runAction(a, card) {
 }
 
 function actionButton(a, card) {
-  const b = el("button", `btn act${a.enabled ? " primary" : " blocked"}`, a.enabled ? `${a.label}…` : a.label);
+  const b = el("button", `btn act${a.enabled ? " primary" : " blocked"}`, a.enabled ? `${actionLabel(a)}…` : a.label);
+  bindActionLabel(b, a);
   if (a.reason) b.title = a.reason;
   b.addEventListener("click", (ev) => {
     ev.stopPropagation();
@@ -1795,22 +1932,32 @@ function openConfirm(a, card) {
   cb.type = "checkbox";
   check.append(cb, el("span", null, tr("I have reviewed this and confirm it")));
   const err = el("div", "b-err");
-  const ok = el("button", "btn primary", a.label);
+  const ok = el("button", "btn primary", actionLabel(a));
+  bindActionLabel(ok, a, true);
   ok.disabled = true;
   cb.addEventListener("change", () => (ok.disabled = !cb.checked));
   const cancel = el("button", "btn", tr("Cancel"));
   cancel.addEventListener("click", closeConfirm);
   ok.addEventListener("click", async () => {
+    if (ok.dataset.submitting === "true") return;
+    ok.dataset.submitting = "true";
     ok.disabled = true;
     ok.textContent = tr("Processing…");
     err.textContent = "";
+    const startedAt = Date.now() / 1000;
     try {
-      await post("/api/confirm", { action: a.id, target: a.target || null, note: note.value });
+      const result = await post("/api/confirm", { action: a.id, target: a.target || null, note: note.value }, { refresh: false });
+      const alreadyConfirmed = !recordConfirmation(result, a.id, startedAt);
       closeConfirm();
-      toast(tr("Confirmed: {1}", t.title));
+      setTab("flow");
+      $("#pane-flow").scrollTop = 0;
+      refreshAgentUI();
+      toast(alreadyConfirmed ? tr("This direction is already selected") : tr("Confirmation saved"));
+      await Promise.allSettled([load(), checkAgent()]);
     } catch (e) {
       err.textContent = e.message;
-      ok.textContent = a.label;
+      ok.dataset.submitting = "false";
+      ok.textContent = actionLabel(a);
       ok.disabled = !cb.checked;
     }
   });
@@ -2562,9 +2709,12 @@ function place() {
 }
 
 async function load() {
+  const requestedAt = Date.now() / 1000;
   const res = await fetch(apiUrl("/api/state"), { cache: "no-store" });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  render(await res.json());
+  const st = await res.json();
+  reconcileConfirmation(st, requestedAt);
+  render(st);
 }
 
 function setLive(ok, text) {
@@ -2608,3 +2758,5 @@ localizePage();
 apply();
 load().catch(() => setLive(false));
 connect();
+checkAgent();
+setInterval(checkAgent, 2000);

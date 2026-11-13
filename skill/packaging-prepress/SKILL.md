@@ -5,13 +5,19 @@ description: "Packaging design to factory-ready print files. First concept image
 
 # Packaging prepress (packaging-prepress)
 
-The whole workflow runs through the `pacxio` command line:
+Use the pacxio MCP tools for the workflow below. The equivalent `pacxio` commands remain available for manual use:
 
 > Brief → content list → (lots of copy: layout draft) → **concept images**: main view (pick a direction) → back view → flats → final design rebuilt from the flats → **dieline confirmation image (confirm)** → 3D mockups (view only) → preflight → delivery pack
 
 The user confirms: the content list wording, the layout draft, the concept direction, the flats, and the dieline confirmation image. The first four are records; **`approve` on the dieline confirmation image is the only gate before export**. Concept images confirm the **direction and feel** (AI-drawn: proportions and text are not guaranteed, the images never go into print files; graphics on the flats are traced to vectors for the final artwork). The dieline confirmation image confirms **exactly what will be printed** (it is the same data as the print files). 3D mockups are for viewing, not confirming.
 
 Dielines, 3D views and the structure library run on this machine. Composing artwork, separations, preflight and the delivery pack run on the pacxio server. AI images (concepts and assets) cost the user image credits.
+
+## Use the running version's workflow
+
+When using the plugin, load this full Skill from the current pacxio MCP server with `resources/read` at `pacxio://skill/SKILL.md` each time the Skill is used. Read referenced files from the same server at `pacxio://skill/references/<filename>.md`. Prefer `job_next`, `studio_open`, `studio_wait`, `pacxio_run` and `pacxio_help` from that server so commands and instructions stay on the same version. Command examples below also describe `pacxio_run` operations; explicit user confirmations still use `user_confirm` or the user's own Workbench action.
+
+Automatic updates apply only to a standard, unpinned `uv tool install pacxio` from PyPI. pip, pinned, editable, source/development and custom-source installations remain manual. Eligible installations check in the background when MCP starts. A verified update takes effect on a later startup; the current MCP session keeps its version, and a failed check leaves the working version available. The global CLI entry also follows the verified runtime, so `uv tool list` can show an older bootstrap package than the version actually running. Read `pacxio_update_status` for the running and prepared versions; briefly notify the user only if an update is waiting for a later startup or a check failed. `pacxio update status --json` provides the same local diagnostic, and `PACXIO_AUTO_UPDATE=0` disables automatic updates. If MCP is unavailable, explain that its current workflow and automatic updates cannot be loaded. Manual CLI use is still possible with its matching installed workflow; the plugin's `SKILL.local.md` is only the snapshot from installation and must not be presented as the latest workflow. Installation and migration commands: `references/commands.md`.
 
 ## Hard rules (read first)
 
@@ -30,13 +36,24 @@ Dielines, 3D views and the structure library run on this machine. Composing artw
 
 ## How to start, how to continue
 
-1. **Check the environment**: `python3 <skill-dir>/scripts/check_env.py --json` (`<skill-dir>` is this Skill's real folder). If the engine or fonts are missing, **stop** and give the user the instructions; if only Ghostscript is missing you can go on, but separation checks (B02, F01) are skipped — tell the user.
+1. **Check the environment**: use `pacxio_run` with `command: "env check"` through the current MCP server. For manual CLI use, run `python3 <skill-dir>/scripts/check_env.py --json` (`<skill-dir>` is the matching installed Skill's real folder). If the engine or fonts are missing, **stop** and give the user the instructions; if only Ghostscript is missing you can go on, but separation checks (B02, F01) are skipped — tell the user.
 2. **New project**: ask for the whole brief at once, create the job, open the workbench right away, build the content list — `references/requirements.md`.
 3. **Continuing** (the user gives an existing job, or says "continue / change this"): `references/resume.md`. Confirmations that still hold carry over; only ask about what is missing or what this change made expire.
-4. **Run `pacxio next <job>` before every round of work**: it shares its source with the workbench's "Now" and says where the job stands, who it waits on, which command runs next and which reference to read; user notes come first (`notes list --open` first, `notes reply` when done). In stages that wait on the user it only tells you what to show and what to run after they confirm.
+4. **Run `job_next` (or `pacxio next <job> --json`) before every round of work**: it shares its source with the workbench and says where the job stands, who it waits on, which command runs next and which reference to read; user notes come first (`notes list --open` first, `notes reply` when done). In stages that wait on the user it only tells you what to show and what to run after they confirm.
 5. **The user wants to see their own dieline folded** (they give a DXF / vector PDF): not supported at the moment; tell the user so.
 6. **Images**: use the agent's built-in image tool if it has one (Codex); otherwise a configured API, or ask the user for images. Prompts come from `pacxio concept prompt`; tell the user how many images you will make before you make them.
 7. **Cloud sign-in**: composing, rendering, preflight and export run on the pacxio server, and the first time they return `CLOUD_LOGIN` (an address and an 8-character code). Give the user the address and code exactly; **the user** signs in in the browser with an email code, checks the code and clicks Approve (the agent never signs in or approves for them, and never uses a browser tool to click it). When they say it is done, rerun the same command (`references/troubleshooting.md`).
+
+## Wait for a workbench decision, then continue
+
+When the next step needs a choice or confirmation on the workbench, show the result and tell the user what to review. **Keep the current turn active and wait for their workbench action; do not end with a request to type “continue”.**
+
+1. Call `job_next` for the current job and retain `data.revision`. If `data.who` is already `agent`, continue the authorized work immediately; the user may have confirmed while you were explaining the result.
+2. When `data.who` is `user`, call `studio_wait` with `job`, `after_revision: data.revision` and `timeout_s: 40`. This waits without choosing or confirming anything. With CLI only, use `pacxio studio wait <job> --after-revision <revision> --timeout 40 --json`.
+3. On `changed` or `not_waiting`, call `job_next` again. Read any user notes, honor the saved decisions and continue from the current stage. A change is not blanket approval: if the state still needs user confirmation, keep waiting. Never record the same confirmation again or ask the user to repeat it in chat.
+4. On `timeout`, call the wait tool again with the same revision while the user is reviewing. A 40-second timeout is a normal wait result, not an error. Stop after 10 minutes total for this decision, or immediately if the user stops or cancels; explain that automatic waiting has ended and that returning to the conversation can reconnect it. On `busy`, report that another agent is waiting for this job; do not take over its connection. On an error, explain the failure instead of claiming to remain connected.
+
+Automatic continuation requires an active wait call. An ended conversation or closed agent cannot be woken by this tool. While waiting, do not generate images or make design changes. After a decision, continue only within the user's authorized task, and stop at each later confirmation point. Full behavior and recovery: `references/studio.md`.
 
 ## Stage map
 

@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -37,23 +38,67 @@ DESCRIPTION = (
     "Packaging design to factory files: dielines, 3D, print PDF, finish plates and preflight, "
     "with a local workbench."
 )
+SKILL_ENTRY = """
+# Packaging prepress
+
+Load the workflow from the running pacxio MCP server each time this Skill is used:
+
+1. Read `pacxio://skill/SKILL.md` with the pacxio server's MCP `resources/read`
+   operation. This returns the full workflow and its confirmation rules for the
+   version actually running in this session.
+2. Read the references it requests from that same server, using
+   `pacxio://skill/references/<filename>.md`. Do not substitute the plugin cache's
+   reference copies when MCP is available.
+3. Prefer that server's tools, including `job_next`, `studio_open`, `studio_wait`,
+   `pacxio_run` and `pacxio_help`, so the instructions and commands use one version.
+   Only the user confirms a choice or proof; never click their Workbench buttons.
+4. Read `pacxio_update_status` to check the running and prepared versions. Briefly
+   tell the user only when an update is waiting for a later startup or a check has
+   failed; neither requires interrupting their current design task.
+
+Automatic updates apply only to a standard, unpinned `uv tool install pacxio` from
+PyPI. pip, pinned, editable, source/development and custom-source installations
+remain manual. The managed launcher checks in the background at MCP startup. A
+ready update is used on a later startup; this session keeps its running version.
+A failed check keeps the working version. Do not claim that an available update
+is already running. `PACXIO_AUTO_UPDATE=0` turns automatic updates off.
+
+If the pacxio MCP server or its resources are unavailable, explain that this Skill
+cannot load the current workflow or provide automatic updates through MCP. The
+manual CLI remains an option: read `SKILL.local.md` and its local references first.
+That file is the full workflow snapshot from plugin installation, not a promise of
+the latest version. Use it with the corresponding installed CLI version, or restore
+MCP before relying on newer behavior. Never install packages during a design task
+to work around a missing tool.
+"""
+
+
+def _home_dir() -> Path:
+    return Path.home()
 
 
 def plugin_home() -> Path:
-    return Path(os.environ.get("PACXIO_HOME", str(Path.home() / ".pacxio"))) / "plugin"
+    return Path(os.environ.get("PACXIO_HOME", str(_home_dir() / ".pacxio"))) / "plugin"
 
 
 def _claude_dir() -> Path:
-    return Path(os.environ.get("CLAUDE_CONFIG_DIR", str(Path.home() / ".claude")))
+    return Path(os.environ.get("CLAUDE_CONFIG_DIR", str(_home_dir() / ".claude")))
 
 
 def _codex_dir() -> Path:
-    return Path(os.environ.get("CODEX_HOME", str(Path.home() / ".codex")))
+    return Path(os.environ.get("CODEX_HOME", str(_home_dir() / ".codex")))
 
 
 def _write_json(path: Path, data: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def _skill_entry(source: str) -> str:
+    frontmatter = re.match(r"\A---\r?\n.*?\r?\n---(?:\r?\n|\Z)", source, re.DOTALL)
+    if frontmatter is None:
+        raise ValueError("The bundled Skill has no YAML frontmatter")
+    return frontmatter.group(0).rstrip() + "\n" + SKILL_ENTRY
 
 
 def build_plugin(dest: Path | None = None) -> dict[str, Any]:
@@ -67,6 +112,8 @@ def build_plugin(dest: Path | None = None) -> dict[str, Any]:
         raise FileNotFoundError(
             t("The Skill bundled with the package (packaging-prepress) was not found")
         )
+    full_skill = (src / "SKILL.md").read_text(encoding="utf-8")
+    entry_skill = _skill_entry(full_skill)
     root = dest or plugin_home()
     if root.exists():
         if not (root / MARKER).is_file():
@@ -102,8 +149,11 @@ def build_plugin(dest: Path | None = None) -> dict[str, Any]:
     })  # fmt: skip
     _write_json(plugin / ".mcp.json", {"mcpServers": {NAME: {"command": cmd, "args": args}}})
     # 软链接（scripts/fetch_fonts.py）复制成真文件：插件会被 agent 复制进缓存，链接会断
-    shutil.copytree(src, plugin / "skills" / SKILL, symlinks=False,
+    skill = plugin / "skills" / SKILL
+    shutil.copytree(src, skill, symlinks=False,
                     ignore=shutil.ignore_patterns("__pycache__", "*.pyc", ".DS_Store"))  # fmt: skip
+    (skill / "SKILL.local.md").write_text(full_skill, encoding="utf-8")
+    (skill / "SKILL.md").write_text(entry_skill, encoding="utf-8")
     (root / MARKER).write_text(__version__ + "\n", encoding="utf-8")
     return {
         "dir": str(root),
@@ -168,7 +218,7 @@ def _old_installs(agent: str) -> list[Issue]:
     out: list[Issue] = []
     if agent == "claude-code":
         skill = _claude_dir() / "skills" / SKILL
-        claude_json = Path.home() / ".claude.json"
+        claude_json = _home_dir() / ".claude.json"
         try:
             user_mcp = NAME in (
                 json.loads(claude_json.read_text(encoding="utf-8")).get("mcpServers") or {}
@@ -179,7 +229,7 @@ def _old_installs(agent: str) -> list[Issue]:
             out.append(Issue(id="SETUP", message=t("Claude Code still has a separately installed pacxio MCP that duplicates the plugin's"),
                              fix="claude mcp remove -s user pacxio"))  # fmt: skip
     else:
-        skill = Path.home() / ".agents" / "skills" / SKILL
+        skill = _home_dir() / ".agents" / "skills" / SKILL
         try:
             codex_cfg = tomllib.loads((_codex_dir() / "config.toml").read_text(encoding="utf-8"))
             old_mcp = NAME in (codex_cfg.get("mcp_servers") or {})
@@ -238,6 +288,7 @@ def setup(agent: str | None = None, yes: bool = False, fonts: bool = True) -> Re
         "already_installed": installed,
         "steps": [t("Build the plugin (Skill + MCP) in {root}", root=root), *(" ".join(x) for a in agents for x in plan[a]),
                   t("Download the open-source Source Han Sans fonts (about 33 MB)") if need_fonts else t("Fonts: already there, skipped") if fonts else t("Fonts: skipped (--no-fonts)"),
+                  t("Packaged installs check for updates in the background at each MCP startup; ready updates apply on a later startup, failures keep the working version, and current sessions keep their version. Source/development installs do not auto-update."),
                   t("Start the MCP server once as a self-check")],
     }  # fmt: skip
     for a in agents:
@@ -254,7 +305,7 @@ def setup(agent: str | None = None, yes: bool = False, fonts: bool = True) -> Re
                             fix=t("Install {label} first and check that {cli} runs in the terminal", label=LABEL[a], cli=CLI[a])), 3)  # fmt: skip
     try:
         r.data["plugin"] = build_plugin(root)
-    except (OSError, FileExistsError) as e:
+    except (OSError, ValueError) as e:
         return r.fail(Issue(id="SETUP", message=t("Building the plugin failed: {error}", error=e),
                             fix=t("Set PACXIO_HOME to use another folder, or delete that folder and try again")), 1)  # fmt: skip
     ran: list[dict[str, Any]] = []

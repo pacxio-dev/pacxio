@@ -120,10 +120,34 @@ def _flow_step(stages: dict[str, Stage], j: str) -> tuple[Stage | None, Step]:
     return None, Step(t("Nothing to do"))
 
 
-def next_step(directory: Path) -> Result:
+def next_step(directory: Path, *, strict: bool = False) -> Result:
+    from pacxio.studio.bridge import revision_of
+
     r = Result(command="next", job=str(directory))
-    state = job_state(directory)
-    if state.errors and not state.stages:
+    # The cursor must describe the state returned, including a click during this read.
+    try:
+        for _ in range(3):
+            revision = revision_of(directory)
+            state = job_state(directory)
+            if revision == revision_of(directory):
+                break
+        else:
+            return r.fail(
+                Issue(
+                    id="STUDIO",
+                    message=t("The Workbench changed while reading; call job_next again."),
+                ),
+                2,
+            )
+    except (OSError, ValueError) as exc:
+        return r.fail(
+            Issue(
+                id="STUDIO",
+                message=t("Could not read the Workbench review state: {error}", error=exc),
+            ),
+            2,
+        )
+    if state.errors and (strict or not state.stages):
         r.errors += state.errors
         r.ok, r.exit_code = False, 2
         return r
@@ -144,6 +168,7 @@ def next_step(directory: Path) -> Result:
         r.warnings.append(Issue(id="NOTE", message=t("There are {n} open notes in the Workbench", n=open_notes),
                                 fix=t("Run `pacxio notes list {job} --open`, then reply with `notes reply`", job=j)))  # fmt: skip
     data: dict[str, Any] = {
+        "revision": revision,
         "now": state.now,
         "who": who,
         "stage": None if current is None else

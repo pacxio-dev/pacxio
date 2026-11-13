@@ -49,6 +49,8 @@ pacxio setup --agent claude-code --yes
 
 For Codex, run `pacxio setup --agent codex --yes` instead. Setup installs the workflow Skill and MCP tools, and downloads the open-source Source Han Sans fonts if they are missing. Restart your agent after setup.
 
+The plugin reads its full workflow and reference guides from the running MCP server, keeping the instructions and tools on the same version.
+
 Then try a brief:
 
 ```text
@@ -57,6 +59,25 @@ Show me the dieline and folding 3D before we work on the artwork.
 ```
 
 [Full installation guide →](https://pacxio.dev/install)
+
+### Updates
+
+Automatic updates apply only to a standard, unpinned `uv tool install pacxio` from PyPI. pip, pinned versions, editable/source installs and custom-source installations remain manual. Eligible installations check in the background when MCP starts. A verified update is used on a later startup; your current session keeps its version. If a check or download fails, the working version remains available. Set `PACXIO_AUTO_UPDATE=0` to turn automatic updates off.
+
+Check the running and prepared versions locally with `pacxio update status --json`, or ask your agent to call `pacxio_update_status`. These diagnostics do not start an update.
+
+The global `pacxio` command also uses the verified runtime. `uv tool list` shows the installed bootstrap package, which can differ from the version actually running. During a design session, your agent uses the connected MCP server's tools and guides together.
+
+If you installed pacxio before this update mechanism, migrate once:
+
+```bash
+uv tool upgrade pacxio
+pacxio setup --yes
+```
+
+Restart your agent afterward. Setup updates every supported agent found on your machine; add `--agent codex` or `--agent claude-code` to target one. To replace a running Workbench, run `pacxio studio stop <job>` and then `pacxio studio start <job> --open`. Your job files and saved choices stay in the job folder.
+
+If MCP is unavailable, automatic updates through the plugin are unavailable too. You can still use the installed CLI manually with its matching workflow; the plugin's `SKILL.local.md` is a snapshot from installation.
 
 ## Open-source core and cloud service
 

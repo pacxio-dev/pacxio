@@ -423,6 +423,11 @@ details.sec summary { cursor: pointer; }
 .now .eyebrow { display: flex; align-items: center; gap: 7px; font-size: 10.5px; color: var(--accent); margin-bottom: 6px; }
 .now.agent .eyebrow { color: var(--muted); }
 .now .now-text { font: 500 16px/1.35 var(--f-head); color: var(--ink); }
+.agent-handoff { margin-top: 13px; padding-top: 12px; border-top: 1px solid var(--hairline-soft); }
+.agent-handoff-title { font-size: 13px; font-weight: 500; line-height: 1.45; color: var(--muted); }
+.agent-handoff.wait .agent-handoff-title, .agent-handoff.ok .agent-handoff-title { color: var(--accent); }
+.agent-handoff.warn .agent-handoff-title { color: var(--warn); }
+.agent-handoff .note { margin: 5px 0 0; }
 
 .stage-row {
   display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; min-height: 42px; padding: 8px 10px; margin: 0 -10px;

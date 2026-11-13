@@ -75,13 +75,14 @@ STYLES_WITH_FLAT = {
     "tray_lid",
     "drawer",
 }
+# restore 的评分 / 文字 / 图形命令共用上面的能力表；这里只扩展 flat 对照页入口。
+FLAT_PAGE_STYLES = STYLES_WITH_FLAT | {"structure"}
 SET_ORDER = ("front", "side_b", "back", "side_a", "top", "bottom")  # 多部件盒型：合上后的位置
 COMPARE_H = 900  # 概念图与正面 + 右侧对照的高度（像素）
 FACE_NAMES = FACE_ZH
 FLAT_TILE_H = 960  # 平面图对照：每张小图最高这么多像素
 DETAIL_PX_PER_MM = 4  # flat/vs_flat_<面>.png：逐面对照的大图
 DETAIL_FILE = "vs_flat_{face}.png"
-FLAT_FACE_ORDER = ("front", "side_b", "back", "side_a", "top_lid", "btm_lid", "base")
 FACE_NAME_INK = (70, 120, 200)
 FOOTER = (
     "Confirming the flat layout is only a record; confirming the exact 3D mockup (approve) is the formal confirmation "
@@ -112,8 +113,10 @@ def _unfolded(art: Image.Image, m: Any, dl: Any) -> Image.Image:
     img = art.copy()
     _draw_dieline(img, dl, m)
     draw = ImageDraw.Draw(img)
+    # 多部件盒的单个部件（如天盖）不一定能独立 build_box；只为配方补动态面名。
+    visible = face_rects(dl) if dl.style == "structure" else {}
     for panel in dl.panels:
-        if panel.id in FACE_NAMES:
+        if panel.id in FACE_NAMES or panel.id in visible:
             x0, _, _, y1 = panel.polygon.bbox()
             px, py = m.pt(x0, y1)
             draw.text(
@@ -126,15 +129,23 @@ def _unfolded(art: Image.Image, m: Any, dl: Any) -> Image.Image:
 
 
 def _crop_faces(art: Image.Image, m: Any, dl: Any, ids: tuple[str, ...]) -> Image.Image | None:
-    try:
-        boxes = [dl.panel(i).polygon.bbox() for i in ids]
-    except KeyError:
+    """按合上后的面取图、转正并排，不能取几个刀版面合在一起的包围框。
+
+    飞机盒的正面实际是 top_tuck，侧面在刀版上横着；两面之间还隔着其他版面。
+    """
+    faces = {f.key: f for f in build_box(dl).faces}
+    if not ids or any(key not in faces for key in ids):
         return None
-    x0, y0 = min(b[0] for b in boxes), min(b[1] for b in boxes)
-    x1, y1 = max(b[2] for b in boxes), max(b[3] for b in boxes)
-    left, top = m.pt(x0, y1)
-    right, bottom = m.pt(x1, y0)
-    return art.crop((round(left), round(top), round(right), round(bottom)))
+    images = [
+        upright(_crop_rect(art, m, faces[key].tex_rect), dl.panel(faces[key].panel))
+        for key in ids
+    ]
+    pair = Image.new("RGB", (sum(im.width for im in images), max(im.height for im in images)), PAPER)
+    x = 0
+    for im in images:
+        pair.paste(im, (x, pair.height - im.height))
+        x += im.width
+    return pair
 
 
 def _fit_h(img: Image.Image, h: int, max_w: int) -> Image.Image:
@@ -235,11 +246,15 @@ def flat_rows(
     if not sources and not issues:
         return [], [], []
     rects = face_rects(p.dl)
+    # 按真实可见面遍历：0427 的正面是 top_tuck，原生配方可能是 wall_0 等。
+    # 两片摇盖拼出的面、明确不出平面图的面仍不要求单独对照。
+    excluded = set(no_flat_faces(p.dl)) | {f.panel for f in build_box(p.dl).faces if f.parts}
+    rects = {face: rect for face, rect in rects.items() if face not in excluded}
     same = {tx: s for tx, s in (p.job.same_faces or {}).items() if tx in rects and s in rects}
     panels = {pn.id: pn for pn in p.dl.panels}
     rows: list[FlatRow] = []
     missing: list[str] = []
-    for face in (f for f in FLAT_FACE_ORDER if f in rects):
+    for face in rects:
         if face in same:  # 正反同款的复制面和原面一模一样，不单独列
             continue
         if face not in sources:
@@ -438,9 +453,9 @@ def _make_flat(directory: Path, diffs: list[str] | None = None) -> Result:
         r.ok = False
         r.exit_code = 2 if any(i.id == "JOB" for i in errs) else 1
         return r
-    if p.job.style not in STYLES_WITH_FLAT:
+    if p.job.style not in FLAT_PAGE_STYLES:
         return r.fail(Issue(id="ARG", message=t("Style {style} does not support the flat confirmation page yet", style=p.job.style),
-                            fix=t("Supported styles: {styles}", styles=join(sorted(STYLES_WITH_FLAT)))), 2)  # fmt: skip
+                            fix=t("Supported styles: {styles}", styles=join(sorted(FLAT_PAGE_STYLES)))), 2)  # fmt: skip
     fingerprint = design_fingerprint(directory, p.job)
     previous = read_manifest(directory) or {}
     if diffs is None:  # 没给新的差别说明：沿用上一次的

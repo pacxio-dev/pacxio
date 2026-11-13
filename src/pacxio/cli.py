@@ -77,11 +77,29 @@ mcp_app = typer.Typer(
 )
 app.add_typer(mcp_app, name="mcp")
 
+update_app = typer.Typer(help=t("Automatic update status"), no_args_is_help=True)
+app.add_typer(update_app, name="update")
+
+
+@update_app.command(
+    "status",
+    help=t("Show the running version and any prepared update without contacting the network."),
+)
+def update_status_cmd(json_out: JsonOpt = False) -> None:
+    from pacxio.launcher import update_message, update_status
+
+    r = Result(command="update status")
+    r.data = update_status()
+    r.data["message"] = update_message(r.data)
+    if not json_out:
+        typer.echo(r.data["message"])
+    _emit(r, json_out)
+
 
 @mcp_app.command(
     "serve",
     help=t(
-        "Serve MCP tools (structures, workflow commands, confirmations) over stdin / stdout, JSON-RPC 2.0, one message per line. No network."
+        "Serve MCP tools (structures, workflow commands, confirmations) over stdin / stdout, JSON-RPC 2.0, one message per line. Packaged plugins check for updates in the background."
     ),
 )
 def mcp_serve() -> None:
@@ -966,6 +984,10 @@ def next_cmd(
     from pacxio.studio.next import next_step
 
     r = next_step(directory)
+    if r.ok:
+        from pacxio.studio.bridge import acknowledge
+
+        acknowledge(directory, r.data["revision"])
     if not json_out and r.ok:
         d: dict[str, Any] = r.data
         typer.echo(t("Now: {now}", now=d["now"]))
@@ -2949,6 +2971,24 @@ def studio_start(
     from pacxio.studio.control import studio_start as start
 
     _emit_studio(start(directory, port, open_browser), json_out)
+
+
+@studio_app.command(
+    "wait", help=t("Wait for a Workbench decision without confirming for the user.")
+)
+def studio_wait(
+    directory: Annotated[Path, typer.Argument(help=t("Job folder"))],
+    after_revision: Annotated[
+        str, typer.Option("--after-revision", help=t("Revision returned by job_next or next"))
+    ],
+    timeout: Annotated[
+        float, typer.Option("--timeout", min=0.01, max=45, help=t("Wait seconds (maximum 45)"))
+    ] = 40,
+    json_out: JsonOpt = False,
+) -> None:
+    from pacxio.studio.bridge import wait_for_user
+
+    _emit(wait_for_user(directory, after_revision, timeout), json_out)
 
 
 @studio_app.command("status", help=t("Whether this job's workbench is running, and its address."))

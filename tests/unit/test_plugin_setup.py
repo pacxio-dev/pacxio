@@ -13,10 +13,12 @@ from pacxio.plugin_setup import MARKER, build_plugin, plugin_home, setup
 
 @pytest.fixture()
 def home(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
-    monkeypatch.setenv("HOME", str(tmp_path))
+    import pacxio.plugin_setup as ps
+
     monkeypatch.setenv("PACXIO_HOME", str(tmp_path / ".pacxio"))
-    monkeypatch.setenv("CLAUDE_CONFIG_DIR", str(tmp_path / ".claude"))
-    monkeypatch.setenv("CODEX_HOME", str(tmp_path / ".codex"))
+    monkeypatch.setattr(ps, "_home_dir", lambda: tmp_path)
+    monkeypatch.setattr(ps, "_claude_dir", lambda: tmp_path / ".claude")
+    monkeypatch.setattr(ps, "_codex_dir", lambda: tmp_path / ".codex")
     return tmp_path
 
 
@@ -46,6 +48,63 @@ def test_build_plugin_writes_both_manifests(home: Path) -> None:
     fonts = skill / "scripts" / "fetch_fonts.py"
     assert fonts.is_file() and not fonts.is_symlink()  # 软链接复制成真文件
     assert (root / MARKER).is_file()
+
+
+def test_plugin_entry_stays_stable_while_full_workflow_changes(
+    home: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from pacxio import mcp_server
+
+    source = home / "source-skill"
+    (source / "references").mkdir(parents=True)
+    header = '---\nname: packaging-prepress\ndescription: "Design packaging"\n---\n'
+    first = header + "\n# Complete workflow\n\nFirst workflow.\n"
+    (source / "SKILL.md").write_text(first)
+    (source / "references" / "commands.md").write_text("First commands.\n")
+    monkeypatch.setattr(mcp_server, "skill_dir", lambda: source)
+    plugin = Path(build_plugin()["plugin"]) / "skills" / "packaging-prepress"
+    entry = (plugin / "SKILL.md").read_text()
+    assert entry.startswith(header)
+    assert "pacxio://skill/SKILL.md" in entry and "resources/read" in entry
+    assert "pacxio://skill/references/<filename>.md" in entry
+    assert "SKILL.local.md" in entry
+    assert "First workflow." not in entry
+    assert (plugin / "SKILL.local.md").read_text() == first
+    assert (source / "SKILL.md").read_text() == first
+    resource = mcp_server.handle(
+        {"method": "resources/read", "params": {"uri": "pacxio://skill/SKILL.md"}}
+    )
+    assert resource is not None and resource["contents"][0]["text"] == first
+
+    second = header + "\n# Complete workflow\n\nUpdated workflow.\n"
+    (source / "SKILL.md").write_text(second)
+    (source / "references" / "commands.md").write_text("Updated commands.\n")
+    build_plugin()
+    assert (plugin / "SKILL.md").read_text() == entry
+    assert (plugin / "SKILL.local.md").read_text() == second
+    assert (plugin / "references" / "commands.md").read_text() == "Updated commands.\n"
+    assert (source / "SKILL.md").read_text() == second
+    resource = mcp_server.handle(
+        {"method": "resources/read", "params": {"uri": "pacxio://skill/SKILL.md"}}
+    )
+    assert resource is not None and resource["contents"][0]["text"] == second
+
+
+def test_invalid_skill_does_not_replace_existing_plugin(
+    home: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from pacxio import mcp_server
+
+    root = Path(build_plugin()["dir"])
+    marker = (root / MARKER).read_text()
+    source = home / "invalid-skill"
+    source.mkdir()
+    (source / "SKILL.md").write_text("No frontmatter\n")
+    monkeypatch.setattr(mcp_server, "skill_dir", lambda: source)
+    with pytest.raises(ValueError, match="frontmatter"):
+        build_plugin()
+    assert (root / MARKER).read_text() == marker
+    assert (root / "pacxio" / "skills" / "packaging-prepress" / "SKILL.md").is_file()
 
 
 def test_build_plugin_rebuilds_own_dir_but_not_others(home: Path) -> None:

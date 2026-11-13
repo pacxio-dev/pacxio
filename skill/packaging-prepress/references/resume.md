@@ -35,6 +35,8 @@ pacxio studio status jobs/<name> --json
 
 Reuse the workbench address if it is running; start it if it is not and the user has not declined it. Desktop panel first, default browser as fallback; see `studio.md`.
 
+The workbench may have received a choice or confirmation after the previous agent stopped waiting. Those saved decisions still count; restoring the connection does not require the user to confirm again. If `job_next` says `who: agent`, continue the authorized next action. If it says `who: user`, show the review that remains and call `studio_wait` with the returned `revision` to receive the next workbench decision in this turn. Follow the timeout, cancellation and reconnect rules in `studio.md`; a closed conversation is not an active wait connection.
+
 ## 3. Continue from the current stage
 
 First tell the user briefly: which stage this is, which confirmations still hold, what this round will change. Keep decisions that still hold; the user's new instructions can change the matching parts, without starting the brief again.

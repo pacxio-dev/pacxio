@@ -142,6 +142,8 @@ class StudioState(BaseModel):
     stages: list[Stage] = Field(default_factory=list)
     now: str = ""
     now_who: Who | None = None
+    next_action: str = ""
+    next_stage: str | None = None
     findings: dict[str, Any] | None = None
     notes: list[dict[str, Any]] = Field(default_factory=list)
     errors: list[Issue] = Field(default_factory=list)
@@ -1046,7 +1048,7 @@ def _summary(
     }
 
 
-def _now_text(stages: Iterable[Stage], directory: Path) -> tuple[str, Who | None]:
+def _now_text(stages: Iterable[Stage], directory: Path) -> tuple[str, Who | None, str, str | None]:
     """工作台的"现在"：和 `pacxio next` 同一套判断——⑤ 还没出图时的"等 agent 拼版"只是流程上的位置，
     不算待办；没有阶段在等谁时按流程顺序找下一步（抽屉测试 F-01：新 job 以前显示成"拼版"）。"""
     stages = list(stages)
@@ -1055,17 +1057,25 @@ def _now_text(stages: Iterable[Stage], directory: Path) -> tuple[str, Who | None
             continue
         message = (t("Waiting for you: {action} ({title})", action=st.action, title=st.title)
                    if st.todo == "user" else t("Waiting for agent: {action} ({title})", action=st.action, title=st.title))  # fmt: skip
-        return message, st.todo
+        return message, st.todo, st.action or "", st.id
     from pacxio.studio.next import _flow_step
 
     current, step = _flow_step({st.id: st for st in stages}, str(directory))
     if current is None:
-        return t("Nothing to do"), None
+        return t("Nothing to do"), None, "", None
     if step.commands:
-        return t(
-            "Waiting for agent: {action} ({title})", action=step.what, title=current.title
-        ), "agent"
-    return t("{action} ({title})", action=step.what, title=current.title), None
+        return (
+            t("Waiting for agent: {action} ({title})", action=step.what, title=current.title),
+            "agent",
+            step.what,
+            current.id,
+        )
+    return (
+        t("{action} ({title})", action=step.what, title=current.title),
+        None,
+        step.what,
+        current.id,
+    )
 
 
 # 这之后导入的平面图要有确认记录（concept confirm，2026-11-01 加）；更早的照旧，见 _legacy_flats_used
@@ -1146,7 +1156,9 @@ def job_state(directory: Path) -> StudioState:
         delivery,
     ]
     state.findings = findings
-    state.now, state.now_who = _now_text(state.stages, directory)
+    state.now, state.now_who, state.next_action, state.next_stage = _now_text(
+        state.stages, directory
+    )
     _attach_notes(directory, state)
     return state
 

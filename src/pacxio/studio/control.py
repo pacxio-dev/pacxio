@@ -119,6 +119,20 @@ def studio_start(directory: Path, port: int = 0, open_browser: bool = False) -> 
     info = alive(directory)
     if info is not None:
         r.data = _public(info, reused=True)
+        from pacxio import __version__
+
+        if info.get("version") and info["version"] != __version__:
+            r.warnings.append(
+                Issue(
+                    id="STUDIO_VERSION",
+                    message=t(
+                        "This Workbench is still using version {old}; this session uses {new}. Keep it open while the current task is running, then stop and reopen it to use the new version.",
+                        old=info["version"],
+                        new=__version__,
+                    ),
+                    fix=f"pacxio studio stop {directory}\npacxio studio start {directory} --open",
+                )
+            )
     else:
         proc = _spawn(directory, port)
         deadline = time.monotonic() + START_TIMEOUT_S
@@ -138,8 +152,11 @@ def studio_start(directory: Path, port: int = 0, open_browser: bool = False) -> 
             return r.fail(
                 Issue(
                     id="STUDIO",
-                    message=t("The Workbench service could not start: ") + (_log_tail(directory).strip() or t("no output")),
-                    fix=t("If the port is busy, choose another with --port. Check studio/server.log or run `pacxio studio serve <job>` in the foreground for details."),
+                    message=t("The Workbench service could not start: ")
+                    + (_log_tail(directory).strip() or t("no output")),
+                    fix=t(
+                        "If the port is busy, choose another with --port. Check studio/server.log or run `pacxio studio serve <job>` in the foreground for details."
+                    ),
                 ),
                 3,
             )
@@ -149,8 +166,12 @@ def studio_start(directory: Path, port: int = 0, open_browser: bool = False) -> 
     r.warnings.append(
         Issue(
             id="STUDIO",
-            message=t("The Workbench lets the user review and annotate the job. Only the user can confirm wording, drafts, concept direction, flats, and the dieline proof."),
-            fix=t("Run `pacxio notes list <job> --open` before each round of work, then reply with `notes reply`. Leave confirmations and closing notes to the user. Stop the service with `pacxio studio stop <job>`."),
+            message=t(
+                "The Workbench lets the user review and annotate the job. Only the user can confirm wording, drafts, concept direction, flats, and the dieline proof."
+            ),
+            fix=t(
+                "Run `pacxio notes list <job> --open` before each round of work, then reply with `notes reply`. Leave confirmations and closing notes to the user. Stop the service with `pacxio studio stop <job>`."
+            ),
         )
     )
     return r

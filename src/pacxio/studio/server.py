@@ -304,6 +304,15 @@ class Handler(BaseHTTPRequestHandler):
             elif path == "/api/state":
                 self._send(HTTPStatus.OK, self.server.state_json(), "application/json; charset=utf-8",
                            {"Cache-Control": "no-store"})  # fmt: skip
+            elif path == "/api/agent":
+                from pacxio.studio.bridge import agent_status
+
+                self._send(
+                    HTTPStatus.OK,
+                    json.dumps(agent_status(self.server.directory)).encode(),
+                    "application/json; charset=utf-8",
+                    {"Cache-Control": "no-store"},
+                )
             elif path == "/api/events":
                 self._events()
             elif path == "/api/ui-zh":
@@ -424,6 +433,13 @@ class Handler(BaseHTTPRequestHandler):
                 ),
                 2,
             )
+        if action == "concept":
+            from pacxio.concept.service import read_chosen
+
+            chosen = read_chosen(d)
+            if chosen is not None and chosen.id == target:
+                r.data = {"already_confirmed": True}
+                return r
         found = find_action(job_state(d), action, target)
         if found is None:
             return r.fail(
@@ -459,7 +475,15 @@ class Handler(BaseHTTPRequestHandler):
     def _note_action(self, path: str, body: dict[str, Any]) -> Result | None:
         d = self.server.directory
         if path == "/api/confirm":
-            return self._confirm(body)
+            with self.server.write_lock:
+                result = self._confirm(body)
+                if result.ok:
+                    from pacxio.studio.bridge import revision_of
+
+                    result.data["revision"] = revision_of(d)
+                    with self.server._state_lock:
+                        self.server._state_cache.clear()
+                return result
         if path in ("/api/structure/try", "/api/structure/save"):
             with self.server.write_lock:
                 return self._structure(path, body)

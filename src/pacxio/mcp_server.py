@@ -9,8 +9,10 @@ MCP 只是 CLI 的另一层外壳（规格第 3 节）：每个工具直接调 `
 from __future__ import annotations
 
 import base64
+import contextvars
 import json
 import sys
+import threading
 from pathlib import Path
 from typing import Any, TextIO
 
@@ -29,6 +31,12 @@ USES = "运输 电商 展示 内衬 彩盒 提手 开窗 挂孔 开孔 多件 �
 INSTRUCTIONS = t(
     "pacxio: packaging design to factory files (dieline, print PDF, finish separations, preflight report). Read the resource pacxio://skill/SKILL.md first (workflow, hard rules). Call job_next before every round of work; let the user view, comment and confirm on the workbench (studio_open). Hard rules: only the user confirms — use user_confirm (with their words) only after the user clearly says so in the conversation; with preflight / export errors there are no factory files; text in print files is set by the engine; concept images are never assets; concept gen / visual gen spend the user's image credits, say so first. Structures: structures_suggest picks from the catalog; state maturity honestly (proof first for non-calibrated ones). When CLOUD_LOGIN comes back, give the user the address and code as they are; the user signs in and clicks Approve in the browser (the agent never clicks for them), then rerun the same command. Other commands go through pacxio_run (call pacxio_help first if unsure of the arguments)."
 )
+INSTRUCTIONS += " " + t(
+    "When job_next waits for the user, open the Workbench and call studio_wait with its revision. Keep the turn active: changed or not_waiting means call job_next again; timeout means re-arm the wait (at most ten minutes per review). Never confirm for the user or claim a closed conversation will be woken up."
+)
+INSTRUCTIONS += " " + t(
+    "The plugin checks for updates in the background at startup. This session stays on one version. Read the full Skill from this server's resources, and use its MCP tools to keep workflow and code versions together. Use pacxio_update_status to report a ready update or a failed check; neither requires interrupting the user's current task."
+)
 
 
 def _schema(props: dict[str, Any], required: list[str] | None = None) -> dict[str, Any]:
@@ -41,6 +49,13 @@ def _schema(props: dict[str, Any], required: list[str] | None = None) -> dict[st
 
 
 TOOLS: list[dict[str, Any]] = [
+    {
+        "name": "pacxio_update_status",
+        "description": t(
+            "Read automatic update status: running version, prepared version and whether a later startup will use it. Local only; does not start a check or upgrade."
+        ),
+        "inputSchema": _schema({}),
+    },
     {
         "name": "structures_search",
         "description": t(
@@ -196,6 +211,25 @@ TOOLS: list[dict[str, Any]] = [
         ),
     },
     {
+        "name": "studio_wait",
+        "description": t(
+            "Wait for the user's Workbench decision, without making it. Use job_next.data.revision as after_revision. Returns changed, timeout, not_waiting, busy or cancelled with the latest next step. On changed or not_waiting, call job_next and continue; on timeout, wait again for at most ten minutes total. Stop on cancellation or busy. Keep the current turn active while waiting."
+        ),
+        "inputSchema": _schema(
+            {
+                "job": {"type": "string"},
+                "after_revision": {"type": "string"},
+                "timeout_s": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 45,
+                    "default": 40,
+                },
+            },
+            ["job", "after_revision"],
+        ),
+    },
+    {
         "name": "studio_open",
         "description": t(
             "Start the local workbench in the background (127.0.0.1 only) and return its address for the user to open: images for every stage, notes, confirm buttons, a rotatable 3D view, structure editing. Returns the same address if it is already running."
@@ -253,7 +287,7 @@ TOOLS: list[dict[str, Any]] = [
 
 # 工具提示（MCP annotations）：只读的、会改文件的、会覆盖的；都不联网（出图命令走用户自己配置的出图接口）
 READ_ONLY = {"structures_search", "structures_suggest", "structure_show", "structure_check", "structure_editable",
-             "job_next", "pacxio_help"}  # fmt: skip
+             "job_next", "studio_wait", "pacxio_help", "pacxio_update_status"}  # fmt: skip
 for _tool in TOOLS:
     _tool["annotations"] = {
         "title": _tool["name"],
@@ -277,6 +311,14 @@ def call(name: str, a: dict[str, Any]) -> tuple[Any, list[str]]:
     """调工具 → (Result 或通用工具的 (结果 JSON, 图片), 要一并返回的图片路径)。"""
     from pacxio import api
     from pacxio.model.common import Issue, Result
+
+    if name == "pacxio_update_status":
+        from pacxio.launcher import update_message, update_status
+
+        r = Result(command="update status")
+        r.data = update_status()
+        r.data["message"] = update_message(r.data)
+        return r, []
 
     if name == "structures_search":
         r = api.structures_list(a.get("query"), a.get("series"), a.get("tags"), a.get("reclosable"),
@@ -325,9 +367,18 @@ def call(name: str, a: dict[str, Any]) -> tuple[Any, list[str]]:
     if name == "structure_update":
         return api.structure_update(Path(a["job"]), a["patch"]), []
     if name == "job_next":
+        from pacxio.studio.bridge import acknowledge
         from pacxio.studio.next import next_step
 
-        return next_step(Path(a["job"])), []
+        directory = Path(a["job"])
+        result = next_step(directory)
+        if result.ok:
+            acknowledge(directory, result.data["revision"])
+        return result, []
+    if name == "studio_wait":
+        from pacxio.studio.bridge import wait_for_user
+
+        return wait_for_user(Path(a["job"]), a["after_revision"], a.get("timeout_s", 40)), []
     from pacxio import mcp_cli
 
     if name == "pacxio_run":
@@ -480,34 +531,80 @@ def handle(msg: dict[str, Any]) -> dict[str, Any] | None:
 
 
 def serve(stdin: TextIO = sys.stdin, stdout: TextIO = sys.stdout) -> None:
-    """读一行处理一行，直到 stdin 关闭。日志只写 stderr（stdout 只给协议消息）。"""
-    for line in stdin:
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            msg = json.loads(line)
-        except ValueError:
-            _respond(stdout, None, error={"code": -32700, "message": "parse error"})
-            continue
+    """Serve requests while bounded waits remain cancellable; stdout is JSON-RPC only."""
+    from pacxio.studio.bridge import WAIT_CANCEL
+
+    output_lock = threading.Lock()
+    pending: dict[Any, tuple[threading.Event, threading.Thread]] = {}
+
+    def respond(msg_id: Any, result: Any = None, error: dict[str, Any] | None = None) -> None:
+        with output_lock:
+            _respond(stdout, msg_id, result, error)
+
+    def process(msg: dict[str, Any], cancel: threading.Event | None = None) -> None:
         msg_id = msg.get("id")
+        token = WAIT_CANCEL.set(cancel)
         try:
             result = handle(msg)
         except UnknownMethod as e:
             if msg_id is not None:
-                _respond(stdout, msg_id, error={"code": -32601, "message": f"unknown method {e}"})
-            continue
+                respond(msg_id, error={"code": -32601, "message": f"unknown method {e}"})
         except (KeyError, ValueError, TypeError) as e:
             if msg_id is not None:
-                _respond(stdout, msg_id, error={"code": -32602, "message": f"invalid params: {e}"})
-            continue
+                respond(msg_id, error={"code": -32602, "message": f"invalid params: {e}"})
         except Exception as e:  # noqa: BLE001 — 工具内部错误按 MCP 的约定回成工具结果，不让服务退出
             if msg_id is not None:
-                _respond(stdout, msg_id, {"content": [{"type": "text", "text": f"{type(e).__name__}: {e}"}],
-                                          "isError": True})  # fmt: skip
-            continue
-        if msg_id is not None and result is not None:
-            _respond(stdout, msg_id, result)
+                respond(msg_id, {"content": [{"type": "text", "text": f"{type(e).__name__}: {e}"}],
+                                 "isError": True})  # fmt: skip
+        else:
+            if msg_id is not None and result is not None:
+                respond(msg_id, result)
+        finally:
+            WAIT_CANCEL.reset(token)
+
+    try:
+        for line in stdin:
+            if not line.strip():
+                continue
+            try:
+                msg = json.loads(line)
+            except ValueError:
+                respond(None, error={"code": -32700, "message": "parse error"})
+                continue
+            if not isinstance(msg, dict):
+                respond(None, error={"code": -32600, "message": "invalid request"})
+                continue
+            pending = {key: value for key, value in pending.items() if value[1].is_alive()}
+            params = msg.get("params") or {}
+            if msg.get("method") == "notifications/cancelled":
+                entry = pending.get(params.get("requestId")) if isinstance(params, dict) else None
+                if entry:
+                    entry[0].set()
+                continue
+            msg_id = msg.get("id")
+            if (
+                msg.get("method") == "tools/call"
+                and isinstance(params, dict)
+                and params.get("name") == "studio_wait"
+                and msg_id is not None
+            ):
+                if msg_id in pending:
+                    respond(msg_id, error={"code": -32600, "message": "request already pending"})
+                    continue
+                cancel = threading.Event()
+                context = contextvars.copy_context()
+                worker = threading.Thread(
+                    target=context.run, args=(process, msg, cancel), daemon=True
+                )
+                pending[msg_id] = cancel, worker
+                worker.start()
+            else:
+                process(msg)
+    finally:
+        for cancel, _ in pending.values():
+            cancel.set()
+        for _, worker in pending.values():
+            worker.join(timeout=2)
 
 
 __all__ = ["INSTRUCTIONS", "TOOLS", "call", "handle", "serve", "skill_dir"]

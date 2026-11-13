@@ -1,0 +1,8 @@
+"Use the revision from job_next and a timeout greater than zero and no more than 45 seconds.": "请使用 job_next 返回的 revision，等待时间须大于 0 且不超过 45 秒。"
+"Could not read the Workbench review state: {error}": "无法读取工作台确认状态：{error}"
+"The Workbench changed while reading; call job_next again.": "读取时工作台状态发生变化，请重新调用 job_next。"
+"Wait for a Workbench decision without confirming for the user.": "等待用户在工作台确认，不替用户作决定。"
+"Revision returned by job_next or next": "job_next 或 next 返回的 revision"
+"Wait seconds (maximum 45)": "等待秒数（最多 45 秒）"
+"When job_next waits for the user, open the Workbench and call studio_wait with its revision. Keep the turn active: changed or not_waiting means call job_next again; timeout means re-arm the wait (at most ten minutes per review). Never confirm for the user or claim a closed conversation will be woken up.": "当 job_next 等待用户时，打开工作台，并用其 revision 调用 studio_wait。保持当前轮次：changed 或 not_waiting 时重新调用 job_next；timeout 时再次等待（每次确认最多等待十分钟）。不要替用户确认，也不要声称可以唤醒已经关闭的对话。"
+"Wait for the user's Workbench decision, without making it. Use job_next.data.revision as after_revision. Returns changed, timeout, not_waiting, busy or cancelled with the latest next step. On changed or not_waiting, call job_next and continue; on timeout, wait again for at most ten minutes total. Stop on cancellation or busy. Keep the current turn active while waiting.": "等待用户在工作台作出决定，不代替用户确认。after_revision 使用 job_next.data.revision。返回 changed、timeout、not_waiting、busy 或 cancelled 及最新下一步。changed 或 not_waiting 时调用 job_next 并继续；timeout 时重新等待，合计最多十分钟。取消或 busy 时停止。等待时保持当前轮次。"

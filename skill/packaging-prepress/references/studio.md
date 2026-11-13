@@ -13,6 +13,7 @@ A web page on this machine: all stages of one job laid out left to right on one 
 ```bash
 pacxio studio start jobs/<name> --json      # start the server in the background (local only); data.url is the address; reused if already running
 pacxio studio status jobs/<name> --json     # whether it runs, and the address
+pacxio studio wait jobs/<name> --after-revision <revision> --timeout 40 --json  # wait for a workbench decision; revision comes from next --json
 pacxio studio stop jobs/<name>              # stop it when done
 pacxio studio serve jobs/<name>             # run in the foreground (Ctrl+C to quit), when the background start fails
 ```
@@ -40,6 +41,31 @@ pacxio studio serve jobs/<name>             # run in the foreground (Ctrl+C to q
 | ⑦ Preflight and delivery | Preflight results; when checks pass but nothing is exported yet, "waiting for agent: export the delivery pack"; after export two cards: the production pack (3 files for the factory) and the archive (to keep) |
 
 Right sidebar: each stage's status and "who does what now", preflight issues (click one to jump to its place on the dieline image), delivery files. Images not remade after a design change are marked "not current".
+
+## Continue automatically after the user chooses or confirms
+
+The workbench saves the user's decisions. An agent that is waiting with `studio_wait` receives the updated state and continues in the same turn. The user does not need to copy a message or say “continue” after clicking a confirmation.
+
+Before waiting, show the current results and describe the review the user needs to perform. For concepts, say: “Choose a direction on the workbench. I will continue with the back view and flats when you confirm.” Then:
+
+1. Call MCP `job_next` with the job's absolute path and retain `data.revision`. If `data.who` is `agent`, the next action is already yours; continue without waiting. If the job is finished, report the result.
+2. If `data.who` is `user`, call MCP `studio_wait` with the same `job`, `after_revision` set to that revision, and `timeout_s: 40`. Keep the current turn open while it waits. If the selection changed between the two calls, the revision lets the wait return immediately rather than miss the decision.
+3. Handle `data.status` as below. For CLI-only agents the equivalent is `pacxio next <job> --json`, followed by `pacxio studio wait <job> --after-revision <revision> --timeout 40 --json`.
+
+| Wait result | Agent behavior |
+|---|---|
+| `changed` | Read `job_next` again and handle open notes first. Proceed with the next authorized action when `who` is `agent`. If `who` is still `user`, inspect what changed and wait for the remaining decision. A note or changed file is not approval. |
+| `not_waiting` | Read `job_next` again; continue the authorized action or report that the job is complete. Do not wait for a decision the current workflow no longer requires. |
+| `timeout` | The user has not responded within this 40-second interval. Wait again using the same revision so a click between calls is still detected. Do not ask for “continue” after every timeout. |
+| `busy` | Another agent is already waiting for this job. Explain the conflict and leave that connection alone; do not start a competing wait loop or take over. |
+| `cancelled` | Stop waiting and honor the cancellation. Do not restart the loop automatically or treat it as a decision. |
+| Error or interrupted call | Explain that the wait was interrupted. Do not say the agent is still listening. On recovery, read the latest job state before waiting or doing work. |
+
+Wait for at most **10 minutes in total per decision**. Do not reset this limit on each timeout or unrelated file change. If the limit is reached, tell the user that automatic waiting has ended and that they can return to the original conversation to reconnect. Honor a user's stop or cancellation immediately. If a terminal tool returns a process/session handle while the wait command is running, collect its result instead of starting another wait command.
+
+The sidebar's agent connection indicator is distinct from the next workflow action. “Waiting for your decision” means a wait call is active. “Notified” means the wait returned the change; “received” appears only after the agent calls `job_next` (or `pacxio next`) again to read the latest state. Neither means the next image is already being generated. Automatic continuation only works while the agent keeps this connection active; it does not reopen a closed application or start a new turn after a conversation has ended.
+
+The user's saved confirmation remains valid after a timeout, disconnect or conversation switch. Read it when reconnecting and proceed from the current state; never ask for a duplicate confirmation merely to restart the connection. Each confirmation applies only to that stage and version. Continue through the authorized work until the next required review, and wait again there. Do not generate images or change the design while awaiting a decision.
 
 Process drafts and duplicate images are folded into a group at the bottom of each area by default: concepts not chosen once a direction is picked, older back views (with several versions only the one in use is shown, marked "in use"), flat views of each panel from the draft. ⑥ only holds the turnable 3D (the summary sheet and static views stay in the archive, not on the canvas). ④ goes further: only the set in use is shown; older versions, other directions and straightened panels are not on the canvas (to switch back to an older flat, tell the agent: `concept use`). So when importing concepts, back views and flats, **name them by convention** (`<chosen>-back1`, `<chosen>-flat-front`) so the workbench knows which belong to the chosen direction.
 
@@ -94,7 +120,7 @@ The sidebar's "Flow" tab, next to area titles, and under each main-view concept 
 
 - The record says `by: user (workbench)`, the same as command-line records; `export --require-approval` judges it as usual.
 - Buttons that cannot be clicked show why next to them ("design changed, ask the agent to render the dieline image again", "required information missing" …). When you see the user stuck there, do what the reason says.
-- **The agent never clicks these buttons or calls the workbench's confirmation API** (`/api/confirm`). When the user says "confirmed" in the conversation, the agent runs the command as usual; when the user clicked on the workbench, the agent checks the state with `approve <job> --status`, `content confirm <job> --status` etc. and continues.
+- **The agent never clicks these buttons or calls the workbench's confirmation API** (`/api/confirm`). When the user says "confirmed" in the conversation, the agent runs the command as usual; when the user clicked on the workbench, `studio_wait` returns, the agent checks `job_next` and the relevant confirmation state, and continues without asking them to repeat the confirmation.
 - When a main-view concept is chosen on the workbench, main colors are sampled from the whole image (no `--region`). If the user cares about the colors, choose again in the conversation with `concept choose … --region`.
 
 ## Rules
@@ -110,5 +136,8 @@ The sidebar's "Flow" tab, next to area titles, and under each main-view concept 
 |---|---|
 | `studio start` reports STUDIO: the server did not start | Look at the log in the error; if the port is taken use `--port`; or run `studio serve` in the foreground to see the error |
 | "Server disconnected" at the top right | The server stopped: `studio start` again (the address may change; open it again) |
+| The workbench says the agent is disconnected | The agent is not actively waiting. In the conversation, read `job_next`; continue if the user already confirmed, otherwise call `studio_wait` with the current revision. A running web server alone does not establish an agent connection. |
+| `studio_wait` returns `busy` | Another agent is waiting for this job. Leave that connection alone and explain the conflict. |
+| The user clicked while the agent was disconnected | The choice is saved. Read the latest state and continue; do not ask the user to choose again. |
 | An image stays old | The matching command did not run again: dieline image `render`, 3D mockup `mockup`, preflight `preflight` |
 | Red bar at the top "cannot read job.json" | job.json is being written or is broken; `pacxio panels <job>` shows the exact error |

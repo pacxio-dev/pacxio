@@ -68,6 +68,24 @@ Usage, connected computers and account deletion are on the web: `https://api.pac
 
 ## MCP (agents call tools instead of typing commands)
 
-- Install: `pacxio setup --agent claude-code` (or `codex`; without `--agent` it installs into every agent found on this machine) installs the pacxio plugin (this Skill + MCP) into the agent, downloads Source Han Sans if it is missing (about 33 MB, needs the network), and checks itself at the end; without `--yes` it only lists what it would do. A Skill / MCP installed separately before is reported in the warnings with the command to remove it, which runs only with the user's consent. `pacxio mcp doctor` checks the setup. To register only the MCP (e.g. a project `.mcp.json`), `pacxio mcp install --client …` still works.
-- Tools: 8 structure tools; `job_next`, `studio_open`; `pacxio_run` (any command, same as the command line above, `--json` added automatically); `pacxio_help`.
+- Install: `uv tool install pacxio`, then `pacxio setup --agent claude-code --yes` (or `codex`; without `--agent` it installs into every agent found on this machine). Setup installs the pacxio plugin, downloads Source Han Sans if it is missing (about 33 MB, needs the network), and checks itself at the end; without `--yes` it only lists what it would do. Restart the agent to load it. A Skill / MCP installed separately before is reported in the warnings with the command to remove it, which runs only with the user's consent. `pacxio mcp doctor` checks the setup. To register only the MCP (e.g. a project `.mcp.json`), `pacxio mcp install --client …` still works.
+- Workflow: the installed Skill is a stable entry. On each use it reads the full `pacxio://skill/SKILL.md` resource from the running MCP server, then any `pacxio://skill/references/<filename>.md` it needs. Prefer that server's tools so the workflow and commands use the same version. If MCP is missing, explain the limitation; the copied `SKILL.local.md` and references support manual CLI use with the matching installed version, but are installation snapshots rather than current-version guarantees.
+- Tools: 8 structure tools; `job_next`, `studio_open`, `studio_wait`; `pacxio_update_status` (local update diagnostic); `pacxio_run` (any command, same as the command line above, `--json` added automatically); `pacxio_help`.
 - **Only the user confirms**: `pacxio_run` cannot run `content confirm`, `plan --confirm`, `concept choose / use / confirm` or `approve`. After the user clearly says they confirm in the conversation, use `user_confirm` with the user's own words in `user_words`; vague words ("looks good") do not count.
+
+## Updates
+
+Only a standard, unpinned `uv tool install pacxio` from PyPI uses automatic updates. pip, pinned versions, editable/source installs and custom-source installations remain manual. Eligible installations check in the background at each MCP startup. Downloaded updates are verified before use and apply on a later startup. The current MCP session keeps its version; an update failure keeps the working version available. Set `PACXIO_AUTO_UPDATE=0` to disable automatic updates.
+
+Use the MCP `pacxio_update_status` tool or `pacxio update status --json` to inspect the running version, prepared version and last check. Both read local state without starting a download. Briefly tell the user when an update is pending startup or a check failed; routine checks need no announcement.
+
+The global `pacxio` command also follows the verified runtime. The version shown by `uv tool list` identifies the installed bootstrap package and can differ from the version running the commands. Use the connected MCP server's workflow and tools for a design session, rather than mixing its instructions with a separately updated command process.
+
+Users installed before this update mechanism need one migration:
+
+```bash
+uv tool upgrade pacxio
+pacxio setup --yes
+```
+
+Use `--agent claude-code` or `--agent codex` with setup to target only one agent. Restart the agent after migration. A running Workbench keeps its current server process; to replace it, run `pacxio studio stop <job>` then `pacxio studio start <job> --open` and use the returned address. Job files and saved confirmations remain in the job folder.
