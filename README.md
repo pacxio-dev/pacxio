@@ -30,14 +30,7 @@ A mailer for pacxio's own T-shirt: a blue-to-coral gradient, a silver-foil mark,
 |---|---|
 | ![Open FEFCO 0427 mailer showing the inside and closure](https://pacxio.dev/assets/gallery/tee-open.webp) | ![pacxio Dieline Tee artwork on its dieline](https://pacxio.dev/assets/gallery/tee-dieline.webp?v=3) |
 
-### More examples
-
-| Halvermoor Drip Coffee | Saltwick Sea Salt Kettle Chips |
-|---|---|
-| ![Halvermoor coffee carton 3D preview](https://pacxio.dev/assets/gallery/coffee-front.webp) | ![Saltwick stand-up pouch 3D preview](https://pacxio.dev/assets/gallery/saltwick-front.webp) |
-| Reverse tuck end · 100 × 60 × 130 mm | Stand-up pouch · 160 × 230 × 90 mm |
-
-These demo projects use pacxio and fictional brands. [See the full gallery, including concepts, 3D views and dieline proofs →](https://pacxio.dev/examples.html)
+[See the full gallery, including concepts, 3D views and dieline proofs →](https://pacxio.dev/examples.html)
 
 ## Install
 
