@@ -1,0 +1,28 @@
+# 材料预设。厚度【初值】，以工厂实测为准（规格第 7 节）。
+sbs_300:   { name: SBS 300 g/m²,     type: folding_carton, caliper_mm: 0.42, flute: null, surface: coated }
+sbs_350:   { name: SBS 350 g/m²,     type: folding_carton, caliper_mm: 0.48, flute: null, surface: coated }
+sbs_400:   { name: SBS 400 g/m²,     type: folding_carton, caliper_mm: 0.55, flute: null, surface: coated }
+gd_350:    { name: White-lined greyback 350 g/m², type: folding_carton, caliper_mm: 0.48, flute: null, surface: coated }
+kraft_350: { name: Kraft board 350 g/m²,   type: folding_carton, caliper_mm: 0.50, flute: null, surface: uncoated }
+flute_e:   { name: E-flute corrugated,     type: corrugated,     caliper_mm: 1.5,  flute: E }
+flute_b:   { name: B-flute corrugated,     type: corrugated,     caliper_mm: 3.0,  flute: B }
+flute_c:   { name: C-flute corrugated,     type: corrugated,     caliper_mm: 4.0,  flute: C }
+flute_bc:  { name: BC double-wall corrugated,  type: corrugated,     caliper_mm: 6.5,  flute: BC }
+# 不干胶标签（C4）：厚度是面材（不含底纸），只用于 3D 离瓶面的距离；film 是膜材种类（透明 / 镀铝要白墨打底）
+label_coated:   { name: Coated paper label stock,   type: label_stock, caliper_mm: 0.08, flute: null, surface: coated }
+label_kraft:    { name: Kraft paper label stock,   type: label_stock, caliper_mm: 0.09, flute: null, surface: uncoated }
+label_textured: { name: Textured paper label stock (wine label), type: label_stock, caliper_mm: 0.12, flute: null, surface: uncoated }
+label_pp_white: { name: White PP label stock,   type: label_stock, caliper_mm: 0.06, flute: null, surface: coated, film: white }
+label_pp_clear: { name: Clear PP label stock, type: label_stock, caliper_mm: 0.05, flute: null, surface: coated, film: clear }
+label_pe_white: { name: White PE label stock (squeeze bottles), type: label_stock, caliper_mm: 0.08, flute: null, surface: coated, film: white }
+label_metallized: { name: Silver metallized label stock, type: label_stock, caliper_mm: 0.06, flute: null, surface: coated, film: metallized }
+# 软包装复合膜（C5）：厚度是总厚（只用于 3D），film 决定要不要白墨（透明 / 镀铝）；复合结构以制袋厂为准【初值】
+pouch_pet_pe_clear:  { name: Clear PET/PE laminate,      type: film_laminate, caliper_mm: 0.10, flute: null, surface: coated, film: clear }
+pouch_pet_vmpet_pe:  { name: Metallized PET/VMPET/PE laminate, type: film_laminate, caliper_mm: 0.11, flute: null, surface: coated, film: metallized }
+pouch_pet_al_pe:     { name: PET/AL/PE foil laminate,    type: film_laminate, caliper_mm: 0.12, flute: null, surface: coated, film: metallized }
+pouch_matte_white:   { name: Matte BOPP/white PE laminate,   type: film_laminate, caliper_mm: 0.10, flute: null, surface: coated, film: white }
+pouch_kraft_pe:      { name: Kraft/PE laminate,          type: film_laminate, caliper_mm: 0.13, flute: null, surface: uncoated, film: kraft }
+pouch_pet_al_rcpp:   { name: PET/AL/RCPP retort laminate (121 °C; ready meals and meat), type: film_laminate, caliper_mm: 0.12, flute: null, surface: coated, film: metallized }
+pouch_ny_pe_clear:   { name: Clear NY/PE laminate (freezer and vacuum), type: film_laminate, caliper_mm: 0.09, flute: null, surface: coated, film: clear }
+pouch_mono_pe_white: { name: White mono-material PE/PE (recyclable), type: film_laminate, caliper_mm: 0.11, flute: null, surface: coated, film: white }
+pouch_kraft_pla:     { name: Kraft/PLA laminate (biodegradable),   type: film_laminate, caliper_mm: 0.13, flute: null, surface: uncoated, film: kraft }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="2079.5mm" height="831mm" viewBox="-10 -10 2079.5 831">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_glue_back" data-type="crease" d="M40 602.25 L40 208.75" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_top" data-type="crease" d="M46.5 202.25 L640 202.25" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_btm" data-type="crease" d="M46.5 608.75 L640 608.75" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_side_a" data-type="crease" d="M646.5 608.75 L646.5 202.25" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_top" data-type="crease" d="M653 202.25 L1046.5 202.25" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_btm" data-type="crease" d="M653 608.75 L1046.5 608.75" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_front" data-type="crease" d="M1053 608.75 L1053 202.25" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_top" data-type="crease" d="M1059.5 202.25 L1653 202.25" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_btm" data-type="crease" d="M1059.5 608.75 L1653 608.75" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_side_b" data-type="crease" d="M1659.5 608.75 L1659.5 202.25" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_top" data-type="crease" d="M1666 202.25 L2053 202.25" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_btm" data-type="crease" d="M1666 608.75 L2053 608.75" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M0 591.532 L40 602.25 L40 608.75 L46.5 608.75 L46.5 811 L640 811 L640 608.75 L653 608.75 L653 811 L1046.5 811 L1046.5 608.75 L1059.5 608.75 L1059.5 811 L1653 811 L1653 608.75 L1666 608.75 L1666 811 L2053 811 L2053 608.75 L2059.5 608.75 L2059.5 202.25 L2053 202.25 L2053 0 L1666 0 L1666 202.25 L1653 202.25 L1653 0 L1059.5 0 L1059.5 202.25 L1046.5 202.25 L1046.5 0 L653 0 L653 202.25 L640 202.25 L640 0 L46.5 0 L46.5 202.25 L40 202.25 L40 208.75 L0 219.468 L0 591.532" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="20" y="405.5" font-size="4" text-anchor="middle" fill="#888">glue</text>
+<text x="343.25" y="405.5" font-size="4" text-anchor="middle" fill="#888">back</text>
+<text x="849.75" y="405.5" font-size="4" text-anchor="middle" fill="#888">side_a</text>
+<text x="1356.25" y="405.5" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="1859.5" y="405.5" font-size="4" text-anchor="middle" fill="#888">side_b</text>
+<text x="343.25" y="101.125" font-size="4" text-anchor="middle" fill="#888">top_back</text>
+<text x="849.75" y="101.125" font-size="4" text-anchor="middle" fill="#888">top_side_a</text>
+<text x="1356.25" y="101.125" font-size="4" text-anchor="middle" fill="#888">top_front</text>
+<text x="1859.5" y="101.125" font-size="4" text-anchor="middle" fill="#888">top_side_b</text>
+<text x="343.25" y="709.875" font-size="4" text-anchor="middle" fill="#888">btm_back</text>
+<text x="849.75" y="709.875" font-size="4" text-anchor="middle" fill="#888">btm_side_a</text>
+<text x="1356.25" y="709.875" font-size="4" text-anchor="middle" fill="#888">btm_front</text>
+<text x="1859.5" y="709.875" font-size="4" text-anchor="middle" fill="#888">btm_side_b</text>
+</g>
+</svg>

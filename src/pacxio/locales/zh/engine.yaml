@@ -1,0 +1,465 @@
+A centred open joint cannot also specify a joint offset or partition: 居中无搭接接头不能同时指定偏移或隔板
+A diagonal corner crease requires a corner flap (flap): 角翼对角压线只用在角翼（flap）上
+? A display carton with a lowered front wall and sloped end walls supports open corners, corner flaps, or gussets on the long-side
+  walls
+: 前墙矮、端墙斜边的展示盒墙角只能不连、角翼或贴长边墙的连角
+A free tuck tab can only attach to the edge of the tube body: 自由插片只能挂在筒身边缘
+A free tuck tab cannot be combined with a joint offset or partition: 自由插片不能同时指定接头偏移或隔板
+A full-wall overlap cannot be combined with a joint offset, partition, centred split, or free tuck tab: 整墙重叠不能同时指定偏移、隔板、居中断开或自由插片
+A jointless seam requires center_open or full_overlap: 无接头目前只支持 center_open 或 full_overlap
+A lowered end wall requires long-side corner flaps or open corners: 矮端墙要配长边墙角翼（或不连角）
+A lowered-front display carton cannot add double-wall rollovers, rims, or hand holes to the front or end walls: 前墙矮的展示盒前墙
+  / 端墙不能再卷边双层、窄边或开手孔
+A pour opening requires a wall at least 80 mm high: 出液口要墙高至少 80
+A regular octagonal tray requires L = W: 正八边形托盘要 L = W
+A regular polygon body requires sides and edge: 正多边形盒身要给 sides 和 edge
+A sheet requires L (length along the creases) and W (total width across the creases): 片材要给 L 和 W（折线方向上的长、横过折线的总宽）
+A sheet strip has a computed width of zero or less: 片材有一条算出来的宽 ≤ 0
+A side-tuck lid requires the joint at a corner: 侧插盖要求接头在墙角
+A strip box (corner=strip) requires strip and has no separate lid or rim: 长条盒（corner=strip）要给 strip，不另带盖 / 窄边
+A thumb notch can only go on a long-side flap (thumb=0 back, thumb=2 front): 拇指缺口只能开在长边摇盖上（thumb = 0 背面 / 2 正面）
+A thumb notch cannot go on the locking-tab flap: 锁舌那片不开拇指缺口
+Adjust depth: 调整 depth
+Adjust hanger_h or the hang hole dimensions: 调整 hanger_h / 挂孔尺寸
+Adjust hanger_h or the hang hole dimensions, or increase W: 调整 hanger_h / 挂孔尺寸，或加大 W
+Adjust overlap: 调整 overlap
+Adjust the recipe or tuning to the allowed ranges for these components: 按积木的参数范围改配方或 tuning
+Adjust the recipe or tuning to the allowed ranges for this construction: 按那种做法的参数范围改配方或 tuning
+Adjust the recipe to the tray parameters' allowed ranges: 按托盘积木的参数范围改配方
+An auto-lock bottom requires L ≥ W because the long flaps attach to the long walls. W={width:g} > L={length:g}.: 自动锁底要求 L
+  ≥ W（长翼挂在长墙上），现在 W={width:g} > L={length:g}
+An end-rim corner wrap requires an end-wall rim and end-wall corner flaps on the outside of the long walls: 端墙窄边头包角要配端墙窄边、端墙角翼贴在长边墙外面
+An end-wall opening cannot share an end-wall rim or stacking tabs: 端墙开口不和端墙窄边 / 堆叠凸舌同用
+An inner-wall foot flap replaces the locking tabs. Use inner_foot with lugs=false.: 内墙底折边和插脚二选一：inner_foot 要配 lugs=false
+? At the {end}, long-side flap depth ½L = {depth:.0f} exceeds inside width {width:g}. The flap will protrude when closed (requires
+  W ≥ ½L).
+: '{end}部长边摇盖 ½L = {depth:.0f} 比内宽 {width:g} 还深，合上会伸出盒外（要 W ≥ ½L）'
+At these dimensions, {first} and {second} collide when folded. The rolls or folded corners at the ends lack clearance.: 这组尺寸下折好后
+  {first} 和 {second} 撞在一起（两头卷的管 / 折出来的角没有空间）
+Attach the lid to the back (on=0) or increase W: 盖挂背面（on = 0），或增大 W
+Both ends must use the same {parameter}: 两端的 {parameter} 要一样
+Change flap or remove these options: 改 flap，或去掉这些选项
+Change the closure or remove joint_offset to move the joint back to the corner: 换封口，或去掉 joint_offset 把接头放回墙角
+Change the dimension ratios, choose a different material, or select another structure: 改尺寸比例（这款结构在这组尺寸下放不下）、换材料，或换一款结构
+Change the flap rule or swap length and width: 换摇盖规则，或把长宽对调
+Check the body dimensions, the wall each closure attaches to, and the flap depth: 检查配方：盒身尺寸、封口挂在哪面墙、翼深
+Check the panels expressions and box dimensions: 检查 panels 的式子和盒子尺寸
+Check tuning.return_wall: 检查 tuning.return_wall
+Choose a different bottom closure: 换一种底
+Choose one of {kinds}: 改成 {kinds} 之一
+Corner cut {cut:.1f} leaves no room for straight edges: 切角 {cut:.1f} 太大，直边放不下
+Corner flap depth {depth:.1f} is too large. The flaps collide at the centre of the wall.: 角翼深 {depth:.1f} 太深：两头的角翼在墙中间碰上
+Corner flaps and corner wraps require the angled wall to attach to a long-side wall: 角翼 / 包角只用于斜墙挂在长边墙上
+Corner gussets folded against a wall of height {height:.1f} collide at the ends: 连角三角（墙高 {height:.1f}）贴在墙上两头碰上
+Corner hooks require long-side corner flaps on the outside of the end walls: 扣角钩舌要长边墙角翼贴在端墙外面
+Correct counts: 改 counts
+Correct fits: 改 fits
+'Could not build the structure: {error}': 生成不了：{error}
+Cup holes go in the rim at the top of the long-side wall: 杯孔开在长边墙顶的隔板（窄边）上
+Cut-corner trays support a long-side rim and tuck lid only: 切角托盘只支持长边窄边、插舌盖
+Diagonal creases from both ends of the long wall extend by one wall height each and meet in the middle: 长边墙两头的斜压线（各占一个墙高）在墙中间碰上
+Double long-side walls (ear with corner_on=long) do not support a lid: 双层长边墙（ear + corner_on = long）暂不带盖
+Double-end-wall trays (ear) cannot have posts, mitres, triangular corner posts, or base-edge holes: 双层端墙（ear）托盘不带立柱 / 斜接 /
+  三角角柱 / 底边孔
+Double-end-wall trays (ear) use inside dimensions and no rim or diagonal wall crease, except for long-side rim tucks: 双层端墙托盘（ear）只按内尺寸、不带窄边
+  / 斜压线（长边窄边插舌除外）
+Dust flap depth {depth:.1f} does not fit: 防尘翼深 {depth:.1f} 放不下
+Dust flap depth {depth:g} exceeds the wall height: 防尘翼 {depth:g} 比墙还高
+End flap depth applies only to half flaps: 端翼深只用于 half 折翼
+End slots (at=ends) require exactly two slots: 两头插槽（at = ends）是两道
+Every sheet strip must have a positive width: 片材每一条的宽都要大于 0
+'Fit {part} → {over}: a part is missing from parts': 套合 {part} → {over}：部件不在 parts 里
+Fold-down ends require half-width long-side lid flaps: 盖翼两头折下只用于长边半宽盖翼
+Four double walls and inner-wall ears apply only to ear trays: 四面双层墙 / 内墙耳片只用于 ear 托盘
+Four wall flaps cannot share the wall top edge with double walls, a rim, or a hinged lid: 四壁折翼不能和双层墙、窄边或连盖占同一条墙顶边
+Full-width corner flaps require a lidless tray with no locking tabs or inner-wall ears: 整幅角翼只支持无插脚、无内墙耳片且不带盖的托盘
+Full-width corner flaps require no inner-wall ears or locking tabs: 整幅角翼目前只支持无内墙耳片、无插脚
+Handle panel {panel} does not align with the other handle panel after folding (centres {gap:.0f} mm apart): 手提板 {panel} 折好后没有和另一块手提板贴合（中心相距
+  {gap:.0f} mm）
+Increase H: 增大 H
+Increase H or W: 加大 H / W
+Increase H or reduce return_wall.ear_depth or ear_gap: 加高 H，或减小 return_wall.ear_depth / ear_gap
+Increase H or set lug_count=1 so the tab sits at the centre without a notch: 加大 H，或 lug_count=1（插脚在中间、不让缺口）
+Increase L: 加大 L
+Increase L or reduce rim: 加大 L 或减小 rim
+Increase L or reduce the taper of the inner flap: 增大 L，或减小内翼的斜度
+Increase L or reduce tuck_len: 增大 L 或减小 tuck_len
+Increase L or use thinner board: 加大 L 或减小纸厚
+Increase L, W, or H: 加大 L / W / H
+Increase W: 加大 W
+Increase W or reduce rim: 加大 W 或减小 rim
+Increase W or reduce the rollover or base slot depth: 加大 W 或减小卷边 / 底槽深
+Increase W or use stack=center: 加大 W，或 stack=center
+Increase W or use thinner board: 加大 W 或使用更薄材料
+Increase W, reduce L, or use flap=center for long-side flaps of depth ½W: 加大 W 或减小 L，或换成长边 ½W 的规则（flap=center）
+Increase bevel: 加大 bevel
+Increase corner flap depth or reduce rim: 加大角翼深或减小 rim
+Increase end_height or H: 加大 end_height / H
+Increase length or height, or use display_lid=rect for a straight edge without a pull tab: 加大长 / 高，或 display_lid = rect（远边平、不带拉手）
+Increase return_wall.inner_inset or use its default: 增大 return_wall.inner_inset，或用默认值
+Increase return_wall.slot_depth or reduce return_wall.roll_gap: 增大 return_wall.slot_depth，或减小 return_wall.roll_gap
+Increase rim or W: 加大 rim 或 W
+Increase the L / W ratio: 加大 L / W 的比例
+Increase the dimensions or change the flap length rule: 加大尺寸，或改摇盖长度规则
+Increase the height H: 加大 H
+? Increase the middle span (for example W) or reduce the end roll size (for example H). For 0942 and similar structures, W
+  must be comfortably greater than 2H.
+: 加大中间那段（如 W）或减小卷管的尺寸（如 H）；0942 一类要 W 明显大于 2H
+Increase the width W: 增大 W
+Inner wall foot flaps require one pair of double walls, calibrated ears, and no locking tabs (0428 style): 内墙底折边只用于一对双层墙、校准耳片、不带插脚的托盘（0428
+  型）
+Inner-wall foot flaps require one pair of double walls and calibrated ears (0428 style): 内墙底折边目前只用于一对双层墙、校准耳片的托盘（0428 型）
+Inner-wall wings require double-end-wall trays (ear): 内墙翼只用于双层端墙（ear）托盘
+'Invalid dieline: {error}': 刀版不成立：{error}
+'Invalid recipe: {detail}': 配方不合法：{detail}
+'Invalid slotted container component parameters: {detail}': 开槽箱积木的参数不合：{detail}
+'Invalid tray parameters: {detail}': 托盘参数不合：{detail}
+Keep only the full-wall overlap: 只保留整墙重叠
+Keep rim width v ≤ 0.5·W − 2: 窄边 v ≤ 0.5·W − 2
+L is too short for the {end} compartment base: '{end}部分格底放不下：L 太短'
+Lengthen the double wall or reduce the locking tab size: 加长双层墙或缩小插脚
+Lengthen the end wall or use thinner board: 增大端墙长度或减小纸厚
+Lid tuck depth {depth:g} exceeds the wall height: 盖插舌 {depth:g} 比墙还高
+Locking-tab corners currently require the calibrated tray_lock folding carton: 扣舌墙角目前只有校准过的彩盒托盘（tray_lock）
+Make W larger: 加大 W
+Make a 1:1 or factory sample before ordering to confirm that the carton folds and locks: 下单前先打样（1:1 样稿或工厂打样）确认能折好、扣得住
+Make a sample before ordering to check that all parts fold and fit together: 下单前先打样确认各件能折好、套得上
+Make panels sum to {dimension} or omit {field}: 让 panels 加起来等于 {dimension}，或不给 {field}
+Mitred rims require corner flaps outside the end walls and rims only on the long-side walls: 斜接窄边要角翼贴在端墙外面、只在长边墙带窄边
+Move thumb to the opposite flap: thumb 改到对面那片
+'Multi-part set: {kind}. Clearances and fit are provisional pending folded samples.': 多件套：{kind}；各件未经折样校准，套合间隙和插合都是【初值】
+Multi-part sets support folding carton and corrugated board. The current material type is {material}.: 多件套只做纸盒和瓦楞，不能用 {material}
+? No joint was specified for the horizontal slotted container. A glue flap is used. The FEFCO 0410 drawing shows an unglued
+  tuck tab (pending verification).
+: 横放开槽箱没写接头，按糊口做；FEFCO 0410 目录图的接片是自由插片（不粘）【待核对】
+No placement rule for mailer panel {panel}: 飞机盒没有面 {panel} 的放法
+'Not a class A ECMA code: {code} (expected format A20.20.03.01)': 不是 A 类 ECMA 编号：{code}（格式 A20.20.03.01）
+Nothing enters the slot on {panel} ({length:.0f} × {width:.0f} mm) after folding: '{panel} 上的缝（{length:.0f} × {width:.0f}
+  mm）折好后没有东西插进去'
+Omit on or set on=2 (front): 去掉 on 或设 on = 2（正面）
+Only {width:.1f} remains at the tip of the inner side-tuck flap: 侧插内翼远端只剩 {width:.1f}
+Part {part} cannot fit over itself: 部件 {part} 不能套在自己外面
+Rectangular and elongated octagonal bodies require L and W: 长方形 / 长八角盒身要给 L 和 W
+Reduce H or attach the gussets to the other pair of walls (corner_on): 降低 H，或连角贴到另一对墙上（corner_on）
+Reduce H or lengthen the end wall: 降低 H 或增大端墙长度
+Reduce H or remove wall_diagonal: 降低 H，或去掉 wall_diagonal
+Reduce `tuning.foot_depth`: 减小 `tuning.foot_depth`
+Reduce bevel or increase L or W: 减小 bevel 或加大 L / W
+Reduce corner_depth: 减小 corner_depth
+Reduce drop: 减小 drop
+Reduce dust_depth: 减小 dust_depth
+Reduce end_height: 减小 end_height
+Reduce overlap. Use flap=full for full overlap.: 减小 overlap；全叠用 flap=full
+Reduce return_lug_count or return_wall.lug_w, or increase L: 减小 return_lug_count / return_wall.lug_w，或加大 L
+Reduce return_wall.ear_depth or increase W: 减小 return_wall.ear_depth，或加大 W
+Reduce return_wall.inner_inset or increase L: 减小 return_wall.inner_inset，或加大 L
+Reduce rim: 减小 rim
+Reduce slots.count or widen this strip: 减少 slots.count，或加大这条的宽
+Reduce strip_flaps.depth or remove that entry: 减小 strip_flaps.depth 或去掉这条
+Reduce tab width or slot depth, or increase L or W: 减小插脚宽 / 底槽深，或加大 L / W
+Reduce top.depth: 减小 top.depth
+Reduce tuck_len: 减小 tuck_len
+Reduce wing: 减小 wing
+Reduce wing or increase W: 减小翼宽（wing）或增大 W
+Reduce wing width: 减小翼宽（wing）
+Regular polygon trays require L = W and have no lid or rim: 正多边形托盘要 L = W，不带盖 / 窄边
+Remove body.tear or use a different top: 去掉 body.tear，或顶部不用斜口
+Remove corner_diagonal: 去掉 corner_diagonal
+Remove depth or use half: 去掉 depth 或改用 half
+Remove dust=false: 去掉 dust=false
+Remove front_double, end_double, rim, or hand_holes: 去掉 front_double / end_double / rim / hand_holes
+Remove joint_offset or joint_partition: 去掉 joint_offset / joint_partition
+Remove joint_offset, the partition, or the centred split: 去掉 joint_offset / 隔板 / 居中断开
+Remove lug_count: 去掉 lug_count
+Remove tear_strip: 去掉 tear_strip
+Remove the centred opening, joint offset, or partition: 去掉居中开口、偏移或隔板
+Remove the end-wall rim or stacking tabs: 去掉端墙窄边或凸舌
+Remove the hinged lid: 去掉连盖
+Remove the lid or use double end walls with the lid on a long-side wall (0421, 0428, or 0429): 去掉盖，或用双层端墙（盖挂长边墙，0421 / 0428
+  / 0429）
+Remove the lid or use one pair of double walls: 去掉盖，或用一对双层墙
+Remove these options or use a rectangular tube body: 去掉这些选项，或改成长方筒身
+Remove these options or use a single-wall tray: 去掉这些选项，或改用单层墙托盘
+Remove thumb: 去掉 thumb
+Remove tuning.return_wall.ear_offset: 去掉 tuning.return_wall.ear_offset
+Remove wing or lock: 去掉 wing 或 lock
+Rim end finishes (posts, tabs, or mitres) require long-side corner flaps and rims: 窄边收头（立柱 / 插脚 / 斜接）要配长边墙角翼和窄边
+Rim tucks are supported on long-side rims of double-end-wall trays (ear) only: 窄边插舌只用于双层端墙（ear）托盘的长边墙窄边
+Rim width {width:g} is too large. The opposite rims touch.: 窄边 {width:g} 太宽：对面两条碰上
+Rim width {width:g} is too narrow for the tuck tab, which needs at least 6: 窄边 {width:g} 太窄，插舌放不下（插舌至少 6 宽）
+Rim {width:g} is too narrow to fit the post tab: 窄边 {width:g} 太窄，立柱插脚放不下
+Set W equal to L: W 设成和 L 一样
+Set W to match L: 把 W 设成和 L 一样
+Set `tuning.foot_depth` to at most {maximum:.1f} or increase the length: '`tuning.foot_depth` ≤ {maximum:.1f}，或加大长度'
+Set corner=flap and corner_on=long, then specify rim: corner=flap，corner_on=long，给 rim
+Set dim_basis=inner and remove rim or wall_diagonal: dim_basis 用 inner，去掉 rim / wall_diagonal
+Set end_height at or below the wall height: end_height ≤ 墙高
+Set flap=full: flap 改成 full
+Set joint_offset to {minimum:.0f}–{maximum:.0f}: joint_offset 取 {minimum:.0f}–{maximum:.0f}
+Set lid dust=false and remove rim or flaps: lid dust=false，去掉 rim / flaps
+Set lugs=false and double_walls=pair, then remove inner_ears or ear_shape: lugs=false，double_walls=pair，去掉 inner_ears / ear_shape
+Set on to 0–{maximum}: on 改成 0–{maximum}
+Set on=2. Rotating the box keeps the same structure.: on 改成 2（盒子翻个面是同一个结构）
+Set seam.kind=tuck to match the catalogue and reconfirm the dieline. Set seam.kind=glue to specify a glued joint.: 要和目录一致设
+  seam.kind=tuck 并重新确认刀版；有意粘接就写明 seam.kind=glue
+Set slots.count to 2: slots.count 改成 2
+Set the angle between −180° and 180°: 角度改到 −180–180 之间
+Set top to flaps with flap=long: top 用 flaps，flap=long
+Sheet creases can fold up to 180°: 片材折线最多折 180°
+Short fold-down rim tabs require a long-side rim on a single-wall tray: 窄边头折下的短舌要配长边墙窄边（单层墙托盘）
+Side wings, thumb notches, locking tabs, and omitted end flaps require half, overlap, or full flaps: 侧翼、拇指缺口、锁舌、不带端摇盖只用在 half
+  / overlap / full 摇盖上
+Side-tuck flap width {flap_width:g} exceeds side-panel width {panel_width:.1f} minus 1: 侧插翼宽 {flap_width:g} 超过侧面宽 {panel_width:.1f}
+  − 1
+Side-tuck flap width {width:g} exceeds box height minus 2: 侧插翼宽 {width:g} 超过盒高 − 2
+Slots are too close. Slot width is {width:.1f} and the nearest pair is only {spacing:.1f} apart.: 插槽太密：槽宽 {width:.1f}，最近两道只隔
+  {spacing:.1f}
+Specify rim and use rim_on=long: 给 rim，rim_on=long
+Specify the panel sequence in body.strip: body.strip 写面序列
+Stacking tabs are supported on end walls only: 堆叠凸舌目前只做在端墙上
+Stacking tabs on ear trays go on double end walls only: ear 托盘的堆叠凸舌只做在双层端墙上
+Strip {strip} cannot fit an end flap of depth {depth:.1f}: 第 {strip} 条放不下深 {depth:.1f} 的端翼
+Structure recipes support folding carton and corrugated board. The current material type is {material}.: 结构配方第 0 步只做纸盒和瓦楞，不能用
+  {material}
+'Structure: {maturity}. Tab fit, bottom locking, and dimensions are provisional pending a folded sample.': 结构：{maturity}；未经折样校准，插合、锁底和尺寸都是【初值】
+Supply H when sheet creases run along H: 片材折线顺着 H 时要给 H
+Supply H when sheet strip widths are expressions based on box dimensions: 片材条宽写成盒子尺寸的式子时要给 H
+Swap L and W: 交换 L 和 W
+The additional inner wall's tabs or base slots are too close together: 新增内墙的插脚 / 底槽过密
+The additional inner walls or slots collide in the middle of the base: 新增内墙或底槽在底板中间相撞
+The additional inner-wall ears collide between the end-wall layers: 新增内墙耳片在端墙夹层里相撞
+The additional inner-wall parameters must be finite numbers: 新增内墙参数必须是有限数值
+The additional inner-wall parameters require four double walls: 新增内墙参数要配四面双层墙
+The additional inner-wall tabs extend beyond the base slots: 新增内墙的插脚超出底槽深度
+The additional rollover is wider than the outer wall: 新增卷边超过外墙宽度
+The back-wall rollover on a tray with four double walls shares an edge with the hinged lid: 四面双层托盘的后墙卷边与连盖共用一条边，暂不组合
+The base must be a convex polygon: 盒身底面要是凸多边形
+The base must be a counterclockwise polygon with at least three sides: 盒身底面要是逆时针的多边形（至少 3 条边）
+The bottom edge of the long flap is too short: 长翼底边太短
+The box is too shallow to fit the side-tuck flaps: 盒子太浅，侧插翼放不下
+The carton is too short for the bevels or arcs at the ends of the glue flap: 盒身太矮，糊口两端的斜切 / 圆弧放不下
+The corner cut is too small to fit the end-wall flaps: 切角太小，端墙角翼放不下
+The corner cuts are too large for the elongated octagon: 长八角的切角太大
+The corner flap is too narrow to fit the mitre: 角翼太窄，斜接放不下
+The corner flaps are too deep. The hook slots from both ends meet in the centre of the end wall.: 角翼太深，两头钩舌的缝在端墙中间碰上
+The corner relief cuts too far into the diagonal crease and removes the glue triangle: 斜压线靠角切开太深，糊胶三角没了
+The cross divider is too low for the {end} compartment base (box height {height:g}): '{end}部分格底放不下：横隔板太矮（盒高 {height:g}）'
+The dieline panels do not form a continuous outline, or leave a hole. Check the closure parameters.: 刀版的面没有连成一整片（或中间有洞）：检查封口参数
+The end and long-side walls are too close in height to fit the post: 端墙和长边墙差不多高，立柱放不下
+The end flaps exceed half the tray length and would collide: 端翼超过半个托盘长，两端会相撞
+The end wall is too low to fit the double-wall rollover: 端墙太矮，卷边双层放不下
+The end wall is too short for the two stacking tabs without overlap: 端墙太短，两个堆叠凸舌碰上
+The end wall is too short to fit the stacking tabs: 端墙太短，堆叠凸舌放不下
+The end wall is too short. The two triangular corner posts collide.: 端墙太短，两个三角角柱碰上
+The end-wall tab slots collide in the middle of the base: 端墙插脚底槽在底板中间相撞
+The ends of the additional inner wall do not clear the end-wall layers: 新增内墙端头没有让开端墙夹层
+The first panel of the strip must be the base: 长条的第一块面要是底板
+The fit relationships form a cycle: 套合关系绕成一圈
+The flap is too narrow to fit the locking tab: 锁舌放不下（摇盖太窄）
+The flap is too small to fit a thumb notch: 拇指缺口放不下（摇盖太小）
+The flat layout does not form a continuous blank: 展开图没有连成一片
+The free ends of the additional inner-wall ears are too short: 新增内墙耳片自由端太矮
+The front wall is already lowered for the sloped display opening and cannot have a tear-off perforation: 斜口展示的正面墙已经是矮的，不能再加撕开展示齿线
+The front wall is too low to fit the corner flaps: 前墙太矮，角翼放不下
+The full-width corner flaps and double walls do not form a valid continuous blank: 整幅角翼与双层墙没有连成有效的一片
+The glue triangle does not fit (flap depth {depth:.1f}, corner relief {relief:.1f}): 糊胶三角放不下（翼深 {depth:.1f}、靠角切开 {relief:.1f}）
+The header crease on the lid cannot be combined with a tear-off window or display lid: 盖上的头卡压线和撕开窗 / 展示盖不能一起用
+The hole in {panel} is blocked by {obstruction} behind it: '{panel} 上的孔被贴在背后的 {obstruction} 挡住了'
+The hooks are too narrow for the two major flaps to lock: 主翼钩齿太窄，两片主翼扣不住
+The inner layer of the double end wall has no width after relief: 双层端墙的内墙让位后没有宽度
+The inner-wall ears are too deep and collide at the end wall: 两侧内墙耳片太深，在端墙处互相碰上
+The inner-wall endpoints determine the ear locations. ear_offset is unavailable.: 新增内墙耳片位置由内墙端点决定，不使用 ear_offset
+The inner-wall foot flap and tray do not form a continuous blank: 内墙底折边和托盘没有连成一片
+The inner-wall foot flap has no length after beveling: 内墙底折边斜切后没有长度
+The inner-wall foot flap is {depth:.1f} mm deep. The two ends collide at the centre of the base.: 内墙底折边 {depth:.1f} mm 太深，两头在底板中间相撞
+The insets at both ends leave no usable width in the additional inner wall: 新增内墙两端内缩后没有可用宽度
+The inside tray dimensions are not positive: 托盘内尺寸非正
+The joint offset {offset:g} does not fit (wall length {wall:.1f}, overlap {overlap:g}): 接头离墙角 {offset:g} 放不下（那面墙 {wall:.1f}、搭接
+  {overlap:g}）
+The lid and tray do not form a continuous blank: 盖和托盘连不成一块
+The lid flap is too narrow to fit locking tabs at both ends: 盖翼太窄，两头插脚放不下
+The locking tab requires full-overlap flaps (full). The angled slot goes on the opposite flap.: 锁舌只用在全重叠摇盖（full）上：斜缝开在对面那片摇盖上
+The locking-tab flap cannot also have a side wing: 锁舌那片不带侧翼
+The long-side wall is too short for the glue flange of the triangular corner post: 长边墙太短，三角角柱的贴边放不下
+The outline of the tray with four double walls does not form a valid continuous blank: 四面双层托盘的外轮廓没有连成有效的一片
+'The recipe matches calibrated style {style}, but its parameters are invalid: {detail}': 配方对上了校准过的做法 {style}，但参数不合：{detail}
+? The recipe matches neither a calibrated construction nor the rectangular carton components (folding carton with closures
+  on the front or back). Native generation supports tube bodies with open, flap, tuck, or glued ends, using inside dimensions
+  and no tuning.
+: 这个配方对不上校准过的做法和长方彩盒积木（卡纸、封口挂背面 / 正面），引擎原生生成目前只做筒身 + 开口 / 摇盖 / 插舌盖 / 粘合盖（内尺寸、不带微调）
+The rim is too narrow to fit a usable cup hole: 隔板太窄，杯孔太小
+The sheet has {creases} creases, so folds requires {angles} angles: 片材有 {creases} 条折线，folds 要给 {angles} 个角度
+The side wing can only attach to the front flap (wall 2). The joint is at the left of the back wall.: 侧翼只能挂在正面（第 2 面）摇盖上：背面左边是接头
+The sloped display opening requires a lowered front wall: 斜口展示只做正面墙矮
+The sloped display opening requires the joint at a corner: 斜口展示要求接头在墙角
+The sloped front wall height {height:.1f} is outside 20 to wall height minus 20: 斜口正面墙高 {height:.1f} 超出 20–墙高 − 20
+The slots for tabs on opposite sides collide in the middle of the base: 两侧插脚底槽在底板中间相撞
+The strip box dimensions are too small: 长条盒尺寸太小
+The strip selected by holes.panel={panel} does not exist: 开孔的那条（holes.panel = {panel}）不存在
+The strip widths total {total:g}, which does not match {dimension} = {value:g}: 片材每条宽加起来 {total:g} 和 {dimension} = {value:g}
+  对不上
+The tray outline is disconnected: 托盘外轮廓不连成一块
+The tray with inner-wall ears does not form a continuous blank: 内墙耳片的托盘展开没有连成一片
+The tuck tab is too narrow for the radius: 插舌太窄，圆角放不下
+The tuck tab on the full-width long flap does not fit: 整幅长翼的插舌放不下
+The two groups of base slots are too close at the corner: 两组底槽在角部靠得太近
+The wall is too low or the end wall is too short for triangular corner posts: 墙太矮或端墙太短，三角角柱放不下
+The wall is too low to fit the tab slot: 墙太矮，插脚槽放不下
+The wall is too short to fit the corner flap: 墙太矮，角翼放不下
+The wall is too short. Notches for stacking tabs at the top and bottom would leave no continuous inner wall.: 墙太矮：内墙上下都要给堆叠凸舌让缺口，中间连不住
+The window or tear-off display requires the joint at a corner: 开窗 / 撕开展示要求接头在墙角
+The wrap-around construction has double end walls and cannot combine its lid with dust flaps, a rim, or four wall flaps: 包裹式（端墙挂后墙）的盖不带防尘翼（端墙已双层），也不带窄边
+  / 四壁折翼
+The {end} closure {kind} is not a supported slotted container component: '{end}部封口 {kind} 不是开槽箱的积木'
+The {end} divider depth {depth:g} exceeds half the box height, so the top and bottom would collide: '{end}部隔板 {depth:g} 超过半个盒高（上下两头会顶上）'
+The {end} flap depth is not positive: '{end}部摇盖深非正'
+The {end} flap overlap {overlap:g} must be positive and smaller than the inside width: '{end}部摇盖重叠 {overlap:g} 要大于 0、小于内宽'
+The {end} glued-flap overlap {overlap:g} is outside 2 to inside width minus 2: '{end}部粘合翼重叠 {overlap:g} 不在 2–内宽−2 之间'
+The {end} inner panel is taller than the box: '{end}部内板比盒高还高'
+The {end} lid attaches to wall {wall}, but the body has only {count} walls: '{end} 的盖挂在第 {wall} 面墙，盒身只有 {count} 面'
+The {end} lid is too shallow for the tear strip: '{end}部盖太浅，撕拉条放不下'
+The {end} reduced flap depth {depth:.1f} is outside twice the slot width to inside width minus 2: '{end}部缩小翼深 {depth:.1f}
+  不在 开槽宽·2–内宽−2 之间'
+The {end} rim width {width:g} is too large. The opposite rims would collide.: '{end}部窄边 {width:g} 太宽（两边会碰上）'
+The {end} tear strip requires a tuck lid: '{end}部撕拉条只用在插舌盖上'
+The {end} triangular flaps require L ≥ W to keep the middle triangles from colliding: '{end}部三角折页要 L ≥ W（两头的中间三角会碰上）'
+There is too little spacing between the three bottom slots for the locking tabs: 三个插脚的底槽间距不足
+This body requires H: 这个盒身要给 H
+This closure or window requires L to be the long edge of the opening. W={width:g} > L={length:g}.: 这种封口 / 开窗要求 L 是开口的长边，现在
+  W={width:g} > L={length:g}
+'This structure cannot be built at these dimensions with this material: {reason}{hint}': 这款结构在这组尺寸 / 材料下生成不了：{reason}{hint}
+? This structure does not work at these dimensions. Change the dimensions, choose another structure, or adjust the recipe
+  so it closes and locks, then check again.
+: 这组尺寸下这款结构折好后不成立：改尺寸、换一款结构，或把配方改到能合上 / 扣上（改完再查）
+Tray flaps support half, center, full, or long, with optional depth: 托盘折翼只支持 half / center / full / long 和可选 depth
+Trays with ears on two inner walls do not support a hinged lid: 两面内耳托盘暂不支持连盖
+Triangular corner posts are folded from end-wall corner flaps: 三角角柱由端墙角翼折成
+Triangular corner posts require long-side rim posts and corner flaps inside the end walls: 三角角柱要配长边墙窄边立柱、角翼贴在端墙里面
+Tube and tray bodies require H: 筒身 / 托盘要给 H
+Tuck length {length:.1f} is too long (box height {height:g}): 插舌长 {length:.1f} 太长（盒高 {height:g}）
+Unknown closure {kind}: 未知封口 {kind}
+Unrecognised sheet strip width {width!r}: 片材条宽 {width!r} 看不懂
+Unrecognised sheet strip width {width!r}. Use a number or an expression with L, W, H, or v such as W/2 or 1.414H.: 片材条宽 {width!r}
+  看不懂：写数，或 L / W / H / v 带倍数、分母（如 W/2、1.414H）
+Use corner=ear: corner 用 ear
+Use corner=ear, lugs=false, inner_ears=false, and remove the lid: corner 用 ear，lugs=false，inner_ears=false，去掉盖
+Use corner=open, flap, or gusset with corner_on=long, and remove corner_diagonal: corner 用 open / flap / gusset（corner_on=long），去掉
+  corner_diagonal
+Use double_walls=all: double_walls 用 all
+Use either lid_header or tear_window with display_lid: 二选一：lid_header，或 tear_window + display_lid
+Use folding carton or corrugated board: 换纸盒或瓦楞材料
+? Use rectangular carton components (open, flaps, reduced, seal, lid_tuck, hanger, side_tuck, snaplock, autolock, or gable),
+  or use a supported native closure for a polygonal body
+: 长方彩盒用积木（open / flaps / reduced / seal / lid_tuck / hanger / side_tuck / snaplock / autolock / gable），多边形用原生支持的封口
+Use single walls and remove rim or the hinged lid. Half-width long-side flaps (flap=long) can use an end-wall rim or ear.: 用单层墙，去掉
+  rim / 连盖；长边半宽折翼（flap=long）可配端墙窄边或 ear
+Wing width {width:g} exceeds the box height. The closed wing stands inside the end wall.: 翼宽 {width:g} 比盒高还高（翼合上后立在端墙里面）
+Wing width {width:g} exceeds the end-wall width: 翼宽 {width:g} 超过端墙宽
+Wing width {width:g} is too large to fit the 45° bevels at both ends: 翼宽 {width:g} 太宽：翼两头 45° 斜角放不下
+Wing width {width:g} leaves no room for the end flap: 翼宽 {width:g} 太宽：端摇盖剩不下
+With a corrugated side-tuck lid at the front, the side_b flap must clear the glue seam. The box is too shallow.: 瓦楞侧插盖挂正面时，side_b
+  那片翼要让开糊口，盒子太浅放不下
+With a mid-wall joint, the {end} end must be open or have plain flaps without rims, side wings, or locking tabs: 接头在墙中间时{end}部只能是开口或普通摇盖（不带窄边、侧翼、锁舌这些）
+autolock_form applies only to auto-lock bottoms (autolock): autolock_form 只用在自动锁底（autolock）上
+center_open and full_overlap require kind=none without an offset, overlap, or partition: center_open / full_overlap 要求 kind=none，不能带偏移、搭接或隔板
+center_open, full_overlap, and free tuck tabs apply only to rectangular tube bodies: center_open / full_overlap / 自由插片只适用于长方形筒身
+'counts.{part} = {count}: the part is missing from parts or the count is outside 1–20': counts.{part} = {count}：部件不在 parts
+  里或片数不在 1–20
+double_walls and inner_ears apply only to rectangular ear trays: double_walls / inner_ears 只用于长方形 ear 托盘
+dust controls dust flaps on hinged tray lids (hinged_lid): dust（不带防尘翼）只用在托盘连盖（hinged_lid）上
+dust_lock requires dust flaps on both sides of the lid: dust_lock 要盖两侧有防尘翼
+ear_shape applies only to rectangular ear trays: ear_shape 只用于长方形 ear 托盘
+end_height exceeds the long-side wall height: 端墙高 end_height 比长边墙还高
+front_return applies only to wrap-around trays (corner=wrap): front_return 只用于包裹式（corner=wrap）
+glue applies only to closure flaps (flaps, reduced, or seal): glue 只用在封口翼（flaps / reduced / seal）上
+hanger_layers applies only to hanger panels (hanger): hanger_layers 只用在挂板（hanger）上
+inner_foot applies only to rectangular ear trays: inner_foot 只用于长方形 ear 托盘
+lid_front, dust_ears, lid_on, dust_lock, tear_window, and display_lid apply only to hinged tray lids (hinged_lid): lid_front
+  / dust_ears / lid_on / dust_lock / tear_window / display_lid 只用在托盘连盖（hinged_lid）上
+lug_count applies only to trays with double end walls (ear): lug_count 只用于双层端墙（ear）托盘
+open_taper applies only to trays with corners=open: open_taper 只用在 corners = open 的托盘上
+rim_ends, triangle_posts, inner_wings, edge_slots, and corner_meet apply only to rectangular trays: rim_ends / triangle_posts
+  / inner_wings / edge_slots / corner_meet 只用于长方形托盘
+slots, holes, steps, and strip_flaps apply only to sheets: slots / holes / steps / strip_flaps 只用在片材上
+steps applies only to a flat sheet without folds: 台阶形（steps）只用在一张不折的平板上
+tear_strip applies only to tuck lids (lid_tuck): tear_strip 只用在插舌盖（lid_tuck）上
+window and tear apply only to rectangular corrugated tube bodies: window / tear 只用在瓦楞长方筒身上
+'{code}: closure {closure} has no corresponding component. Supported closures: {supported}.': '{code}：封口 {closure} 还没有对应的积木（有
+  {supported}）'
+'{code}: wall position {position} must be 00, 01, or 03': '{code}：面号 {position} 只能是 00 / 01 / 03'
+'{count} sides remain open after folding (recipe calls for {expected}): {sides}': 折好后有 {count} 面没合上（配方是{expected}）：{sides}
+'{end}: {message}': '{end}部{message}'
+'{first} and {second} overlap on the flat dieline. Attach the lid to another wall or reduce flap depth.': 展开以后 {first} 和 {second}
+  在刀版上重叠：换一面墙挂盖，或减小翼深
+'{kind} can only be used at the top': '{kind}只能在顶部'
+'{options} apply only to a hinged tray lid attached to the rear wall': '{options} 只用在挂后墙的托盘连盖上'
+'{options} apply only to flap closures (flaps)': '{options} 只用在摇盖（flaps）上'
+'{options} apply only to rectangular tube bodies': '{options} 只用在长方筒身上，这个配方用不上'
+'{panel} is disconnected after cutting': '{panel} 切完不是一块'
+'{panel} passes through the middle of {through} after folding (over {length:.0f} mm)': '{panel} 折好后从 {through} 中间穿过去（{length:.0f}
+  mm 长）'
+'{panel} projects {distance:.1f} mm beyond the body after folding': '{panel} 折好后伸出盒体 {distance:.1f} mm'
+'{panel} stands {distance:.1f} mm proud of the body after folding. The panel does not close or lock fully.': '{panel} 折好后翘出盒体
+  {distance:.1f} mm（没盖严 / 没锁上）'
+'{panel}: toward must be perpendicular to the hinge': '{panel}：toward 要和铰链垂直'
+'{tag}Mechanism check failed: {message}': '{tag}机构功能核对不过：{message}'
+'{wall} is disconnected after adding the stacking tab': '{wall} 加凸舌后不是一块'
+'; ': ；
+'{part}: {closure}': '{part}：{closure}'
+'{closure} — closing needs tape / glue, or it opens only once': '{closure}——合上后要靠胶带 / 胶，或一次性开箱'
+Single piece: 单件
+Can be reopened and closed again: 能反复开合
+Closes without tape or glue: 不用胶带 / 胶就能合上
+Single piece (no multi-part set): 单件（不要多件套）
+Slim mailer: 浅扁飞机盒
+Standard mailer: 常规飞机盒
+Deep mailer: 较深飞机盒
+Starting point for a shallow single product or small bundle: 浅扁单品 / 小型组合装的设计起点
+Starting point for a typical direct-to-consumer product or bundle: 常规 DTC 单品 / 组合装的设计起点
+Starting point for a deeper bundle: 较深组合装的设计起点
+Provisional reference dimensions. Adjust for the product and material. These presets share one structure and have not been individually verified with a physical sample.: 参考内尺寸【初值】，请按产品和材料调整；比例预设不计新增结构或单独实物验证
+Multi-part set: 多件套
+The engine does not recognise this need: 引擎不认识这条需求
+'{n} mechanism check(s) failed (does not close / lock, or panels pass through each other once folded): not usable at this size; preflight will report S07 and no delivery pack is made. Change the size or choose another structure': '机构功能核对有 {n} 处不过（折好后合不上 / 扣不上 / 互相穿过）：这组尺寸下不能用，印前检查会报 S07、不出交付包——改尺寸或换一款'
+'Not calibrated by a folded sample (tuck fit, lock bottom and set clearances are provisional): make a proof before ordering': 未经折样校准（插合、锁底、套合间隙都是【初值】）：下单前先打样
+'Custom structure: mark it "non-standard" and confirm with the factory whether they can make it and how they price it': 自定义结构：标“非标准结构”，和工厂确认能不能做、怎么报价
+'{n} place(s) where panels intersect once folded (may be an approximation of stacked board layers, or a real collision): check the 3D view and confirm with a proof': '折好后有 {n} 处面互相穿插（可能是几层纸叠放的近似，也可能真的碰）：看 3D、打样确认'
+'Whether it runs on machines (folder-gluer, auto forming) is for the factory to confirm; 07 pre-glued structures need a folder-gluer': 能不能上机（糊盒机、自动成型）由工厂确认；07 预糊结构需要糊盒机
+'Load {load} kg: the engine does not calculate compression / load strength; ask the factory to check it against the flute and board grade': '承重 {load} kg：引擎不算抗压 / 承重，请工厂按楞型和纸板强度核算'
+'x may be negative or exceed one turn (it wraps around the circumference); y starts at the bottom edge of the front': x 可以是负数或超过一圈（按一圈周长循环）；y 从正面底边起
+? A short round-cornered tuck goes inside the front wall and holds by friction; no outer tuck ears; inner side wall lugs go into base holes
+: 短圆角插舌进入前壁内侧摩擦保持；无外包插耳；侧内壁插脚入底板孔
+? 'Corrugated cases default to flexo: total ink and minimum type size follow the profile''s flexo section (provisional); for preprint use --print-method offset'
+: 瓦楞箱默认水印（柔印）：总墨量、最小字号按配置档 flexo 一节【初值】；预印改 --print-method offset
+First and last full walls overlap, no glue; how it is held closed must be confirmed (provisional): 首尾两整墙重叠，不涂胶；闭合固定方式须确认【初值】
+Flute along the flat's x axis (provisional): 楞向沿展开图 x【初值】
+Flute along the flat's x axis; not marked on the dieline: 楞向：沿展开图 x；不标在刀版上
+Flute along the flat's y axis (inferred); not marked on the dieline: 楞向：沿展开图 y——推断；不标在刀版上
+? Flute along the flat's y axis (parallel to the roll-over creases, vertical on front and back panels; inferred); not marked on the dieline
+: 楞向：沿展开图 y（和卷边压线平行，前、后板楞竖直）——推断；不标在刀版上
+Flute along the flat's y axis (provisional): 楞向沿展开图 y【初值】
+Flute vertical (along the box height, as 0201); not marked on the dieline: 楞向：竖直（沿箱子高度，同 0201）；不标在刀版上
+Flute vertical (along the box height, usual for FBA top-opening cases); not marked on the dieline: 楞向：竖直（沿箱子高度，FBA 顶开口箱的常规）；不标在刀版上
+Free tab at the tube side edge, no glue; insertion and closing need a folded sample (provisional): 筒身侧边自由插片，不涂胶；插入与闭合效果需折样确认【初值】
+'Manufacturer''s joint: glued (joint flap glued inside side_b)': 厂商接头：粘（接舌糊在 side_b 里面）
+'Manufacturer''s joint: stitched (joint flap stitched inside side_b)': 厂商接头：钉（接舌钉在 side_b 里面）
+'Manufacturer''s joint: taped (no joint flap)': 厂商接头：胶带（没有接舌）
+Offset print laminated to board (print the facing sheet, laminate to corrugated, then die-cut); bleed per profile: 胶印裱纸（先胶印面纸、再裱到瓦楞上模切）；出血按配置档
+Offset print laminated to board; back unprinted; all structure parameters await a folded sample: 胶印裱纸；纸背未印刷；全部结构参数待折样
+? One strip of double-sided tape / release liner on the back of seal_pad sticks to the ink-free receiving area on the printed side of front; Glue_Area / GLUE shows the adhesive on the back, not auto-lock gluing and not a cut line. PERF is split into cuts / bridges; the perforating rule and adhesive type must be confirmed by the factory (provisional)
+: 在 seal_pad 纸背贴单条双面胶 / 剥离纸，粘向 front 印刷面禁墨接收区；Glue_Area / GLUE 是纸背涂胶投影，非自动锁底糊盒、非刀线。PERF 已分切段 / 纸桥，齿刀与胶种须工厂确认【初值】
+? One-side offset print laminated to board; L0 engineering starting values, confirm structure and process with a folded sample
+: 单面胶印裱纸；L0 工程初值，须结构 / 工艺折样确认
+Opening in the middle of a wall, no overlap or side glue; how it is closed must be confirmed (provisional): 墙正中开口，无搭接和侧胶；封口方式须确认【初值】
+? 'Slotted cases default to flexo: total ink and minimum type size follow the profile''s flexo section (provisional); for preprint use --print-method offset'
+: 开槽箱默认水印（柔印）：总墨量、最小字号按配置档 flexo 一节【初值】；预印改 --print-method offset
+? The adhesive strip on the back of the seal flap sticks to the printed side of the front wall; removing the tear strip breaks the closure
+: 粘接片纸背胶条贴前壁印刷面；移除撕条后断开闭合链
+? 'The sleeve is glued at the side seam (joint flap inside the right side): normally straight-line glued on a folder-gluer; small runs can be glued by hand'
+: 外套糊侧缝（接舌糊在右侧面里面）：按常规用糊盒机直线糊，小批量也可手工糊
+? The tuck wraps outside the front panel, its ears go between the side wall layers, plus inner side wall lugs (tuck-ear method)
+: 插舌包在前板外面、两端插耳插进侧板夹层 + 内侧板插脚（插耳做法）
+The two lock tabs on the outer front apron fold into the front panel slots; the lock shoulders sit behind the front wall: 外包前片的两枚锁舌折入前板接收槽；锁肩进入前壁纸背内侧
+'{part} × {n}': '{part} {n} 个'
+'{cover} fits over {base} (clearance {c} mm)': '{cover}套在{base}外面（间隙 {c} mm）'
+'{kind}: {parts}': '{kind}：{parts}'

@@ -1,0 +1,121 @@
+{
+  "version": "5",
+  "note": "仅供视觉示意的材质预设；不是工厂实测或制造公差。roughness/metallic/clearcoat 为 0–255。relief_* 是击凸 / 压凹在屏幕上的显示参数，不是模具深度：relief_edge_mm 是沿轮廓一圈斜坡的宽度（里外各一半），relief_height_mm 是平顶高出纸面多少，relief_cavity 是凹处压暗的强度（0–1）。 attachment 是配件（金属标）：field 是底面（喷砂哑光，粗糙度高）、relief 是凸起图案（抛光），height 是标面在高度图里的值（128 平、255 最高），edge_mm 是外缘斜坡宽。 static_reflection 是静态效果图的影棚（只看，不随视角换灯）：左前方一块竖长柔光灯板（方向 strip_az_deg / strip_el_deg，0 正前、负值往左；距盒子中心 strip_distance、宽 strip_width、高 strip_height，都是盒子对角线的倍数）加浅色地面（往下看 floor_fade_deg 度提亮到最大）；灯板软边 edge + edge_per_rough × 粗糙度（对角线倍数）；粗糙度 ≥ rough_none 不反光、≤ rough_full 最强；strip_strength / floor_strength 是灯板、地面反光往白色混的最大比例。",
+  "fold": {
+    "crease_radius_caliper": 1.0
+  },
+  "paper": [
+    173,
+    0,
+    0
+  ],
+  "matte_lamination": [
+    150,
+    0,
+    90
+  ],
+  "gloss_lamination": [
+    48,
+    0,
+    240
+  ],
+  "matte_varnish": [
+    140,
+    0,
+    60
+  ],
+  "gloss_varnish": [
+    65,
+    0,
+    210
+  ],
+  "foil_gold": {
+    "base": [
+      217,
+      174,
+      73
+    ],
+    "material": [
+      59,
+      255,
+      0
+    ]
+  },
+  "foil_silver": {
+    "base": [
+      218,
+      222,
+      230
+    ],
+    "material": [
+      51,
+      255,
+      0
+    ]
+  },
+  "foil_copper": {
+    "base": [
+      196,
+      122,
+      84
+    ],
+    "material": [
+      59,
+      255,
+      0
+    ]
+  },
+  "foil_holo": {
+    "base": [
+      200,
+      206,
+      215
+    ],
+    "material": [
+      64,
+      255,
+      0
+    ]
+  },
+  "spot_uv": [
+    30,
+    0,
+    255
+  ],
+  "white": [
+    250,
+    250,
+    250
+  ],
+  "relief_height_mm": 0.3,
+  "relief_edge_mm": 0.5,
+  "relief_cavity": 0.2,
+  "attachment": {
+    "field": [
+      110,
+      255,
+      0
+    ],
+    "relief": [
+      50,
+      255,
+      0
+    ],
+    "height": 200,
+    "edge_mm": 1.0
+  },
+  "static_reflection": {
+    "strip_az_deg": -33,
+    "strip_el_deg": -8,
+    "strip_distance": 1.2,
+    "strip_width": 0.18,
+    "strip_height": 2.6,
+    "edge": 0.05,
+    "edge_per_rough": 0.5,
+    "floor_fade_deg": 30,
+    "strip_strength": 0.24,
+    "floor_strength": 0.04,
+    "rough_none": 160,
+    "rough_full": 30
+  }
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="100mm" height="55mm" viewBox="-10 -10 100 55">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="cut_outline" data-type="cut" d="M0 35 L39.61 35 L39.61 17.5 L40.39 17.5 L40.39 35 L80 35 L80 0 L0 0 L0 35" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="40" y="17.5" font-size="4" text-anchor="middle" fill="#888">front</text>
+</g>
+</svg>

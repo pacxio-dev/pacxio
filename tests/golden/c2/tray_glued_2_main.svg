@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="391.92mm" height="301.92mm" viewBox="-10 -10 391.92 301.92">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_base_front" data-type="crease" d="M60.48 221.44 L311.44 221.44" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_base_back" data-type="crease" d="M60.48 60.48 L311.44 60.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_base_side_a" data-type="crease" d="M311.44 221.44 L311.44 60.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_base_side_b" data-type="crease" d="M60.48 221.44 L60.48 60.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_corner_front_b" data-type="crease" d="M60.48 222.44 L60.48 280.92" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_corner_front_a" data-type="crease" d="M311.44 222.44 L311.44 280.92" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_corner_back_b" data-type="crease" d="M60.48 59.48 L60.48 1" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_corner_back_a" data-type="crease" d="M311.44 59.48 L311.44 1" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M60.48 221.44 L60.48 222.44 L47.48 222.44 L45.48 224.44 L45.48 278.92 L47.48 280.92 L60.48 280.92 L60.48 281.92 L311.44 281.92 L311.44 280.92 L324.44 280.92 L326.44 278.92 L326.44 224.44 L324.44 222.44 L311.44 222.44 L311.44 221.44 L371.92 221.44 L371.92 60.48 L311.44 60.48 L311.44 59.48 L324.44 59.48 L326.44 57.48 L326.44 3 L324.44 1 L311.44 1 L311.44 0 L60.48 0 L60.48 1 L47.48 1 L45.48 3 L45.48 57.48 L47.48 59.48 L60.48 59.48 L60.48 60.48 L0 60.48 L0 221.44 L60.48 221.44" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="185.96" y="140.96" font-size="4" text-anchor="middle" fill="#888">base</text>
+<text x="185.96" y="251.68" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="185.96" y="30.24" font-size="4" text-anchor="middle" fill="#888">back</text>
+<text x="341.68" y="140.96" font-size="4" text-anchor="middle" fill="#888">side_a</text>
+<text x="30.24" y="140.96" font-size="4" text-anchor="middle" fill="#888">side_b</text>
+<text x="52.98" y="251.68" font-size="4" text-anchor="middle" fill="#888">corner_front_b</text>
+<text x="318.94" y="251.68" font-size="4" text-anchor="middle" fill="#888">corner_front_a</text>
+<text x="52.98" y="30.24" font-size="4" text-anchor="middle" fill="#888">corner_back_b</text>
+<text x="318.94" y="30.24" font-size="4" text-anchor="middle" fill="#888">corner_back_a</text>
+</g>
+</svg>

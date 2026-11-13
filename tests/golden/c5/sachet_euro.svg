@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="220mm" height="180mm" viewBox="-10 -10 220 180">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="cut_outline" data-type="cut" d="M4 160 L196 160 A4 4 0 0 0 200 156 L200 4 A4 4 0 0 0 196 0 L4 0 A4 4 0 0 0 0 4 L0 156 A4 4 0 0 0 4 160" fill="none" stroke="#d40000"/>
+<path id="cut_split" data-type="cut" d="M100 160 L100 0" fill="none" stroke="#d40000"/>
+<path id="cut_hang_front" data-type="cut" d="M39 16.5 L61 16.5 A4 4 0 0 0 61 8.5 L39 8.5 A4 4 0 0 0 39 16.5" fill="none" stroke="#d40000"/>
+<path id="cut_hang_back" data-type="cut" d="M139 16.5 L161 16.5 A4 4 0 0 0 161 8.5 L139 8.5 A4 4 0 0 0 139 16.5" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="50" y="80" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="150" y="80" font-size="4" text-anchor="middle" fill="#888">back</text>
+</g>
+</svg>

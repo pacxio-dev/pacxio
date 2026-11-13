@@ -1,0 +1,642 @@
+# English for the structure catalogue (spec : the website is bilingual zh / en).
+# Our own descriptive wording — not the FEFCO / ECMA catalogue text.
+# Descriptions drop the trailing "——按示意图推读[，待核对]" note; engine/i18n.py adds the English note back.
+
+series:
+  "01": Sheets and rolls
+  "02": Slotted cases
+  "03": Telescope boxes (lid and base, caps)
+  "04": Folders and trays
+  "05": Slide boxes (sleeves, cross sleeves)
+  "06": Rigid-type boxes (body + end panels)
+  "07": Ready-glued cases (crash lock, pre-glued trays)
+  "08": Display (shelf trays, stands, headers)
+  "09": Interior fitments (dividers, inserts, corner guards)
+  "A": Folding cartons (ECMA A, tube with side glue flap)
+  "C": Common combinations
+
+catalog:
+  FEFCO: FEFCO
+  ECMA: ECMA
+  组合: Combination
+
+maturity:
+  calibrated: Calibrated
+  standard: "Standard (read from the catalogue drawing, values are initial)"
+  custom: "Custom (common combination, proportions from samples / descriptions, values are initial)"
+
+tags:
+  三片式: three-piece
+  免胶: no glue
+  免胶带: no tape
+  内衬: insert
+  反复开合: reclosable
+  多件: multi-part
+  头卡: header card
+  展示: display
+  展示盖: display lid
+  常用组合: common combination
+  开孔: holes
+  开窗: window
+  彩盒: folding carton
+  托盒: tray
+  扣: lock
+  拉手: pull tab
+  挂孔: hang hole
+  提手: handle
+  撕开: tear open
+  撕开窗: tear-off window
+  易开: easy open
+  电商: e-commerce
+  礼盒: gift box
+  翻盖: hinged lid
+  运输: shipping
+  零食: snacks
+  食品: food
+
+# Closure fragments (the catalogue joins them as "top: …; bottom: …")
+closure:
+  两头盖帽套合: caps on both ends
+  侧插盖: side tuck
+  切角: cut corners
+  包裹式: wrap-around
+  双层墙 + 耳朵（免胶）: double walls + ears (no glue)
+  墙角不连（胶带 / 钉）: open corners (tape / staples)
+  套合（天地盖 / 两件套）: telescope (lid and base / two pieces)
+  套筒交叉 / 抽屉式: cross sleeves / drawer
+  开口: open
+  开顶: open top
+  扣底（免胶带）: 1-2-3 snap bottom (no tape)
+  挂板 + 插舌盖: hanger panel + tuck lid
+  挂板 / 展示板 + 盖: hanger / display panel + lid
+  提手山形顶: gable top with handle
+  提手平顶: flat top with handle
+  插舌盖: tuck lid
+  插舌盖 + 撕拉条（一次性开箱）: tuck lid + tear strip (one-time opening)
+  摇盖（胶带 / 胶 / 钉）: flaps (tape / glue / staples)
+  斜口展示（开顶）: sloped display opening (open top)
+  片材（折叠 / 插接，不用封）: sheet (folded / slotted, no closing)
+  盖 + 粘翼: lid + glued flaps
+  窄边框: narrow frame
+  组件（各件插接 / 装配）: kit (parts slot / assemble together)
+  缩小翼（粘）: reduced flaps (glued)
+  自动锁底（撑开成型、免胶带）: crash-lock bottom (pops open, no tape)
+  自锁底（摇盖互扣）: self-locking bottom (interlocking flaps)
+  角翼（不糊，靠盖侧翼压住）: corner flaps (unglued, held by the lid side flaps)
+  角翼（粘）: glued corner flaps
+  角翼（粘 / 钉）: corner flaps (glued / stapled)
+  多边形托盘: polygonal tray
+  连盖插舌: hinged lid with tuck
+  连盖（前翼盖在外面）: hinged lid (front flap closes outside)
+  连盖（回折内衬 + 锁舌）: hinged lid (folded-back liner + locking tabs)
+  连盖（远边平）: hinged lid (flat far edge)
+  两侧翼锁舌扣底（免胶）: side-flap locking tabs (no glue)
+  齿线撕开窗: perforated tear-off window
+  展示盖压外面（胶条粘住，第一次撕开后立起当头卡）: display lid on the outside (glue strip; after first opening it stands up as a header card)
+  "连盖（远边平） + 两侧翼锁舌扣底（免胶） + 齿线撕开窗 + 展示盖压外面（胶条粘住，第一次撕开后立起当头卡）": "hinged lid (flat far edge) + side-flap locking tabs (no glue) + perforated tear-off window + display lid on the outside (glue strip; after first opening it stands up as a header card)"
+  连盖（锁舌插槽）: hinged lid (tab into slot)
+  连角（预糊、压扁出厂）: pre-glued corners (ships flat)
+  锁舌摇盖: locking flaps
+  长条包裹: strip wrap
+  隔板摇盖（要胶带）: divider flaps (needs tape)
+  飞机盒：双层侧墙 + 耳朵，连盖插舌（免胶）: "mailer: double side walls + ears, hinged lid with tuck (no glue)"
+
+closure_prefix:
+  顶: top
+  底: bottom
+
+# ECMA closure names (code → English); the catalogue writes "top: …, bottom: …"
+ecma_closure:
+  "01": open
+  "10": four fully overlapping flaps
+  "11": reduced flaps
+  "20": tuck + dust flaps
+  "21": tuck + raised back hanger panel
+  "40": side tuck (no dust flaps)
+  "55": 1-2-3 snap bottom
+  "60": crash-lock bottom
+
+descriptions:
+  "0100": Roll (single-face corrugated); the dieline is one unrolled length
+  "0110": Flat sheet
+  "0111": "One fold along L: L-shaped corner guard"
+  "0112": "Two folds along L: U channel"
+  "0113": "Three folds along L: U channel + one edge rolled inwards"
+  "0119": "Four folds along L: U channel + one rolled edge, the other edge turned outwards"
+  "0121": "One fold along W: L shape"
+  "0122": "Two folds along W: U channel"
+  "0123": "Three folds along W: U channel + rolled edge"
+  "0129": "Four folds along W: U channel + rolled edge + turned-out edge"
+  "0130": "Continuous folding board: evenly spaced folds alternate up / down and stack into a pile"
+  "0200": Open top, four ½W bottom flaps
+  "0201": "Regular slotted case: four ½W flaps, outer flaps meet in the middle"
+  "0202": Outer flaps partly overlap
+  "0203": Fully overlapping flaps (all four are W)
+  "0204": Long flaps ½W, end flaps ½L, all four meet in the centre
+  "0205": "All four flaps ½L: end flaps meet, long flaps overlap"
+  "0206": Long flaps fully overlap (W), end flaps ½L meet
+  "0207": "½W top; partitioned bottom: end flaps L/3 deep with cross dividers on their tips, long flaps ½W with two-part tips folded into a lengthwise divider, giving 2 × 3 cells"
+  "0208": "Each of the four ½W flaps carries a divider (up to ½H) that folds into the case: the two long flaps make lengthwise dividers, the split end flaps make cross dividers"
+  "0209": Four narrow top flaps lie flat as a frame (window top), ½W bottom
+  "0210": Top and bottom tuck lids hinged on the same panel, dust flaps on the end panels, none on the opposite long panel
+  "0211": Top and bottom tuck lids hinged on opposite panels
+  "0212": Tuck lid on top, ½W flaps on the bottom
+  "0214": Four narrow top flaps fold down against the walls (reinforced rim), ½W bottom
+  "0215": Tuck lid on top, snap bottom
+  "0216": ½W flaps on top, snap bottom
+  "0217": Gable top with handle (long panels form the roof + handle panel, end panels with slotted triangular flaps), snap bottom
+  "0218": "Fully overlapping flaps; the outer top flap ends in an eared locking tab, the inner one has two angled slits that take the tab corners"
+  "0219": "Back flap stands up as a display panel (hang slot, small top tab folds back); one front panel closes the box and its far strip stands against the display panel; snap bottom"
+  "0220": Snap bottom at both ends
+  "0221": Open top, snap bottom
+  "0222": "Flat top with handle: long flaps meet in the middle where the handle panels stand back to back; split end flaps meet at mid-length and their tabs tuck into a slit in the long flap; snap bottom"
+  "0225": "½W top; bottom has only two W-long flaps: the back one closes first (thumb notch on the far edge), the front one has ½W side wings that stand up against the end walls"
+  "0226": "Unslotted, all four flaps ½W deep: two angled creases split each end flap into a centre triangle and two small triangles that fold 180° between the triangle and the long flap"
+  "0227": "Fully overlapping flaps: the front flap has narrow side wings (45° ends) and a thumb notch, closes first with the wings against the end walls; end flaps are shortened by the wing width; the back flap goes outermost"
+  "0228": "Manufacturer's joint in the middle of a long wall (two halves ½(L + o) overlapped); the first half carries an extra divider that folds in to split the case in two, glued to the opposite wall"
+  "0229": Narrow long flaps + inner panels folding down, ½L end flaps on top
+  "0229.1": Narrow end flaps + inner panels, ½W long flaps on top
+  "0230": "Like 0201, but the joint is on a long wall at distance v from the corner, two halves overlapped"
+  "0231": "Like 0201, but the joint is on an end wall at distance v from the corner, two halves overlapped"
+  "0232": "½W top; slit self-locking bottom: each ½W long flap has two angled slits, end flaps are creased at ¼W and their outer corners push into the slits"
+  "0233": "½W top; tab-through-slit self-locking bottom: the back flap has a tab (angled corner creases), the front flap a central U slit the tab passes under"
+  "0233.1": "½W top; tab-in-notch self-locking bottom: the back flap has a tab that sits flat in a notch in the front flap's far edge"
+  "0240": Raised double back hanger panel (hang hole) + front tuck lid + dust flaps, snap bottom
+  "0241": "One front lid (W deep, slit at mid-length), no back flap; end flaps meet at mid-length and their hanger panels (hang holes) stand back to back through the slit; snap bottom"
+  "0242": "Back flap closes to the middle, its two hanger panels fold up back to back (holes aligned) and continue into a flap covering the front half; the front lid passes over the hanger through a slit and tucks into the back flap; trapezoid notched end flaps; snap bottom"
+  "0300": "Lid and base: both trays with corner flaps on the end walls, full-depth lid"
+  "0301": "Lid and base: base with corner flaps on the end walls, lid with corner flaps on the long walls, full-depth lid"
+  "0302": "Lid and base: both cross-shaped trays, corners taped / stapled"
+  "0303": "Lid and base: 0451-type base, 0450-type lid (corner flaps + flattening creases on the long walls)"
+  "0304": "Lid and base: both 0451-type"
+  "0306": "Lid and base: tray with corner flaps on the end walls + shallow lid (depth v)"
+  "0307": "Lid and base: both 0457-type locking-corner trays"
+  "0308": "Lid and base: both 0448-type (corner flaps outside the long walls, a diagonal flattening crease)"
+  "0309": "Lid and base: both pre-glued corner trays (corner squares fold diagonally into triangles inside the long walls)"
+  "0310": "Two caps: sleeve (open both ends) + two shallow caps (depth v)"
+  "0312": Open-top slotted case (½W bottom flaps) + one shallow cap on top (depth v)
+  "0313": Regular slotted case (½W flaps both ends) + a shallow cap over each end (depth v)
+  "0314": Sleeve + two 0422-type double-end-wall shallow caps
+  "0319": "Two half slotted cases nested: inner part with top flaps and open bottom, outer part (one size up) with bottom flaps, slid on from below"
+  "0320": "Two half slotted cases nested: inner part with bottom flaps and open top, outer part (one size up) with top flaps, slid on from above"
+  "0321": Two half slotted cases nested, flaps are triangular folds on angled creases (as 0226)
+  "0322": "Cut-corner lid and base: cut-corner tray base (narrow long flaps) + cut-corner shallow lid"
+  "0323": "Cut-corner lid and base: cut-corner tray base with two half-width inner lids on the long walls + cut-corner shallow lid"
+  "0325": Sleeve with flattened narrow end flaps + two double-wall shallow caps (the catalogue caps roll all four walls; 0422-type used here)
+  "0330": "Lid and base: both trays with double end walls + ears (0422-type, inner wall with locking feet)"
+  "0331": "Lid and base: as 0330, inner wall without locking feet"
+  "0350": "Octagonal drum: regular octagonal sleeve + two octagonal shallow caps"
+  "0351": "Octagonal drum: as 0350, each cap wall carries a corner flap glued into the next wall"
+  "0352": "Long octagonal drum: eight-sided sleeve (rectangle with cut corners) + two cut-corner shallow caps (angled cap walls hinge on the long walls, end-wall corner flaps glue to the angled walls)"
+  "0360": "Hexagonal drum: regular hexagonal sleeve + two hexagonal shallow caps (the catalogue also shows two hexagonal pads, not drawn)"
+  "0400": "Folder: base with two end walls (narrow top edges fold in flat); one long strip wraps the back wall, lid and front wall and its last panel lies on the base as a liner"
+  "0401": "Folder: flaps on top of all four walls, long flaps half-width meeting, small end flaps"
+  "0402": "Folder: flaps on top of all four walls, long flaps half-width meeting, end flaps half-length meeting"
+  "0403": "Tray: end walls rolled wide into a flat top with inner walls whose bottom edges press flat on the base; two half-width lid flaps on the long walls; corners not joined"
+  "0404": "Two crossed pieces: two U sleeves (base + two walls + two half-width top flaps split in the middle), one L long and one W long, crossed to cover six faces"
+  "0405": "U sleeve (L long, top split in the middle) + two end pieces (U-shaped inserts in the catalogue, shown here as two shallow caps)"
+  "0406": "Folder lying on its side: four narrow flaps at each end, free tuck-in side panel"
+  "0407": "Folder: two full-width lids overlap on the long side, both end walls folded back double"
+  "0409": Tube lying on its side, full-width end walls overlap at both ends
+  "0410": "Folder: slotted case on its side (tube along L), one W panel is the lid, the joint strip tucks into the front wall (unglued), the flaps at both ends form the end walls"
+  "0411": "Folder: tube on its side, top split in the middle into two half-width lids, no overlap and no side seam"
+  "0412": "Tray: corner flaps on the end walls glue inside the long walls, narrow strip on top of the end walls, two half-width lid flaps on the long walls (differs from 0415 by flaps inside / outside, read from the 3D sketch)"
+  "0413": "Tray with hinged lid: end-wall corner flaps inside the long walls, narrow strip on top of the end walls, lid hinged on the back wall without dust flaps, front flap closes outside the front wall"
+  "0414": "Tray: 0422-type double end walls + ears, two half-width lid flaps on the long walls"
+  "0415": "Tray: as 0412, end-wall corner flaps outside the long walls (difference read from the 3D sketch)"
+  "0416": "Tray: end-wall corner flaps inside the long walls, two half-width lid flaps on the long walls whose trapezoid dust ears fold inside the end walls"
+  "0418": "Mailer: 0422-type double end walls + ears, lid hinged on the back wall with dust flaps; the lid's front flap hangs down and folds back double over a roll, three locking tabs on the folded part go into slots on the lid crease"
+  "0420": "Tray with hinged lid: long-wall corner flaps inside the end walls, narrow strip on top of the end walls, lid hinged on the back wall, far tuck goes into the front wall"
+  "0421": "Tray with hinged lid: 0422-type double end walls (inner wall feet lock into base slots) + ears, lid hinged on the back (long) wall, far tuck goes into the front wall, lid without dust flaps"
+  "0422": "Tray with double end walls (roll + inner wall, inner wall feet lock into the base), long-wall ears fold into the end-wall gap"
+  "0423": "Tray with double long walls (roll + inner wall, inner wall feet lock into the base), end-wall ears fold into the long-wall gap (0422 turned 90°)"
+  "0424": Tray with double long walls folded back over inner ears
+  "0425": "Tray double on all four sides, the added inner walls also carry ears, feet lock into base slots on all four sides"
+  "0425.1": "Tray double on all four sides, only the outer walls carry corner ears, feet lock into base slots on all four sides"
+  "0426": "Mailer: only the front wall is rolled double (three inner-wall feet into the base), end-wall corner flaps sit in the front wall gap and glue inside the back wall; lid hinged on the back wall with dust flaps and tuck"
+  "0427": "Mailer: double side walls + ears, lid hinged on the back wall with dust flaps, the tuck wraps outside the front wall and its ears fold into the side-wall gap"
+  "0427.1": "Two-piece mailer: 0422-type tray + separate cross-shaped lid (four edges fold down over the tray; the catalogue's rounded front tuck and trapezoid side flaps are not drawn in detail)"
+  "0428": "Tray with hinged lid: as 0421, but the inner end wall ends in a flat fold pressed on the base (no feet, no base holes)"
+  "0429": "Mailer type: 0422-type double end walls + ears, lid with dust flaps, far tuck (wall height) goes into the front wall"
+  "0430": "Tray: end-wall corner flaps inside the long walls, a narrow strip folds in on top of all four walls (frame)"
+  "0431": "Tray: long-wall corner flaps inside the end walls, narrow strips on top of all four walls form a frame; posts on the ends of the long strips fold down against the end walls and their feet lock through slots at the base of the end walls"
+  "0432": "Tray: 0422-type double end walls + ears, tabs on the ends of the long-wall top strips go into slots in the end-wall roll, inner-wall side flaps glue to the long walls"
+  "0433": "Tray: end walls rolled double with the inner layer folded into triangular corner posts at both ends; long-wall corner flaps inside the end walls, posts on the long top strips go into the corner posts"
+  "0434": "Tray: long-wall corner flaps each cover half of an end wall outside, the long-wall top strips wrap round the corners and mitre onto the end walls"
+  "0435": "Fruit tray: 0422-type double end walls + ears, one foot in the middle of the inner wall; a stacking tab stands up from the end-wall roll and a hole in the base end crease takes the tab of the layer below"
+  "0435.1": "Fruit tray: as 0435, two inner-wall feet with a notch in the middle of the bottom edge for the stacking tab below"
+  "0436": "Fruit tray: end-wall corner flaps inside the long walls, short tabs on the ends of the long top strips fold down against the end walls, stacking tab in the middle of the end-wall top, hole in the base end crease"
+  "0436.1": "Fruit tray: end-wall corner flaps inside the long walls, narrow strip on top of the end walls with a stacking tab in the middle, hole in the base end crease (the raised middle of the long walls is not drawn)"
+  "0436.2": "Fruit tray: as 0436.1, two stacking tabs on top of each end wall"
+  "0437": "Tray: pre-glued corners outside the end walls, two half-width lid flaps on the long walls; each lid flap ends fold down against the end walls with feet into holes on the end crease"
+  "0438": "Fruit tray: as 0480 (end-wall strip ends fold down over the outside corner flaps), stacking tab in the middle of the end-wall top, hole in the base end crease (mitred corner flaps and the raised middle of the long walls are not drawn)"
+  "0439": "Cut-corner tray: base corners cut at 45°, angled walls hinge on the cut edges, narrow strips on top of the long walls (strip locks not drawn)"
+  "0440": "Tray with hinged lid: end-wall corner flaps inside the long walls, lid hinged on one end wall with dust flaps both sides, its far front flap closes outside the other end wall, which has a narrow top strip"
+  "0441": "Tray with hinged lid: long-wall corner flaps inside the end walls, lid hinged on the back wall with dust flaps, front flap closes outside the front wall (small flaps at the front flap ends not drawn)"
+  "0442": "Tray with hinged lid: long-wall corner flaps outside the end walls, lid hinged on the back wall with dust flaps, front flap closes outside the front wall (hook locks on the corner flaps not drawn)"
+  "0443": "Upright folder: one strip of base – back wall – lid – tuck, front wall on the other side of the base; full end walls on the back wall ends, double-layer flaps on the front wall ends, half-depth flaps on the base ends, trapezoid dust flaps on the lid ends"
+  "0444": "Upright folder: as 0443, but the lid hinges on the front wall and tucks into the back wall"
+  "0445": "Tray with hinged lid: long-wall corner flaps outside the end walls, end walls split by two vertical slits into three parts joined by a top strip, lid hinged on the back wall with tuck"
+  "0446": "Cup tray: end-wall corner flaps inside the long walls, each long wall carries a half-width divider that lies flat on top with rows of round cup holes (the centre ridge and half-round notches on the divider edges are not drawn)"
+  "0447": "Folder lying on its side: one strip of front wall – base – back wall – top – overlap, full end flaps on the top ends cover the ends, half-depth flaps on the front / back wall ends sit inside"
+  "0448": "Tray: end-wall corner flaps glued outside the long walls, a diagonal crease on each corner flap (folds flat once glued)"
+  "0449": "Tray with pre-glued corners: corner squares fold diagonally into triangles outside the long walls"
+  "0449.1": "Tray with pre-glued corners: corner squares fold diagonally into triangles inside the long walls"
+  "0450": "Tray: long-wall corner flaps inside the end walls, angled creases at the long-wall ends (folds flat once glued)"
+  "0451": "Tray: end-wall corner flaps inside the long walls, angled creases at the long-wall ends (folds flat once glued)"
+  "0451.1": "Tray: 0451 + two edge holes on each side of the base"
+  "0452": "Tray: corner flaps on the end walls, glued / stapled inside the long walls"
+  "0453": "Tray: corner flaps on the long walls, glued / stapled inside the end walls"
+  "0454": "Tray: double end walls clamp full-height corner flaps, no base feet"
+  "0455": "Tray: double long walls clamp full-height corner flaps, no base feet"
+  "0456": "Tray: double walls on all four sides, full-height corner flaps clamped in the corners, no base feet"
+  "0457": "Locking-corner tray: long-wall corner flaps outside the end walls, hook tabs on the flap tips fold into vertical slits in the end walls (round hooks in the catalogue, drawn as square tabs)"
+  "0458": "Cross-shaped tray, corners not joined, closed with tape / staples"
+  "0459": "Cut-corner tray: angled walls hinge on the long-wall ends, end-wall corner flaps fold 135° inside the angled walls"
+  "0459.1": "Cut-corner tray: angled walls hinge on the long-wall ends and continue into a 45° fold that wraps outside the end walls"
+  "0460": "Display tray: tall long walls, low end walls (0.4 × wall height by default), long-wall corner flaps inside the end walls stand above them as corner posts"
+  "0461": "Tray: pre-glued corners inside the long walls, both long walls rolled double with three inner-wall feet into the base (corners clamped in the gap)"
+  "0462": "Cut-corner box with hinged lid: angled walls hinge on the cut base edges, octagonal lid hinged on the back wall with tuck (the catalogue's double angled walls with locks are not drawn in detail)"
+  "0463": "Cut-corner box with hinged lid: angled walls hinge on the long-wall ends, octagonal lid hinged on the back wall with dust flaps and tuck"
+  "0464": "Tray: cross shape, open corners, two half-width lid flaps on the long walls; two tabs on top of each end wall lock into slots at the lid flap ends, holes in the base end crease"
+  "0465": "Tray with hinged lid: front and end walls rolled double (inner-wall feet into the base), hand holes in the end walls, end-wall corner flaps sit in the front wall gap and glue to the back wall; lid hinged on the back wall, a locking tab in the middle of its front edge goes into a slot in the front-wall roll"
+  "0466": "Tray with hinged lid: end-wall corner flaps inside the long walls, narrow strip on top of the front wall, lid hinged on the back wall, front-edge locking tab goes into a slot on the front strip crease (round locks on the corner flaps not drawn)"
+  "0469": "Tall box with hinged lid: front wall – base – back wall – lid in one strip, end walls hinge on the back wall ends (top folded back double, bottom flaps), front-wall end flaps sit in the end-wall gap; lid front flap + folded-back liner, locking tabs into slots on the lid edge"
+  "0470": "Tall box with hinged lid: body as 0469, the lid's front tuck goes inside the front wall"
+  "0471": "Tall box with hinged lid: body as 0469, the lid's front flap closes outside the front wall (large rounded front flap in the catalogue)"
+  "0472": "Tall box with hinged lid: as 0471, with a folded-back liner on the top edge of the front wall"
+  "0473": "Wrap-around: base with two end walls that continue over the top; one long strip wraps the back wall, top and front wall, then a tuck pushes onto the base (two pieces joined at one corner with locking tabs in the catalogue, shown here as one strip)"
+  "0474": "Wrap-around: as 0473, without the tuck"
+  "0475": "Mailer: as 0426, with an extra ear on the front of each dust flap that tucks inside the front wall when the lid closes"
+  "0476": "Regular octagonal box with hinged lid (L = W): eight walls hinge on the eight base edges, octagonal lid hinged on the back wall with tuck"
+  "0480": "Tray: end-wall corner flaps outside the long walls, the ends of the end-wall top strips fold down over the corner flaps"
+  "0481": "Fruit tray: tall long walls whose top strips end in posts that drop onto the low end walls, two stacking tabs on each long wall; low end walls (half the wall height by default in v2), rolled double with inner-wall feet into the base"
+  "0482": "Fruit tray: long-wall corner flaps inside the end walls, narrow strip and two stacking tabs on top of the end walls, holes in the base end crease (small interlocking notches at the end-wall corners not drawn)"
+  "0483": "Tray: opening in the middle of the end-wall top (the cut piece folds in against the wall), end-wall corner flaps fold into triangular corner posts whose angled tabs go into angled slits at the base corners; narrow strips on top of the long walls"
+  "0484": "Fruit tray: end-wall corner flaps inside the long walls, narrow strip on top of the end walls, two stacking tabs near the corners, holes near the corners of the base end crease"
+  "0485": "Display box: low front wall (0.4·H), end-wall tops slope from back to front, lid hinged on the back wall with dust flaps and a full-height front skirt; a crease across the lid lets it fold up as a header card once opened (angled creases on the end walls not drawn)"
+  "0501": "Sleeve: four walls round, open top and bottom (tube length H)"
+  "0502": "Sleeve: panels L, H, L, H, open both ends (tube length W)"
+  "0503": "Sleeve: panels W, H, W, H, open both ends (tube length L)"
+  "0504": "Two crossed sleeves covering six faces: 0502 inside (tube length W), 0501 outside (tube length H)"
+  "0505": "Two crossed sleeves covering six faces: 0503 inside (tube length L), 0502 outside (tube length W)"
+  "0507": "Two crossed sleeves covering six faces: 0503 inside (tube length L), 0501 outside (tube length H)"
+  "0509": "Drawer style: 0503 sleeve outside (tube length L), inner part is a U sleeve with the top split in the middle (0907, tube length W)"
+  "0510": "Upright 0501-type outer sleeve, inner part lies on its side (tube length L) with an unglued tuck-in joint, its top opens as a lid from the sleeve's upper end"
+  "0511": "Inner part as 0510; the outer part is a three-sided U with end flaps in the catalogue, shown here as a sleeve open both ends (tube length W)"
+  "0512": "Inner part is a three-sided U (on its side, top split in the middle); the outer part is a three-sided U with end flaps in the catalogue, shown here as a sleeve open both ends (tube length W)"
+  "0601": "Three-piece: body H, W, H, W (the last W is the lid), end flaps on the first three panels lie on the end panels; two flat end panels"
+  "0602": "Three-piece: as 0601, with a tuck on the end of the lid that goes into the front wall"
+  "0605": "Three-piece: U body with narrow v strips folding in on both tops; end panels with trapezoid flaps on four sides wrap the body"
+  "0606": "Three-piece: body top split into two W/2 panels, end flaps on each strip lie on flat end panels"
+  "0607": "Three-piece: body wraps four sides (glue strip j), end panels with trapezoid flaps on four sides wrap the body"
+  "0608": "Three-piece: body wraps four sides with a v tuck on the end (rounded in the catalogue), end panels with trapezoid flaps"
+  "0610": "Three-piece: body wraps four sides (glue strip j), cross-shaped end panels with v flaps on four sides wrap the body"
+  "0615": "Three-piece: body wraps from W, end-panel flaps carry corner flaps (the catalogue flaps have two creases to wrap the board thickness; drawn as corner-flap end panels)"
+  "0616": "Three-piece: body wraps from W, cross-shaped end panels with v flaps"
+  "0620": "Three-piece: body top split into two W/2 panels, cross-shaped end panels with v flaps"
+  "0621": "Multi-piece: U body + two cross-shaped end panels + two half-width lids (each with a skirt on one side)"
+  "0700": "Open top, crash-lock bottom (hooked main flaps + glued triangles)"
+  "0701": "½W top; tuck-lock bottom: the full-depth front flap tucks into a slit at the foot of the back wall, end-wall flaps carry glued triangles"
+  "0702": "Open top, tuck-lock bottom"
+  "0703": "Fully overlapping top, tuck-lock bottom"
+  "0704": "Top closes to the centre, tuck-lock bottom"
+  "0705": "Tuck lid on top, tuck-lock bottom"
+  "0706": "Open top; glued-triangle lock bottom: four flaps about ½W, the long flaps carry 45° glued triangles over the corners onto the end flaps, no hooks (the catalogue's slits at the foot of the end walls are not drawn)"
+  "0707": "Fully overlapping top, glued-triangle lock bottom"
+  "0708": "½W top, glued-triangle lock bottom"
+  "0709": "Top closes to the centre, glued-triangle lock bottom"
+  "0710": "Fully overlapping top flaps, crash-lock bottom"
+  "0711": "½W top flaps, crash-lock bottom (same as crashlock_rsc)"
+  "0712": "Top long flaps ½W and end flaps ½L meet in the centre, crash-lock bottom"
+  "0713": "Tuck lid on top (hinged at the back), crash-lock bottom"
+  "0714": "Two-piece: crash-lock open-top case + half-height lid made the same way (upside down, its crash lock forms the lid top)"
+  "0715": "Crash-lock case (L = 1.5W in the catalogue) + dividers for 2 × 3 cells"
+  "0716": "Crash-lock case that tears open into a display tray (as 0728) + cross divider"
+  "0717": "Bottle carrier: flat top with handle + crash-lock bottom (L = 1.5W in the catalogue) + dividers for 2 × 3 cells"
+  "0718": "Pre-glued tray: corner triangles glue inside the end walls, narrow strips on top of the long walls fold flat"
+  "0719": "Tuck lid on top (hinged at the back), glued-triangle lock bottom (small slits on the end walls not drawn)"
+  "0720": "Tuck lid hinged on the front (the catalogue lid also has a locking tab and three slits, not drawn), tuck-lock bottom"
+  "0721": "Raised double back hanger panel (hang hole) + front tuck lid, glued-triangle lock bottom (the catalogue hanger is on the lid; drawn as in 0240)"
+  "0722": "Crash-lock at both ends, octagonal window in the front"
+  "0723": "Bottle carrier: flat top with handle + crash-lock bottom (L = W in the catalogue) + cross divider for 4 cells"
+  "0724": "Bottle carrier: flat top with handle + glued-triangle lock bottom + dividers for 2 × 3 cells"
+  "0725": "Two-piece: low crash-lock tray (angled side walls in the catalogue) + tall sleeve with ½W top flaps and open bottom, slid on from above"
+  "0726": "Two-piece: low tuck-lock tray + tall sleeve with tuck lid and open bottom (angled tray sides and hand holes in the sleeve not drawn)"
+  "0727": "Two-piece: shallow tray with hand holes + sleeve open both ends slid on from above"
+  "0728": "½W top, crash-lock bottom; a perforation v above the base on end wall side_a and angled perforations on both long walls let it tear open into a display tray (the catalogue's raised back header is not drawn)"
+  "0730": "Hexagonal tube: regular hexagonal body, a fan-shaped flap on each face at both ends closes to the centre (hexagonal crash lock bottom in the catalogue)"
+  "0740": "Bag-in-box case: ½W top, crash-lock bottom, perforated round spout opening + perforated lift tab on the back wall (locking tabs on the top flaps not drawn)"
+  "0747": "Pre-glued tray with hinged lid: corners glue to the end walls, lid hinged on the back wall with dust flaps, tuck into the front wall"
+  "0748": "Pre-glued tray with hinged lid: corners glue to the long walls, lid with dust flaps and tuck"
+  "0751": "Pre-glued tray with hinged lid: corners glue outside the long walls, a row of round holes in the base (cup holes in the lid and wall holes in the catalogue; only base holes here)"
+  "0752": "Can sleeve: three-sided W, H, W U sleeve, a row of holes on one side to show the cans (two wavy windows + top tuck in the catalogue, not drawn)"
+  "0759": "Pre-glued tray with hinged lid: corners glue to the end walls, the lid's front flap closes outside the front wall"
+  "0761": "Pre-glued tray with hinged lid: corners glue to the long walls, the lid's front flap closes outside the front wall (front flap depth v in the catalogue)"
+  "0770": "Pre-glued fruit tray: end-wall corner flaps fold into triangular corner posts (posts above the wall top in the catalogue, not drawn)"
+  "0771": "Pre-glued fruit tray: corners glue to the long walls, three vent holes in the base (end-wall slits and lugs in the catalogue, not drawn)"
+  "0772": "Pre-glued fruit tray: corners glue outside the end walls, vent holes in the base (half-round notches at the wall feet not drawn)"
+  "0773": "Pre-glued tray: long-wall corner flaps outside the end walls, end walls rolled double (lock slits on the corner flaps not drawn)"
+  "0774": "Pre-glued tray: as 0773, hand holes in the end walls (holes in the long walls in the catalogue)"
+  "0801": "Sloped display case: open top, front wall cut down to v, sloping end-wall tops, full-height back; crash-lock bottom"
+  "0802": "Display tray: low front wall, sloping end walls, end-wall corner flaps glue to the long walls, back wall rolled double (double front wall and raised back header in the catalogue, not drawn)"
+  "0803": "Display tray: low front wall, long-wall corner flaps glue to the end walls, double back wall (triangular flaps outside the end walls in the catalogue, not drawn)"
+  "0804": "Display tray: as 0803, corner flaps outside the end walls (rolled wall tops in the catalogue, not drawn)"
+  "0808": "Display tray: low front wall, pre-glued corners on the long walls (ears on the back wall sides in the catalogue, not drawn)"
+  "0809": "Display tray: cross shape with open corners, low front wall, double back wall (centre divider in the catalogue, not drawn)"
+  "0815": "Display tray: low front wall, end-wall corner flaps outside the long walls (raised back wall in the catalogue, not drawn)"
+  "0816": "Display tray: low front wall, pre-glued corners outside the long walls (raised back wall and side flaps in the catalogue, not drawn)"
+  "0817": "Display tray: low single-layer front wall, long-wall corner flaps glue to the end walls"
+  "0818": "Shipper to display: ½W flaps, perforations on the end wall + angled lines on the long walls tear it open into a display tray (perforations on the top flaps in the catalogue, not drawn)"
+  "0819": "Shipper to display: top closes to the centre, perforations tear it open into a display tray"
+  "0825": "Dispenser box: tuck lid on top, crash-lock bottom, take-out opening low in the front wall (curved shelf outside the opening in the catalogue, not drawn)"
+  "0826": "Header display tray: low front wall, sloping end walls (raised back wall as a large header in the catalogue, not drawn)"
+  "0830": "Floor display stand: U shell (two sides + back) + three shelf trays"
+  "0831": "Two-column stand: U shell + vertical centre divider + six half-width shelf trays"
+  "0832": "Display stand: folded front edges on the shell sides (shell narrower at the top in the catalogue), four shelf trays"
+  "0833": "Display stand: folded front edges on the shell, three shelf trays with double back edges"
+  "0834": "Display stand: U shell (narrower at the top with arched sides in the catalogue), three shelf trays"
+  "0840": "Display stand: U shell (wavy sides in the catalogue) + four shelf trays, low at the front and high at the back"
+  "0841": "Floor sloped display case: as 0801, ½W bottom flaps (curved sides in the catalogue, drawn as straight slopes)"
+  "0842": "Display stand: sloped display case as the base (arched upper sides in the catalogue) + two shelf trays"
+  "0843": "Display stand: U shell (side windows in the catalogue) + three cross-shaped shelves"
+  "0845": "Round display stand: octagonal tube shell (a round tube in the catalogue) + four octagonal shelves"
+  "0846": "Hexagonal display stand: hexagonal tube shell (windows on four sides in the catalogue) + three hexagonal shelves"
+  "0847": "Bottle display stand: U shell with a row of holes in the back + two perforated insert boards (rows of holes and cross-slotted boards in the catalogue)"
+  "0848": "Cell display case: half-height open-top case + lengthwise and cross dividers (a square frame holding the dividers in the catalogue, not drawn)"
+  "0849": "Hang-on display stand: U shell + three shelf trays hung on the shell (0874-type)"
+  "0850": "Triangular prism display: equilateral triangle body, fan flaps at both ends (number of sides adjustable in the catalogue)"
+  "0851": "Square-mouth display bin (twisted triangular faces in the catalogue, drawn as a square tube)"
+  "0852": "Triangular standee: triangular tube, open top, glued bottom flaps (a triangular prism lying down in the catalogue)"
+  "0853": "Bottle display case: crash-lock case + an insert with bottle holes (0425.1-type perforated tray and back header in the catalogue)"
+  "0854": "Sloped cell display case: 0801-type case + lengthwise and cross dividers"
+  "0858": "Octagonal display bin: open top, fan-shaped bottom flaps (pallet-jack openings at the wall feet and top-edge tucks in the catalogue, not drawn)"
+  "0859": "Octagonal display bin: open top, glued bottom flaps (number of sides adjustable in the catalogue)"
+  "0860": "Hexagonal display bin: open top, fan-shaped bottom flaps (separate hexagonal base pad in the catalogue, not drawn)"
+  "0861": "Square-mouth display bin, glued bottom flaps (twisted triangular faces in the catalogue, drawn as a square tube)"
+  "0865": "Open-top display case with a window in the front wall (a U cut from the top edge and pallet-jack openings in the catalogue, drawn as an octagonal window)"
+  "0866": "Sloped display case with tuck-lock bottom (back header and pallet-jack openings in the catalogue, not drawn)"
+  "0870": "Step display case: open-top case + a board folded into three steps"
+  "0871": "Display-panel case: back flap stands up as the display panel (0219-type) + one angled shelf tray"
+  "0872": "Cubby unit: a tray stood on its side as the cabinet (opening at the front) + lengthwise and cross dividers"
+  "0873": "Magazine holder: low front wall, sloping end walls, corner flaps outside, double back wall (U cut in the front wall in the catalogue, not drawn)"
+  "0874": "Display tray: low front wall, long-wall corner flaps outside the end walls (can hang on 0849 as a shelf)"
+  "0880": "Double header card: two L × H panels folded together (feet on the bottom edge in the catalogue, not drawn)"
+  "0881": "Single header card: flat L × H board with two short slits on the bottom edge to slot onto a case (rounded corners in the catalogue, not drawn)"
+  "0882": "U header card: L panel + two W side wings, two short slits on the bottom edge (angled wing edges and feet in the catalogue, not drawn)"
+  "0885": "E-commerce mailer: hinged lid, front flap closes outside the front wall (self-seal strip + tear strip on the front flap in the catalogue, not drawn)"
+  "0886": "E-commerce case: tuck lid hinged at the back with a tear strip (self-seal strip in the catalogue, not drawn), glued-triangle lock bottom"
+  "0887": "E-commerce case: tuck lid with tear strip (self-seal strip not drawn), ½W bottom flaps"
+  "0900": "Pad strip: flat board v wide, W long"
+  "0901": "Pad: flat L × W board (lying flat)"
+  "0902": "Divider: flat W × H board (standing across)"
+  "0903": "Divider: flat L × H board (standing lengthwise)"
+  "0904": "Liner: W, L, W, L round four sides (upright, unglued)"
+  "0905": "Liner: H, L, H, L wrapped on its side (tube length W)"
+  "0906": "Liner: W, H, W, H wrapped on its side (tube length L)"
+  "0907": "Liner: top split in the middle (L/2 + L/2), tube length W"
+  "0908": "Liner: upright wrap with the joint in the middle of a long wall"
+  "0909": "Liner: end split in the middle (H/2 + H/2), tube length W"
+  "0910": "Liner: top split in the middle (W/2 + W/2), tube length L"
+  "0911": "Insert tray: corner flaps on the end walls, sits inside the box (one clearance smaller)"
+  "0912": "Insert tray: corner flaps on the long walls, sits inside the box"
+  "0913": "Liner: four walls round with the joint in the middle of a long wall (½L at each end), unglued (narrow strips folded flat at top and bottom in the catalogue, not drawn)"
+  "0914": "Liner: H, W, H, W, H, the first and last H overlap"
+  "0920": "Liner with centre divider: after wrapping, the first and last W fold into the middle back to back as a divider, giving two cells"
+  "0921": "S-shaped liner: one strip folded into two joined cells"
+  "0929": "Two U sleeves: one along L (W, H, W), one along H (W, L, W), crossed to line four sides of the box"
+  "0930": "Cross divider: two boards, each with one slot, slotted together"
+  "0931": "Frame: two lengthwise and two cross boards with slots at the ends, slotted into a frame"
+  "0932": "Frame: as 0931, with a crease at both ends of each board folding into corner posts"
+  "0933": "Cell divider: 2 lengthwise boards (3 slots) and 3 cross boards (2 slots), number of cells adjustable"
+  "0934": "Cell divider with wide slots (2t + 2), 3 lengthwise and 4 cross boards (thick slot lines in the catalogue, read as wide slots)"
+  "0935": "Mixed-height cells: the lengthwise board and one cross board are low (v), the other two cross boards full height"
+  "0936": "Double cross divider: folded into two layers, v feet fold out at both ends to stand"
+  "0937": "Double lengthwise divider: folded into two layers, v feet at both ends"
+  "0938": "Double upright board (along W): folded into two layers, v feet on the base"
+  "0939": "Square-wave divider: one strip folded at W/2 into a row of cells opening alternately (a perforated cell sheet in the catalogue, L ≈ 2.5W)"
+  "0940": "Top board + both ends rolled inwards into two square tubes, splitting the width into two cells"
+  "0941": "Top board with a closed square tube (H × H) rolled at each end, open underneath in the middle"
+  "0942": "Top board with a square tube rolled at each end and a diagonal brace inside each tube"
+  "0943": "Top board with zigzag (W-shaped) cushions folded at both ends"
+  "0944": "Top board with a triangular tube folded at each end (the top board forms one side)"
+  "0945": "Top board with a wall folded down at each end + a brace back to the top board (triangle)"
+  "0946": "Top board with a three-sided square tube rolled at each end"
+  "0947": "Narrow v strip in the middle with a closed square tube at each end"
+  "0948": "Narrow v strip in the middle, square tubes with diagonal braces at each end"
+  "0949": "Pad with a v strip folded back flat on both edges (thickened edges)"
+  "0950": "Pad with two-layer v Z-folds pressed flat on both edges"
+  "0951": "U liner: W base + two H walls (tube length L)"
+  "0952": "Inverted U bottle holder: L top board with two bottle-neck holes, two H legs (rounded corners in the catalogue, not drawn)"
+  "0953": "Inverted U bottle holder (along L): W top board with holes, two H legs (an end panel at one end in the catalogue, not drawn)"
+  "0954": "Insert: shallow pre-glued tray with two bottle-neck holes in the base (a holed platform propped by an H-high end wall in the catalogue, shown as a holed insert)"
+  "0955": "Insert: cross shape, the four walls taper into trapezoids leaving V gaps at the corners"
+  "0960": "Step insert: two stepped side panels + a board folded into three steps (side panels and steps joined by tucks in the catalogue, not drawn)"
+  "0965": "Continuous folding pad: five W panels folded up / down into a stack"
+  "0966": "Rolled pad: five W panels rolled the same way into a stack"
+  "0967": "Folded pad + wrap: six v strips at one end fold into a pad block, the rest W/2, W, W/2 wraps round it"
+  "0970": "Corner guard: two v strips folded into a 90° angle"
+  "0971": "Double corner guard: each leg folded back once (layer inside)"
+  "0972": "Double corner guard: each leg folded back once (layer outside)"
+  "0973": "Triangular corner guard: base + two sloping sides, double post in the middle"
+  "0974": "Triangular corner guard: two sloping sides + two base feet turned inwards"
+  "0975": "Double triangular corner guard: two sloping sides + base feet folded back double"
+  "0976": "Triple corner guard: each leg rolled twice"
+
+combos:
+  tear_display_tray:
+    name: Tear-open display lid tray
+    description: "Folding-carton tray: the top hinges on one wall with a perforated tear-off window in the middle, side flaps glue outside the side walls and their locking tabs go into slots on the base / side-wall crease (no glue on the sides); a display lid hinged on the opposite wall lies on the outside, held by a glue strip at the window edge — on first opening the window tears away and the display lid stands up as a header card; rounded far corners and a half-round easy-open pull in the middle of the display lid (the pull stays inside the lid, total = box width, nothing sticks out); rounded window corners; rounded free corners"
+
+# Editable structure parameters (engine/editable_terms.py) in designer wording
+editable:
+  parts:
+    顶部: Top
+    底部: Bottom
+    盒身: Body
+    侧翼: Side flaps
+    锁扣: Locks
+    糊口: Glue flap
+    开窗和挂孔: Windows and hang holes
+    边角: Corners
+    其他: Other
+  terms:
+    flap: Flap length
+    overlap: Flap overlap
+    depth: Flap depth
+    wing: Wing width
+    drop: Inner panel height
+    thumb: Thumb notch on
+    lock: Locking tab
+    end_flaps: Flaps on the ends
+    glue: Show glue areas
+    tuck_len: Tuck length
+    dust_depth: Dust flap depth
+    "on": Lid hinged on
+    tear_strip: Tear strip
+    autolock_form: Lock bottom style
+    hanger_layers: Hanger layers
+    lid_front: Lid front edge
+    dust: Lid dust flaps
+    dust_lock: Side-flap locks (no glue)
+    tear_window: Tear-off window
+    display_lid: Display lid
+    dust_ears: Dust flap ears
+    lid_on: Lid hinged on
+    lid_header: Lid folds up as header
+    axis: Box on its side
+    corners: Corner join
+    corner_on: Corner flaps on
+    corner_depth: Corner flap depth
+    corner_diagonal: Diagonal corner crease
+    wall_diagonal: Angled wall creases
+    rim: Top strip width
+    rim_on: Top strip on
+    rim_ends: Top strip ends
+    stack: Stacking tabs
+    stack_on: Stacking tabs on
+    end_height: End wall height
+    end_double: Double end walls
+    front_double: Double front wall
+    back_double: Double back wall
+    double_walls: Double walls
+    inner_ears: Inner wall ears
+    inner_wings: Inner wall wings
+    lugs: Locking feet
+    lug_count: Number of feet
+    front_low: Low front wall
+    front_return: Front wall folded back
+    corner_meet: Corners joined
+    corner_hooks: Corner hooks
+    corner_posts: Corner posts
+    inside: Corner flaps inside
+    edge_slots: Edge slots
+    end_slits: End wall slits
+    bevel: Cut corner width
+    bevel_join: Cut corner join
+    bevel_on: Cut corners on
+    sides: Number of sides
+    crease: Crease direction
+    steps: Number of steps
+    edge: Edge width
+    window: Window on
+    window_shape: Window shape
+    tear: Tear-open display
+    end_window: End wall window
+    hand_holes: Hand holes
+    base_holes: Base holes
+    hang_hole: Hang hole style
+    hole_w: Hang hole width
+    hole_h: Hang hole height
+    hole_top: Hang hole from top
+    hole_rise: Hang hole bump
+    hole_d: Hole diameter
+    hanger_h: Hanger height
+    hanger_radius: Hanger corner radius
+    handle_h: Handle height
+    roof_deg: Roof angle
+    lean_deg: End flap angle
+    width: Glue flap width
+    offset: Joint distance from corner
+    partition: Joint with divider
+    wall: Joint on wall
+    joint_bevel_deg: Glue flap end angle
+    joint_inset: Glue flap end inset
+    glue_w: Glue flap width
+    friction_lock: Tuck friction lock
+    tuck_slit: Tuck crease ends
+    tuck_inset: Tuck side inset
+    tuck_radius: Tuck corner radius
+    dust_offset: Side wall clearance
+    major_depth: Main lock flap depth
+    major_taper_deg: Main lock flap angle
+    minor_depth: Side lock flap depth
+    notch_d: Snap bottom notch depth
+    tongue_len: Snap bottom tongue length
+    tongue_w: Snap bottom tongue width
+    lock_step: Lock step
+    slot_w: Slot width between flaps
+    flap_gap: Gap between lid flaps
+    roll_gap: Roll clearance
+    inner_inset: Inner panel inset
+    ear_offset: Ear position
+    ear_depth: Ear depth
+    ear_gap: Ear clearance
+    lug_w: Foot width
+    lug_len: Foot length
+    slot_depth: Slot depth
+    lid_flap_depth: Lid side flap depth
+    lid_flap_taper_deg: Lid side flap angle
+    tuck_ear_len: Tuck ear length
+    thumb_notch: Thumb notch
+    corner_radius: Outer corner radius
+    H: Height
+    lid_h: Lid height
+    lid_clearance: Lid clearance
+    sleeve_clearance: Sleeve clearance
+    sleeve_len: Sleeve length
+    notch_r: Pull notch radius
+    pull: Pull
+    notch_on: Notch on
+    open_taper: Opening taper
+    notch_w: Notch width
+    poly_sides: Number of sides
+    poly_flaps: Flaps on the polygon ends
+  explain:
+    tuck_len: How far the lid's tuck goes into the box; longer holds better
+    dust_depth: How deep the small flaps beside the lid go in; they keep dust out and support the lid
+    glue_w: How wide the glued side strip is
+    lid_flap_depth: How deep the flaps folding down from the lid sides are
+    tuck_ear_len: How long the small ears beside the tuck are; they catch the box so the lid stays shut
+    lid_h: How tall the lid is
+    lid_clearance: How much bigger the lid is than the base; more is easier to put on and lift off
+    sleeve_clearance: How much bigger the sleeve is than the box inside; more slides more easily
+    sleeve_len: How long the sleeve is
+    depth: How far this flap goes in
+    wing: How wide the side wings are
+    corner_depth: How deep the folded-in corner flaps are
+    handle_h: How tall the handle is
+    corner_radius: How round the outer corners are
+    width: How wide this strip is
+    overlap: How much the two flaps overlap
+    H: How tall this part is
+  walls:
+    default: Default
+    0: Back
+    1: Left side
+    2: Front
+    3: Right side
+  bool:
+    "true": "Yes"
+    "false": "No"
+    default: Default
+  options:
+    flap: {half: Meet in the middle, overlap: Partly overlap, full: All four full width, full_long: Long full width / ends half,
+           center: Ends to the centre, center_overlap: All four to the centre, center_full: Long full width / ends to the centre,
+           rim: Narrow frame, rim_long: Narrow long strips + inner panels, rim_end: Narrow end strips + inner panels,
+           gusset: Triangular folds, divider: With dividers, cells: Cells, slot_lock: Slit self-lock, tongue_slot: Tab into slit,
+           tongue_notch: Tab into notch}
+    display_lid: {none: None, rect: Straight edge, tab: Rounded corners + half-round pull}
+    tuck_slit: {cut: Hooked cuts at the ends, crease: Two short creases above}
+    lid_front: {tuck: Tuck into the front wall, lip: Front flap outside, return: Front flap + folded-back liner,
+                lock: Tab into slot, none: Flat edge (side locks or display lid)}
+    autolock_form: {hook: Hooks + glued triangles, tab: Tuck-lock bottom, web: Four glued flaps}
+    corners: {flap: Corner flaps, glue: Glued corners, gusset: Triangular corners, open: Not joined, ear: Ears, bevel: Cut corners,
+              strip: Strip wrap, wrap: Wrap-around, lock: Locking tabs, polygon: Polygon}
+    corner_on: {long: Long walls, end: End walls}
+    lid_on: {back: Back wall, end: End wall}
+    stack: {none: None, center: One in the middle, pair: Two, corners: Four corners}
+    window: {null: None, front: Front, back: Back}
+    window_shape: {octagon: Octagonal window, tap: Spout opening, low: Low take-out opening}
+    hang_hole: {euro: Euro slot, round: Round hole, none: None}
+    axis: {H: Upright (normal), L: On its side along L, W: On its side along W}
+    hanger_layers: {null: Default, 1: Single, 2: Double folded}
+    seam_wall: {long: Long wall, short: End wall}
+    wall: {long: Long wall, short: End wall}
+    rim_on: {all: All four, long: Long walls, end: End walls, front: Front wall}
+    rim_ends: {none: Leave, drop: Fold down, wrap: Wrap round}
+    bevel_join: {open: Not joined, flap: Joined by flaps, wrap: Wrap round}
+    bevel_on: {base: Base, long: Long walls}
+    double_walls: {pair: Two sides, all: All four}
+    stack_on: {long: Long walls, end: End walls}
+    crease: {along_L: Along L, along_W: Along W, along_H: Along H}

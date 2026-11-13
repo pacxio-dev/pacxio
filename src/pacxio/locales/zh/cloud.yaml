@@ -1,0 +1,53 @@
+'Already signed in: {email} ({url})': 已经登录：{email}（{url}）
+Approve it, then run `pacxio login` again (the code is valid for 15 minutes): 确认后再运行 `pacxio login`（代码 15 分钟内有效）
+'Cannot reach the cloud service {url}: {reason}': 连不上云端服务 {url}：{reason}
+Change the parameters as the message says and try again (a crop is at most 1600 × 1600 pixels): 按提示改参数再试（局部最大 1600 × 1600 像素）
+Check the network; the service address can be changed with PACXIO_CLOUD_URL; try again later: 检查网络；服务地址可用 PACXIO_CLOUD_URL 改；稍后重试
+Checksum mismatch for downloaded {path}: 下载的 {path} 校验不对
+'Closed modules already imported: {names}': 闭源模块已经导入：{names}
+'Cloud service error (HTTP {code}): {detail}': 云端服务出错（HTTP {code}）：{detail}
+File too large for the cloud: 文件太大，云端不收
+Make the asset smaller (300 ppi is enough for print) and try again: 把素材缩小（印刷 300ppi 足够）再试
+No job folder (a folder with job.json) found in the arguments: 参数里没找到 job 目录（含 job.json 的文件夹）
+'Not accepted by the cloud: {detail}': 云端不接受：{detail}
+'Not found in the cloud: {what}': 云端找不到：{what}
+Not signed in to the pacxio cloud service yet: 还没登录 pacxio 云端服务
+? 'Open {url} in a browser
+
+  Sign in with an email code (the first time creates the account), check the code {code} and click Approve.'
+: '在浏览器打开 {url}
+
+  用邮箱验证码登录（第一次就是注册），核对代码 {code} 后点 Approve。'
+Pass the job folder as an argument, e.g. `pacxio render jobs/<name>`: 把 job 目录作为参数传进来，例如 `pacxio render jobs/<名字>`
+'Refused by the cloud: {detail}': 云端拒绝：{detail}
+Remove --out; after export, take the delivery pack from <job>/out: 去掉 --out；导出后到 <job>/out 里拿交付包
+Render again before zooming in; or zoom into a slightly larger region to see it all at once: 重新 render 后再看局部；或把要看的范围放大一点一次看完
+Rerun this command for a new code, or run `pacxio login`: 重跑这条命令拿新的代码，或运行 `pacxio login`
+Rerun this command so both sides match: 重跑这条命令，让两边一致
+Run it again; if it keeps failing, send us this message: 重跑一次；一直失败请把这段信息发给我们
+Run this command again: 重跑一次这条命令
+Sign in again with `pacxio login`: 运行 `pacxio login` 重新登录
+? 'Sign in to the pacxio cloud service first: open {url} in a browser, sign in with an email code (the first time creates the account), check the code {code} and click Approve (valid for 15 minutes)'
+: 要先登录 pacxio 云端服务：在浏览器打开 {url} ，用邮箱验证码登录（第一次就是注册），核对代码 {code} 后点 Approve（15 分钟内有效）
+Sign in with `pacxio login`, then try again: 运行 `pacxio login` 登录后再试
+'Signed in: {email}': 已登录：{email}
+'The cloud command returned no result: {tail}': 云端命令没有返回结果：{tail}
+'The cloud run did not finish: {why}': 云端没跑完：{why}
+The cloud run timed out: 云端运行超时
+The cloud service does not accept the token in PACXIO_CLOUD_TOKEN: 云端服务不认环境变量 PACXIO_CLOUD_TOKEN 里的令牌
+The cloud service does not accept this sign-in (token invalid, revoked or expired): 云端服务不认这个登录（令牌无效、已撤销或已过期）
+The open-source version has no closed module {name}: 开源版没有闭源模块 {name}
+The sign-in code expired (it must be approved within 15 minutes): 登录代码过期了（15 分钟内要确认）
+The sign-in was declined in the browser: 在浏览器里拒绝了这次登录
+? The user signs in and approves in the browser themselves (the agent cannot approve for them), then rerun this command; or run `pacxio login` and wait for it to finish
+: 请用户本人在浏览器里登录并确认（agent 不能替用户确认），确认后重跑这条命令；也可以运行 `pacxio login` 等它完成
+This job still has a command running in the cloud: 这个 job 在云端还有命令没跑完
+To sign in, rerun this command or run `pacxio login`: 要登录的话重跑这条命令，或运行 `pacxio login`
+Try again later; if it keeps failing, send us this message: 稍后重试；一直出错请把这段信息发给我们
+Try once more; if it still fails, delete the job's .cloud/ folder to sync again: 重试一次；还不行就删掉 job 里的 .cloud/ 目录重新同步
+Try the same command again later: 稍后用同一条命令重试
+Use a valid token, or remove this environment variable and run `pacxio login`: 换一个有效的令牌，或删掉这个环境变量后运行 `pacxio login`
+Wait for it to finish and try again: 等它跑完再试
+Waited a long time and the browser approval has not come: 等了很久还没在浏览器里确认
+When exporting in the cloud the delivery pack always goes to <job>/out; --out is not supported: 云端导出时交付包固定放在 <job>/out，不支持 --out
+job.json changed on this machine while the cloud run was going; it was not overwritten with the cloud version: 云端运行期间本机 job.json 改过，没有用云端的版本覆盖

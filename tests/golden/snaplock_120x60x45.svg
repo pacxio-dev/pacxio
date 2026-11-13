@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="396.92mm" height="188.96mm" viewBox="-10 -10 396.92 188.96">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_glue_back" data-type="crease" d="M15 123.96 L15 78.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_side_a" data-type="crease" d="M135.48 123.72 L135.48 78.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_front" data-type="crease" d="M195.96 123.72 L195.96 78.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_side_b" data-type="crease" d="M316.44 123.72 L316.44 78.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_top_lid" data-type="crease" d="M15 78.48 L135.48 78.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_top_lid_tuck" data-type="crease" d="M23.24 18 L127.24 18" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_dust_ta" data-type="crease" d="M136.48 78.72 L194.96 78.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_dust_tb" data-type="crease" d="M317.44 78.72 L375.92 78.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_btm_back" data-type="crease" d="M15.74 123.96 L134.74 123.96" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_btm_sa" data-type="crease" d="M135.48 123.72 L195.22 123.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_btm_front" data-type="crease" d="M196.7 123.96 L315.7 123.96" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_btm_sb" data-type="crease" d="M317.18 123.72 L376.92 123.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M0 103.96 A20.8333 20.8333 0 0 0 15 123.96 L15.74 123.96 L15.74 168.96 L48.24 168.96 L48.24 155.46 L102.24 155.46 L102.24 168.96 L134.74 168.96 L134.74 123.96 L135.48 123.96 L135.48 123.72 L162.696 146.22 L159.696 153.72 L195.22 153.72 L195.22 123.72 L195.96 123.72 L195.96 123.96 L196.7 123.96 L231 154.56 L231 165.96 A3 3 0 0 0 234 168.96 L278.4 168.96 A3 3 0 0 0 281.4 165.96 L281.4 154.56 L315.7 123.96 L316.44 123.96 L316.44 123.72 L317.18 123.72 L317.18 153.72 L352.704 153.72 L349.704 146.22 L376.92 123.72 L376.92 78.72 L375.92 78.72 L373.8 76.6 L371.92 30.72 L333.1973 30.72 A6.0546 6.0546 0 0 0 327.2519 35.6298 L320.27 71.89 L317.44 74.72 L317.44 78.72 L316.44 78.72 L316.44 78.48 L195.96 78.48 L195.96 78.72 L194.96 78.72 L194.96 74.72 L192.13 71.89 L185.1481 35.6298 A6.0546 6.0546 0 0 0 179.2027 30.72 L140.48 30.72 L138.6 76.6 L136.48 78.72 L135.48 78.72 L135.48 78.48 L135.48 18 L135.24 18 L135.24 5 A5 5 0 0 0 130.24 0 L20.24 0 A5 5 0 0 0 15.24 5 L15.24 18 L15 18 L15 78.48 L0 83.48 L0 103.96" fill="none" stroke="#d40000"/>
+<path id="cut_top_tuck_slit_l" data-type="cut" d="M15.24 17.52 L23.24 17.52 L23.24 18" fill="none" stroke="#d40000"/>
+<path id="cut_top_tuck_slit_r" data-type="cut" d="M135.24 17.52 L127.24 17.52 L127.24 18" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="7.5" y="101.22" font-size="4" text-anchor="middle" fill="#888">glue</text>
+<text x="75.24" y="101.22" font-size="4" text-anchor="middle" fill="#888">back</text>
+<text x="165.72" y="101.22" font-size="4" text-anchor="middle" fill="#888">side_a</text>
+<text x="256.2" y="101.22" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="346.68" y="101.22" font-size="4" text-anchor="middle" fill="#888">side_b</text>
+<text x="75.24" y="48" font-size="4" text-anchor="middle" fill="#888">top_lid</text>
+<text x="75.24" y="9" font-size="4" text-anchor="middle" fill="#888">top_tuck</text>
+<text x="165.72" y="54.72" font-size="4" text-anchor="middle" fill="#888">dust_ta</text>
+<text x="346.68" y="54.72" font-size="4" text-anchor="middle" fill="#888">dust_tb</text>
+<text x="75.24" y="146.46" font-size="4" text-anchor="middle" fill="#888">btm_back</text>
+<text x="165.35" y="138.72" font-size="4" text-anchor="middle" fill="#888">btm_sa</text>
+<text x="256.2" y="146.46" font-size="4" text-anchor="middle" fill="#888">btm_front</text>
+<text x="347.05" y="138.72" font-size="4" text-anchor="middle" fill="#888">btm_sb</text>
+</g>
+</svg>

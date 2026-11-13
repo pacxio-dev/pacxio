@@ -1,0 +1,8 @@
+# Codex-only metadata (SKILL.md frontmatter only uses name / description, for cross-agent compatibility)
+interface:
+  display_name: "Packaging prepress"
+  short_description: "Turn box sizes and brand assets into factory-ready dielines, print files and preflight reports"
+  default_prompt: "Use $packaging-prepress to make a reverse tuck end box, 80×50×180 mm, SBS 350 g, gold foil logo on the front, for Tidewell sea salt crackers."
+
+policy:
+  allow_implicit_invocation: true

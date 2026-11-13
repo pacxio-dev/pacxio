@@ -1,0 +1,204 @@
+' ({n} in all)': ' 等 {n} 条'
+' · confirmed': ' · 已确认'
+(General note): （没有位置：整体意见）
+(after the flats are confirmed) lay out the design, then render the dieline confirmation image: （平面图确认后）拼版，然后 render 出刀版确认图
+(graphic) {asset}: （图形）{asset}
+', ': 、
+3D mockup: 3D 效果图
+<approver>: 确认人
+<decision-maker>: 决策者
+<id>: <编号>
+<image1> [<image2>…]: <图1> [<图2>…]
+<item>: <条目>
+<name>: <名字>
+<note>: 备注
+<panel>: <面>
+A reply must contain text: 回复要有文字
+AI flats: AI 平面图
+Adjacent panels: 相邻两面
+'Adjacent panels ': '相邻两面 '
+Apply each suggested preflight fix and rerun the checks until there are zero errors: 按印前检查每条 error 的 fix 改，再检查，直到 0 error
+? Apply the fixes from preflight. Show the user any comparisons that require review, such as F02. Render and run preflight again, then ask the user to approve the proof once there are zero errors
+: 先按印前检查每条 error 的 fix 改（要用户看的先给用户看，如 F02 的适配对比图），重新出刀版确认图、再检查；0 error 后再请用户确认刀版确认图
+Archive: 存档
+Ask the user for the missing required content, add it, then render the dieline proof again: 先补全必须出现的信息（问用户要），补上后重新出刀版确认图
+At ({x:g}, {y:g}) on the panel: 面内 ({x:g}, {y:g})
+Back view: 背面视角
+Bottom panel: 底面
+Build the content list from the exact copy to be printed, then review the wording with the user: 整理信息清单：把要上包装的信息逐字录入，再逐条给用户核对措辞
+? Build the final design from the confirmed flats, including copy, reconstructed artwork, photos, and finishes. Then render the dieline proof
+: 照确认的平面图做正式设计（文字、图形还原、照片、工艺），再出刀版确认图
+Changed, needs confirming again: 改过，待重新确认
+Check out of date: 检查不是最新
+Check passed · {n} warning: 检查通过 · {n} warning
+'Check that these flats match the main view: tell the agent to confirm in the chat, or click confirm here': 看这组平面图和主视角是不是一致：在对话里告诉 agent 确认，或在这里点确认
+? 'Check the dieline confirmation image: if the text, images, sizes and finish callouts are right, confirm it (the only gate before export)'
+: 看刀版确认图：文字、图片、尺寸、工艺标注都对就确认（导出前唯一的闸门）
+Choose a direction from the main-view concepts: 从主视角概念图里选一个方向
+Choose this direction: 选这个方向
+Chose {id}: 已选 {id}
+? Compare the flats with both 3D concept views and list any differences. Record the user's confirmation in chat or the Workbench, then build the final design from the flats
+: 对照两张 3D 图列出平面图的差别给用户；用户在对话里确认这组后记录（用户也可以在工作台上点），再照平面图做正式设计
+Concept image: 概念图
+'Concept image: location is relative to the image': 概念图：只作参考，位置是图上的相对位置
+Concepts: 概念图
+Confirm dieline: 确认刀版图
+Confirm dieline again: 重新确认刀版图
+Confirm draft: 确认初稿
+Confirm the changed wording: 确认改过的措辞
+Confirm the draft again for the current design: 按现在的设计重新确认初稿
+Confirm the layout draft: 确认文案排版初稿
+Confirm the wording of the content list: 确认信息清单的措辞
+Confirm these flats: 确认这组平面图
+Confirm wording: 确认措辞
+Confirm wording again: 重新确认措辞
+Confirmed: 已确认
+Confirmed (the design changed since): 已确认（之后设计又改过）
+Confirmed (the final design follows the flats; the draft needs no new confirmation): 已确认（正式稿照平面图做，初稿不用再确认）
+Confirmed · {by}: 已确认 · {by}
+Content list: 信息清单
+Content list · {n} items: 信息清单 · {n} 条
+'Could not zoom in: {error}': 取局部失败：{error}
+Delivery pack: 交付包
+Describe what needs to change: 写一句话说明要改什么
+Dieline confirmation: 刀版确认图
+Dieline confirmation image: 刀版确认图
+Differences from the flats (written by the agent): 和平面图不一样的地方（agent 写）
+Digital: 数码
+Directions not chosen: 没选的方向
+Drag to rotate, scroll to zoom: 拖动旋转、滚轮缩放
+Each panel: 各面
+Export the delivery pack: 导出交付包
+Export the delivery pack again once the dieline proof is approved: 刀版确认图确认后重新导出交付包
+Export the delivery pack and explain any warnings: 导出交付包，交代清楚并如实转告警告
+Exported an old version: 导出的是旧版
+Exported · {n} warning: 已导出 · {n} warning
+'Failed (D12: no delivery pack)': 未通过（D12：不出交付包）
+'File not found: {name}': 没有这个文件：{name}
+Final artwork: 正式稿
+'First fill in the required information: {first}; then the agent renders again and you confirm': 先补全必须出现的信息：{first}；补上后 agent 重新 render，你再确认
+Fix the errors as the report suggests (no delivery pack while there are errors): 按检查报告的修复建议改掉 error（有 error 不出交付包）
+Fix {n} preflight errors first: 先修印前 {n} 个 error
+Flat preview (archive): 展开图预览（存档）
+Flat proof: 平铺确认
+Flats: 展开平面图
+Flats changed, waiting for you to confirm again: 换过平面图，等你重新确认
+Flats of other directions: 其他方向的平面图
+Flexo (water-based): 柔印（水印）
+? Generate one main-view concept for each of two directions. Prepare a layout draft first if there is substantial copy (route A)
+: 出主视角概念图（2 个方向，各 1 张）；文案多先做排版初稿（路线 A）
+Generate the 3D mockup for viewing: 出 3D 效果图（只看，不确认）
+Generate the back view first, then generate the flats: 出背面视角（必须先出），再出展开平面图
+Generate the flats (the back view {id} is ready): 出展开平面图（背面视角已有 {id}）
+Gravure: 凹印
+In use: 在用
+Information missing: 待补信息
+Invalid confirmation parameters: 确认参数不对
+Invalid note parameters: 批注参数不对
+Item {id}: 条目 {id}
+Key colors (for color matching at the factory): 关键颜色（给工厂对色）
+Layout brief: 版式简报
+Layout draft: 排版初稿
+Main view: 主视角
+Mockup: 效果图
+'Mockup view: back, left, and top': 效果图视角：背面 + 左侧 + 顶面
+'Mockup view: bottom': 效果图视角：底面
+'Mockup view: front, right, and top': 效果图视角：正面 + 右侧 + 顶面
+'Mockup view: open': 效果图视角：打开
+Not checked: 未检查
+Not confirmed: 未确认
+Not done: 未做
+Not done (optional on route B): 未做（路线 B 可不做）
+Not made yet: 还没出
+Note too long ({n} characters, limit {limit}): 批注太长（{n} 字，上限 {limit}）
+Nothing to do: 没有待办
+Offset: 胶印
+Older back views (not in use): 背面视角旧版（没在用）
+Older flats (not in use): 平面图旧版（没在用）
+On the panel at ({x:g}, {y:g}), {w:g}×{h:g} mm: 面内 ({x:g}, {y:g}) 起 {w:g}×{h:g} mm
+Only requests from the local Workbench page are accepted: 只接受本机工作台页面自己的请求
+Out of date: 不是最新
+Panel views, layout brief: 各面平视、版式简报
+Panel-by-panel comparison and originals: 逐面对照与原图
+Panels without a flat: 不出平面图的面
+'Possible panels: {faces}': 可能是 {faces}
+Preflight: 印前检查
+Preflight and delivery: 印前与交付
+? 'Preflight still has errors ({ids}): fix them as suggested (show the user what they need to see first), render again, then ask you to confirm the dieline confirmation image'
+: 印前检查还有 error（{ids}）：先按修复建议改（要用户看的先给用户看），重新 render 再请你确认刀版确认图
+Production pack: 生产交付包
+Proportions failed, not shown (waiting for the agent to redo): 比例不合格，不显示（等 agent 重出）
+'Proportions too far off; redo them before asking you to confirm the set: ': 比例差太多，先重出再请你确认这组：
+Rectified flats: 展开平面图（拉正）
+Refresh the page to see the current status: 刷新页面看最新状态
+Regenerate flats with incorrect proportions. Import alternatives together if needed and keep the most accurate: 重出比例不合格的平面图（可以一次出几张备选一起导入，只留最准的）
+Regenerate the 3D mockup: 重新出 3D 效果图
+Render the dieline proof again: 重新出刀版确认图
+'Required information is missing: {some} (see ① Content list for all)': 必须出现的信息没齐：{some}（全部见 ① 信息清单）
+Rerun preflight: 重新跑印前检查
+Review the exact wording of each content item with the user, then record their explicit confirmation: 把信息清单逐条给用户核对措辞（只核对措辞）；用户明确确认后记录
+Run `pacxio notes list {job} --open`, then reply with `notes reply`: 先 `pacxio notes list {job} --open`，改完 `notes reply`
+Run preflight and apply the suggested fixes for any errors: 跑印前检查，有 error 就按 fix 改
+Run render again and retry: 重新 render 一次再试
+? Show the dieline proof (Workbench stage ⑤) and review its copy, artwork, dimensions, and finishes. Record the user's explicit approval
+: 给用户看刀版确认图（工作台 ⑤）逐项核对：文字、图片、尺寸、工艺标注；用户明确确认后记录
+Show the layout draft to the user, including the copy and layout for each panel. Record their confirmation: 给用户看文案排版初稿（按面文字稿、版式示意图）；用户确认后记录
+Show the main-view concepts (Workbench stage ③). Record the direction the user explicitly chooses: 给用户看主视角概念图（工作台 ③）；用户明确选定后记录方向
+Split it into several notes: 拆成几条
+The 3D materials or renderer were updated: 3D 材质或渲染器更新了
+The Pantone number is the color standard; swatches are only a screen preview: 潘通号为对色标准，色块只是屏幕示意
+The delivery pack is ready. Explain any warnings and ask the user to confirm a physical proof before mass production: 交付包已导出：如实转告警告，提醒批量生产前须打样确认
+The design changed: 设计改过了
+'The design changed: once the dieline confirmation image is approved, export the delivery pack again': 设计改过了：刀版确认图确认后重新导出交付包
+The design changed; run preflight again: 设计改过了，重新跑印前检查
+The dieline structure of the box style was updated: 盒型的刀版结构更新了
+'The file is missing from this job or is unavailable: {rel}': job 里没有这个文件，或这种文件不开放：{rel}
+The note is empty: 批注内容是空的
+The request body must be a JSON object: 请求体要是 JSON 对象
+There are {n} open notes in the Workbench: 工作台上有 {n} 条批注等你处理
+This confirmation is no longer available: 现在没有这一项可以确认
+This item cannot be confirmed yet: 现在不能确认这一项
+Top panel: 顶面
+Turnable 3D: 可转动 3D
+'Unknown route: {path}': 没有这个地址：{path}
+Up to date: 最新
+Use the paths from structures editable: 按 structures editable 的路径给
+Use this one: 改用这张
+User: 用户
+User (Workbench): 用户（工作台）
+'Waiting for agent: {action} ({title})': 等 agent：{action}（{title}）
+Waiting for you to choose a direction: 等你选方向
+Waiting for you to confirm the draft: 等你确认初稿
+Waiting for you to confirm the set of flats: 等你确认这组平面图
+Waiting for you to confirm the wording: 等你确认措辞
+'Waiting for you: {action} ({title})': 等你：{action}（{title}）
+Waiting for your confirmation: 等你确认
+Whole sheet: 整张
+Wording confirmed: 措辞已确认
+Write requests must come from the local Workbench page: 写操作只接受本机工作台页面自己发的请求
+action must be a string: action 是字符串
+inside: 内
+job.json cannot be read (the agent may be editing it): job.json 读不出来（agent 可能正在改）
+no Pantone given: 未给潘通号
+outside: 外
+'pacxio Workbench: {url} (job {job}; press Ctrl+C to quit)': pacxio 工作台：{url}  （job {job}；Ctrl+C 退出）
+patch must be an object: patch 要是对象
+'review/notes.json cannot be read: {e}': review/notes.json 读不出来：{e}
+text must be a string and rel must contain four numbers from 0 to 1: text 是字符串，rel 是 4 个 0–1 的数
+the agent draws its artwork separately from the main view: 上面的图形由 agent 照主视角另画
+the agent lays it out from the 3D concept and the layout draft: 由 agent 照 3D 概念图和排版初稿排
+user: 用户
+zoom requires a file and a box with four numbers: zoom 要 file 和 4 个数的 box
+'{action} ({title})': '{action}（{title}）'
+'{id} “{summary}”': '{id}「{summary}」'
+'{l:g}×{w:g}×{h:g} mm ({basis})': '{l:g}×{w:g}×{h:g} mm（{basis}）'
+'{label} {part} · dieline confirmation image': '{label} {part} · 刀版确认图'
+'{label}{face} is a narrow wall and has no flat': '{label}（{face}）是细长的墙面，不出平面图'
+'{msg}; ': '{msg}；'
+'{name} ({panel}) is formed by two flaps and has no separate flat': '{name}（{panel}）是两片翼 / 摇盖拼成的，不出单独的平面图'
+'{n} images (the final design is rebuilt from them)': '{n} 张（正式稿照它还原）'
+'{n} to redo': '{n} 张要重出'
+'{why}; ask the agent to render the dieline confirmation image again first': '{why}，先让 agent 重新 render 出刀版确认图'
+'{why}; make the 3D mockup again (mockup)': '{why}，重新出 3D 效果图（mockup）'
+'{why}; render the dieline confirmation image again': '{why}，重新 render 出刀版确认图'
+★ Chosen: ★ 选定

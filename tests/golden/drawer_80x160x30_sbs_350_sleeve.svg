@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="265.72mm" height="182.88mm" viewBox="-10 -10 265.72 182.88">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_bottom_glue" data-type="crease" d="M15 160.88 L15 2" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_bottom_side_a" data-type="crease" d="M97.92 162.88 L97.92 0" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_top" data-type="crease" d="M130.36 162.88 L130.36 0" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_top_side_b" data-type="crease" d="M213.28 162.88 L213.28 0" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M0 156.8608 L15 160.88 L15 162.88 L97.92 162.88 L130.36 162.88 L159.82 162.88 A12 12 0 0 1 183.82 162.88 L213.28 162.88 L245.72 162.88 L245.72 0 L15 0 L15 2 L0 6.0192 L0 156.8608" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="7.5" y="81.44" font-size="4" text-anchor="middle" fill="#888">glue</text>
+<text x="56.46" y="81.44" font-size="4" text-anchor="middle" fill="#888">bottom</text>
+<text x="114.14" y="81.44" font-size="4" text-anchor="middle" fill="#888">side_a</text>
+<text x="171.82" y="81.44" font-size="4" text-anchor="middle" fill="#888">top</text>
+<text x="229.5" y="81.44" font-size="4" text-anchor="middle" fill="#888">side_b</text>
+</g>
+</svg>

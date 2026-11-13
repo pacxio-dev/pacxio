@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="356.92mm" height="283.96mm" viewBox="-10 -10 356.92 283.96">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_glue_back" data-type="crease" d="M15 185.48 L15 35" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_side_a" data-type="crease" d="M115.48 185.24 L115.48 35.24" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_front" data-type="crease" d="M175.96 185.24 L175.96 35.24" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_side_b" data-type="crease" d="M276.44 185.24 L276.44 35.24" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_top" data-type="crease" d="M277.44 35.24 L335.92 35.24" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_top" data-type="crease" d="M176.96 35 L275.44 35" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_top" data-type="crease" d="M116.48 35.24 L174.96 35.24" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_top" data-type="crease" d="M16 35 L114.48 35" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_btm_lid" data-type="crease" d="M15 185.48 L115.48 185.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_btm_lid_tuck" data-type="crease" d="M23.24 245.96 L107.24 245.96" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_dust_ba" data-type="crease" d="M116.48 185.24 L174.96 185.24" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_dust_bb" data-type="crease" d="M277.44 185.24 L335.92 185.24" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M0 180.48 L15 185.48 L15 245.96 L15.24 245.96 L15.24 258.96 A5 5 0 0 0 20.24 263.96 L110.24 263.96 A5 5 0 0 0 115.24 258.96 L115.24 245.96 L115.48 245.96 L115.48 185.48 L115.48 185.24 L116.48 185.24 L118.6 187.36 L120.48 225.24 L159.2027 225.24 A6.3068 6.3068 0 0 0 165.3432 220.3718 L172.13 191.4033 L174.96 188.5733 L174.96 185.24 L175.96 185.24 L175.96 185.48 L276.44 185.48 L276.44 185.24 L277.44 185.24 L277.44 188.5733 L280.27 191.4033 L287.0568 220.3718 A6.3068 6.3068 0 0 0 293.1973 225.24 L331.92 225.24 L333.8 187.36 L335.92 185.24 L336.92 185.24 L336.92 35.24 L335.92 35.24 L335.92 5.24 L277.44 5.24 L277.44 35.24 L276.44 35.24 L276.44 35 L275.44 35 L275.44 0 L176.96 0 L176.96 35 L175.96 35 L175.96 35.24 L174.96 35.24 L174.96 5.24 L116.48 5.24 L116.48 35.24 L115.48 35.24 L115.48 35 L114.48 35 L114.48 0 L16 0 L16 35 L15 35 L0 40 L0 180.48" fill="none" stroke="#d40000"/>
+<path id="cut_btm_tuck_slit_l" data-type="cut" d="M15.24 246.44 L23.24 246.44 L23.24 245.96" fill="none" stroke="#d40000"/>
+<path id="cut_btm_tuck_slit_r" data-type="cut" d="M115.24 246.44 L107.24 246.44 L107.24 245.96" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="7.5" y="110.24" font-size="4" text-anchor="middle" fill="#888">glue</text>
+<text x="65.24" y="110.24" font-size="4" text-anchor="middle" fill="#888">back</text>
+<text x="145.72" y="110.24" font-size="4" text-anchor="middle" fill="#888">side_a</text>
+<text x="226.2" y="110.24" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="306.68" y="110.24" font-size="4" text-anchor="middle" fill="#888">side_b</text>
+<text x="65.24" y="17.5" font-size="4" text-anchor="middle" fill="#888">top_back</text>
+<text x="145.72" y="20.24" font-size="4" text-anchor="middle" fill="#888">top_side_a</text>
+<text x="226.2" y="17.5" font-size="4" text-anchor="middle" fill="#888">top_front</text>
+<text x="306.68" y="20.24" font-size="4" text-anchor="middle" fill="#888">top_side_b</text>
+<text x="65.24" y="215.96" font-size="4" text-anchor="middle" fill="#888">btm_lid</text>
+<text x="65.24" y="254.96" font-size="4" text-anchor="middle" fill="#888">btm_tuck</text>
+<text x="145.72" y="205.24" font-size="4" text-anchor="middle" fill="#888">dust_ba</text>
+<text x="306.68" y="205.24" font-size="4" text-anchor="middle" fill="#888">dust_bb</text>
+</g>
+</svg>

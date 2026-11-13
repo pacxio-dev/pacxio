@@ -1,0 +1,153 @@
+' (`pacxio styles list` shows the defaults)': （`pacxio styles list` 有默认值）
+(no --as given): （没给 --as）
+(no windows): （没有窗口）
+(none): （没有）
+'): photos for these papers are converted to print colors with a simple formula; check colors on a proof': ）：这类纸张的照片按简单公式转成印刷色，颜色以打样为准
+'--before {before}: no such placement': --before {before}：没有这个放置
+--text differs from the text of content item {ref}: --text 与信息清单条目 {ref} 的原文不一致
+3D mockups: 3D 效果图
+': print files should be exported after the user confirms the dieline confirmation image': ：印刷文件应在用户确认刀版确认图之后再导出
+A multi-part recipe has its sizes in each part's body; --L / --W / --H are not used: 多件套配方的尺寸写在各件的 body 里，--L / --W / --H 用不上
+Add --L --W --H: 补上 --L --W --H
+Add the mapping for this line type / spot color to the profile: 在配置档里补全该线型 / 专色的映射
+Artwork direction on lids / tucks must wait for the direction test before it is final: 盖/插舌上的图文方向须待方向测试后再定稿
+Ask the die maker to open it in their software; do not mark it verified before that: 请刀模厂用其软件打开确认，确认前不得标记为已验证
+Ask the user to confirm the dieline image again (approve): 请用户重新确认刀版图（approve）
+'Asset file not found: {path}': 找不到素材文件：{path}
+'Available panels: ': 可用面：
+'Available parameters: ': 可用参数：
+'Available presets: ': 可用预设：
+'Available: ': 可用：
+? 'Board too thick ({caliper:g} mm): the shortest edge, {edge:g} mm, cannot be folded; board this thick needs at least {need:g} mm'
+: 纸太厚（{caliper:g} mm），最短的边 {edge:g} mm 折不起来，这么厚的纸至少要 {need:g} mm
+Box style {style} has no parameter {names}: 盒型 {style} 没有参数 {names}
+Box style {style} has only one part; do not give --part: 盒型 {style} 只有一个部件，不要给 --part
+Building a structure from a code needs the inside size --L / --W / --H: 用编号建结构要给内尺寸 --L / --W / --H
+CF2 is written the way the open-source converter DXF2Diecut writes it, not verified by die-maker software: CF2 按开源转换器 DXF2Diecut 的写法生成，未经刀模厂软件验证
+'Can be removed: ': 可以去掉：
+Change it until it builds: 先改到能生成
+Change the size, or choose another structure: 换尺寸，或换一款结构
+Check again once the conditions are met: 补齐条件后重新检查
+? 'Check the parameters: kind=image needs --source --box (and --panel when space=panel), kind=vector the same (source is SVG), kind=text needs --panel --box --text --font --size-pt, kind=fill needs --color, kind=pattern needs --source --tile-mm'
+: 检查参数；kind=image 需要 --source --box（space=panel 时还要 --panel），kind=vector 同上（source 是 SVG），kind=text 需要 --panel --box --text --font --size-pt，kind=fill 需要 --color，kind=pattern 需要 --source --tile-mm
+Check the path: 检查路径
+'Check {rule} not run: {why}': 检查 {rule} 未执行：{why}
+Choose another structure (structures suggest with this need), or change the recipe: 换一款（structures suggest 加这条需求），或改配方
+'Corner radius not valid: {msg}': 圆角不对：{msg}
+DXF R12 has no unit header variable; units are mm by convention: DXF R12 不含单位头变量，单位按约定为 mm
+Dieline confirmation image not confirmed: 刀版确认图未确认
+'ECMA {code} not recognised: {error}': ECMA {code} 认不出来：{error}
+FEFCO {code} is not in the catalog: FEFCO {code} 不在目录里
+'Fields that cannot be removed: {names}': 不能去掉的字段：{names}
+Fix it using the parameter table from `pacxio styles list`: 按 `pacxio styles list` 给出的参数表修正
+For a kraft-colored carton choose the material preset kraft_350; remove --liner: 卡纸要牛皮色就选材料预设 kraft_350；去掉 --liner
+Generate the concept images again (the prompt will include the window): 概念图重新出（提示词会写进窗口）
+'Ghostscript not found: separation checks (B02, F01) are skipped and marked in the report': 未找到 Ghostscript：分色渲染相关检查（B02、F01）将被跳过并在报告中标明
+Give --source (an image or SVG): 要给 --source（图片或 SVG）
+Give one of --before <id> or --top: 要给 --before <id> 或 --top 之一
+'Give only one structure: one of --fefco / --ecma / --recipe': 结构只能给一种：--fefco / --ecma / --recipe 三选一
+Go back to the last values that worked: 改回上一次能用的值
+If they are not needed, delete them with `art remove`: 不需要的话用 `art remove` 删掉
+'Install Python 3.11+ with uv: uv python install 3.12': 用 uv 安装 Python 3.11+：uv python install 3.12
+'Liner changed to {liner}: render the dieline confirmation image and 3D again': 面纸改成{liner}：刀版确认图、3D 要重出
+Liners only apply to corrugated materials: 面纸只用于瓦楞材料
+Look up the code with structures list: 用 structures list 查编号
+Make the 3D mockups again (view only, no confirmation): 重新出 3D 效果图（只看，不用确认）
+Mechanism check passed for this size: 这组尺寸下机构功能核对通过
+Missing dependency {mod}: 缺少依赖 {mod}
+'Need "{need}" not met: {why}': 需求“{need}”不满足：{why}
+No dieline confirmation image yet; the design has not been confirmed: 还没有出刀版确认图，设计没有经过确认
+No fields to change: 没有要改的字段
+No item {ref} in the content list: 信息清单里没有条目 {ref}
+No placement {id}: 没有放置 {id}
+'No size given: the suggested structures have not had their mechanism checked at a size': 没给尺寸：推荐的款还没按尺寸做机构功能核对
+No structure in the catalog meets all of these needs: 目录里没有同时满足这些需求的款
+No window {id}: 没有窗口 {id}
+'Not usable at this size (preflight will block it): change the size, choose another structure, or change the recipe': 这组尺寸下不能用（印前检查会拦）：改尺寸、换一款，或改配方
+'Only one level: e.g. back same as front': 只设一层：如 back 和 front 相同
+Only panels of the same size can share a layout (e.g. front and back): 只有尺寸相同的面才能共用版面（如正面和背面）
+'Optional: no serif font (Source Han Serif); only needed for serif headings': 可选：没有衬线字体（思源宋体），需要衬线标题时才要装
+'Options: ': 可选：
+Outer corners 0–20 mm, inner corners 0–5 mm, 0 = none: 外角 0–20 mm、内角 0–5 mm，0 = 不倒
+'Parameter {loc}: {msg}': 参数 {loc}：{msg}
+'Placeholders: ': 现有占位框：
+Placement id {id} already exists: 放置 id {id} 已存在
+Presets can only be used for a new job or an empty folder: 预设只能用于新任务或空目录
+Profile not confirmed by the factory: 配置档未经工厂确认
+Python {have} is older than the required {major}.{minor}: Python {have} 低于要求的 {major}.{minor}
+Regenerate with a factory-confirmed profile before delivery: 交付前用工厂确认过的配置档重新生成
+Relax one need, or co-design a new structure with the user (mark it "non-standard" and assess it for practical use): 放宽一条需求，或和用户共创新结构（标“非标准结构”，再做实用性评估）
+Remove --L --W --H, or change each part's size in the recipe returned by structures show <code> --L …: 去掉 --L --W --H，或照 structures show <编号> --L … 返回的 recipe 改各件尺寸
+Remove --part; panel names have no prefix: 去掉 --part；面名不带前缀
+Remove --text (the list's text is used); to change the wording use `content edit` and ask the user to confirm again: 去掉 --text（文字以清单为准）；要改措辞就 `content edit`，并请用户重新确认
+Remove apply_compensation=false and regenerate: 去掉 apply_compensation=false 后重新生成
+Remove the extra one: 去掉多余的那个
+Render the dieline confirmation image again: 重新 render 刀版确认图
+? Run `pacxio render <job>` to make the dieline confirmation image; after the user confirms (clicks on the workbench, or says so) run `pacxio approve <job>`
+: 运行 `pacxio render <job>` 出刀版确认图，用户确认后（工作台上点，或说了之后）`pacxio approve <job>`
+Run from the repository root, or set PACXIO_PROFILE_DIR: 在仓库根目录运行，或设置 PACXIO_PROFILE_DIR
+Run styles list to see the box styles: 先运行 styles list 查看盒型
+Run styles presets to see the available IDs: 运行 styles presets 查看可用 ID
+Run uv sync: 运行 uv sync
+See body wrap coordinates with `pacxio panels`; the box width must not exceed one circumference: 用 `pacxio panels` 查看盒身展开坐标，box 宽度不超过一圈
+See item ids with `pacxio content list <job>`, or add it with `content add` first: '`pacxio content list <job>` 查看条目 id，或先 `content add` 补上'
+Standard ICC profiles missing on this machine (: 本机缺标准 ICC（
+Suggest again with --L --W --H, or run structures check after creating the job: 加 --L --W --H 再推荐，或建 job 后跑 structures check
+Tell the die maker the DXF units are mm: 向刀模厂说明 DXF 单位为 mm
+Test the folding direction with the --proof sheet and write the result back to the style metadata: 用 --proof 打样稿做折叠方向测试，结果写回盒型元数据
+The design changed after the last confirmation / confirmation image; what was confirmed is not the version being exported: 设计在上次确认 / 出刀版确认图之后又改动过，确认的不是现在要导出的版本
+The dieline confirmation image is made but not confirmed yet: 刀版确认图已出但还没有确认
+The practical check only applies to jobs built with --fefco / --ecma / --recipe: 实用性检查只用于 --fefco / --ecma / --recipe 建的 job
+'The window changed the structure: the {made} already made do not have this window': 开窗改变了结构：已经出过的{made}都没有这个窗口
+'These parameters cannot be built: {error}': 这组参数生成不了：{error}
+? They come with Adobe software (Photoshop / Illustrator); if the factory gives you an ICC, set it as icc.path in the profile
+: 装了 Adobe 软件（Photoshop / Illustrator）就有；工厂给了 ICC 时填到配置档 icc.path
+'Thickness compensation not applied (apply_compensation=false): panel sizes equal the inside size; not for proofing as is': 未应用厚度补偿（apply_compensation=false），面尺寸等于内尺寸，不可直接用于打样
+This job cannot switch to {material}: 这个 job 不能换成 {material}
+'This recipe cannot be built: {error}': 这个配方生成不了：{error}
+? To fill a whole panel use --scope panel_id; draw a partial color block as a rectangle SVG and place it with kind=vector in --box
+: 铺整个面用 --scope 面id；局部色块画成矩形 SVG，用 kind=vector 放进 --box
+Unknown box style {style}: 未知盒型 {style}
+Unknown design preset {preset}: 未知设计预设 {preset}
+Unknown format {formats}: 不认识的格式 {formats}
+Unknown language {lang}: 不认识的语言 {lang}
+Unknown liner {liner}: 未知面纸 {liner}
+Unknown material preset {material}: 未知材料预设 {material}
+Unknown panel {panel}: 未知的面 {panel}
+Unknown print method {method}: 未知印刷方式 {method}
+Upright direction of lids and tucks not confirmed by a proof (orientation_verified=false): 盖与插舌的正立方向未经打样确认（orientation_verified=false）
+Upright direction of lids and tucks not confirmed by a proof (up_in_blank is provisional): 盖与插舌的正立方向未经打样确认（up_in_blank 为临时值）
+Use --print-method offset, flexo, digital or gravure (flexible packaging): 用 --print-method offset、flexo、digital（数码）或 gravure（凹印，软包装）
+Use a factory-confirmed profile before delivery: 交付前换用工厂确认过的配置档
+Use a new job folder; for an existing job change its parameters instead of re-initialising: 使用新的 job 目录；已有任务直接修改参数，不重新初始化
+Use a thinner material, or make the box bigger: 换薄一点的材料，或把盒子做大
+Use another --id: 换一个 --id
+Use kraft (kraft liner) or white (white liner): 用 kraft（牛皮面纸）或 white（白面纸）
+Window id {id} already exists: 窗口 id {id} 已存在
+'Windows: {ids}': 现有窗口：{ids}
+Write the code with four digits (e.g. 0201, 0427.1): 编号写成四位（如 0201、0427.1）；325 款都有
+Write the full code like A20.20.03.01 (bottom closure.top closure.bottom position.top position): 写成 A20.20.03.01 这样的完整编号（底封口.顶封口.底位置.顶位置）
+? '`pacxio render {job}`, `pacxio mockup {job}`; a confirmed dieline confirmation image expires, ask the user to confirm again'
+: '`pacxio render {job}`、`pacxio mockup {job}`；已确认的刀版确认图会过期，请用户重新确认'
+box width {w:g}mm is more than the body circumference {c:.2f}mm: box 宽 {w:g}mm 超过盒身一圈 {c:.2f}mm
+concept images (main view / back view / flats): 概念图（主视角 / 背面视角 / 平面图）
+dieline confirmation image: 刀版确认图
+e.g. --box 10,20,80,30 or --style body: 如 --box 10,20,80,30 或 --style body
+e.g. --source photo.png: 如 --source photo.png
+e.g. --top moves it to the top layer: 例如 --top 移到最上层
+kind={kind} fills the whole panel by --scope; {opts} have no effect (it covers the whole panel, not a part): kind={kind} 按 --scope 铺满整个面，{opts} 不起作用（会盖住整面而不是局部）
+kraft liner: 牛皮面纸
+layout placement: 版面放置
+white liner: 白面纸
+'{code} cannot be built at {L:g} × {W:g} × {H:g}: {error}': '{code} 在 {L:g} × {W:g} × {H:g} 出不来：{error}'
+'{code} is not in the catalog': 目录里没有 {code}
+'{id} is not a placeholder': '{id} 不是占位框'
+'Dieline confirmation · {name} ({style})': '刀版确认图 · {name}（{style}）'
+'{label}: {message}': '{label}：{message}'
+'{loc}: {msg}': '{loc}：{msg}'
+'{part}: ': '{part}：'
+'{style} is not a geometry-engine structure': '{style} 不是几何引擎的结构'
+'{tag}mechanism check failed: {message}': '{tag}机构功能核对不过：{message}'
+'{target} already has placements: {own}; they will sit on top of the copied layout': '{target} 上本来就有放置：{own}，会叠在复制过来的版面上'
+'{target} and {source} cannot refer to each other or to themselves': '{target} 不能和 {source} 互相引用或引用自己'
+'{target} and {source} differ in size and cannot be the same': '{target} 和 {source} 的尺寸不同，不能设成相同'

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="362mm" height="331.2mm" viewBox="-10 -10 362 331.2">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_base_front" data-type="crease" d="M92 271.2 L250 271.2" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_base_back" data-type="crease" d="M91 169.7 L251 169.7" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_base_side_a_1" data-type="crease" d="M252.5 271.2 L252.5 237.95" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_base_side_b_1" data-type="crease" d="M89.5 271.2 L89.5 237.95" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_base_side_a_2" data-type="crease" d="M252.5 202.95 L252.5 169.7" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_base_side_b_2" data-type="crease" d="M89.5 202.95 L89.5 169.7" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_rim_a" data-type="crease" d="M294 271.2 L294 169.7" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_rim_a_side_a_in" data-type="crease" d="M299 269.7 L299 171.2" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_rim_b" data-type="crease" d="M48 271.2 L48 169.7" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_rim_b_side_b_in" data-type="crease" d="M43 269.7 L43 171.2" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_ear_fa" data-type="crease" d="M250 311.2 L250 274.2" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_ear_fb" data-type="crease" d="M92 311.2 L92 274.2" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_ear_ba" data-type="crease" d="M251 166.7 L251 129.2" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_ear_bb" data-type="crease" d="M91 166.7 L91 129.2" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_top_lid" data-type="crease" d="M95 128.2 L247 128.2" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_top_lid_dust_la" data-type="crease" d="M247 128.2 L247 28.7" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_top_lid_dust_lb" data-type="crease" d="M95 128.2 L95 28.7" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_top_lid_tuck" data-type="crease" d="M95 25.2 L247 25.2" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="perf_tear_upper" data-type="perf" d="M97 18 L100 18 M102 18 L105 18 M107 18 L110 18 M112 18 L115 18 M117 18 L120 18 M122 18 L125 18 M127 18 L130 18 M132 18 L135 18 M137 18 L140 18 M142 18 L145 18 M147 18 L150 18 M152 18 L155 18 M157 18 L160 18 M162 18 L165 18 M167 18 L170 18 M172 18 L175 18 M177 18 L180 18 M182 18 L185 18 M187 18 L190 18 M192 18 L195 18 M197 18 L200 18 M202 18 L205 18 M207 18 L210 18 M212 18 L215 18 M217 18 L220 18 M222 18 L225 18 M227 18 L230 18 M232 18 L235 18 M237 18 L240 18 M242 18 L245 18" fill="none" stroke="#0050d0"/>
+<path id="perf_tear_lower" data-type="perf" d="M97 12 L100 12 M102 12 L105 12 M107 12 L110 12 M112 12 L115 12 M117 12 L120 12 M122 12 L125 12 M127 12 L130 12 M132 12 L135 12 M137 12 L140 12 M142 12 L145 12 M147 12 L150 12 M152 12 L155 12 M157 12 L160 12 M162 12 L165 12 M167 12 L170 12 M172 12 L175 12 M177 12 L180 12 M182 12 L185 12 M187 12 L190 12 M192 12 L195 12 M197 12 L200 12 M202 12 L205 12 M207 12 L210 12 M212 12 L215 12 M217 12 L220 12 M222 12 L225 12 M227 12 L230 12 M232 12 L235 12 M237 12 L240 12 M242 12 L245 12" fill="none" stroke="#0050d0"/>
+<path id="cut_outline" data-type="cut" d="M92 311.2 L250 311.2 L290 311.2 L290 274.2 L250 274.2 L250 271.2 L252.5 271.2 L294 271.2 L299 269.7 L338.25 269.7 L338.25 240.45 L342 238.45 L342 202.45 L338.25 200.45 L338.25 171.2 L299 171.2 L294 169.7 L252.5 169.7 L251 169.7 L251 166.7 L291 166.7 L291 129.2 L251 129.2 L247 129.2 L247 128.2 L264.3681 121.8785 A4 4 0 0 0 267 118.1198 L267 38.7802 A4 4 0 0 0 264.3681 35.0215 L247 28.7 L247 25.2 L247 0 L95 0 L95 12 L88 12 A3 3 0 0 0 88 18 L95 18 L95 25.2 L95 28.7 L77.6319 35.0215 A4 4 0 0 0 75 38.7802 L75 118.1198 A4 4 0 0 0 77.6319 121.8785 L95 128.2 L95 129.2 L91 129.2 L51 129.2 L51 166.7 L91 166.7 L91 169.7 L89.5 169.7 L48 169.7 L43 171.2 L3.75 171.2 L3.75 200.45 L0 202.45 L0 238.45 L3.75 240.45 L3.75 269.7 L43 269.7 L48 271.2 L89.5 271.2 L92 271.2 L92 274.2 L52 274.2 L52 311.2 L92 311.2" fill="none" stroke="#d40000"/>
+<path id="cut_slot_a1" data-type="cut" d="M252.5 237.95 L252.5 202.95 A2.5 2.5 0 0 0 247.5 202.95 L247.5 237.95 A2.5 2.5 0 0 0 252.5 237.95" fill="none" stroke="#d40000"/>
+<path id="cut_slot_b1" data-type="cut" d="M89.5 237.95 A2.5 2.5 0 0 0 94.5 237.95 L94.5 202.95 A2.5 2.5 0 0 0 89.5 202.95 L89.5 237.95" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="171" y="220.45" font-size="4" text-anchor="middle" fill="#888">base</text>
+<text x="171" y="291.2" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="171" y="148.95" font-size="4" text-anchor="middle" fill="#888">back</text>
+<text x="273.25" y="220.45" font-size="4" text-anchor="middle" fill="#888">side_a</text>
+<text x="68.75" y="220.45" font-size="4" text-anchor="middle" fill="#888">side_b</text>
+<text x="296.5" y="220.45" font-size="4" text-anchor="middle" fill="#888">rim_a</text>
+<text x="45.5" y="220.45" font-size="4" text-anchor="middle" fill="#888">rim_b</text>
+<text x="320.5" y="220.45" font-size="4" text-anchor="middle" fill="#888">side_a_in</text>
+<text x="21.5" y="220.45" font-size="4" text-anchor="middle" fill="#888">side_b_in</text>
+<text x="270" y="292.7" font-size="4" text-anchor="middle" fill="#888">ear_fa</text>
+<text x="72" y="292.7" font-size="4" text-anchor="middle" fill="#888">ear_fb</text>
+<text x="271" y="147.95" font-size="4" text-anchor="middle" fill="#888">ear_ba</text>
+<text x="71" y="147.95" font-size="4" text-anchor="middle" fill="#888">ear_bb</text>
+<text x="171" y="76.7" font-size="4" text-anchor="middle" fill="#888">top_lid</text>
+<text x="257" y="78.45" font-size="4" text-anchor="middle" fill="#888">dust_la</text>
+<text x="85" y="78.45" font-size="4" text-anchor="middle" fill="#888">dust_lb</text>
+<text x="171" y="21.6" font-size="4" text-anchor="middle" fill="#888">top_tuck</text>
+<text x="166" y="15" font-size="4" text-anchor="middle" fill="#888">tear_strip</text>
+<text x="171" y="6" font-size="4" text-anchor="middle" fill="#888">seal_pad</text>
+</g>
+</svg>

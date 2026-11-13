@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="391.92mm" height="301.92mm" viewBox="-10 -10 391.92 301.92">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_base_front" data-type="crease" d="M60.48 221.44 L311.44 221.44" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_base_back" data-type="crease" d="M60.48 60.48 L311.44 60.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_base_side_a" data-type="crease" d="M311.44 221.44 L311.44 60.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_base_side_b" data-type="crease" d="M60.48 221.44 L60.48 60.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_corner_front_b" data-type="crease" d="M60.48 222.44 L60.48 280.92" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_tongue_front_b" data-type="crease" d="M40.48 246.68 L40.48 256.68" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_corner_front_a" data-type="crease" d="M311.44 222.44 L311.44 280.92" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_tongue_front_a" data-type="crease" d="M331.44 246.68 L331.44 256.68" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_corner_back_b" data-type="crease" d="M60.48 59.48 L60.48 1" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_tongue_back_b" data-type="crease" d="M40.48 35.24 L40.48 25.24" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_corner_back_a" data-type="crease" d="M311.44 59.48 L311.44 1" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_tongue_back_a" data-type="crease" d="M331.44 35.24 L331.44 25.24" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M60.48 221.44 L60.48 222.44 L42.48 222.44 L40.48 224.44 L40.48 246.68 L35.68 245.18 L32.48 246.68 L32.48 256.68 L35.68 258.18 L40.48 256.68 L40.48 278.92 L42.48 280.92 L60.48 280.92 L60.48 281.92 L311.44 281.92 L311.44 280.92 L329.44 280.92 L331.44 278.92 L331.44 256.68 L336.24 258.18 L339.44 256.68 L339.44 246.68 L336.24 245.18 L331.44 246.68 L331.44 224.44 L329.44 222.44 L311.44 222.44 L311.44 221.44 L371.92 221.44 L371.92 60.48 L311.44 60.48 L311.44 59.48 L329.44 59.48 L331.44 57.48 L331.44 35.24 L336.24 36.74 L339.44 35.24 L339.44 25.24 L336.24 23.74 L331.44 25.24 L331.44 3 L329.44 1 L311.44 1 L311.44 0 L60.48 0 L60.48 1 L42.48 1 L40.48 3 L40.48 25.24 L35.68 23.74 L32.48 25.24 L32.48 35.24 L35.68 36.74 L40.48 35.24 L40.48 57.48 L42.48 59.48 L60.48 59.48 L60.48 60.48 L0 60.48 L0 221.44 L60.48 221.44" fill="none" stroke="#d40000"/>
+<path id="cut_slot_front_b" data-type="cut" d="M24.94 202.17 L35.54 202.17 L35.54 200.71 L24.94 200.71 L24.94 202.17" fill="none" stroke="#d40000"/>
+<path id="cut_slot_front_a" data-type="cut" d="M336.38 202.17 L346.98 202.17 L346.98 200.71 L336.38 200.71 L336.38 202.17" fill="none" stroke="#d40000"/>
+<path id="cut_slot_back_b" data-type="cut" d="M24.94 81.21 L35.54 81.21 L35.54 79.75 L24.94 79.75 L24.94 81.21" fill="none" stroke="#d40000"/>
+<path id="cut_slot_back_a" data-type="cut" d="M336.38 81.21 L346.98 81.21 L346.98 79.75 L336.38 79.75 L336.38 81.21" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="185.96" y="140.96" font-size="4" text-anchor="middle" fill="#888">base</text>
+<text x="185.96" y="251.68" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="185.96" y="30.24" font-size="4" text-anchor="middle" fill="#888">back</text>
+<text x="341.68" y="140.96" font-size="4" text-anchor="middle" fill="#888">side_a</text>
+<text x="30.24" y="140.96" font-size="4" text-anchor="middle" fill="#888">side_b</text>
+<text x="50.48" y="251.68" font-size="4" text-anchor="middle" fill="#888">corner_front_b</text>
+<text x="36.48" y="251.68" font-size="4" text-anchor="middle" fill="#888">tongue_front_b</text>
+<text x="321.44" y="251.68" font-size="4" text-anchor="middle" fill="#888">corner_front_a</text>
+<text x="335.44" y="251.68" font-size="4" text-anchor="middle" fill="#888">tongue_front_a</text>
+<text x="50.48" y="30.24" font-size="4" text-anchor="middle" fill="#888">corner_back_b</text>
+<text x="36.48" y="30.24" font-size="4" text-anchor="middle" fill="#888">tongue_back_b</text>
+<text x="321.44" y="30.24" font-size="4" text-anchor="middle" fill="#888">corner_back_a</text>
+<text x="335.44" y="30.24" font-size="4" text-anchor="middle" fill="#888">tongue_back_a</text>
+</g>
+</svg>

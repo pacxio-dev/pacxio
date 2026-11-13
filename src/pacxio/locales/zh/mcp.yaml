@@ -1,0 +1,143 @@
+? '
+
+  … (truncated, {n} characters in all; narrow it with limit / filters)'
+: '
+
+  …（截断了，共 {n} 字；用 limit / 过滤条件缩小范围）'
+' (did you mean: {names})': （是不是：{names}）
+' and ': ' 和 '
+; {note}: ；{note}
+'A foreground server would block: use studio_open (starts in the background and returns the address)': 前台服务会一直占着：用 studio_open（后台启动并返回地址）
+After the user clearly says they confirm in the conversation, use user_confirm (with the user's own words in user_words): 用户在对话里明确说确认之后，用 user_confirm（把用户原话填进 user_words）
+Already configured like this; nothing to change: 已经是这样配的，不用改
+'Available: ': 可用：
+Build the plugin (Skill + MCP) in {root}: 生成插件（Skill + MCP）到 {root}
+'Building the plugin failed: {error}': 生成插件失败：{error}
+? 'Call only **after the user clearly says they confirm** in the conversation: records a confirmation for the user (by is recorded as "user (conversation, via agent)", user_words holds the user''s own words). action: content wording of the content list / plan layout draft / concept chosen concept direction (target concept id) / use use this concept image / flats this set of flats / design dieline confirmation image (the only gate before export). Show the user what they are confirming first (workbench or image); if the user said nothing, or only something vague like "looks good", do not call it.'
+: 用户在对话里**明确说确认之后**才调：代用户记一条确认（确认人记“用户（对话，经 agent）”，user_words 填用户原话）。action：content 信息清单措辞 / plan 排版初稿 / concept 选概念图方向（target 概念图 id）/ use 用这张概念图 / flats 这组平面图 / design 刀版确认图（导出前唯一的闸门）。先把要确认的东西给用户看（工作台或图片）；用户没说、或只是说“看起来不错”这类模糊话，都不要调。
+Cannot start an MCP server inside MCP: MCP 里不能再起 MCP 服务
+Catalog details of one structure; with L / W / H also its recipe (usable as job_init's recipe, as is or changed).: 一款结构的目录信息；给了 L / W / H 再附配方（可直接用于 job_init 的 recipe 或改了再用）。
+? 'Change the recipe: merged layer by layer into an existing engine job''s recipe (objects merge, values replace, null deletes), then the dieline is regenerated. Existing confirmations expire.'
+: 改配方：按层合并到已有引擎 job 的配方（给对象往里并、给值替换、给 null 删掉），重新生成刀版。已有确认会过期。
+Claude Code still has a separately installed pacxio MCP that duplicates the plugin's: Claude Code 里还有以前单独装的 pacxio MCP，和插件里的重复
+Claude Desktop has no project-level config; installing globally: Claude 桌面版没有项目级配置，装到全局
+Codex's MCP config is global (~/.codex/config.toml); installing globally: Codex 的 MCP 配置是全局的（~/.codex/config.toml），装到全局
+? Create a job from a code or recipe (style structure / multi-part structure_set) and generate the dieline. The rest of the workflow (content list, concept images, final design, confirmation, export) follows the packaging-prepress skill.
+: 按编号或配方建 job（盒型 structure / 多件套 structure_set），生成刀版。之后的流程（信息清单、概念图、正式设计、确认、导出）照 packaging-prepress skill。
+'Default: flute_b for corrugated structures, sbs_350 for cartons (ECMA, carton combinations)': 不给：瓦楞款用 flute_b，彩盒款（ECMA、彩盒常用组合）用 sbs_350
+Delete the [mcp_servers.pacxio] section in {path}: 删掉 {path} 里 [mcp_servers.pacxio] 那一段
+Download the open-source Source Han Sans fonts (about 33 MB): 下载开源字体思源黑体（约 33 MB）
+? 'Editable items: what this structure can change (only parameters that really change the dieline, with current / automatic value, range or options, which panels and lines move, whether it leaves a calibrated construction), which automatic values follow L / W / H, how panels connect, locking mechanisms. Change them with structure_update. Give a code + size, a recipe, or an existing job folder.'
+: 可编辑项：这个结构能改什么（只列改了刀版真会变的参数，带当前值 / 自动值、范围或可选值、改了动到哪些面和线、会不会离开已校准做法）、长宽高变了哪些自动值跟着变、面怎么连、锁合机构。改用 structure_update。给编号 + 尺寸，或 recipe，或已有 job 目录。
+Existing job folder: 已有 job 目录
+FEFCO / ECMA code: FEFCO / ECMA 编号
+FEFCO / ECMA code (one of code, recipe, job): FEFCO / ECMA 编号（和 recipe、job 三选一）
+Folder for the preview images: 预览图写到哪个目录
+'Font download failed: ': 字体没下载成功：
+'Fonts: already there, skipped': 字体：已有，跳过
+'Fonts: skipped (--no-fonts)': 字体：跳过（--no-fonts）
+If it is already installed, run claude mcp remove -s user pacxio first: 已经装过就先 claude mcp remove -s user pacxio
+Inside height mm: 内高 mm
+Inside length mm (front width): 内长 mm（正面宽）
+Inside width mm (side width): 内宽 mm（侧面宽）
+Install one of them and check that claude or codex runs in the terminal; or choose with --agent: 先装好其中一个，确认终端里能运行 claude 或 codex；或用 --agent 指定
+Install {label} first and check that {cli} runs in the terminal: 先装好 {label}，确认终端里能运行 {cli}
+'Installed: restart {names} (or start a new session) to load the plugin': 装好了：重开 {names}（或新开会话）才会加载插件
+Job folder (absolute path): job 目录（绝对路径）
+Job folder (new): job 目录（新建）
+Keyword: 关键词
+Maximum number to return, default 30: 最多返回几款，默认 30
+'Missing arguments: ': 缺参数：
+Neither Claude Code nor Codex found (no claude / codex command in the terminal): 没找到 Claude Code 或 Codex（终端里没有 claude / codex 命令）
+No command registered: 没写 command
+No command {command}: 没有命令 {command}
+No resource {uri}: 没有资源 {uri}
+No response: 没有回应
+No tool {name}: 没有工具 {name}
+'No words from the user: only the user confirms': 没有用户原话：确认只能是用户做
+'Non-protocol output on stdout: {line}': stdout 里有不是协议的内容：{line}
+Not installed in any agent yet: 还没装进任何 agent
+'Not installed yet: add --yes to run the claude command above': 还没装：加 --yes 才会运行上面这条 claude 命令
+'Not installed yet: check data.steps, then add --yes': 还没装：看一下 data.steps，确认后加 --yes
+'Not written yet: check data.new_text, then add --yes to write {path}': 还没写：看一下 data.new_text，确认后加 --yes 写进 {path}
+'Only the user confirms: the general tool cannot run confirmation commands': 确认只能是用户做：通用工具不能跑确认命令
+'Packaging design to print files, the whole workflow: stages, hard rules, commands': 包装设计到印刷文件的全流程：阶段、铁律、命令
+? 'Practical check: how it closes, whether it recloses, whether it needs tape, whether panels collide when folded, maturity — each compared with the needs. Give a code + size, a recipe, or an existing job folder.'
+: 跑检查（实用性）：靠什么合上、能否反复开合、免不免胶带、折好后有没有面穿插、成熟度，逐条对照需求。给编号 + 尺寸，或 recipe，或已有 job 目录。
+Read the message; if an argument is wrong, fix it per tools/list; if job.json is broken, repair it first: 看 message；参数写错了就按 tools/list 的说明改，job.json 坏了就先修好它
+'Reinstall: pacxio setup --agent {agent} --yes': 重装：pacxio setup --agent {agent} --yes
+? 'Run any pacxio command (the same function as the command line, --json added automatically); returns {ok, command, job, artifacts, data, errors, warnings}; dieline confirmation images, mockups and structure previews come back as images too. command is the full command name (e.g. "art add", "render", "export"), args as on the command line (absolute paths). Call pacxio_help first if unsure of the arguments. Not for confirmation commands (use user_confirm). concept gen / visual gen spend the user''s image credits: tell the user before running them.'
+: 跑任意一条 pacxio 命令（和命令行同一个函数，自动带 --json），返回 {ok, command, job, artifacts, data, errors, warnings}；刀版确认图、效果图、结构预览会把图一并返回。command 写命令全名（如 "art add"、"render"、"export"），args 和命令行一样（路径用绝对路径）。不知道参数先 pacxio_help。确认类命令不能用它（用 user_confirm）。concept gen / visual gen 要花用户的出图额度：先告诉用户再跑。
+'Run it by hand: ': 手动运行：
+Run pacxio env check: 运行 pacxio env check
+Run studio status with pacxio_run to check: pacxio_run 跑 studio status 看看
+Run this command by hand to see the full error; the plugin folder is {root}: 可以手动运行这条命令看完整报错；插件目录在 {root}
+Say which concept image is being confirmed: 要说确认的是哪张概念图
+? Search the structure catalog (FEFCO, public ECMA codes and common combinations), calibrated first. Returns code, description, maturity, how it closes, whether it recloses, whether it needs tape, use tags.
+: 查结构目录（FEFCO 325 款 + ECMA 公开 130 款 + 常用组合），已校准的排前面。返回编号、说明、成熟度、怎么合上、能否反复开合、免不免胶带、用途标签。
+? 'See it folded: without making a job, draw the dieline and the 3D view folded along it for a code + inside size (panels colored by role, structure only). The 3D image is returned.'
+: 看折叠：不建 job，按编号 + 内尺寸出刀版图和按刀版折好的 3D 图（面按角色上色，只看结构）。3D 图一并返回。
+See the arguments of {command} with pacxio_help: pacxio_help 看 {command} 的参数
+See what is missing with pacxio env check: pacxio env check 看缺什么
+Series 01–09; A for ECMA cartons: 系列 01–09，ECMA 彩盒写 A
+Set PACXIO_HOME to use another folder, or delete that folder and try again: 设置 PACXIO_HOME 换个目录，或删掉那个目录再试
+? Show the user what they are confirming first (workbench or image); after they clearly confirm, put their own words in user_words
+: 先把要确认的东西给用户看（工作台或图片），用户明确说确认后，把他的原话填进 user_words
+Single piece only: 只要单件
+Start the MCP server once as a self-check: 起一次 MCP 服务自检
+? 'Start the local workbench in the background (127.0.0.1 only) and return its address for the user to open: images for every stage, notes, confirm buttons, a rotatable 3D view, structure editing. Returns the same address if it is already running.'
+: 在后台启动本机工作台（只在 127.0.0.1），返回地址给用户打开：各阶段的图、批注、确认按钮、可转的 3D、改结构都在里面。已经在跑就返回原地址。
+Structure recipe: 结构配方
+? 'Suggest: pick 2–3 structures from the catalog for the product''s needs (calibrated → commonly made by factories → simple), with reasons; with a size and out_dir, also draw a dieline and 3D view of each (3D images are returned). Returns nothing when the catalog has no fit; then co-design with the user.'
+: 提方案：按产品需求从目录挑 2–3 款（已校准 → 工厂常做 → 结构简单），附理由；给了尺寸和 out_dir 就各出刀版图和 3D 图（3D 图一并返回）。目录都不满足返回空，再和用户共创。
+'Tags: {uses} no_tape reclosable': 标签：{uses} 免胶带 反复开合
+The Codex config still has a separately installed [mcp_servers.pacxio] that duplicates the plugin's: Codex 配置里还有以前单独装的 [mcp_servers.pacxio]，和插件里的重复
+'The MCP server does not start: {why}': MCP 服务起不来：{why}
+The Skill bundled with the package (packaging-prepress) was not found: 找不到随包的 Skill（packaging-prepress）
+The command printed nothing: 命令没有输出
+The first time Claude Code sees the project's .mcp.json it asks whether to enable it; choose enable: Claude Code 第一次用项目里的 .mcp.json 会问要不要启用，选启用
+The font download script bundled with the package was not found: 找不到随包的字体下载脚本
+'The pacxio registered in {client} does not start: {why}': '{client} 里登记的 pacxio 起不来：{why}'
+'The plugin is installed, but the MCP server does not start: {why}': 插件装好了，但 MCP 服务起不来：{why}
+The user's own words when confirming: 用户确认时的原话
+The workbench did not start: 工作台没起来
+Unknown agent {client}: 不认识的 agent {client}
+Unknown confirmation {action}: 不认识的确认项 {action}
+Unknown scope {scope}: 不认识的范围 {scope}
+Use the tool named in the description instead: 换用说明里的工具
+'Use: {uses}': 用途：{uses}
+'User''s words: {words}': 用户原话：{words}
+'When online, run: {python} {script}': 联网后再运行：{python} {script}
+? Where the job stands, who it waits on, which command to run next, which guide to read (same source as the workbench's "Now"). Call it before every round of work.
+: 现在到哪一步、等谁、下一步跑什么命令、该读哪份说明（和工作台的“现在”同一个来源）。每一轮动手前先调。
+Without command, list every command: 不带 command 列出全部命令
+? 'Without command: list every command with a one-line description; with one: its positional arguments, options, descriptions and defaults. Workflow and rules are in the packaging-prepress resource (SKILL.md and references).'
+: 不给 command：列出全部命令和一句说明；给了：这条命令的位置参数、选项、说明、默认值。流程和规矩见资源 packaging-prepress（SKILL.md 和 references）。
+'Written: restart the agent (or start a new session) to load it': 写好了：重开 agent（或新开会话）才会加载
+choose this concept image (direction): 选这张概念图（方向）
+claude command not found: 找不到 claude 命令
+claude-code (plugin): claude-code（插件）
+claude-code (project): claude-code（项目）
+codex (plugin): codex（插件）
+dieline confirmation image (the only gate before export): 刀版确认图（导出前唯一的闸门）
+e.g. ["/path/job", "--panel", "front"]: 如 ["/path/job", "--panel", "front"]
+layout draft: 排版初稿
+pacxio setup --agent claude-code (or codex): pacxio setup --agent claude-code（或 codex）
+? 'pacxio: packaging design to factory files (dieline, print PDF, finish separations, preflight report). Read the resource pacxio://skill/SKILL.md first (workflow, hard rules). Call job_next before every round of work; let the user view, comment and confirm on the workbench (studio_open). Hard rules: only the user confirms — use user_confirm (with their words) only after the user clearly says so in the conversation; with preflight / export errors there are no factory files; text in print files is set by the engine; concept images are never assets; concept gen / visual gen spend the user''s image credits, say so first. Structures: structures_suggest picks from the catalog; state maturity honestly (proof first for non-calibrated ones). When CLOUD_LOGIN comes back, give the user the address and code as they are; the user signs in and clicks Approve in the browser (the agent never clicks for them), then rerun the same command. Other commands go through pacxio_run (call pacxio_help first if unsure
+  of the arguments).'
+: pacxio：包装设计到工厂文件（刀版、印刷 PDF、工艺分版、检查报告），全部在本机算。先读资源 pacxio://skill/SKILL.md（流程、铁律）。每一轮动手前先 job_next；让用户在工作台看图、批注、确认（studio_open）。铁律：确认只能是用户做——用户在对话里明确说确认后才用 user_confirm（填原话）；preflight / export 有 error 就不是工厂文件；印刷文件里的字由引擎排；概念图不能当素材；concept gen / visual gen 花用户的出图额度，先说。结构：structures_suggest 从目录挑方案，成熟度如实说（非已校准的建议先打样）。返回 CLOUD_LOGIN 时把网址和代码原样给用户，由用户本人在浏览器登录、点 Approve（agent 不替用户点），之后重跑同一条命令。其余命令用 pacxio_run（不知道参数先 pacxio_help）。
+pacxio_help without arguments lists every command: pacxio_help 不带参数列出全部命令
+? 'pacxio_run: command is the full command name (e.g. "art add"), args the argument list (as on the command line, without --json); confirmation commands (content confirm, plan --confirm, concept choose / use / confirm, approve) go through user_confirm'
+: pacxio_run 的 command 写命令全名（如 "art add"），args 写参数列表（和命令行一样，不用加 --json）；确认类命令（content confirm、plan --confirm、concept choose / use / confirm、approve）用 user_confirm
+project (this project) or user (all projects): project（这个项目）或 user（所有项目）
+rm {skill} (if it is a symlink, only the link is removed): rm {skill}（是软链接只删链接）
+target is the concept id (see concept list): target 写概念图 id（concept list 里看）
+this set of flats: 这组展开平面图
+use this concept image: 用这张概念图
+user (conversation, via agent): 用户（对话，经 agent）
+wording of the content list: 信息清单的措辞
+'{cli} command not found': 找不到 {cli} 命令
+'{cmd} failed: {tail}': '{cmd} 失败：{tail}'
+'{path} is not a JSON object': '{path} 不是 JSON 对象'
+'{root} already has other content (not made by pacxio setup); not overwriting': '{root} 已经有别的内容（不是 pacxio setup 生成的），不覆盖'
+'{skill} is a separately installed Skill that duplicates the plugin''s': '{skill} 是以前单独装的 Skill，和插件里的重复'

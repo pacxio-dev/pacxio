@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="296.92mm" height="304.46mm" viewBox="-10 -10 296.92 304.46">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_glue_back" data-type="crease" d="M15 246.96 L15 66.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_side_a" data-type="crease" d="M95.48 246.72 L95.48 66.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_front" data-type="crease" d="M145.96 246.72 L145.96 66.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_side_b" data-type="crease" d="M226.44 246.72 L226.44 66.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_top_lid" data-type="crease" d="M15 66.48 L95.48 66.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_top_lid_tuck" data-type="crease" d="M23.24 16 L87.24 16" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_dust_ta" data-type="crease" d="M96.48 66.72 L144.96 66.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_dust_tb" data-type="crease" d="M227.44 66.72 L275.92 66.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_btm_back" data-type="crease" d="M15.74 246.96 L94.74 246.96" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_btm_sa" data-type="crease" d="M95.48 246.72 L145.22 246.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_btm_front" data-type="crease" d="M146.7 246.96 L225.7 246.96" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_btm_sb" data-type="crease" d="M227.18 246.72 L276.92 246.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M0 226.96 A20.8333 20.8333 0 0 0 15 246.96 L15.74 246.96 L15.74 284.46 L37.24 284.46 L37.24 273.21 L73.24 273.21 L73.24 284.46 L94.74 284.46 L94.74 246.96 L95.48 246.96 L95.48 246.72 L118.196 265.47 L115.196 271.72 L145.22 271.72 L145.22 246.72 L145.96 246.72 L145.96 246.96 L146.7 246.96 L169.4 272.46 L169.4 281.46 A3 3 0 0 0 172.4 284.46 L200 284.46 A3 3 0 0 0 203 281.46 L203 272.46 L225.7 246.96 L226.44 246.96 L226.44 246.72 L227.18 246.72 L227.18 271.72 L257.204 271.72 L254.204 265.47 L276.92 246.72 L276.92 66.72 L275.92 66.72 L273.8 64.6 L271.92 34.72 L241.2533 34.72 A6.2546 6.2546 0 0 0 235.1522 39.5973 L230.27 61.2233 L227.44 64.0533 L227.44 66.72 L226.44 66.72 L226.44 66.48 L145.96 66.48 L145.96 66.72 L144.96 66.72 L144.96 64.0533 L142.13 61.2233 L137.2478 39.5973 A6.2546 6.2546 0 0 0 131.1467 34.72 L100.48 34.72 L98.6 64.6 L96.48 66.72 L95.48 66.72 L95.48 66.48 L95.48 16 L95.24 16 L95.24 5 A5 5 0 0 0 90.24 0 L20.24 0 A5 5 0 0 0 15.24 5 L15.24 16 L15 16 L15 66.48 L0 71.48 L0 226.96" fill="none" stroke="#d40000"/>
+<path id="cut_top_tuck_slit_l" data-type="cut" d="M15.24 15.52 L23.24 15.52 L23.24 16" fill="none" stroke="#d40000"/>
+<path id="cut_top_tuck_slit_r" data-type="cut" d="M95.24 15.52 L87.24 15.52 L87.24 16" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="7.5" y="156.72" font-size="4" text-anchor="middle" fill="#888">glue</text>
+<text x="55.24" y="156.72" font-size="4" text-anchor="middle" fill="#888">back</text>
+<text x="120.72" y="156.72" font-size="4" text-anchor="middle" fill="#888">side_a</text>
+<text x="186.2" y="156.72" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="251.68" y="156.72" font-size="4" text-anchor="middle" fill="#888">side_b</text>
+<text x="55.24" y="41" font-size="4" text-anchor="middle" fill="#888">top_lid</text>
+<text x="55.24" y="8" font-size="4" text-anchor="middle" fill="#888">top_tuck</text>
+<text x="120.72" y="50.72" font-size="4" text-anchor="middle" fill="#888">dust_ta</text>
+<text x="251.68" y="50.72" font-size="4" text-anchor="middle" fill="#888">dust_tb</text>
+<text x="55.24" y="265.71" font-size="4" text-anchor="middle" fill="#888">btm_back</text>
+<text x="120.35" y="259.22" font-size="4" text-anchor="middle" fill="#888">btm_sa</text>
+<text x="186.2" y="265.71" font-size="4" text-anchor="middle" fill="#888">btm_front</text>
+<text x="252.05" y="259.22" font-size="4" text-anchor="middle" fill="#888">btm_sb</text>
+</g>
+</svg>

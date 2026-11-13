@@ -1,0 +1,29 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+out/
+jobs/
+fonts/
+*.icc
+*.icm
+
+# 客户需求文档与素材（和 jobs/ 一样，不进仓库）
+briefs/
+# agent 的临时脚本和本地笔记
+tmp/
+.learnings/
+# 系统与打包产物
+.DS_Store
+*.egg-info/
+dist/
+build/
+
+# 本机浏览器验证截图与会话
+.playwright-cli/
+output/playwright/
+
+# 本机 MCP 登记（pacxio mcp install 写的，里面是本机 Python 路径）
+.mcp.json

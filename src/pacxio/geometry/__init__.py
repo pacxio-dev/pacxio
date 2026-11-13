@@ -1,0 +1,51 @@
+"""刀版几何：只用直线和圆弧（规格 D4）。"""
+
+from pacxio.geometry.bridge import (
+    affine_geom,
+    outline_shape,
+    path_to_polygon,
+    polygon_to_path,
+    polygons_of,
+    split_loops,
+)
+from pacxio.geometry.primitives import (
+    EPS,
+    TOL,
+    Affine,
+    Path,
+    Segment,
+    Vec,
+    arc_segment,
+    bbox_of,
+    bulge_from_angle,
+    lerp,
+    mm_to_px,
+    polyline_area,
+    px_to_mm,
+    snap,
+    vec,
+)
+
+__all__ = [
+    "affine_geom",
+    "outline_shape",
+    "split_loops",
+    "path_to_polygon",
+    "polygon_to_path",
+    "polygons_of",
+    "EPS",
+    "TOL",
+    "Affine",
+    "Path",
+    "Segment",
+    "Vec",
+    "arc_segment",
+    "bbox_of",
+    "bulge_from_angle",
+    "lerp",
+    "mm_to_px",
+    "polyline_area",
+    "px_to_mm",
+    "snap",
+    "vec",
+]

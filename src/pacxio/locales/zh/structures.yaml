@@ -1,0 +1,73 @@
+' (common when using folding carton board for a corrugated structure)': （卡纸做瓦楞结构时常见）
+'; ': ；
+'Available box styles: {styles}': 可用盒型：{styles}
+Base tray: 地盒 base
+Calibrated against a reference dieline: 已校准（对过参考刀版）
+Can be opened and closed repeatedly: 能反复开合
+Check the --profile name: 检查 --profile 名称
+Check the crease coordinates against the panel polygon: 检查压线坐标与面多边形是否一致
+Check the cutout position parameters, including slots, notches, and flap depths: 检查切口位置参数（锁槽、缺口与翼深）
+Check the outer outlines in the box style generator: 检查盒型生成代码的外轮廓
+Check the outline endpoints in the box style generator: 检查盒型生成代码的外轮廓端点
+Check the style's dimension conversion and compensation factors: 检查盒型的尺寸换算与补偿系数
+Check whether the parameters cause flaps or tabs to overlap: 检查参数是否使翼/舌相互重叠
+Closes without tape or glue: 不用胶带 / 胶就能合上
+'Closure: {closure}': 怎么合上：{closure}
+Common custom combination with provisional dimensions estimated from samples or descriptions. Make a physical sample.: 常用组合（按实物
+  / 描述推的比例，自定义结构）、数值【初值】，建议打样
+Commonly made by factories and easy to quote: 工厂常做、好报价
+Correct the listed fields in job.json. Remove any extra text after the JSON object.: 按上面说的字段改 job.json；文件末尾多出来的字符（JSON 拼了两份）删掉多余部分
+'Could not find {filename} (searched: {paths})': 找不到 {filename}（已查找：{paths}）
+Crease {edge} does not lie entirely on the boundary of panel {panel}: 压线 {edge} 没有完整落在面 {panel} 的边界上
+Crease {edge} extends outside panel {panel}: 压线 {edge} 跑出了面 {panel}
+Crease {edge} must have exactly two adjoining panels: 压线 {edge} 两侧面数不是 2
+Custom set generated from the recipe: 自定义组合（引擎按配方生成）
+Custom structure generated from the recipe: 自定义结构（引擎按配方生成）
+Duplicate segment ({edge}): 存在重复线段（{edge}）
+Entire file: 整个文件
+Entire input: 整个输入
+Extra inputs are not permitted: 不允许额外字段
+Field required: 必填
+Inner tray: 内托 tray
+Input should be a finite number: 输入须为有限数值
+Input should be a valid boolean: 输入须为布尔值
+Input should be a valid boolean, unable to interpret input: 无法把输入解析为布尔值
+Input should be a valid dictionary: 输入须为对象
+Input should be a valid integer: 输入须为整数
+Input should be a valid integer, got a number with a fractional part: 输入须为整数，当前值有小数部分
+Input should be a valid integer, unable to parse string as an integer: 无法把输入解析为整数
+Input should be a valid list: 输入须为列表
+Input should be a valid number: 输入须为数值
+Input should be a valid number, unable to parse string as a number: 无法把输入解析为数值
+Input should be a valid string: 输入须为字符串
+Input should be greater than or equal to {ge}: 输入须大于或等于 {ge}
+Input should be greater than {gt}: 输入须大于 {gt}
+Input should be less than or equal to {le}: 输入须小于或等于 {le}
+Input should be less than {lt}: 输入须小于 {lt}
+Input should be {expected}: 输入须为 {expected}
+Internal cut {edge} extends beyond the outer outline: 内部切口 {edge} 超出外轮廓
+'Invalid JSON: {error}': JSON 无效：{error}
+Lid tray: 天盖 lid
+No folding plan: 没有折法
+Panel {panel} measures {width:.3f}×{height:.3f}, expected {expected_width:.3f}×{expected_height:.3f}: 面 {panel} 量得 {width:.3f}×{height:.3f}，参数要求
+  {expected_width:.3f}×{expected_height:.3f}
+Remove the duplicate line: 删除重复的线
+Run `pacxio job init <dir> ...` to create a job: 先运行 `pacxio job init <dir> ...` 创建 job
+Standard structure with provisional dimensions inferred from the catalogue drawing. Make a physical sample.: 标准款，按目录示意图推读、数值【初值】，建议打样
+Standard structure with provisional values inferred from the catalogue drawing: 标准结构（按目录示意图推读，数值【初值】）
+'Style names may only contain letters, numbers, underscores, and hyphens: {name!r}': 样式名只能用字母、数字、下划线、连字符：{name!r}
+The cut outline is open: 裁切轮廓未闭合
+The cut outline is self-intersecting or invalid: 裁切轮廓自交或无效
+The outer outlines of the blanks overlap: 几块料的外轮廓互相重叠
+The panel outlines overlap and cannot form a valid dieline: 面和面的轮廓互相交叠，几何做不出来
+'Uses: {uses}': 用途：{uses}
+Value error, {error}: 值无效：{error}
+a closed box: 封口
+bottom: 底
+only {count} open sides: 只开 {count} 面
+top: 顶
+'{face} ({ratio:.0%} of rays escape)': '{face}（{ratio:.0%} 的射线漏出）'
+'{filename} is invalid ({count} errors): ': '{filename} 无效：{count} 处错误：'
+'{filename} not found in {directory}': 找不到 {filename}：{directory}
+'{part}: ': '{part}：'
+'{part}: {message}': '{part}：{message}'

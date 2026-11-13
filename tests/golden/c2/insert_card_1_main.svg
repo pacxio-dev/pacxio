@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="180mm" height="170mm" viewBox="-10 -10 180 170">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_platform_front" data-type="crease" d="M0 125 L160 125" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_platform_back" data-type="crease" d="M0 25 L160 25" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M0 150 L160 150 L160 0 L0 0 L0 150" fill="none" stroke="#d40000"/>
+<path id="cut_product_1" data-type="cut" d="M52.5 91.6667 A12.5 12.5 0 0 0 40 79.1667 A12.5 12.5 0 0 0 27.5 91.6667 A12.5 12.5 0 0 0 40 104.1667 A12.5 12.5 0 0 0 52.5 91.6667" fill="none" stroke="#d40000"/>
+<path id="cut_product_2" data-type="cut" d="M92.5 91.6667 A12.5 12.5 0 0 0 80 79.1667 A12.5 12.5 0 0 0 67.5 91.6667 A12.5 12.5 0 0 0 80 104.1667 A12.5 12.5 0 0 0 92.5 91.6667" fill="none" stroke="#d40000"/>
+<path id="cut_product_3" data-type="cut" d="M132.5 91.6667 A12.5 12.5 0 0 0 120 79.1667 A12.5 12.5 0 0 0 107.5 91.6667 A12.5 12.5 0 0 0 120 104.1667 A12.5 12.5 0 0 0 132.5 91.6667" fill="none" stroke="#d40000"/>
+<path id="cut_product_4" data-type="cut" d="M52.5 58.3333 A12.5 12.5 0 0 0 40 45.8333 A12.5 12.5 0 0 0 27.5 58.3333 A12.5 12.5 0 0 0 40 70.8333 A12.5 12.5 0 0 0 52.5 58.3333" fill="none" stroke="#d40000"/>
+<path id="cut_product_5" data-type="cut" d="M92.5 58.3333 A12.5 12.5 0 0 0 80 45.8333 A12.5 12.5 0 0 0 67.5 58.3333 A12.5 12.5 0 0 0 80 70.8333 A12.5 12.5 0 0 0 92.5 58.3333" fill="none" stroke="#d40000"/>
+<path id="cut_product_6" data-type="cut" d="M132.5 58.3333 A12.5 12.5 0 0 0 120 45.8333 A12.5 12.5 0 0 0 107.5 58.3333 A12.5 12.5 0 0 0 120 70.8333 A12.5 12.5 0 0 0 132.5 58.3333" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="80" y="75" font-size="4" text-anchor="middle" fill="#888">platform</text>
+<text x="80" y="137.5" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="80" y="12.5" font-size="4" text-anchor="middle" fill="#888">back</text>
+</g>
+</svg>

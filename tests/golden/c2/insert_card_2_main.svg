@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="240mm" height="240mm" viewBox="-10 -10 240 240">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_platform_front" data-type="crease" d="M0 185 L220 185" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_platform_back" data-type="crease" d="M0 35 L220 35" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M0 220 L220 220 L220 0 L0 0 L0 220" fill="none" stroke="#d40000"/>
+<path id="cut_product_1" data-type="cut" d="M43 145 L67 145 A3 3 0 0 0 70 142 L70 128 A3 3 0 0 0 67 125 L43 125 A3 3 0 0 0 40 128 L40 142 A3 3 0 0 0 43 145" fill="none" stroke="#d40000"/>
+<path id="cut_product_2" data-type="cut" d="M98 145 L122 145 A3 3 0 0 0 125 142 L125 128 A3 3 0 0 0 122 125 L98 125 A3 3 0 0 0 95 128 L95 142 A3 3 0 0 0 98 145" fill="none" stroke="#d40000"/>
+<path id="cut_product_3" data-type="cut" d="M153 145 L177 145 A3 3 0 0 0 180 142 L180 128 A3 3 0 0 0 177 125 L153 125 A3 3 0 0 0 150 128 L150 142 A3 3 0 0 0 153 145" fill="none" stroke="#d40000"/>
+<path id="cut_product_4" data-type="cut" d="M43 95 L67 95 A3 3 0 0 0 70 92 L70 78 A3 3 0 0 0 67 75 L43 75 A3 3 0 0 0 40 78 L40 92 A3 3 0 0 0 43 95" fill="none" stroke="#d40000"/>
+<path id="cut_product_5" data-type="cut" d="M98 95 L122 95 A3 3 0 0 0 125 92 L125 78 A3 3 0 0 0 122 75 L98 75 A3 3 0 0 0 95 78 L95 92 A3 3 0 0 0 98 95" fill="none" stroke="#d40000"/>
+<path id="cut_product_6" data-type="cut" d="M153 95 L177 95 A3 3 0 0 0 180 92 L180 78 A3 3 0 0 0 177 75 L153 75 A3 3 0 0 0 150 78 L150 92 A3 3 0 0 0 153 95" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="110" y="110" font-size="4" text-anchor="middle" fill="#888">platform</text>
+<text x="110" y="202.5" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="110" y="17.5" font-size="4" text-anchor="middle" fill="#888">back</text>
+</g>
+</svg>

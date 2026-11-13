@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1467mm" height="665mm" viewBox="-10 -10 1467 665">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_glue_back" data-type="crease" d="M35 401 L35 155" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_side_a" data-type="crease" d="M439 405 L439 151" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_front" data-type="crease" d="M743 405 L743 151" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_side_b" data-type="crease" d="M1147 405 L1147 151" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_top" data-type="crease" d="M39 151 L435 151" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_top" data-type="crease" d="M443 151 L739 151" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_top" data-type="crease" d="M747 151 L1143 151" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_top" data-type="crease" d="M1151 151 L1443 151" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_btm_back" data-type="crease" d="M37.5 405 L439 405" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_btm_back_glue_back" data-type="crease" d="M424.19 419.81 L287 557" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_btm_sa" data-type="crease" d="M439 405 L743 405" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_btm_front" data-type="crease" d="M745.5 405 L1147 405" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_btm_front_glue_front" data-type="crease" d="M1132.19 419.81 L995 557" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_btm_sb" data-type="crease" d="M1147 405 L1447 405" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M0 391.6218 L35 401 L35 405 L37.5 405 L58.4973 645 L153 645 L237 561 L237 557 L287 557 L375 645 L436 645 L436 431.62 L424.19 419.81 L439 405 L494.3235 557 L591 557 L743 405 L745.5 405 L766.4973 645 L861 645 L945 561 L945 557 L995 557 L1083 645 L1144 645 L1144 431.62 L1132.19 419.81 L1147 405 L1202.3235 557 L1295 557 L1447 405 L1447 151 L1443 151 L1443 0 L1151 0 L1151 151 L1143 151 L1143 0 L747 0 L747 151 L739 151 L739 0 L443 0 L443 151 L435 151 L435 0 L39 0 L39 151 L35 151 L35 155 L0 164.3782 L0 391.6218" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="17.5" y="278" font-size="4" text-anchor="middle" fill="#888">glue</text>
+<text x="237" y="278" font-size="4" text-anchor="middle" fill="#888">back</text>
+<text x="591" y="278" font-size="4" text-anchor="middle" fill="#888">side_a</text>
+<text x="945" y="278" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="1297" y="278" font-size="4" text-anchor="middle" fill="#888">side_b</text>
+<text x="237" y="75.5" font-size="4" text-anchor="middle" fill="#888">top_back</text>
+<text x="591" y="75.5" font-size="4" text-anchor="middle" fill="#888">top_side_a</text>
+<text x="945" y="75.5" font-size="4" text-anchor="middle" fill="#888">top_front</text>
+<text x="1297" y="75.5" font-size="4" text-anchor="middle" fill="#888">top_side_b</text>
+<text x="238.25" y="525" font-size="4" text-anchor="middle" fill="#888">btm_back</text>
+<text x="361.5" y="532.405" font-size="4" text-anchor="middle" fill="#888">glue_back</text>
+<text x="591" y="481" font-size="4" text-anchor="middle" fill="#888">btm_sa</text>
+<text x="946.25" y="525" font-size="4" text-anchor="middle" fill="#888">btm_front</text>
+<text x="1069.5" y="532.405" font-size="4" text-anchor="middle" fill="#888">glue_front</text>
+<text x="1297" y="481" font-size="4" text-anchor="middle" fill="#888">btm_sb</text>
+</g>
+</svg>

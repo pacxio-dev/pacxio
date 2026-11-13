@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="studio-token" content="{{TOKEN}}">
+<meta name="studio-version" content="{{VERSION}}">
+<title data-l10n="text">pacxio Workbench</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header id="top">
+  <span class="logo" aria-label="pacxio">
+    <svg class="logo-word" viewBox="24 19.7 666 211.3" width="96" height="30.5" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M24 65 L114 65 L136 87 L136 163 L114 185 L48 185 L48 231 L24 231ZM104.06 89 L112 96.94 L112 153.06 L104.06 161 L48 161 L48 89ZM266 185 L266 87 L244 65 L164 65 L164 89 L234.06 89 L242 96.94 L242 113 L176 113 L154 135 L154 163 L176 185ZM185.94 137 L242 137 L242 161 L185.94 161 L178 153.06 L178 144.94ZM384 65 L306 65 L284 87 L284 163 L306 185 L384 185 L384 161 L315.94 161 L308 153.06 L308 96.94 L315.94 89 L384 89ZM534 65 L558 65 L558 185 L534 185ZM546 19.72 L563.28 37 L546 54.28 L528.72 37ZM600 65 L668 65 L690 87 L690 163 L668 185 L600 185 L578 163 L578 87ZM609.94 89 L658.06 89 L666 96.94 L666 153.06 L658.06 161 L609.94 161 L602 153.06 L602 96.94ZM462.24 99.54 L483.46 120.76 L518 86.21 L518 74.9 L508.1 65 L496.79 65ZM483.46 129.24 L462.24 150.46 L496.79 185 L508.1 185 L518 175.1 L518 163.79ZM453.76 150.46 L432.54 129.24 L398 163.79 L398 175.1 L407.9 185 L419.21 185ZM432.54 120.76 L453.76 99.54 L419.21 65 L407.9 65 L398 74.9 L398 86.21Z"/><path fill="var(--accent)" fill-rule="evenodd" d="M458 103.79 L479.21 125 L458 146.21 L436.79 125Z"/></svg>
+    <svg class="logo-mark" viewBox="16 16 224 224" width="22" height="22" aria-hidden="true"><path fill="var(--accent)" fill-rule="evenodd" d="M128 86.99 L169.01 128 L128 169.01 L86.99 128ZM138.61 76.38 L179.62 117.39 L240 57.01 L198.99 16ZM179.62 138.61 L138.61 179.62 L198.99 240 L240 198.99ZM117.39 179.62 L76.38 138.61 L16 198.99 L57.01 240ZM76.38 117.39 L117.39 76.38 L57.01 16 L16 57.01Z"/></svg>
+  </span>
+  <span class="name" id="job-name" data-l10n="text">Workbench</span>
+  <span class="meta" id="job-meta"></span>
+  <button class="btn" id="edit-structure" hidden title="Change dimensions, material, or structural details and preview the dieline and folded box" data-l10n="title text">Edit structure</button>
+  <span class="grow"></span>
+  <span class="live" id="live" data-l10n="text">Connecting…</span>
+  <button class="lang" id="language-toggle" type="button" hidden></button>
+</header>
+
+<main id="canvas" aria-label="Canvas" data-l10n="aria-label">
+  <div id="world"></div>
+  <div class="canvas-top">
+  <div class="tools-bar" id="tools" role="toolbar" aria-label="Tools" data-l10n="aria-label">
+    <button data-tool="move" class="on" title="Pan the canvas (V)" data-l10n="title text">Pan</button>
+    <button data-tool="pin" title="Click an image to add a note (P)" data-l10n="title text">Pin</button>
+    <button data-tool="box" title="Drag over an area to add a note (B)" data-l10n="title text">Box</button>
+  </div>
+  </div>
+  <div class="banner" id="banner" hidden></div>
+  <div id="minimap" title="Click to jump to this area" data-l10n="title"></div>
+  <div id="zoomctl">
+    <button id="zoom-sharp" class="sharp" hidden title="The proof preview is 100 DPI. Zoom in and click to see the visible area at 200 DPI with a watermark. Requests per image are limited." data-l10n="title text">Zoom for detail</button>
+    <button id="fit-all" class="fit" title="Fit everything on the canvas (0)" data-l10n="title text">Fit all</button>
+    <button id="zoom-out" title="Zoom out (-)" data-l10n="title">−</button>
+    <span class="pct" id="zoom-pct">100%</span>
+    <button id="zoom-in" title="Zoom in (+)" data-l10n="title">+</button>
+  </div>
+</main>
+
+<aside id="side">
+  <nav class="tabs" role="tablist">
+    <button data-tab="flow" class="on" data-l10n="text">Flow</button>
+    <button data-tab="issues"><span data-l10n="text">Issues</span><span class="count" id="issue-count" hidden></span></button>
+    <button data-tab="notes"><span data-l10n="text">Notes</span><span class="count" id="note-count" hidden></span></button>
+    <button data-tab="files" data-l10n="text">Files</button>
+  </nav>
+  <section class="pane on" id="pane-flow"></section>
+  <section class="pane" id="pane-issues"></section>
+  <section class="pane" id="pane-notes"></section>
+  <section class="pane" id="pane-files"></section>
+</aside>
+
+<div id="composer" class="popup" hidden>
+  <div class="b-where" id="composer-where"></div>
+  <textarea id="composer-text" rows="3" placeholder="What needs to change? (⌘↵ to save, Esc to cancel)" data-l10n="placeholder"></textarea>
+  <div class="b-actions">
+    <button class="btn primary" id="composer-save" data-l10n="text">Save</button>
+    <button class="btn" id="composer-cancel" data-l10n="text">Cancel</button>
+  </div>
+  <div class="b-err" id="composer-err"></div>
+</div>
+<div id="bubble" class="popup" hidden></div>
+<div id="toast" hidden></div>
+<div id="confirm" hidden role="dialog" aria-modal="true"><div class="dialog"></div></div>
+<div id="struct-editor" hidden role="dialog" aria-modal="true" aria-label="Edit structure" data-l10n="aria-label">
+  <header class="se-head">
+    <span class="se-title" data-l10n="text">Edit structure</span>
+    <span class="se-maturity" id="se-maturity"></span>
+    <span class="grow"></span>
+    <button class="btn" id="se-close" data-l10n="text">Close</button>
+  </header>
+  <div class="se-body">
+    <aside class="se-left">
+      <nav class="se-tabs" role="tablist">
+        <button data-se-tab="basic" class="on" data-l10n="text">Basic</button>
+        <button data-se-tab="advanced" data-l10n="text">Advanced</button>
+      </nav>
+      <div class="se-pane" id="se-basic"></div>
+      <div class="se-pane" id="se-advanced" hidden></div>
+    </aside>
+    <main class="se-center">
+      <div class="se-info" id="se-info"></div>
+      <div class="se-canvas" id="se-canvas" title="Scroll to zoom, drag to pan, or double-click to fit" data-l10n="title">
+        <div class="se-stage" id="se-stage">
+          <div id="se-dieline" class="se-vec" role="img" aria-label="Dieline" data-l10n="aria-label"></div>
+          <svg id="se-hl" aria-hidden="true"></svg>
+          <svg id="se-dims" aria-hidden="true"></svg>
+        </div>
+        <div class="se-zoom">
+          <button class="btn" id="se-zoom-in" title="Zoom in" data-l10n="title">＋</button>
+          <button class="btn" id="se-zoom-out" title="Zoom out" data-l10n="title">−</button>
+          <button class="btn" id="se-zoom-fit" title="Fit the entire dieline" data-l10n="title text">Fit</button>
+          <label class="se-dimtoggle"><input type="checkbox" id="se-show-dims" checked> <span data-l10n="text">Dimensions</span></label>
+        </div>
+      </div>
+    </main>
+    <aside class="se-right">
+      <div class="se-3d">
+        <div class="se-3d-host" id="se-3d-host"></div>
+        <img id="se-folded" alt="Folded preview" hidden data-l10n="alt">
+        <div class="se-fold">
+          <span data-l10n="text">Unfolded</span>
+          <input type="range" id="se-fold" min="0" max="1000" value="1000" aria-label="Folding progress" data-l10n="aria-label">
+          <span data-l10n="text">Assembled</span>
+        </div>
+        <div class="se-3d-btns">
+          <button class="btn" id="se-play" data-l10n="text">Play folding</button>
+          <button class="btn" id="se-view-reset" data-l10n="text">Reset view</button>
+        </div>
+        <div class="se-hint" data-l10n="text">Drag to rotate, scroll to zoom</div>
+      </div>
+      <div class="se-status" id="se-status"></div>
+      <div class="se-btns">
+        <button class="btn primary" id="se-save" data-l10n="text">Save</button>
+        <button class="btn" id="se-undo" data-l10n="text">Undo changes</button>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script type="module" src="/static/app.js"></script>
+</body>
+</html>

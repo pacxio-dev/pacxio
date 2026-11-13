@@ -1,0 +1,631 @@
+? "\n    fix: {fix}"
+: "\n    修复：{fix}"
+? "\n    suggestion: {fix}"
+: "\n    建议：{fix}"
+? '
+
+  Automatic values that follow the size:'
+: '
+
+  尺寸变了跟着变的自动值：'
+? '
+
+  Lines: '
+: '
+
+  线：'
+? '
+
+  {title}:'
+: '
+
+  {title}：'
+'    front: {front}; back: {back}; sides: {sides}': '    正面：{front}；背面：{back}；侧面：{sides}'
+'    snapshot: {path}': '    截图：{path}'
+'    where: {where}': '    位置：{where}'
+'    {by}: {text}': '    {by}：{text}'
+'    {name}: default {default}': '    {name}: 默认 {default}'
+'  (old version, not in use)': '  （旧版，没在用）'
+'  ({flags})': '  （{flags}）'
+'  created {path}': '  生成 {path}'
+'  error [{id}] {message}': '  错误 [{id}] {message}'
+'  glue: {panels} ({areas} glue areas)': '  糊胶：{panels}（粘合区 {areas} 处）'
+'  placed: {by}': '  已放：{by}'
+'  usual: {faces}': '  常规：{faces}'
+'  warning [{id}] {message}': '  警告 [{id}] {message}'
+'  {end}: {kind}': '  {end}：{kind}'
+'  {face:8} source pixel box {box}  proportion error {err:+.1%}': '  {face:8} 原图像素框 {box}  比例误差 {err:+.1%}'
+'  {face:<8} {texts} text blocks, {boxes} images / graphics / placeholders': '  {face:<8} 文字 {texts} 段，图片 / 图形 / 占位 {boxes} 个'
+'  {hex}  share {share:.0%}  CMYK≈{cmyk}': '  {hex}  占比 {share:.0%}  CMYK≈{cmyk}'
+'  {id:<10} {name}: {description}{flag}': '  {id:<10} {name}：{description}{flag}'
+'  {name:<10}{lab} {font} {size:g}pt  used by: {used}': '  {name:<10}{lab} {font} {size:g}pt  用于：{used}'
+'  {name} ({common_for})': '  {name}（{common_for}）'
+'  {n} images in all; generate them first, then import:': '  共 {n} 张；先出图，出完再导入：'
+'  {path:<28} now {cur:<14} {span}  moves {n} places  {label}{tail}': '  {path:<28} 现在 {cur:<14} {span}  动到 {n} 处  {label}{tail}'
+'  {tab} goes into the slot on {slot}': '  {tab} 插进 {slot} 上的缝'
+'  ← chosen': '  ← 已选定'
+'  ← in use': '  ← 在用'
+' (initial values, not confirmed)': （初值，未确认）
+' (on {on})': （挂 {on}）
+' (orientation to be confirmed)': ' (方向待定)'
+' ({faces})': （{faces}）
+' ({label})': （{label}）
+' ({variant})': （{variant}）
+? (flat) Draw the body wrap (back | left | front | right) as one image (default for single-part styles; also forced when the wrap is longer than 3:1)
+: （flat）盒身一圈（背 | 左 | 正 | 右）画成一张（单部件盒型默认就是；一圈比 3:1 还细长时也强制）
+? '(flat) Each panel stands alone: the wrap / two-panel image states that graphics do not cross folds (for designs that are not continuous)'
+: （flat）各面各自成画：盒身一圈 / 两面一张里写明图形不跨折线（画面不连续的设计）
+'(flat) Single-part styles: back to two panels per image (front + right side, back + left side)': （flat）单部件盒型改回两面一张（正面 + 右侧、背面 + 左侧）
+? '(flat) Use a panel of the chosen design, straightened, as a composition reference: panel=concept_id:x0,y0,x1,y1,x2,y2,x3,y3 (top-left, top-right, bottom-right, bottom-left pixels of that panel upright in the image), repeatable'
+: （flat）选定设计里某个面拉正后当构图参考：面=概念图编号:x0,y0,x1,y1,x2,y2,x3,y3（图里这个面正立时左上、右上、右下、左下的像素），可多次给出
+'(main) Concept id, e.g. main-A (default: the next free id)': （main）概念图编号，如 main-A（默认下一个空编号）
+? (main) Put the parts of the layout brief plan/brief.txt for the panels seen in the main view (front, right side, top) into the prompt (route A, plan first)
+: （main）把版式简报 plan/brief.txt 里主视角看得到的面（正面、右侧、顶面）那几段写进提示词（路线 A，先 plan）
+'(main) Scene description (default: clean commercial product photography)': （main）拍摄场景描述（默认简洁的商业产品摄影）
+(main) Text that appears on the box, repeatable; the AI draws it as written: （main）盒子上要出现的文字，可多次给出，AI 会原样画出
+'--background must be #rrggbb': '--background 写成 #rrggbb'
+--clear can only be pending / asset / note / text, got {bad}: --clear 只能是 pending / asset / note / text，收到 {bad}
+'--corner-{key} must be a number or auto: {given}': --corner-{key} 要是数字或 auto：{given}
+--exclusions must be a JSON array: --exclusions 必须是 JSON 数组
+--hanging-indent must be auto or millimetres (e.g. 4.5; 0 = no indent), got {text!r}: --hanging-indent 要写 auto 或毫米数（如 4.5；0 = 不缩进），收到 {text!r}
+--note "" removes it: --note "" 去掉
+'--patch is not JSON: {error}': --patch 不是 JSON：{error}
+--patch must be a JSON object: --patch 要是 JSON 对象
+'--set must be path=value: {item}': --set 要写成 路径=值：{item}
+--set needs key=value: --set 需要 key=value
+--set needs key=value, got {item!r}: --set 需要 key=value，收到 {item!r}
+'--set path conflict: {path}': --set 路径冲突：{path}
+; "" removes it: ；"" 去掉
+; --note "" removes it: ；--note "" 去掉
+; back to horizontal with --clear vertical: ；改回横排用 --clear vertical
+; remove with --clear skew_x: ；去掉用 --clear skew_x
+; remove with --clear skew_y: ；去掉用 --clear skew_y
+; screen goes back to conventional: ；screen 改回常规
+? Add a brand font to job/fonts and read its license information. Text is outlined, so the delivery pack contains no font files.
+: 把品牌字体收进 job/fonts，读出授权信息。文字转曲后交付包里不含字体文件。
+Add a finish (named spot color, overprint) to job.json.: 增加一个工艺（命名专色、叠印），写进 job.json。
+Add a placement (fill / pattern / image / vector graphic / text) to job.json. Placements stack bottom to top in order.: 增加一个图文放置（底色 / 图案 / 图片 / 矢量图形 / 文字），写进 job.json。按顺序自下而上叠放。
+Add a sentence to the prompt (English): 给提示词多加一句（英文）
+'Add a window: the opening is an inside cut (film is applied later by the factory). Decide it before concept images.': 开一个窗：窗口是内部切线（贴窗是工厂的后续工序）。要在出概念图之前定。
+? 'Add an attachment (first version: metal badge, adhesive-backed, flat): not printed, no finish plate. Drawn in the confirmation image and 3D; the production files get a placement layer, the delivery pack a 1:1 artwork, and the spec sheet material, plating, thickness and position.'
+: "加一个配件（第一版只有金属标，背胶平贴）：不印、不出工艺版；确认图、3D 里画出来，生产文件\n    加贴标位置层，交付包附 1:1 图稿，规格书写材质、电镀色、厚度、位置。"
+Add an item.: 加一条信息。
+? Add the local MCP server to an agent. Without --yes it only previews; the original file is backed up before writing. Runs with this Python, so PATH does not matter.
+: 把本地 MCP 装进 agent：不加 --yes 只预览；写之前备份原文件。用当前这个 Python 跑，不依赖 PATH。
+'After the user has seen the comparison and agreed: switch to the fitted finish graphic': 用户看过对比图同意后：换成适配后的工艺图形
+Align repeated selling-point rows together; roll everything back if new preflight problems appear: 联动对齐重复卖点行；新增印前问题则全部退回
+Allow matching fonts already in this job; shared styles are not changed: 允许匹配当前 job 已有字体；不改共享样式
+'Also change fonts (default: only suggest); give it only after the user agrees': 连字体一起换（默认只报建议）：用户同意后才给
+Also make a 1:1 proof sheet: 同时生成 1:1 打样稿
+Also measure tracking of single-line text; multi-line paragraphs keep their tracking: 连单行文字的字距一起量；多行段落保持原字距
+Artwork placements: 图文放置
+Ask for a pure green background, keyed out later with --chroma-key: 要求纯绿背景，之后用 --chroma-key 抠图
+Asset file (bitmap for image / pattern, SVG for vector); copied into job/assets: 素材文件（image / pattern 位图，vector 为 SVG），会复制进 job/assets
+'Asset name (default: file name)': 素材名（默认取文件名）
+Asset path (relative to the job) or asset name: 素材路径（相对 job）或素材名
+Attachment id (see attach list): 配件 id（attach list 里看）
+Attachments (metal badges … made separately and fixed on at assembly; not printed, no finish plate): 配件（金属标……另做，组装时贴装；不印、不出工艺版）
+Back view or flat id, e.g. c2-back1: 背面视角或展开平面图的编号，如 c2-back1
+? 'Background color #hex (not traced); default: the background recorded by restore strip / face, else the most common color at the image edge; gradient: the background is a gradient, removed as a slowly changing background so only the illustration on top is traced (full-color tracing only)'
+: '背景色 #hex（不描）；不给时用 restore strip / face 记下的底色，再没有就按图边上最多的颜色猜；gradient：底是渐变，按慢慢变的底色抠掉、只描上面的插画（只用于全彩描）'
+'Background color #hex for --remove-bg (default: the most common color at the image edge)': '--remove-bg 的底色 #hex（不给取图边上最多的颜色）'
+Bitmap threshold 1–254: 位图二值化阈值 1–254
+'Body panel: front | back | side_a | side_b': 盒身面：front | back | side_a | side_b
+? 'Body wrap (--space body, origin at the front panel''s bottom left): {circ:g} mm around; {faces}; the seam (glue-flap edge) is at x={seam:g}'
+: 盒身展开（--space body，正面左下角为原点）：一圈 {circ:g} mm；{faces}；首尾接缝（糊口那条边）在 x={seam:g}
+? 'Box coordinates for image / vector: panel (panel-local, default) | body (around the box body, continuous across folds) | blank (whole unfolded blank)'
+: image / vector 的 box 坐标系：panel（面局部，默认）| body（盒身展开一圈，跨折线连续）| blank（整张展开图）
+Box style ID: 盒型 ID
+Box style library: 盒型库
+? 'Boxes x,y,w,h painted with the background before tracing (pixels, origin top left, repeatable): things drawn in the asset that should stay empty'
+: 描之前涂成底色的框 x,y,w,h（像素，左上角为原点，可重复）：素材里多画了要留空的东西
+Brand fonts (supplied by the user): 品牌字体（用户自带）
+'Build route: {route}': 生成路线：{route}
+? 'Build the body wrap: join the flat''s body panels at real size into one strip (text removed, folds removed at seams, small steps aligned), ready for visual trace.'
+: 拼盒身一圈：展开平面图的盒身各面按真实尺寸接成一条（去文字、接缝去折线、小台阶对齐），给 visual trace 描。
+CMYK in --colors: --colors 里的 CMYK
+CMYK percent c,m,y,k: CMYK 百分比 c,m,y,k
+CMYK percent c,m,y,k (fill / text; for vector the whole graphic prints in this color): CMYK 百分比 c,m,y,k（fill / text；vector 时整个图形印成这一色）
+Can be left out with --placement (uses that text's panel): 用 --placement 照一段文字时可省略（用那段文字的面）
+'Cannot read the recipe file: {error}': 配方文件读不出来：{error}
+Catalog details of one structure; with --L --W --H also prints its recipe.: 一款结构的目录信息；给了 --L --W --H 再附配方。
+'Category: brand / product_name / selling_point / usage / barcode …': 类别：brand / product_name / selling_point / usage / barcode …
+'Change a placement (position, style, color, shape …): id and stacking order stay; nothing changes if validation fails.': 修改一个放置（位置、样式、颜色、形状……）：id 与叠放次序不变；校验不过时不改动。
+Change an attachment.: 改一个配件。
+Change an item.: 改一条信息。
+Change material preset (the box switches between carton board and corrugated): 换材料预设（盒子在卡纸、瓦楞里换）
+? Change structure parameters (see structures editable), material or die corner radii and regenerate the dieline; existing confirmations expire.
+: 改结构参数（能改哪些看 structures editable）、换材料或调刀模圆角，重新生成刀版；已有确认会过期。
+? 'Change the liner of a corrugated job: the confirmation image and 3D show the board color (ink over kraft), and the spec sheet states it.'
+: 改瓦楞 job 的面纸：刀版确认图、3D 按纸色显示（油墨压在牛皮色上），规格书写明。
+Change the stacking order.: 调整叠放次序。
+Check dependencies, Ghostscript and profiles; report what is missing and how to install it.: 检查依赖、Ghostscript、配置档，输出缺什么、怎么装。
+Check the image for text with tesseract (optional, English only): 用 tesseract 检查图里是否有文字（可选，只识别英文）
+Choose one of --chroma-key (pure green) and --remove-bg (light plain background): --chroma-key（纯绿底）和 --remove-bg（浅色普通底）只能选一个
+Choose which category's reference table this job uses.: 指定这个 job 用哪个品类的常规参考表。
+'Clear fields, comma-separated: pending,asset,note,text': 清空字段，逗号分隔：pending,asset,note,text
+Clip shape SVG (e.g. rounded top-right): 裁切形状 SVG（如右上圆角）
+? Close a note. The user closes their own notes on the workbench; the agent uses this only when the user says in the conversation that the note can be closed.
+: 关掉一条批注。用户的批注由用户在工作台上关；只有用户在对话里明确说"这条可以关"时 agent 才用。
+Closing radius mm (fills gaps that are too narrow); default from the profile: 闭运算半径 mm（填掉太窄的缝）；不给按配置档自动定
+'Cloud compose service: sign in, sign out, status (server-side commands go there automatically in cloud mode)': 云端合成服务：登录、退出、状态（闭源命令在云端模式下自动转过去）
+'Comma-separated: print,finish,pdf,dxf,cf2,spec,report,preview,svg (default: the profile''s deliverables)': 逗号分隔：print,finish,pdf,dxf,cf2,spec,report,preview,svg（默认按配置档 deliverables）
+'Common layouts:': 常见版式：
+? Compare both ways with a local vector reference; writes a difference report and an overlay. Does not change the structure's verification level.
+: 与本地矢量参考双向比对，生成差异报告和叠图；不改变结构验证等级。
+? Compare panel by panel with the flat (for agents, flat/vs_flat_<panel>.png); --diff records differences, shown next to the dieline confirmation image on the workbench.
+: 和展开平面图逐面对照（agent 用，flat/vs_flat_<面>.png）；--diff 写差别，显示在工作台刀版确认图旁边。
+Concept id (default c1, c2 …): 概念图编号（默认 c1、c2……）
+Concept id, e.g. c13-flat-front: 概念图编号，如 c13-flat-front
+Concept id, e.g. c2: 概念图编号，如 c2
+? Concept image files (PNG / JPEG / WebP); for a flat you can give several candidates of the same image, only the most accurate proportion is imported
+: 概念图文件（PNG / JPEG / WebP）；展开平面图可以给同一张的几张备选，只导入比例最准的
+'Concept images: what the finished box should look like, drawn by AI to agree the design direction (never in print files)': 概念图：AI 画的成品样子，用来确认设计方向（不进入印刷文件）
+'Concept restore: confirmed flat → printable final artwork': 概念图还原：展开平面图 → 可印刷的正式稿
+? Confirm the dieline confirmation image (the only gate before export; run only when the user says so). Refused if the design changed after render or required content is missing.
+: 确认刀版确认图（导出前唯一的闸门；用户说了才跑）。设计在 render 之后改过、或必须出现的信息没齐，都不能确认。
+Construction options: 做法选项
+Content label: 信息标签
+Content label, e.g. brand / product name / net quantity (groups items on the confirmation page): 信息标签，如 品牌名 / 品名 / 净含量（效果图确认页按它归类）
+Content label, e.g. brand mark: 信息标签，如 品牌标识
+? Content labels that must appear, comma-separated, e.g. brand,product name,net quantity; confirmation is refused if one is missing
+: 必须出现的信息标签，逗号分隔，如 品牌名,品名,净含量；缺了就不能确认
+'Content list item id: the text (or graphic asset) comes from the list, so --text / --source are not needed': 引用信息清单的条目 id：文字（或图形素材）以清单为准，不用再写 --text / --source
+Content list item to use: 引用信息清单的条目
+Content list item to use (e.g. brand logo): 引用信息清单的条目（如品牌 Logo）
+? 'Content list: every piece of information on the pack (exact text, required / optional); the user confirms the wording before concept images'
+: 信息清单：包装上要出现的每一条信息（原文、必须 / 可选），出概念图前由用户确认措辞
+'Content list: {n} items ({conv}; wording {status})': 信息清单 {n} 条（{conv}；措辞{status}）
+'Copy layout draft: text per panel (plan/plan.md) + layout sketches (plan/wireframe.png, faces/, pairs/).': 文案排版初稿：按面文字稿（plan/plan.md）+ 版式示意图（plan/wireframe.png、faces/、pairs/）。
+Corner radius mm (rect only; default from the profile): 圆角半径 mm（只对 rect；默认取配置档）
+'Corrugated liner: kraft | white (default white)': 瓦楞的面纸：kraft 牛皮面纸 | white 白面纸（不给 = 白）
+? Create a job and generate its dieline (job.json + dieline.svg). --fefco / --ecma / --recipe / --combo use the geometry engine (style structure).
+: 创建 job 并生成刀版（job.json + dieline.svg）。--fefco / --ecma / --recipe / --combo 走几何引擎（盒型 structure）。
+Create an ordinary job from a design preset; size and material can be overridden.: 按设计预设建立普通 job，可覆盖尺寸和材料。
+Create or change a text style; text that uses it changes with it.: 新建或修改一个文字样式；用它的文字一起变。
+'Crop the artboard to the graphic (icons, logos: removes the margin around AI images so they fill their box)': 画板裁到图形边缘（图标、Logo：去掉 AI 图四周的留白，放进框里才撑满）
+Delete a placement (the asset file stays in assets/).: 删除一个放置（素材文件仍留在 assets/）。
+Delete a style nothing uses.: 删除一个没被使用的样式。
+Delete a window.: 删除一个窗口。
+Delete an item (refused while a placement uses it).: 删一条信息（被放置引用时拒绝）。
+'Design description: style, colors, graphics, layout …': 设计描述：风格、配色、图形、版式……
+'Design language (English): colors, type style, graphics, photo mood …': 设计语言（英文）：配色、字体风格、图形、照片气质……
+Die inner-corner radius mm; 0 = none, auto = by material (carton board 1): 刀模内角圆角 mm；0 不倒，auto 按材料（卡纸 1）
+Die outer-corner radius mm; 0 = none, auto = by material (carton board 2): 刀模外角圆角 mm；0 不倒，auto 按材料（卡纸 2）
+Do not open the browser: 不自动打开浏览器
+Done: 做了这些
+Download Source Han Sans if missing (about 33 MB, uses the network): 缺思源黑体时下载（约 33 MB，联网）
+Draw concept images with AI (the finished look; text allowed). The box style and real proportions go into the prompt.: 用 AI 画概念图（成品样子，允许文字）。盒型与真实比例会写进提示词。
+Draw the dieline and a 3D view without making a job (colored by role, structure only).: 不建 job，出刀版图和 3D 图（按角色上色，只看结构）。
+'Each --colors item must be #RRGGBB=c,m,y,k, got {item!r}': '--colors 的每一项要写成 #RRGGBB=c,m,y,k，收到 {item!r}'
+? 'Editable items: what can change, what each change moves, which automatic values follow the size, how panels connect, locking mechanisms.'
+: 可编辑项：能改什么、改了动到哪儿、尺寸变了哪些自动值跟着变、面怎么连、锁合机构。
+English description (only in the English layout brief and image prompts): 英文说明（只进英文版式简报和出图提示词）
+? English description, used only in the English layout brief and image prompts; needed when --label is not English, e.g. "bathroom photo"
+: 英文说明，只进英文版式简报和出图提示词；--label 是中文时要给，如 "bathroom photo"
+Environment: 运行环境
+Exact text (verbatim); use \n for a line break: 原文（逐字）；用 \n 表示换行
+Existing job (otherwise use --fefco / --ecma / --recipe): 已有 job（不给就用 --fefco / --ecma / --recipe）
+? Export the delivery pack. With preflight errors it is refused, and only a preview marked "not passed" and the report are written.
+: 导出交付包；印前检查有 error 时拒绝，只输出标注"未通过"的预览与检查报告。
+'Extra boxes to fill x,y,w,h (body coordinates mm, repeatable): AI text that was not fully removed': 另外填掉的框 x,y,w,h（盒身坐标 mm，可重复）：没去干净的 AI 字
+? 'Extra boxes to fill x,y,w,h (panel-local mm from the bottom left with the panel upright, repeatable): AI text that was not fully removed'
+: 另外填掉的框 x,y,w,h（面局部坐标 mm，面正立时左下角起，可重复）：没去干净的 AI 字
+Extra keyword: 另加关键词
+FEFCO / ECMA code: FEFCO / ECMA 编号
+? 'Fidelity score: compare the final artwork with the flat panel by panel (position, color difference, SSIM, edges, fine lines); writes flat/score.json.'
+: 还原度评分：正式稿和展开平面图逐面比（位置、色差、SSIM、边缘、细线），写 flat/score.json。
+Finish id (see finish list): 工艺 id（finish list 里看）
+Finishes (foil / spot UV / emboss …): 工艺（烫金 / 局部 UV / 击凸 …）
+Fixed token for development (real accounts use `pacxio login`): 开发用的固定令牌（正式账户用 `pacxio login`）
+Flat id, e.g. c13-flat-front: 展开平面图的编号，如 c13-flat-front
+'Follow a typeset text (text placement id): foil product name, badge lettering; the finish follows text changes': 照一段排好的文字（文字放置的 id）做工艺：烫金品名、徽章字样；文字改了工艺跟着变
+Follow this text instead (text placement id): 改成照这段文字（文字放置的 id）做工艺
+Font (a font chain is allowed): 字体（可用字体链）
+Font file (OTF / TTF; TTC / WOFF / WOFF2 also work): 字体文件（OTF / TTF；也支持 TTC / WOFF / WOFF2）
+'Font name (for --font; default: the font''s family name)': 字体名（用于 --font；默认取字体的家族名）
+'For development: store a token directly (in ~/.pacxio/cloud.json, readable only by you). Real accounts use `pacxio login`.': 开发用：直接保存一个令牌（存在 ~/.pacxio/cloud.json，只有自己能读）。正式账户用 `pacxio login`。
+Generate an image with an API key (reads OPENAI_API_KEY). Constraints such as "no text" are always appended to the prompt.: 用 API key 出图（读取环境变量 OPENAI_API_KEY）。提示词会被强制追加"无文字"等约束。
+'Geometry engine: build a carton from a public ECMA code (e.g. A20.20.03.01)': 几何引擎：按 ECMA 编号生成彩盒结构（公开 130 款，如 A20.20.03.01）
+'Geometry engine: build the structure from a FEFCO code (e.g. 0201, 0427.1)': 几何引擎：按 FEFCO 编号生成结构（325 款，如 0201、0427.1）
+'Geometry engine: common combination (list them with structures list --series C, e.g. tear_display_tray)': 几何引擎：常用组合（structures list --series C 列出来，如 tear_display_tray）
+'Geometry engine: structure recipe JSON file (multi-part sets use set / parts)': 几何引擎：结构配方 JSON 文件（多件套写 set / parts）
+Give --L --W --H (or build an engine structure with --fefco / --ecma / --recipe): 要给 --L --W --H（或用 --fefco / --ecma / --recipe 建引擎结构）
+Give --panel and --box together: --panel 和 --box 要一起给
+Give --set / --patch / --material / --corner-outer / --corner-inner: 给 --set / --patch / --material / --corner-outer / --corner-inner
+Give both, or neither (general comment): 都给，或都不给（整体意见）
+Give only one of --combo and --fefco / --ecma / --recipe: --combo 和 --fefco / --ecma / --recipe 只能给一个
+Graphic asset such as a logo / icon / barcode: Logo / 图标 / 条码等图形素材
+Green-key tolerance 0–1: 抠绿容差 0–1
+Height mm: 高 mm
+How many directions (1–4; each image is one generation): 出几个方向（1–4，每张花一次出图）
+ID listed by styles presets: styles presets 列出的 ID
+Image path (PNG / JPEG / WebP; logos may be SVG): 图片路径（PNG / JPEG / WebP；logo 可用 SVG）
+Image placement id: 图片放置的 id
+Image to trace (path relative to the job, or asset name): 要描的图（相对 job 的路径或素材名）
+Import an image into job/assets and record where it came from (supplied by the user / Codex built-in image generation).: 把图片导入 job/assets，并记录来源（用户提供的图片 / Codex 内置出图）。
+Import concept images made elsewhere (a designer, another AI tool, Codex built-in image generation).: 导入别处做好的概念图（设计师、其它 AI 工具、Codex 内置出图）。
+Import the list from a file (the agent writes it in one go after organising the brief).: 从文件导入清单（agent 整理好需求文档后一次写入）。
+Include closed notes: 连已关的也列
+Insert before this placement (stacked under it); default on top: 插在这个放置之前（叠在它下面）；不给就放在最上面
+Inside height mm: 内高 mm
+Inside length mm: 内长 mm
+Inside width mm: 内宽 mm
+Install for real; without it, only list what would be done: 真的装；不加只列出要做的事
+Item id: 条目 id
+JSON object, merged layer by layer: JSON 对象，按层合并
+Job folder: job 目录
+Job folder (created if missing): job 目录（不存在则创建）
+Jobs: 任务（job）管理
+'Key colors: Pantone reference + print CMYK for the factory to match (callouts only; print content is unchanged)': 关键颜色：给工厂对色的潘通号 + 印刷 CMYK（只是标注，不改印刷内容）
+Key out a pure green background: 抠掉纯绿背景
+Keyword (searched in code, description, closure and tags): 关键词（编号 / 说明 / 合法 / 标签里都找）
+Label an existing concept image with its view and panels (only the metadata changes, not the image).: 给已有的概念图补标视角与面（只改 meta，图不动）。
+Layout draft ({status}): 文案排版初稿（{status}）
+? 'Left and right ends meet (around the box body): join the opposite end before tracing so the seam does not break; used automatically for a full wrap made by restore strip'
+: 左右两头相接（盒身一圈）：接上对面再描，接缝处不断开；不给时 restore strip 拼的一整圈自动用
+Length (front width) mm: 长（正面宽）mm
+Level name for people, e.g. Title / Body: 中文层级名，如 主标题 / 正文
+Line color must be three 0–1 RGB numbers separated by commas: 线色须为三个 0–1 RGB 数值，用逗号分隔
+Line spacing multiple: 行距倍数
+Line spacing, multiple of the font size: 行距，字号的倍数
+List box styles with their parameters and defaults.: 列出盒型、参数表、默认值。
+List design uses and reference size presets (they do not add box styles).: 列出设计用途和参考尺寸预设（不增加盒型数量）。
+'List notes: text, position (part.panel, mm on the panel, elements in the box), snapshot, replies. Open notes by default.': 列出批注：内容、位置（部件.面、面内毫米、框里的元素）、截图、回复。默认列没关的。
+List text styles and the placements that use them.: 列出文字样式与使用它们的放置。
+List the available category reference tables.: 列出可用的品类常规参考表。
+'List the content by category: text, required / optional, pending, usual panels, placements using it, confirmation status.': 按类别列出清单：原文、必须 / 可选、待定、常规位置、已放到哪些放置、确认状态。
+List the job's brand fonts and their license information.: 列出 job 里的品牌字体及其授权信息。
+List the job's concept images (view, panels), which one was chosen, and which version is in use where there are several.: 列出 job 里的概念图（视角、面），选定的是哪一张，改过几版的在用哪一版。
+List the structure catalog (calibrated first).: 列结构目录（已校准的排前面）。
+List windows (panel-local), window film, and the areas text must avoid.: 列出窗口（面局部坐标）、窗膜、排字要避开的区域。
+Load weight (the engine does not calculate strength; it only reminds the factory to check): 装多重（引擎不算承重，只提醒工厂核算）
+'Local MCP server (stdio): structures, workflow commands, user confirmation; install adds it to an agent, doctor checks it': 本地 MCP 服务（stdio）：结构、全流程命令、用户确认；install 装进 agent，doctor 自检
+Local single-page vector PDF; nothing is downloaded: 本地单页矢量 PDF；不联网下载
+? 'Local workbench: a web page on this machine showing everything the job produced, by workflow stage, refreshing live'
+: 本地工作台：本机网页，按流程阶段看 job 的全部产物、实时刷新
+'Locking mechanisms:': 锁合机构：
+? 'Make a finish graphic pass F02 (minimum line width and gap): writes a candidate SVG and a before/after image first; --apply replaces it.'
+: 让工艺图形过 F02（最小线宽、间距）：先写候选 SVG 和前后对比图，--apply 才替换。
+? 'Make a light plain background (gradients and vignettes are fine) transparent: product photos and real shots then show the layout''s background; only background connected to the image edge is removed'
+: 浅色普通底（可以有渐变、暗角）抠成透明：产品照、实拍图放进版面透出底色；只抠和图边连着的底
+? 'Make exact mockups: 3D views, flat views of each panel, and a summary page with the content list (mockup/00_mockup_sheet.png).'
+: 生成精确效果图：三维视角、各面平视、带信息清单的汇总页（mockup/00_mockup_sheet.png）。
+? Match text / one-color icon colors under the current ICC and total ink, and report reference colors that still cannot be reached after sampling.
+: 按当前 ICC 和总墨量匹配文字/单色图标颜色，报告采样后仍无法接近的参考色。
+'Material (default: the structure''s default)': 材料（不给按结构默认）
+Material preset; default sbs_350 (flute_b for FEFCO codes): 材料预设；不给 = sbs_350（FEFCO 编号默认 flute_b）
+Maximum seconds to wait: 最多等几秒
+? Measure font size, line spacing and position from the flat; --tracking measures single-line tracking. Fonts are only suggested by default; colors are not changed.
+: 从平面图量字号、行距、位置；--tracking 量单行字距。字体默认只报建议，颜色不改。
+Measure icon and logo positions and sizes from the flat; finishes that follow them move too. Run this before restore text.: 从展开平面图量图标、Logo 的位置和大小，照它做的工艺跟着挪。先跑这个，再跑 restore text。
+? Measure the visible frame of rectangular photos first, then cut the full reference with restore photo; edges are not guessed from the photo's texture.
+: 先量矩形照片的可见边框，再 restore photo 切完整参考；不按照片纹理猜边界。
+Message: 留言内容
+Move before this placement (stacked under it): 移到这个放置之前（叠在它下面）
+Move to the top: 移到最上面
+'Multi-part styles: the part (with --panel = part.panel; for fills / tiles / space=blank, which part)': 多部件盒型：部件（和 --panel 一起 = 部件.面；铺底 / 平铺 / space=blank 时说是哪个部件）
+Must close without tape or glue: 不用胶带 / 胶就能合上
+Must open and close again: 要能反复开合
+Name, e.g. brand green; adding the same name again changes its values: 名称，如 品牌绿；同名再加就是改数值
+'Need to check against, repeatable: reclosable no_tape single': 要对照的需求，可重复：reclosable no_tape single
+'New id (default: keep the placeholder''s id)': 新 id（默认沿用占位框的 id）
+New job folder: 新 job 目录
+New text; use \n for a line break: 新的原文；用 \n 表示换行
+'Next: {step}': 下一步：{step}
+No concept images yet: 还没有概念图
+No fonts of its own in this job yet: job 里还没有自带字体
+No notes to handle: 没有要处理的批注
+No reference table chosen: 未指定常规参考表
+'Not decided yet: say what is missing, e.g. "drying time to come from the brand"': 还没定：写明缺什么，如 "表干时间待品牌方提供"
+'Not finished: replied, but still waiting for the agent': 还没改完：回复了但仍算等 agent 处理
+Note: 备注
+Note (e.g. the decision maker's change requests): 备注（例如决策者的修改意见）
+Note for the badge maker and box factory, written into the spec sheet: 给标牌厂、盒厂的说明，写进规格书
+? 'Note for the factory, written into the spec sheet: the foil''s real color (e.g. copper-gold hot foil, match the factory sample), gloss etc.'
+: 给工厂的说明，写进规格书：箔的实际颜色（如 铜金烫印箔，以工厂实样对色）、光泽等
+Note id: 批注 id
+Note id, e.g. n3: 批注 id，如 n3
+? 'Notes: comments the user writes on the workbench (with part, panel, position in mm and a snapshot); the agent reads and replies'
+: 批注：用户在工作台上写的意见（带部件、面、毫米位置和截图），agent 读、回复
+'Now: {now}': 现在：{now}
+'One difference between the final artwork and the flat / concept (repeatable); default: keep the last ones': 正式稿和平面图 / 概念图的一条差别（可重复）；不给就沿用上一次的
+'One panel (multi-part: full name, e.g. lid.top)': 取一个面（多部件写全名，如 lid.top）
+? 'One panel (top, bottom, each mailer panel): straighten this panel of the flat at its real size and remove text, ready for visual trace.'
+: 单个面（顶、底、飞机盒各面）：展开平面图上这个面按真实尺寸拉正、去文字，给 visual trace 描。
+? 'One-step install: add the pacxio plugin (Skill + MCP) to Claude Code / Codex (all found agents when --agent is not given), download fonts if missing, then self-check. Without --yes it only previews.'
+: 一句话安装：把 pacxio 插件（Skill + MCP）装进 Claude Code / Codex（不给 --agent 时本机有几个装几个），缺字体时下载，最后自检。不加 --yes 只预览。
+Only calibrated structures: 只要已校准的
+Only notes waiting for the agent: 只列等 agent 处理的
+Only report pattern seams, do not fix them: pattern 有接缝时只报告不修复
+Only show the confirmation status: 只查看确认状态
+Only show the confirmation status, do not confirm: 只查看确认状态，不确认
+Only structures that can be opened and closed again: 只要能反复开合的
+Only structures that close without tape or glue: 只要不用胶带 / 胶就能合上的
+'Only take main colors from this region: x0,y0,x1,y1 (0–1, origin at the image''s top left)': 只在这个范围取主色：x0,y0,x1,y1（0–1 比例，原点在图片左上角）
+? 'Only take this part of the panel x,y,w,h (panel-local mm): trace an illustration on a gradient background on its own (then visual trace --background gradient)'
+: 只取面上这一块 x,y,w,h（面局部坐标 mm）：渐变底上的一块插画单独描（再配 visual trace --background gradient）
+Open in the default browser: 用默认浏览器打开
+Opening radius mm (removes points that are too thin); default from the profile: 开运算半径 mm（去掉太细的尖角）；不给按配置档自动定
+'Optional (default: must appear)': 可选（默认必须出现）
+'Or a region x0,y0,x1,y1: 0–1 relative, origin at the image''s top left': 或者给范围 x0,y0,x1,y1：0–1 相对位置，原点在图片左上角
+Other style parameters key=value, repeatable, e.g. --set tongue_w=30: 其它盒型参数 key=value，可重复，如 --set tongue_w=30
+Outline SVG (a round badge is one filled circle): 外形 SVG（圆标就是一个实心圆）
+Output asset name (default <name>.prepared): 输出素材名（默认 <原名>.prepared）
+Output folder: 输出目录
+Output name (assets/<name>.png): 输出名（assets/<名>.png）
+Output name (assets/<name>.png, default <panel>-face): 输出名（assets/<名>.png，默认 <面>-face）
+Output name (assets/<name>.svg): 输出名（assets/<名>.svg）
+Output pixels per millimetre: 输出每毫米几个像素
+Output root (default <job>/out): 输出根目录（默认 <job>/out）
+Overlay a 10 mm grid (origin bottom left) for measuring: 叠 10 mm 网格（原点左下角），方便量位置
+Override parameter key=value, e.g. --set H=45: 覆盖参数 key=value，如 --set H=45
+Overwrite a prompt file of the same name with different content: 覆盖内容不同的同名提示词文件
+Packaging prepress engine: 包装印前引擎
+Panel id: 面 id
+Panel id (image / vector / text); multi-part styles use part.panel, e.g. lid.top: 面 id（image / vector / text）；多部件盒型写 部件.面，如 lid.top
+'Panel id: top_lid, btm_lid … (top / bottom work as short forms, mapped to the style''s panels)': 面 id：top_lid、btm_lid……（top / bottom 可作简写，按盒型找对应的面）
+'Panel map: size, orientation, safe area and suggested 300 ppi pixels for every panel.': 输出面映射：每个面的尺寸、方向、安全区、300ppi 建议像素。
+Panel that should match another, e.g. back: 要和别的面相同的面，如 back
+Panel-local x,y,w,h (mm): 面局部坐标 x,y,w,h（mm）
+Panel-local x,y,w,h (mm); can be left out when --content points to a logo on the layout (uses that logo's box): 面局部坐标 x,y,w,h（mm）；用 --content 引用版面上的 Logo 时可省略，用那个 Logo 的框
+Panel-local x,y,w,h (mm); the outline's artboard is fitted into this box: 面局部坐标 x,y,w,h（mm），外形按画板放进这个框
+Panel-local x,y,w,h (mm); zero width and height is a pin: 面局部 x,y,w,h（mm）；宽高为 0 是图钉
+Panels in the image, comma-separated; for flats from left to right, e.g. front,side_b: 图里的面，逗号分隔；平面图按从左到右，如 front,side_b
+Pantone number, e.g. "PANTONE 7473 C" (as given by the user): 潘通色号，如 "PANTONE 7473 C"（用户给的）
+Pattern tile width mm: 图案平铺宽度 mm
+Pick structures from the catalog for the product's needs (catalog first; co-design only if nothing fits).: 按产品需求从目录挑方案（先目录，都不满足再共创）。
+'Pixels per millimetre (default: the flat''s own resolution, 6–16)': 每毫米多少像素（默认按平面图本身的分辨率，6–16）
+'Pixels per millimetre; default: the flat''s own resolution (6–16)': 每毫米多少像素；不给就按平面图本身的分辨率（6–16）
+Place each row by the reliably matched set of dividers, then match icons and text inside the row.: 按可靠匹配的整组分隔线定位每行，再在行内匹配图标和文字。
+Placeholder id to replace: 要换掉的占位框 id
+Placement id to change: 要修改的放置 id
+Placement id to delete: 要删除的放置 id
+Placement id to move: 要移动的放置 id
+'Plating: champagne_rose_gold | rose_gold | champagne_gold | gold | silver': 电镀色：champagne_rose_gold（香槟玫瑰金）| rose_gold | champagne_gold | gold | silver
+'Port; default: any free port': 端口；不给就随便挑一个空闲的
+? 'Practical check: how it closes, whether it recloses, tape-free or not, interference when folded, maturity — each compared with the needs.'
+: 实用性检查：靠什么合上、能否反复开合、免不免胶带、折好后穿插、成熟度，逐条对照需求。
+? 'Preflight: build the print files, run every rule, and write the report (out/preflight/). Exit code 1 when there are errors.'
+: 印前检查：生成印刷文件并跑全部规则，输出报告（out/preflight/）。有 error 时退出码为 1。
+? 'Prepare an asset: aspect-ratio check, green key / light background removal, seamless tile check and fix, upscaling, leftover text check. The original is not changed.'
+: 素材预处理：宽高比检查、抠绿 / 去浅色底、无缝平铺检查与修复、超分、文字残留检查。原图不改。
+Print CMYK (0–100), e.g. 75,0,40,0: 印刷用的 CMYK（0–100），如 75,0,40,0
+Print machine-readable JSON: 输出机器可读的 JSON
+'Python {python}  Ghostscript: {gs}  Fonts: {font}': 'Python {python}  Ghostscript: {gs}  字体: {font}'
+'Quick iteration: only the flat preview preview.png and the dieline SVG, no preflight.': 快速迭代：只出展开图预览 preview.png 与刀版 SVG，不跑印前检查。
+RGB 0–1, e.g. 1,0,0: RGB 0–1，如 1,0,0
+Raised pattern SVG (lettering, border, ornament; same artboard as the outline): 凸起图案 SVG（字、边、纹样；和外形同一个画板）
+? 'Read small text on the confirmation image: crop a region at full resolution (200 DPI) into studio/zoom/.
+
+
+  In the open-source version the confirmation image comes back as a 100 DPI watermarked preview; crops are requested from the cloud (watermarked, up to 24 per image).'
+: "看清确认图上的小字：取一块原分辨率（200 DPI）的局部，存到 studio/zoom/。\n\n    开源版里确认图回传的是 100 DPI 加水印的预览，局部向云端要（带水印，同一张最多 24 次）。"
+'Read: ': 要读：
+Recipe JSON file: 配方 JSON 文件
+? Record a key color (the spec sheet's Colors section and the color swatches on the production files' callout layer). The engine does not convert Pantone numbers to CMYK.
+: 记一个关键色（规格书「颜色」一节、生产文件标注层的色标）。潘通号对应的 CMYK 不由引擎换算。
+'Record a lamination / varnish. --panels: comma-separated panel names; --exclusions: JSON [{panel,box,source?}].': 记录覆膜/光油。--panels 面名逗号分隔；--exclusions 为 [{panel,box,source?}] JSON。
+? Record that the user confirmed the flats in use (the final artwork follows them). Confirm again after changing an image or switching versions.
+: 记录用户确认了在用的这组展开平面图（正式稿照它做）。换了图、改用别的版本后要重新确认。
+Record that the user confirmed this layout draft (only after the user explicitly confirms): 记录用户已确认这一版排版初稿（用户明确确认之后才用）
+Record the direction chosen by the decision maker and extract its main colors as the starting point for the final design.: 记录决策者选定的方向，并提取主色作为正式设计的起点。
+Record the user's confirmation of the wording (run only after the user explicitly says "confirm").: 记录用户对措辞的确认（用户明确说"确认"之后才运行）。
+? 'Redraw a photo following the flat: cut the reference and write the prompt; bring the result back with --image. Use the user''s own photo when there is one.'
+: 照片按平面图重画：切参考图、写提示词；出好后用 --image 导回来。有用户实拍就用实拍。
+Reference table id, e.g. paint: 常规参考表 id，如 paint
+'Reference tables: what usually goes on each panel for a product category': 常规参考表：某一品类的包装各面通常放什么
+'Reference: {name}': 常规参考：{name}
+Refuse to export when the mockup is not confirmed (or the design changed after confirmation): 效果图没有确认（或确认之后设计又改过）时拒绝导出
+'Reminders:': 提醒：
+Remove a field (repeatable), e.g. --clear clip --clear color: 去掉某个字段（可重复），如 --clear clip --clear color
+'Replace a placeholder with a real image / graphic: position, coordinate space and stacking order stay the same.': 用真实图片 / 图形换掉占位框：位置、坐标系、叠放次序不变。
+Replace the asset file: 换素材文件
+'Replace the whole list with the file''s (default: merge)': 整个清单换成文件里的（默认合并）
+'Reply: what changed / what you want to ask': 回复：改了什么 / 想问什么
+Required / optional: 必须 / 可选
+'Return as soon as the address and code are shown (for agents: rerun the cloud command after the user approves)': 只给出网址和代码就返回（agent 用：用户确认后重跑云端命令即可）
+Run the workbench in the foreground (Ctrl+C to quit); agents usually use `studio start`.: 在前台运行工作台（Ctrl+C 退出）；agent 一般用 `studio start`。
+SVG (preferred) or two-tone PNG; can be left out when --content points to a logo in the list: SVG（首选）或二值 PNG；用 --content 引用清单里的 Logo 时可省略
+Same as `pacxio logout`.: 同 `pacxio logout`。
+'Same front and back: one panel''s layout is the same as another''s (one copy of the data; change one and both change).': 正反同款：一个面的版面和另一个面相同（只有一份数据，改一处两面一起变）。
+'Scene description (default: clean commercial product photography)': 拍摄场景描述（默认简洁的商业产品摄影）
+? 'Self-check: start the MCP server once, do the handshake, count tools; list which agents have it and whether their registered command runs.'
+: 自检：起一次 MCP 服务走握手、数工具；列出装在哪些 agent 里、那边登记的命令能不能跑。
+'Series: 01–09; A for ECMA cartons': 系列：01–09，ECMA 彩盒写 A
+? Serve MCP tools (structures, workflow commands, confirmations) over stdin / stdout, JSON-RPC 2.0, one message per line. No network.
+: 按 MCP（JSON-RPC 2.0，每行一条）在 stdin / stdout 上提供工具（结构、全流程命令、确认），不联网。
+Service address (default https://api.pacxio.dev): 服务地址（默认 https://api.pacxio.dev）
+? Service address, signed in or not, whether the service is reachable, and whether server-side commands run here or in the cloud.
+: 服务地址、是否登录、服务是否连得上、闭源命令现在走本机还是云端。
+Service {url}  {who}  {reach}  server-side commands run {where}: 服务 {url}  {who}  {reach}  闭源命令走{where}
+'Show a category''s reference: which panels each kind of information usually goes on, common layouts, regulatory reminders.': 查看一个品类的常规参考：各类信息通常放哪些面、常见版式、法规提醒。
+? 'Sign in to the pacxio cloud service: you get an address and a code; sign in in the browser with an email code (the first time creates the account), check the code and approve.
+
+
+  The token is stored in ~/.pacxio/cloud.json (readable only by you). Running a cloud command while signed out also starts sign-in.'
+: "登录 pacxio 云端服务：给一个网址和代码，在浏览器里用邮箱验证码登录（第一次就是注册）、核对代码后确认。\n\n    令牌存在 ~/.pacxio/cloud.json（只有自己能读）。没登录时第一次跑云端命令也会自动开始登录。"
+'Sign out of the pacxio cloud service: revoke this computer''s token on the server and delete the token stored here.': 退出 pacxio 云端服务：服务器上撤销这台电脑的令牌，删掉本机保存的令牌。
+Single piece only (no multi-part sets): 只要单件（不要多件套）
+Size parameters: 尺寸参数
+? 'Spot UV method: default is conventional (screen print, line width and gap from the profile''s spot_uv); digital = digital UV (inkjet, from spot_uv_digital, finer lines and gaps) — only when the user has confirmed the factory can do digital UV'
+: 局部 UV 的做法：不给是常规（丝印，按配置档 spot_uv 的线宽、间距查）；digital = 数码 UV（喷墨，按 spot_uv_digital 查，线更细、间距更小）——只在用户确认工厂能做数码 UV 时用
+'Stacking order (bottom to top): ': 叠放次序（自下而上）：
+'Stages: ': 各阶段：
+? Start the workbench in the background (listens on this machine only) and return its address; reuses it if this job's workbench is already running.
+: 在后台起工作台（只监听本机），返回网址；这个 job 的工作台已经在跑就复用。
+Stop this job's workbench.: 关掉这个 job 的工作台。
+? 'Straighten a flat: find the image edges and folds and save each panel at its real size in mm (still a concept image, reference only).'
+: 把展开平面图拉正：找画面边界与折线，每个面按真实毫米尺寸存一张（仍是概念图，只作参考）。
+'Structure catalog (geometry engine: FEFCO and ECMA): search, show, preview, suggest by need': 结构目录（几何引擎：FEFCO 325 + ECMA 130）：查、看、出预览、按需求推荐
+'Structure code: FEFCO (0201), ECMA (A20.20.01.01) or a common combination': 结构编号：FEFCO（0201）、ECMA（A20.20.01.01）或常用组合
+Style name: 样式名
+Style name, e.g. title / heading / body / small: 样式名，如 title / heading / body / small
+Surface treatments (lamination / varnish; not print spot colors): 表面处理（覆膜 / 光油；不是印刷专色）
+? Switch to another version of a back view / flat (the newest import is in use by default; run only when the user asks for an older one). Other versions are kept.
+: 改用某一版背面视角 / 平面图（默认最新导入的在用；用户说要用旧版时才跑）。其他版本留着。
+? 'Tag, repeatable: shipping ecommerce display insert carton handle window hang_hole hole multi_part three_piece no_tape reclosable'
+: 标签，可重复：运输 电商 展示 内衬 彩盒 提手 开窗 挂孔 开孔 多件 三片式 免胶带 反复开合
+Take the newest image in $CODEX_HOME/generated_images: 取 $CODEX_HOME/generated_images 里最新的一张
+Target area width,height (mm), for aspect-ratio and resolution checks: 目标区域 宽,高（mm），用于宽高比与分辨率检查
+'Text styles (levels): title, subtitle, body, small print …': 文字样式（层级）：标题、小标题、正文、小字……
+Text that appears on the box (repeatable; the AI draws it as written): 盒子上要出现的文字（可多次给出，AI 会原样画出）
+Text; may use {{item_id}} / {{item_id:N}}: 文字；可用 {{条目id}} / {{条目id:N}}
+Text; use \n for a line break: 文字内容；用 \n 表示换行
+? The agent leaves the user a message on the workbench (e.g. "tried both here, pick one"); without --panel / --box it is a general comment.
+: agent 在工作台上给用户留言（如"这里两种都试了，你选一个"）；不给 --panel / --box 是整体意见。
+? The agent replies to a note; by default it is marked "waiting for user" (the user closes it on the workbench or replies again).
+: agent 回复一条批注；默认标成"等用户看"（用户在工作台上关掉或接着回复）。
+The real image (or SVG graphic): 真实的图片（或 SVG 图形）
+? 'The redrawn image: import, prepare and swap the placement''s asset; without it, only cut the reference and write the prompt (no image generated)'
+: 重画好的图：导入、prepare、换掉放置的素材；不给只切参考图、写提示词（不出图）
+The workbench is not running: 工作台没有在运行
+Thickness mm (default 3): 厚度 mm（默认 3）
+Tile width mm for pattern / texture: pattern / texture 的平铺宽度 mm
+To do: 要做的事
+? Trace an image as vector SVG, then use art add --kind vector. Full illustrations are traced in full color (converted with ICC); line art, icons and flat graphics are traced as color areas (CMYK set by hand from brand colors). Without --method the engine picks by looking at the image.
+: "把图描成矢量 SVG，之后用 art add --kind vector。整片插画全彩描（颜色按 ICC 换算），\n    线框、图标、纯色图形分色描（按品牌色手配 CMYK）；不给 --method 时看图选。"
+'Trace the background as a shape too (default: drop it)': 背景也描成一个形状（默认去掉）
+? Trace thin lines (contours, outlines) as even-width strokes along their center line instead of merging them into color areas (the color count excludes line colors)
+: 细线（等高线、描线）单独按中心线描成粗细均匀的描边，不并进色块（颜色数不含线的颜色）
+Tracking, 1/1000 em: 字距，1/1000 em
+Undo: 取消
+Update photos, frames and finishes together; roll back if new preflight problems appear: 联动更新照片、边框与工艺，新增印前问题则退回
+'Use, repeatable: shipping ecommerce display insert carton handle window hang_hole hole multi_part three_piece': 用途，可重复：运输 电商 展示 内衬 彩盒 提手 开窗 挂孔 开孔 多件 三片式
+'Visual assets: import / generate / prepare': 视觉素材：导入 / 出图 / 预处理
+Wanted pixel size WxH; the closest supported aspect ratio is used: 期望像素尺寸 WxH，取最接近的受支持宽高比
+'When the font''s embedding permission is restricted: confirm you have checked the license with the rights holder': 字体嵌入许可位为受限时，确认你已向权利人确认授权
+? When the seam is far off, keep this panel fixed (repeatable) and bend the other one to meet it; right / left work as short forms
+: 接缝错开太多时以这个面为准（可重复），另一面弯过去接上；right / left 可作简写
+Where it is used, e.g. logo, title underline: 用在哪，如 Logo、标题下划线
+? Where the job stands, who it waits on, what to do next (same source as the workbench's "Now"); run it before every round of work.
+: 现在到哪一步、等谁、下一步做什么（和工作台的"现在"同一个来源）；每一轮动手前先跑。
+Whether this job's workbench is running, and its address.: 这个 job 的工作台在不在跑、网址是什么。
+'Which back view the flat follows (default: the one in use)': 平面图参考哪张背面视角（默认在用的那张）
+Which font in a TTC: TTC 里第几个字体
+Which image (path inside the job): 哪张图（job 内路径）
+'Which panel it goes on (multi-part: full name, e.g. lid.top)': 贴在哪个面（多部件写全名，如 lid.top）
+Which panel it matches, e.g. front: 和哪个面相同，如 front
+'Which panel of the final artwork it is on (multi-part: part.panel)': 留在正式稿的哪个面上（多部件写 部件.面）
+Who chose: 选定人
+Who confirmed: 确认人
+Who confirmed (only the user): 确认人（只能是用户本人）
+Who decided: 谁定的
+Width (side width) mm: 宽（侧面宽）mm
+'Window film: pet (default) | none (open); only affects mockups and the spec sheet': 工厂贴不贴窗膜：pet（默认）| none 敞口；只影响效果图与规格书
+Window id to delete: 要删除的窗口 id
+Windows (clear or open windows on body panels): 开窗（盒身面上的透明窗 / 敞口窗）
+With sizes and --out, draw a preview of each: 给了尺寸和 --out 就各出预览
+Workbench stopped (process {pid}): 工作台已停止（进程 {pid}）
+'Workbench: {url} ({how}; process {pid})': 工作台：{url}（{how}；进程 {pid}）
+Write colors for reliable matches of text / one-color icons; key colors and shared styles are kept: 写入可靠匹配的文字/单色图标颜色；保留关键色与共享样式
+? Write dieline files (DXF / CF2 / dieline PDF / SVG) without making a job; same functions as the delivery pack (including die corner radii).
+: 不建 job，直接出刀版文件（DXF / CF2 / 刀版 PDF / SVG）；和交付包里的刀版同一套函数（含刀模圆角）。
+? 'Write image prompts (no image is generated): size, ratio, layout brief and references filled in, written to concept-prompts/. main is the main view (same skeleton as concept gen, for Codex built-in or manual image generation).'
+: "生成出图提示词（不出图）：尺寸、比例、版式简报、参考图都填好，写到 concept-prompts/。\n    main 是主视角（和 concept gen 同一个骨架，给 Codex 内置出图 / 手工出图用）。"
+Write into the job (backed up to history/ first); without it only flat/graphic_fit.json is written: 写进 job（先备份到 history/）；不给只写 flat/graphic_fit.json
+Write into the job (backed up to history/ first); without it only flat/text_fit.json is written: 写进 job（先备份到 history/）；不给只写 flat/text_fit.json
+Write the change; without it, only show which file would change and what: 真的写；不加只显示要改哪个文件、写什么
+'Wrong --ref format: {item}': --ref 写法不对：{item}
+'YAML / JSON: {conventions: paint, items: [...]}': 'YAML / JSON：{conventions: paint, items: [...]}'
+'[graphic {asset}]': '[图形 {asset}]'
+'[{label} {part}]': 【{label} {part}】
+already running, reused: 已在运行，复用
+auto: 自动
+? 'auto (pick by image) | shapes (line art, icons, flat-color graphics: trace color areas) | vtracer (full illustrations: full-color tracing)'
+: auto（看图选）| shapes（线框、图标、纯色图形：分色描色块）| vtracer（整片插画：全彩描）
+auto ({value:g}{unit}): 自动（{value:g}{unit}）
+both ends change together: 两端一起变
+calibrated construction: 已校准做法
+changed after confirmation: 确认后又改过
+claude-code | codex; leave out to install into every agent found on this machine: claude-code | codex；不给时自动找本机装了的，都装上
+closed: 已关
+confirmation expired: 确认已过期
+confirmed: 已确认
+cover | contain | stretch (images default cover, vectors contain): cover | contain | stretch（图片默认 cover，矢量默认 contain）
+dxf | cf2 | pdf | svg, repeatable; default all: dxf | cf2 | pdf | svg，可重复；不给全出
+e.g. SourceHanSansSC-Bold: 如 SourceHanSansSC-Bold
+e.g. paint: 如 paint
+engine native: 引擎原生
+fill | pattern | image | vector | text | placeholder: fill | pattern | image | vector | text | placeholder（占位框）
+film: 贴膜
+flat sheet: 片材
+full_sheet covers the whole sheet, no knock-out at glue areas (default) / explicit_exclusions knocks out --exclusions: full_sheet 整张覆盖、粘接区不避让（默认）/ explicit_exclusions 按 --exclusions 避让
+hand-built style: 手写盒型
+has CJK: 有中文
+here: 本机
+hero | pattern | texture | logo | icon | graphic (flat-color shapes, to be traced as vectors): hero | pattern | texture | logo | icon | graphic（纯色形状，之后描成矢量）
+'image / placeholder: clip shape SVG': image / placeholder：裁切形状 SVG
+'image / placeholder: clip with an SVG shape (e.g. arch, rounded top-right)': image / placeholder：用 SVG 形状裁切（如拱形、右上圆角）
+'image | vector (default: by file extension)': image | vector（不给时按文件后缀判断）
+in the cloud: 云端
+inner (inside dimensions) | outer (outside dimensions): inner（内尺寸）| outer（外尺寸）
+kraft liner | white liner: kraft 牛皮面纸 | white 白面纸
+left | center | right; vertical top | center | bottom: left | center | right；竖排 top | center | bottom
+main view (step 3) | back (back + left view, step 4) | flat (unfolded flat, step 5): main 主视角（第 3 步）| back 背面 + 左侧视角（第 4 步）| flat 展开平面图（第 5 步）
+main view | back (back + left view) | flat (unfolded flat): main 主视角 | back 背面 + 左侧视角 | flat 展开平面图
+multi-part set: 多件套
+no CJK: 无中文
+no view: 未标视角
+not confirmed: 未确认
+not downloaded: 未下载
+not installed: 未安装
+'offset | flexo (water-based) | digital; default by style: slotted boxes flexo, labels digital, the rest offset': offset 胶印 | flexo 柔印（水印）| digital 数码；默认按盒型：开槽箱 flexo，标签 digital，其余 offset
+open: 敞口
+optional: 可选
+'options ': '可选 '
+outside_all or comma-separated panel ids (fill / pattern): outside_all 或逗号分隔的面 id（fill / pattern）
+panel=concept_id:x0,y0,x1,y1,x2,y2,x3,y3, e.g. lid.top=A:348,37,1432,203,1305,900,97,652: 面=概念图编号:x0,y0,x1,y1,x2,y2,x3,y3，如 lid.top=A:348,37,1432,203,1305,900,97,652
+'path=value, repeatable: top.tuck_len=20, tuning.friction_lock=false, lug_w=24; value null removes it': 路径=值，可重复：top.tuck_len=20、tuning.friction_lock=false、lug_w=24；值写 null 删掉
+'pending: {what}': 待定：{what}
+'placeholder / image / vector: what it is (for people)': placeholder / image / vector：是什么（给人看）
+'placeholder / image / vector: what it is (for people), e.g. "bathroom photo" "code area"': placeholder / image / vector：是什么（给人看，可写中文），如 "卫浴照片" "喷码区"
+project (this project only, Claude Code) | user (all projects): project（只这个项目，Claude Code）| user（所有项目）
+reachable: 连得上
+rect rounded rectangle (default) | circle | obround: rect 圆角矩形（默认）| circle 圆 | obround 跑道形
+rectangular tube modules: 长方筒身积木
+required: 必填
+running: 在运行
+'shapes: number of colors (background not counted); when given, traces as color areas': shapes：分几种颜色（不含背景）；给了就按色块描
+'shapes: snap to these brand colors; vtracer: key colors (only very close colors snap), e.g. ''#3d4536,#8a9a6e''': shapes：吸附到这些品牌色；vtracer：关键色（差得很少的才吸），如 '#3d4536,#8a9a6e'
+signed in: 已登录
+signed in as {email}: 已登录 {email}
+signed out: 未登录
+'some values switch the build route: ': 有的值会换生成路线：
+started: 已启动
+? 'text: hanging indent (numbered / bulleted lists). auto = continuation lines align with the text after markers like "1. " "• "; a number = that start in mm from the box''s left edge; 0 = no indent'
+: text：悬挂缩进（编号列表 / 项目符号）。auto = 续行对齐到 "1. " "• " 等标记后文字的起点；数值 = 这个起点离框左边几 mm；0 = 不缩进
+'text: line spacing, multiple of the font size (default 1.2)': text：行距，字号的倍数（默认 1.2）
+'text: rise (degrees, -30–30); positive rises to the right while verticals stay upright; pivots on the ink center': text：倾斜（度，-30–30），正值往右上升、竖笔保持竖直；以墨迹中心为基点
+'text: slant (degrees, -30–30); positive leans the top to the right, like italics; pivots on the ink center': text：倾斜（度，-30–30），正值上端往右倒，像斜体；以墨迹中心为基点
+'text: text style (level) name; font, size etc. come from the style (see style set)': text：文字样式（层级）名，字体、字号等取自样式（见 style set）
+'text: text style name': text：文字样式名
+'text: tracking, 1/1000 em (e.g. 100 = 0.1 em wider, negative = tighter)': text：字距，1/1000 em（如 100 = 拉开 0.1 个字宽，负值收紧）
+? 'text: vertical (top to bottom, columns run right to left; punctuation set vertically, Latin and digits lie sideways), see references/fonts.md'
+: text：竖排（从上往下，排满往左换列；标点竖排，西文数字横躺），见 references/fonts.md
+tray modules: 托盘积木
+unreachable: 连不上
+'vector: ''#hex=c,m,y,k;…''': vector：'#hex=c,m,y,k;…'
+'vector: SVG color → CMYK, e.g. ''#3d4536=75,55,80,40;#c8a464=20,35,70,0''': vector：SVG 颜色 → CMYK，如 '#3d4536=75,55,80,40;#c8a464=20,35,70,0'
+'vector: single color c,m,y,k': vector：整体单色 c,m,y,k
+? 'vtracer: line strength, 1 = as is; 0.35 = pull colors toward the background, keeping 35% of the difference (for faded side scenery used as a background texture)'
+: vtracer：线条深浅，1 原样；0.35 = 颜色往底色拉、和底色的差只留 35%（侧面山水退成底纹时用）
+? 'vtracer: merge non-background colors into this many levels (for one-color line art; 6 is chosen automatically for line art)'
+: vtracer：底色以外的颜色并成几档（单色线稿用；看图选到线稿时自动 6 档）
+'vtracer: merge specks smaller than this (pixels, default 4); raise it when there are too many shapes': vtracer：并掉比这小的碎块（像素，默认 4）；嫌形状太多时调大
+waiting for agent: 等 agent
+waiting for user: 等用户看
+x,y,w,h (mm): x,y,w,h（mm）
+'x,y,w,h (mm): panel-local from the panel''s bottom left; for space=body / blank see panels': x,y,w,h（mm）：面局部坐标自面左下角；space=body / blank 见 panels
+zh | en (language for human-readable text; default follows PACXIO_LANG): zh | en（给人看的文字用哪种语言）
+zinc_alloy (die-cast zinc alloy, default) | aluminum (stamped aluminum): zinc_alloy（锌合金压铸，默认）| aluminum（铝冲压）
+'{count} structures (★ calibrated; the rest are read from the catalogue drawing, values are initial)': 共 {count} 款（★ 已校准，其余按示意图推读、数值【初值】）
+'{id:10} {name}  refs {refs}  materials {materials}': '{id:10} {name}  参照 {refs}  材料 {materials}'
+'{id:16} {view}{faces}  {file}  source {source}{mark}': '{id:16} {view}{faces}  {file}  来源 {source}{mark}'
+'{id}  {name}  inside {L}x{W}x{H} mm  {material}  {use}': '{id}  {name}  内尺寸 {L}x{W}x{H} mm  {material}  {use}'
+'{id} [{status}] {by}: {text}': '{id} [{status}] {by}：{text}'
+'{name:20} {cjk}  embedding {embedding}  {license}': '{name:20} {cjk}  嵌入许可 {embedding}  {license}'
+'{name}: {description}': '{name}：{description}'
+'{title}Blank {w} x {h} mm, with bleed {pw} x {ph} px@300ppi; bleed {bleed} mm, safe margin {safe} mm': '{title}展开 {w} x {h} mm，含出血 {pw} x {ph} px@300ppi；出血 {bleed} mm，安全边距 {safe} mm'
+'{what} must be name=value: {item}': '{what} 要写成 名字=值：{item}'
+'{what} needs {n} comma-separated numbers, e.g. ': '{what} 需要 {n} 个用逗号分隔的数字，例如 '

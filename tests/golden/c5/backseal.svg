@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="312mm" height="198mm" viewBox="-10 -10 312 198">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="fold_back_a_front" data-type="crease" d="M77.5 178 L77.5 0" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="fold_front_back_b" data-type="crease" d="M214.5 178 L214.5 0" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M0 178 L292 178 L292 0 L0 0 L0 178" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="38.75" y="89" font-size="4" text-anchor="middle" fill="#888">back_a</text>
+<text x="146" y="89" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="253.25" y="89" font-size="4" text-anchor="middle" fill="#888">back_b</text>
+</g>
+</svg>

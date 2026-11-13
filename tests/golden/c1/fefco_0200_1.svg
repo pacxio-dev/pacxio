@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1467mm" height="425mm" viewBox="-10 -10 1467 425">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_glue_back" data-type="crease" d="M35 250 L35 4" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_btm" data-type="crease" d="M39 254 L435 254" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_side_a" data-type="crease" d="M439 254 L439 0" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_btm" data-type="crease" d="M443 254 L739 254" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_front" data-type="crease" d="M743 254 L743 0" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_btm" data-type="crease" d="M747 254 L1143 254" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_side_b" data-type="crease" d="M1147 254 L1147 0" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_btm" data-type="crease" d="M1151 254 L1443 254" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M0 240.6218 L35 250 L35 254 L39 254 L39 405 L435 405 L435 254 L443 254 L443 405 L739 405 L739 254 L747 254 L747 405 L1143 405 L1143 254 L1151 254 L1151 405 L1443 405 L1443 254 L1447 254 L1447 0 L35 0 L35 4 L0 13.3782 L0 240.6218" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="17.5" y="127" font-size="4" text-anchor="middle" fill="#888">glue</text>
+<text x="237" y="127" font-size="4" text-anchor="middle" fill="#888">back</text>
+<text x="591" y="127" font-size="4" text-anchor="middle" fill="#888">side_a</text>
+<text x="945" y="127" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="1297" y="127" font-size="4" text-anchor="middle" fill="#888">side_b</text>
+<text x="237" y="329.5" font-size="4" text-anchor="middle" fill="#888">btm_back</text>
+<text x="591" y="329.5" font-size="4" text-anchor="middle" fill="#888">btm_side_a</text>
+<text x="945" y="329.5" font-size="4" text-anchor="middle" fill="#888">btm_front</text>
+<text x="1297" y="329.5" font-size="4" text-anchor="middle" fill="#888">btm_side_b</text>
+</g>
+</svg>

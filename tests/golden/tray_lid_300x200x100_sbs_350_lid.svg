@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="736.12mm" height="424.36mm" viewBox="-10 -10 736.12 424.36">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_top_front" data-type="crease" d="M205.4 303.4 L510.72 303.4" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_top_back" data-type="crease" d="M205.4 100.96 L510.72 100.96" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_top_side_b_1" data-type="crease" d="M511.2 303.4 L511.2 268.05" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_top_side_a_1" data-type="crease" d="M204.92 303.4 L204.92 268.05" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_top_side_b_2" data-type="crease" d="M511.2 236.05 L511.2 168.31" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_top_side_a_2" data-type="crease" d="M204.92 236.05 L204.92 168.31" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_top_side_b_3" data-type="crease" d="M511.2 136.31 L511.2 100.96" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_top_side_a_3" data-type="crease" d="M204.92 136.31 L204.92 100.96" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_rim_b" data-type="crease" d="M611.68 301.92 L611.68 102.44" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_rim_b_side_b_in" data-type="crease" d="M612.64 301.92 L612.64 102.44" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_rim_a" data-type="crease" d="M104.44 301.92 L104.44 102.44" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_rim_a_side_a_in" data-type="crease" d="M103.48 301.92 L103.48 102.44" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_ear_fb" data-type="crease" d="M510.72 403.88 L510.72 303.88" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_ear_fa" data-type="crease" d="M205.4 403.88 L205.4 303.88" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_ear_bb" data-type="crease" d="M510.72 100.48 L510.72 0.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_ear_ba" data-type="crease" d="M205.4 100.48 L205.4 0.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M205.4 404.36 L346.06 404.36 A12 12 0 0 1 370.06 404.36 L510.72 404.36 L510.72 403.88 L591.504 382.234 L591.504 303.88 L510.72 303.88 L510.72 303.4 L511.2 303.4 L611.68 303.4 L611.68 301.92 L612.64 301.92 L712.64 301.92 L712.64 267.05 L714.62 267.05 L716.12 265.55 L716.12 238.55 L714.62 237.05 L712.64 237.05 L712.64 167.31 L714.62 167.31 L716.12 165.81 L716.12 138.81 L714.62 137.31 L712.64 137.31 L712.64 102.44 L612.64 102.44 L611.68 102.44 L611.68 100.96 L511.2 100.96 L510.72 100.96 L510.72 100.48 L591.504 100.48 L591.504 22.126 L510.72 0.48 L510.72 0 L370.06 0 A12 12 0 0 1 346.06 0 L205.4 0 L205.4 0.48 L124.616 22.126 L124.616 100.48 L205.4 100.48 L205.4 100.96 L204.92 100.96 L104.44 100.96 L104.44 102.44 L103.48 102.44 L3.48 102.44 L3.48 137.31 L1.5 137.31 L0 138.81 L0 165.81 L1.5 167.31 L3.48 167.31 L3.48 237.05 L1.5 237.05 L0 238.55 L0 265.55 L1.5 267.05 L3.48 267.05 L3.48 301.92 L103.48 301.92 L104.44 301.92 L104.44 303.4 L204.92 303.4 L205.4 303.4 L205.4 303.88 L124.616 303.88 L124.616 382.234 L205.4 403.88 L205.4 404.36" fill="none" stroke="#d40000"/>
+<path id="cut_slot_side_b1" data-type="cut" d="M511.2 268.05 L509.2 268.05 L509.2 236.05 L511.2 236.05 L511.2 268.05" fill="none" stroke="#d40000"/>
+<path id="cut_slot_side_b2" data-type="cut" d="M511.2 168.31 L509.2 168.31 L509.2 136.31 L511.2 136.31 L511.2 168.31" fill="none" stroke="#d40000"/>
+<path id="cut_slot_side_a1" data-type="cut" d="M204.92 268.05 L206.92 268.05 L206.92 236.05 L204.92 236.05 L204.92 268.05" fill="none" stroke="#d40000"/>
+<path id="cut_slot_side_a2" data-type="cut" d="M204.92 168.31 L206.92 168.31 L206.92 136.31 L204.92 136.31 L204.92 168.31" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="358.06" y="202.18" font-size="4" text-anchor="middle" fill="#888">top</text>
+<text x="358.06" y="353.88" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="358.06" y="50.48" font-size="4" text-anchor="middle" fill="#888">back</text>
+<text x="561.44" y="202.18" font-size="4" text-anchor="middle" fill="#888">side_b</text>
+<text x="154.68" y="202.18" font-size="4" text-anchor="middle" fill="#888">side_a</text>
+<text x="664.38" y="202.18" font-size="4" text-anchor="middle" fill="#888">side_b_in</text>
+<text x="51.74" y="202.18" font-size="4" text-anchor="middle" fill="#888">side_a_in</text>
+<text x="551.112" y="353.88" font-size="4" text-anchor="middle" fill="#888">ear_fb</text>
+<text x="165.008" y="353.88" font-size="4" text-anchor="middle" fill="#888">ear_fa</text>
+<text x="551.112" y="50.48" font-size="4" text-anchor="middle" fill="#888">ear_bb</text>
+<text x="165.008" y="50.48" font-size="4" text-anchor="middle" fill="#888">ear_ba</text>
+<text x="612.16" y="202.18" font-size="4" text-anchor="middle" fill="#888">rim_b</text>
+<text x="103.96" y="202.18" font-size="4" text-anchor="middle" fill="#888">rim_a</text>
+</g>
+</svg>

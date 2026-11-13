@@ -1,0 +1,181 @@
+' (top, bottom, left, and right are accepted aliases)': （top / bottom / left / right 可作简写）
+' ({panels} are made of two flaps and get no flat of their own)': （{panels} 是两片翼 / 摇盖拼成的面，不出单独的平面图）
+(no concept images yet): （还没有概念图）
+(no images tagged as flat concepts yet): （还没有标成平面图的概念图）
+(no main-view images yet): （还没有主视角图）
+(none): （没有）
+', ': 、
+--faces requires --view: --faces 要和 --view 一起给
+'--faces {faces}: panels in a flat image must adjoin from left to right on the dieline': --faces {faces}：平面图里的几个面要在展开图里从左到右相接
+'--faces {faces}: use the panel groupings from this style''s flat concept prompts': --faces {faces}：这个盒型的平面图按平面图提示词的分组画
+'--faces {faces}: {skipped} do not have flat concept images': --faces {faces}：{skipped} 不出平面图
+'--faces {faces}: {what}': --faces {faces}：{what}
+--n must be between 1 and {maximum}: --n 必须在 1–{maximum} 之间
+--px-per-mm must be between 0.5 and 20: --px-per-mm 要在 0.5–20 之间
+'--ref {face}: give four corners (8 numbers)': --ref {face}：要给四个角（8 个数）
+'--ref {face}: this panel has no flat prompt': --ref {face}：这个面没有平面图提示词
+'--ref {face}={id}: there is no such concept image': --ref {face}={id}：没有这张概念图
+--step main (main view) | back (back + left view) | flat (flats): --step main（主视角）| back（背面 + 左侧视角）| flat（展开平面图）
+. Make one image for each remaining panel.: ；其余面各一张
+. Specify which panel is on the left and each panel's width. Use the unfolded layout for panel order.: ；提示词里写明哪一面在左、各占多宽，别照背面视角的左右位置
+'; ': ；
+? A concept image cannot be used for {use}. It is a visual reference with perspective, potentially incorrect text, and insufficient print resolution.
+: 概念图不能用于{use}：它是 AI 画的方向参考（带透视、文字可能有错、分辨率不够），不是印刷素材
+A main-view prompt needs --design (a design description): 主视角提示词要给 --design（设计描述）
+A measured panel is too narrow. Check that the listed panels match the image.: 量出的面太窄：图里的面和给出的面对不上
+Add --view flat --faces … and supply each image path without --codex-latest: 加 --view flat --faces …，并给出每张图的路径（不用 --codex-latest）
+'Adjoining body panels: {pairs}. Make the top and bottom separately.': 相接的盒身面：{pairs}；顶面、底面单独一张
+After the user chooses a main-view concept, run `concept choose <job> <id>`, then make the back view / flats: 用户选定主视角概念图之后 `concept choose <job> <id>`，再出背面视角 / 平面图
+'Available concept panels: ': 可用：
+'Available concepts: {ids}': 可选：{ids}
+'Available in the same group: ': 同一组可选：
+'Available: ': 可用：
+Back view: 背面视角
+CMYK values sampled from the concept are {method} and serve as a starting point: 主色的 CMYK 是从概念图取色、{method}，只作起点
+Check the path: 检查路径
+Choose a different main image with `concept choose` before changing this image's view: 先 `concept choose` 另一张主视角图，再改这张的标记
+'Choose a main-view image: {ids}': 选定的必须是主视角图：{ids}
+Choose another concept --name: 换一个 --name
+? 'Codex may not have made the new image yet: --codex-latest takes the newest image in generated_images. Have Codex make the image from the prompt first, then import it'
+: Codex 可能还没出新图：--codex-latest 取的是 generated_images 里最新的一张。先让 Codex 按提示词出图，再导入
+Colours were sampled from the entire concept image. The background or tabletop may dominate.: 主色是从整张概念图里取的，场景（墙面、台面）的颜色可能占了大头
+? Concept images are visual references. Check AI-generated proportions, copy, fonts, and details before rebuilding the print artwork.
+: 概念图是方向参考：AI 画的比例、文字、字体、细节都不保证准确，也不会进入印刷文件
+Concept name {name} is already used: 概念图编号 {name} 已经用过了
+Concept {id} already exists: 概念图 {id} 已存在
+Concept {id} does not exist: 没有概念图 {id}
+Could not measure {id}'s proportions ({error}). Generate a new image.: '{id} 量不出比例（{error}），要重出'
+'Could not read image {image}: {error}': 无法读取图片 {image}：{error}
+Describe style, colors, graphics and layout in --design, e.g. "Flat vector hills, cream background": --design 写风格、配色、图形、版式，如 "Flat vector hills, cream background"
+Draw SVG artwork for the component flaps from the main view and layout draft. See references/vector.md.: 上面的图形照主视角 / 排版初稿手写 SVG，分别放到拼成它的各片上（references/vector.md）
+'First tag which panels it shows: `concept tag {job} {id} --view flat --faces front,side_b`': 先标上画了哪几个面：`concept tag {job} {id} --view flat --faces front,side_b`
+Fix the structure parameters first: 先修好结构参数
+Flat concept: 展开平面图
+'Flat concept images: {ids}': 展开平面图：{ids}
+For example, --region 0.2,0.1,0.65,0.85 to select the front of the box: 例如 --region 0.2,0.1,0.65,0.85（盒子正面所在的范围）
+For example, --view flat --faces front,side_b: 例如 --view flat --faces front,side_b
+For main views, choose a direction with `concept choose`: 主视角用 `concept choose` 选方向
+Generate an image in Codex first or supply an image path: 先让 Codex 出图，或给出图片路径
+Generate and import flats with concept prompt --step flat and concept import --view flat: 先出平面图并导入（concept prompt --step flat → concept import --view flat）
+Generate replacements with concept prompt --step flat and import them with concept import: 先重出（concept prompt --step flat → concept import）
+Give the main text from the content list (brand name, product name …), one --text each: 按信息清单给出主要文字（品牌名、品名……），每条一个 --text
+If the old content is not needed, add --force to overwrite; to keep it, rename it first: 确认不要旧内容后加 --force 覆盖；要保留就先改名
+If there is a logo, add its file to the logo item in the list (content edit --asset), then make the prompts again: 有 Logo 时在清单里给 logo 条目加素材（content edit --asset），再生成
+'Image not found: {path}': 找不到图片：{path}
+'Images not found: ': 找不到图片：
+Importing multiple alternatives together is available for flat concept images only: 几张备选一起导入只用于展开平面图
+Lay out this panel from the main and back views and layout draft: 这个面照主视角 / 背面视角和排版初稿排，不用导入平面图
+? Lay out this panel from the main view, back view, and draft. Use fill for the background, text for copy, and SVG for graphics.
+: 照主视角 / 背面视角里它的样子和排版初稿排（底色用 fill、字用 text，图形手写 SVG）
+Layout reference image {ref} is missing: 没有版式参考图 {ref}
+Leave out --body and make one image per two panels: 去掉 --body，按两面一张出
+List panels from left to right, for example --faces front,side_b. For the top, use --faces top_lid.: 按图里从左到右给出，如 --faces front,side_b；顶面 --faces top_lid
+Main view: 主视角
+? Make the back view first with `pacxio concept prompt {job} --step back`, import it with `--view back` (`--name {id}-back1`), then make the flats
+: 先 `pacxio concept prompt {job} --step back` 出背面视角，导入时加 `--view back`（`--name {id}-back1`），再出平面图
+'No --text given: the prompt has no text to draw on the box': 没给 --text：提示词里没有要画在盒子上的文字
+No concept image found in {folder}: 在 {folder} 里没有找到图片
+No crease was found between the panels in {id}. The image was split using the actual panel width ratio.: '{id} 里没找到面与面之间的折线，按真实宽度比例切开'
+No design direction has been chosen yet: 还没有选定的设计方向
+Pick another --name (such as main-B), or leave out --name to use the next free one: --name 换一个编号（如 main-B），或不给 --name 用下一个空编号
+? 'Pixel coordinates of the top-left, top-right, bottom-right and bottom-left corners with the panel upright: x0,y0,x1,y1,x2,y2,x3,y3'
+: 面正立时左上、右上、右下、左下的像素坐标：x0,y0,x1,y1,x2,y2,x3,y3
+Prompt file {name} already exists with different content (it may have been edited by hand): 提示词文件 {name} 已经存在、内容不同（可能手改过）
+? Rebuild the artwork from the concept. Typeset copy with `art add --kind text`. Trace flat artwork with `restore strip` and `visual trace`, or use `visual gen` for text-free assets when no flat is available.
+: 按概念图重建正式设计：文字用 `art add --kind text`；展开平面图上的图形用 `restore strip` → `visual trace` 描成矢量（没有平面图可描时用 `visual gen` 出无文字的素材）
+Regenerate the flat with a centred image and a solid white border: 平面图四周要留纯白边；重出时在提示词里写明白底、居中
+? Regenerate with `concept prompt --step flat` and import under a new name. The newest image is used automatically. Ask the user to confirm when the overall ratio is within 10%. If two attempts still fall outside tolerance, show the best rectified image and ask whether to accept it, change the layout, or regenerate. Explain the cost before trying again
+: 重出这张（`concept prompt --step flat` 的提示词，用新名字导入，新版自动在用）；整张比例在 10% 以内再请用户确认这组平面图。同一组出了两轮还超就停下：把最好的那张拉正给用户看，问接受拉正、换排法还是继续出（说清还要花多少），不要接着重出
+Rerun the commands for those artifacts to use this image: 重跑对应的命令，才会换成这张
+Run `concept tag {job} {id} --view flat --faces front,side_b` with panels in left-to-right order: '`concept tag {job} {id} --view flat --faces front,side_b`（按图里从左到右写面）'
+Run `pacxio plan {job}` again: 重新运行 `pacxio plan {job}`
+Run `pacxio plan {job}` first to make the brief and reference images: 先运行 `pacxio plan {job}` 生成简报与参考图
+Run `pacxio plan {job}` first to refresh the reference images: 先运行 `pacxio plan {job}` 刷新参考图
+Run `pacxio plan {job}` first, or leave out --brief: 先运行 `pacxio plan {job}`，或去掉 --brief
+Run pacxio plan {job} again to refresh the brief, then make the prompts again: 重跑 pacxio plan {job} 刷新简报，再重新生成提示词
+See the names in `concept list` (usually the chosen main view or back view): '`concept list` 里看编号（一般用选定的主视角或背面视角）'
+See the views in `concept list`; tag untagged ones with `concept tag <job> <id> --view back` first: '`concept list` 里看视角；没标的先 `concept tag <job> <id> --view back`'
+? Show the concept images to the decision-maker. Record their choice with `concept choose <job> <id>`, then use it to guide the final artwork.
+: 把概念图给决策者看，选定后 `concept choose <job> <id>`，再按它做正式设计
+Specify which panels are in the unfolded concept image: 展开平面图要写明图里是哪几个面
+Supply the panels in the image and the dimensions of each panel: 要给出图里的面和每个面的尺寸
+Switched to {id} from {previous}. Existing {artifacts} still use the previous image.: 改用 {id}（原来在用 {previous}）：已经出过的{artifacts}还是按原来那张
+The approver was not specified: 没写确认人
+The artwork could not be measured because the image is nearly all white. Give white artwork a visible outline.: 图里量不出画面：几乎全是白色（白底的画面又没有边框时分不出画面和白边）
+The artwork could not be measured. There is almost no artwork outside the white band.: 图里量不出画面：白条之外几乎没有画面
+The artwork touches the image edge. An uninterrupted white border is needed to measure its bounds.: 画面贴到了图边、四周的白边不完整，量不出画面边界
+The body of style {style} is not one ring of joined panels, so it cannot be drawn as one image: 盒型 {style} 的盒身不是一圈相接的面，不能画成一张
+The content list has no logo file, so the prompt has no original logo: 信息清单里没有 Logo 素材，提示词里没有 Logo 原件
+The crease in {id} is where it would be if the panels were swapped. Regenerate the image and check the order of {panels}.: '{id} 的折线在两面换了左右的位置上：AI 多半把{panels}左右画反了，要重出'
+The dieline cannot be built, so the visible panels are unknown: 刀版生成不了，取不到看得到的面
+'The image provider returned an invalid image: {error}': 出图服务返回的不是有效图片：{error}
+The layout brief has no sections for the front, right side and top: 版式简报里找不到正面、右侧、顶面的段落
+'The layout brief still has Chinese notes (the brief is older than job.json): ': 版式简报里还有中文说明（简报比 job.json 旧）：
+The overall aspect ratio of {id} differs by {error:+.0%} (tolerance ±{tolerance:.0%}). Regenerate the image.: '{id} 整张画面的比例和真实差 {error:+.0%}（超过 ±{tolerance:.0%}），要重出'
+The overall proportions are within tolerance. Rectify using the detected crease and check the individual panel widths.: 整张比例对，拉正时按找到的折线切；对照时注意这几面的宽度
+'The overall proportions of {id} are within tolerance ({error:+.0%}), but the panel widths differ: {panels}': '{id} 整张比例对（{error:+.0%}），但 AI 把面宽分得不准：{panels}'
+The proportions of {id} differ too much ({panels}, tolerance ±{tolerance:.0%}). Regenerate the image.: '{id} 的比例和真实差太多（{panels}，超过 ±{tolerance:.0%}），要重出'
+There are no active flat concept images: 还没有在用的展开平面图
+'There is no back-view (view=back) concept yet: the flats draw the back and left side from it': 还没有背面视角（view=back）的概念图：平面图要照它画背面和左侧
+There is no layout brief plan/brief.txt: 没有版式简报 plan/brief.txt
+'These flats cannot be confirmed because their proportions are out of range: {ids}': 比例不合格的平面图不能确认：{ids}
+'These prompt files already exist with different content (they may have been edited by hand): ': 这些提示词文件已经存在、内容不同（可能手改过）：
+This image is identical to existing concept {id}: 这张图和已有的概念图 {id} 完全相同
+Try again later: 稍后重试
+Two or three directions per run are usually enough: 一次出 2–3 个方向通常就够
+? Unequal panel widths in the generated image can shift the cut. When regenerating, ask for a thin crease line spanning the full height.
+: AI 把两面画得不等宽时会切偏；重出时提示词要求画一条贯穿上下的细折线
+Unknown image provider {provider}: 未知出图来源 {provider}
+Unknown step {step}: 未知步骤 {step}
+Unknown view {view}: 未知视角 {view}
+Use --by to identify the user who confirmed: 加 --by：是谁确认的（只能是用户本人）
+Use --region x0,y0,x1,y1 with values from 0 to 1 to sample only the box: 用 --region x0,y0,x1,y1（0–1 比例）只取盒子所在的范围
+Use --view main, back (back and left), or flat: --view main（主视角）| back（背面 + 左侧视角）| flat（展开平面图）
+Use 4–5 px/mm for measurements. A 200 mm panel will be 800–1000 pixels wide.: 量位置用 4–5 就够（200 mm 宽的面 800–1000 像素）
+Use PNG, JPEG, or WebP: 换用 PNG / JPEG / WebP
+Use a different image; to use this one, use {id} directly: 换一张图；要用这张就直接用 {id}
+Use the brand guide or swatches for brand colours. Record Pantone codes and specified CMYK with `color add`.: 品牌色以品牌规范 / 色卡为准（`color add` 记潘通号和指定 CMYK）
+a panel is listed twice: 面重复了
+approximated with a simple formula: 简单公式换算的近似值
+converted using {icc}: 按 {icc} 换算的
+flat concept prompts (`concept prompt --step flat`) and mockup confirmation sheets (`mockup`): 出平面图的提示词（`concept prompt --step flat`）和效果图确认页（`mockup`）
+flat confirmation sheets (`flat`): 平铺确认页（`flat`）
+'unknown panels: {panels}': 没有这些面：{panels}
+? '{first} and {second} show the same box body height but have different overall proportions ({first_error:+.0%} and {second_error:+.0%}). Regenerate {first}.'
+: '{first} 和 {second} 画的是一样高的盒身，整张比例却对不上（{first_error:+.0%} 和 {second_error:+.0%}），要重出 {first}'
+'{fix}; then make the prompts again': '{fix}；再重新生成提示词'
+'{id} has not been tagged as a flat concept image': '{id} 没标成展开平面图'
+'{id} is a {view} reference and cannot be selected as the main direction': '{id} 是{view}，只作参考，不能选定为设计方向'
+'{id} is not a back-view concept': '{id} 不是背面视角概念图'
+'{id} is not tagged as a flat concept (--view flat --faces …)': '{id} 没标成展开平面图（--view flat --faces …）'
+'{id} is outside the selected direction {chosen}': '{id} 不属于选定的方向 {chosen}'
+'{id} is the selected direction and must remain a main-view image': '{id} 是选定的方向，只能是主视角'
+'{id} must be a back view or a flat with tagged panels to select it as the active version': '{id} 不是背面视角或标了面的展开平面图，没有在用哪一版之分'
+'{id} specifies panels that are not visible on this style: {panels}': '{id} 标的面在这个盒型里不是看得到的面：{panels}'
+'{id}: {error}': '{id}：{error}'
+
+"Pouch rear 3D view": "软袋背面 3D 视角"
+"Bottom, back and left 3D view (from below)": "底面 + 背面 + 左侧 3D 视角（从底下看）"
+"Back and left 3D view": "背面 + 左侧 3D 视角"
+"Chosen design {id}": "选定的设计 {id}"
+"Original logo artwork": "Logo 原件"
+"Unfolded view ({title})": "展开平面图（{title}）"
+"Body wrap: {title}": "盒身一圈：{title}"
+"Layout wireframe: actual proportions and content placement": "版式示意图：真实比例与信息分配"
+"Chosen design {id}, front and right 3D view": "选定的设计 {id}，3D 正面 + 右侧"
+"Rear reference {id}: {view}": "背面视角 {id}，{view}"
+"Chosen design, {face} straightened from the 3D view (match composition, whitespace and line weight)": "选定设计的{face}，从 3D 图拉正（构图、留白、线条深浅照它）"
+"Main concept view ({name})": "主视角概念图（方向 {name}）"
+"# Workflow v2.1, step {step}: {title}, based on chosen design {chosen} (generated by `pacxio concept prompt`)": "# 流程 v2.1 第 {step} 步：{title}，以选定的 {chosen} 为参考（`pacxio concept prompt` 生成）"
+"# Input images: {inputs}": "# 输入图：{inputs}"
+"# Import: {command}": "# 导入：{command}"
+"# Review the appearance of these panels here. Use the later unfolded views for proportions. Do not run concept choose on this image.": "# 只用来确认画到的各面的视觉，比例以之后的展开平面图为准；不要 concept choose 这张。"
+"# This image includes text and is for reference only. Do not run concept choose on it. Once the set is ready, compare it to the two 3D views, list differences and get the user's approval before using it for the final artwork.": "# 带文字，图本身不进印刷文件；不要 concept choose 这张。全部出好后对照两张 3D 图列出差别，用户确认这一组之后正式设计以平面图为准。"
+"# Rebuild the final artwork from these views: vectorize illustrations, colour blocks and contours with `restore strip` then `visual trace --lines`. Remove AI-drawn text and typeset it in pacxio. Use hand-drawn SVG for simple icons when it gives a cleaner result (references/vector.md).": "# 正式稿照这组平面图还原：插画、色块、等高线用 `restore strip` → `visual trace --lines` 描成矢量，AI 画的字去掉、由引擎重排；简单图标手写 SVG 更干净时用手写（references/vector.md）。"
+"# Use the aspect ratio and resolution above if the image tool supports them, or follow the first line of the prompt below. After import, a canvas ratio off by more than 10% requires regeneration; individual panel differences are warnings. Try at most two rounds, then ask the user how to proceed.": "# 出图工具能指定比例和分辨率时用上面两行（接口的预设比例一定照给）；不能时照提示词第一行。导入后引擎量整张比例：差超过 10% 标「要重出」，单面偏差只提醒。同一组最多出两轮，还不过就停下问用户。"
+"# Follow the wireframe orientation for top and bottom panels; the prompt names the hinge edge.": "# 顶 / 底面按版式示意图的方向画（铰链边写在提示词里）。"
+" Lid orientation is provisional (MK03); use a folded sample to confirm.": "盖的正立方向还没经打样确认（MK03），以折样盒为准。"
+"{n}) {path} ({description})": "{n}) {path}（{description}）"
+"# Workflow v2.1, step 3: {title} (generated by `pacxio concept prompt --step main`)": "# 流程 v2.1 第 3 步：{title}（`pacxio concept prompt --step main` 生成）"
+"# This view is a design reference. Proportions, text and details may be inaccurate. Do not use it in print files. The user chooses a design in the workbench.": "# 主视角只是方向参考：比例、文字、细节都不保证准确，图本身不进印刷文件；选哪个方向由用户在工作台定。"
+"# Generate one new image with the prompt below and attach the listed reference images.\n#   Run the import command after generation. --codex-latest imports the latest existing image; it does not generate one.\n#   Identical images are rejected (DUPLICATE). Tell the user how many images you will generate first.": "# 先出图、再导入：用 image_gen（如 Codex 内置出图）按空行之后的英文提示词出 1 张新图（附下面的输入图），\n#   出图完成后再运行导入命令。只运行导入命令不会出图：--codex-latest 取的是出图目录里最新的一张，\n#   和已有概念图完全相同的图会被拒绝（DUPLICATE）。出图前告诉用户这次要出几张。"

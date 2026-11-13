@@ -1,0 +1,216 @@
+' (across panels)': （跨面）
+(no notes yet): （还没有批注）
+', ': 、
+', and ': ，
+', or merge the two windows': ；或合成一个窗口
+. Run `pacxio panels <job>` to list all panels: ；`pacxio panels <job>` 列出全部面名
+. Then rerun mockup.: ，再重新运行 mockup
+; the gloss of foil, spot UV and embossing is simulated: ；烫金 / 局部 UV / 击凸的光泽是模拟
+A concept image cannot be used directly as attachment artwork: 概念图不能直接当配件图稿
+'Add --part ': '加 --part '
+? Add a brand font with `pacxio font add <job> <font-file>`. For Source Han Sans, run `pacxio setup --yes` or `{command}`, or set PACXIO_FONT_DIR.
+: 品牌字体用 `pacxio font add <job> <字体文件>`。思源黑体运行 `pacxio setup --yes` 或 `{command}` 安装，或设置 PACXIO_FONT_DIR。
+Add a window section like the one in profiles/default.yaml and confirm the values with the factory: 在配置档里加 window 一节（照 profiles/default.yaml 的写法），数值请工厂确认
+Add checklist items with `art add --content <item>` and finalize any pending wording: 清单里的条目用 `art add --content <条目>` 放上去，措辞待定的先定下来
+Add the missing content and tag it (`art add --tag {tag} ...`): 补上这些信息并用 --tag 标注（`art add --tag {tag} ...`）
+? Add these items with `art add --content` for checklist items or `--tag` for other items. Finalize pending wording and rerun `render`.
+: 补上这些信息（清单条目用 `art add --content`，其它用 --tag 标注）、定下待定的措辞，重新 render
+Add this information and label it with `art add --tag {tag}` (or add the label to existing text, images or finishes): 补上这条信息，并用 `art add --tag {tag}` 标注（或给已有的文字 / 图片 / 工艺加上这个标签）
+After the orientation test (fold the `export --proof` proof), confirm the text direction on the top and bottom: 完成方向测试（`export --proof` 的打样稿折叠）后再确认顶面 / 底面上的文字方向
+'Approval is blocked by missing required content or placeholders: {items}': 必须出现的信息没齐（或还有占位框），不能确认：{items}
+Ask the user to confirm again after completing the list: 补上之后清单会改动，需要用户再确认一次
+'Asset file not found: {asset}': 找不到素材文件：{asset}
+'Attachment file does not exist: {path}': 文件不存在：{path}
+Attachment {id} does not exist. Run attach list to see the IDs.: 没有配件 {id}；先用 attach list 查看 id
+Attachment {id} refers to missing panel {panel}: 配件 {id} 的面 {panel} 不存在
+Attachment {id} uses a concept image for its {kind}: 配件 {id} 的{kind}引用了概念图
+'Attachment {id}: the {kind} must be an SVG: {file}': 配件 {id} 的{kind}要是 SVG：{file}
+'Attachment {id}: the {kind} requires cloud outline processing': 配件 {id} 的{kind}要在云端转外形
+'Attachment {id}: {kind} file not found: {file}': 配件 {id} 的{kind}文件不存在：{file}
+'Available categories: ': 类别可用：
+'Available panels in the preview: {panels}': 可用：{panels}
+'Available parts: ': 可用部件：
+Background color: 底色
+Cannot delete {id}. You can delete your own notes before anyone replies.: '{id} 不能删：只能删自己写的、还没人回复的批注'
+Check rel: 检查 rel
+Check that it is meant to be seen only after opening (unboxing information): 确认是有意放在打开后才看得到的地方（开箱信息）
+? Check that they are meant to be inside the box; information that must be seen belongs on the front, back, sides, top or bottom
+: 确认它们是有意放在盒子内侧的；需要被看到的信息应放在正面 / 背面 / 侧面 / 顶面 / 底面
+Check the file for damage. If needed, rename it to keep a backup and add the notes again.: 检查文件内容是不是被改坏了；实在不行先改名备份，再重新批注
+Check the path: 检查路径
+Choose a different --id or use `content edit`: 换一个 --id，或用 `content edit`
+Choose a unique window ID: 换用唯一的窗口 id
+Confirm the real look with a printed proof: 真实效果必须打样确认
+Content item: 条目
+'Could not read review/notes.json: {error}': review/notes.json 读不出来：{error}
+'Could not read {file}: {error}': 读不了 {file}：{error}
+Download Source Han Serif with `{command}` (about 50 MB, needs the network), or set PACXIO_FONT_DIR: 思源宋体运行 `{command}` 下载（约 50 MB，要联网），或设置 PACXIO_FONT_DIR
+'Existing notes: {ids}': 现有：{ids}
+Fold a sample box to check orientation before production: 批量生产前折一个样盒核对方向
+'For {window}: ': '把 {window} '
+'Format: {conventions: paint, items: [...]}': '格式：{conventions: paint, items: [...]}'
+Get the exact content from the user or brand owner, then use `content edit <job> <id> --text ... --clear pending`: 向用户或品牌方要到准确内容后 `content edit <job> <id> --text ... --clear pending`
+Hanger: 挂板
+Have the decision-maker select a direction (`concept gen` / `concept import` → `concept choose`): 先出概念图让决策者定方向（`concept gen` / `concept import` → `concept choose`）
+If needed, add a brand-name line with `art add ... --content {id}`: 需要的话 `art add ... --content {id}` 加一行品牌名文字
+If these panels should carry information (brand, product description, barcode, etc.), add it: 如果这些面应该有信息（品牌、产品说明、条码等），请补上
+Image coordinates must be between 0 and 1: 图上位置要在 0–1 之间
+Item {id} already exists: 条目 {id} 已存在
+Item {id} does not exist: 没有条目 {id}
+Item {id} is still referenced by {users}: 条目 {id} 正被引用：{users}
+? Label them with `--tag` (brand name / product name / net contents / ingredients / manufacturer …) so the confirmation page can check them by category
+: 用 `--tag` 标注（品牌名 / 品名 / 净含量 / 配料 / 生产商 …），确认页才能按信息类别核对
+Missing {option}: 没给 {option}
+'Move it to: ': 改开在：
+Move or resize {window}: 调整 {window} 的位置或大小
+Move the window or adjust the structural hole array: 移开窗口或调整结构孔阵列
+Move {item} away from window {window}. Run `pacxio panels` to locate the window.: 把 {item} 挪出窗口 {window}（`pacxio panels` 列出了窗口位置）
+Move {window} {direction} by {distance:.1f} mm or make it smaller: 把 {window} 往{direction}移 {distance:.1f} mm，或把它改小
+No concept has been chosen. The mockup sheet has no design reference.: 没有选定的概念图：效果图确认页里没有和设计方向的对照
+None: 没有
+None on this part: 这个部件没有
+Note {id} does not exist: 没有批注 {id}
+Omit --r or use --shape rect: 去掉 --r，或改用 --shape rect
+Once the image is ready, replace the placeholder with `art fill <job> {id} --source <image>`, then make the mockup again: 出好图后 `art fill <job> {id} --source 图片` 换掉占位框，再重新生成效果图
+? Once you have the exact content, run `content edit <job> {id} --text ... --clear pending` and ask the user to confirm the wording again
+: 拿到准确内容后 `content edit <job> {id} --text ... --clear pending`，并请用户再确认一次措辞
+'Panel {panel}: a multi-part style requires part.panel names such as {example}.top': 面 {panel}：多部件盒型的面要写成 部件.面（例如 {example}.top）
+'Panels available for attachments: ': 可用面：
+'Panels that can have windows on this box style: {panels}': 这个盒型可以开窗的面：{panels}
+'Panels that can have windows: ': 可以开窗的面：
+Pattern: 图案
+? Place it with `art add ... --content {id}` (the text follows the list); if it is really not needed, run `content edit <job> {id} --optional`
+: '`art add ... --content {id}` 放上去（文字以清单为准）；确实不需要就 `content edit <job> {id} --optional`'
+Placeholder “{name}”: 占位框「{name}」
+Placement {id} refers to part={part}, which is not a part of this box style: 放置 {id} 的 part={part} 不是这个盒型的部件
+Placement {id} uses full-dieline coordinates (space=blank). Specify the part for this multi-part style.: 放置 {id} 用整张刀版坐标（space=blank），多部件盒型要说是哪个部件
+'Placement {id}: space=body is unavailable for multi-part styles': 放置 {id}：多部件盒型第一版不支持 space=body
+Profile {profile} has no window rules. Windows are unavailable.: 配置档 {profile} 没有 window 规则，不能开窗
+? Put artwork that must line up (such as the front logo) on the same side of both parts, or design it so it still works when turned round
+: 需要对齐的图文（如正面的 Logo）在两个部件上放在同一边，或做成转过来也成立的图案
+Reduce the window area or fold a sample to check rigidity: 把窗口改小，或折一个样盒看看够不够挺
+Reference guide {id} is provisional and has yet to be verified by the brand, factory, or regulatory adviser: 常规参考表 {id} 是初值，未经品牌方、印厂或法规顾问确认
+Remove or update these placements (`art remove`) or references in other items such as {{: 先删掉或改掉这些放置（`art remove`）/ 条目原文里的 {{
+Remove the window with `window remove` or use a folding carton style: 去掉窗口（`window remove`），或改用卡纸盒型
+'Required content is missing: {items}. Add it before approval.': 必须出现的信息还没齐：{items}——补齐之前不能确认效果图
+Required information “{tag}” is missing from the mockup: 必须出现的信息「{tag}」在效果图里没有
+Required {what} from the content list is not on the layout yet: 信息清单里必须出现的{what}还没放到版面上
+'Required {what} is not settled yet: {pending}; the layout currently shows {shown}': 必须出现的{what}还没定：{pending}；版面上现在是{shown}
+Rerun `pacxio render <job>` and ask the user to review the new proof before approving: 重新运行 `pacxio render <job>`，用户看过新的刀版确认图再确认
+Resolve the note if it is no longer needed: 不需要了就关掉（resolve）
+Round window {window} has unequal width and height ({width:g} × {height:g}): 圆窗 {window} 的宽高不相等（{width:g} × {height:g}）
+Run `content conventions <job> <category>` to set it again: '`content conventions <job> <品类>` 重新指定'
+Run `pacxio attach add --help` to see the parameters: '`pacxio attach add --help` 看参数'
+Run `pacxio content list` to see the items: '`pacxio content list` 查看'
+Run `pacxio conventions list` for the available categories: '`pacxio conventions list` 查看'
+Run `pacxio conventions list` to see available categories: '`pacxio conventions list` 查看可用的品类'
+Run `pacxio login` and retry: 登录云端服务后重跑：`pacxio login`
+? Run `pacxio notes list <job> --open` to see the notes, locations, and screenshots. After making changes, reply with `notes reply <job> <id> --text …`.
+: '`pacxio notes list <job> --open` 看内容、位置和截图；改完 `notes reply <job> <id> --text …`'
+Run `pacxio render <job>` and ask the user to review the proof before approving: 先运行 `pacxio render <job>`，用户看过刀版确认图再确认
+Run `pacxio render <job>` first, or omit --panel and --box to leave a general note: 先 `pacxio render <job>`；或不给 --panel / --box，留一条整体意见
+Send the attachment supplier separate SVGs for the outline and raised artwork using the same artboard: 标牌厂要矢量图稿：外形、凸起图案各一个 SVG，同一个画板
+Set --r to at least {minimum:g}: 把 --r 改为 ≥ {minimum:g}
+Set --r to at most {maximum:g} or use --shape obround: 把 --r 改为 ≤ {maximum:g}，或改用 --shape obround
+Set both window dimensions to at least {minimum:g} mm: 把窗口的宽、高都改到 ≥ {minimum:g} mm
+Show each item to the user. After explicit wording approval, run `pacxio content confirm <job> --by <approver>`.: 把清单逐条给用户看；用户明确确认措辞后运行 `pacxio content confirm <job> --by 确认人`
+Show the changed list to the user and run `pacxio content confirm` after approval: 把改动后的清单给用户看，用户确认后再运行 `pacxio content confirm`
+Show the list to the user item by item; after they confirm, run `pacxio content confirm <job> --by <name>`: 把清单逐条给用户看，用户确认后 `pacxio content confirm <job> --by 确认人`
+Start a list with `content import` or `content add`: 先 `content import` 或 `content add` 整理清单
+Style {style} does not support mockups yet: 盒型 {style} 还不支持效果图
+Supply a YAML or JSON file: 给一个 YAML 或 JSON 文件
+'Supported styles: {styles}': 目前支持：{styles}
+Surface treatment {id} refers to missing part {part}: 表面处理 {id} 的部件 {part} 不存在
+? The artwork direction on the top and bottom has not been confirmed by a proof; the mockup draws it as it is now, and the real box may be rotated 90° or 180°
+: 顶面 / 底面的图文方向未经打样确认，效果图按当前方向绘制，实物可能旋转 90° 或 180°
+The attachment ID duplicates a finish, surface treatment, or attachment. Choose another --id.: 配件的 id 和工艺、表面处理、别的配件重复了，换一个 --id
+The content file must contain an items list: 清单文件要有 items 列表
+The content list changed after its wording was confirmed: 信息清单在措辞确认之后又改过
+The content list changed after wording approval. The previous approval has expired.: 信息清单在确认之后改动过，措辞确认已过期
+The design changed after the dieline proof was rendered. The proof is stale.: 设计在出刀版确认图之后又改动过，现在这张已经过期
+The final artwork preview {path} is missing, so the note cannot be placed on the image: 还没有正式稿预览 {path}，没法把留言放到图上
+The job does not contain {file}: job 里没有这个文件：{file}
+? 'The lid can go on turned 180° and the insert can go in back to front: take care when artwork on the front and back of the lid and base (insert and sleeve) must line up'
+: 盖可以转 180° 盖上、内托可以前后装反：盖和地盒（内托和外套）前后的图文要对齐时注意
+The list changed after confirmation. The confirmation has expired.: 清单在确认之后改动过，确认已过期
+'The mockup is a sketch: colors are soft-proofed with {icc}, close to the printed look but not color-accurate': 效果图是示意：颜色按 {icc} 软打样，接近印出来的样子，不是色准
+? 'The mockup is a sketch: there is no ICC on this computer, so colors are converted from CMYK with a simple formula (brighter and darker than print), not color-accurate'
+: 效果图是示意：本机没有 ICC，颜色由 CMYK 用简单公式转成屏幕颜色（偏鲜偏暗），不是色准
+The outline SVG for attachment {id} is empty: 配件 {id} 的外形文件里没有图形
+The preview has no panel {panel}: 预览里没有面 {panel}
+The top and bottom artwork orientation has yet to be checked on a physical proof. This is recorded in the approval.: 顶 / 底面图文的正立方向还没经打样确认；确认记录里记下了这一条
+The window shows a sketch of the inside of the box (not the product); film windows get a reflection: 窗口里画的是盒子内部的示意（不是产品）；贴膜窗加了一道反光
+The wording of the content list has not been confirmed: 信息清单的措辞还没有确认
+'There are {count} open Workbench notes: {ids}': 工作台上有 {count} 条批注等你处理：{ids}
+There is no content list yet: 还没有信息清单
+There is no dieline proof yet: 还没有刀版确认图
+'These panels have no text, images or finishes, only a background color or pattern: {faces}': 这些面上没有文字 / 图片 / 工艺，只有底色或图案：{faces}
+'This content is hidden when the box is closed and only visible when {how}: {names}': 这些内容合上看不到、{how}才看得到：{names}
+'This content is on panels the mockup does not show (tuck flaps, dust flaps, ears, glue flap): {names}': 这些内容放在效果图里看不到的面上（插舌 / 防尘翼 / 耳朵 / 糊口）：{names}
+To use serif headings, put Source Han Serif in a font directory or set PACXIO_FONT_DIR: 要用衬线标题时，把思源宋体放进字体目录，或设置 PACXIO_FONT_DIR
+Treat this as guidance. Ask the user to confirm regulatory details against current requirements.: 只作提示；法规相关的提醒要用户按现行标准确认
+Unknown attachment panel {panel}: 未知的面 {panel}
+Untagged: 未标注
+Use --space panel for local panel coordinates or --space blank --part …: 改用 --space panel（面局部坐标）或 --space blank --part …
+? Use `art add --content <item>` or write {{item-id}} in the text to reference the list, so the text follows the list and changes with it
+: 用 `art add --content <条目>` 或在文字里写 {{条目id}} 引用清单，文字以清单为准、改清单时一起变
+Use a different --id for each window: 每个窗口用不同的 --id
+Use a file path relative to the job folder: file 写相对 job 目录的路径
+Use equal width and height in --box for a round window, or use --shape obround for an elongated opening: 圆窗的 --box 宽高要一样；要椭圆一点的可以用 --shape obround
+Use one solid shape in the outline SVG, such as a filled circle for a round badge: 外形 SVG 画一个实心的形状（圆标就是一个实心圆）
+Use the concept as a reference to draw an outline SVG and a raised-artwork SVG: 照概念图画成 SVG：外形一个文件、凸起图案一个文件
+Use the concept as a reference to draw two SVGs, one for the outline and one for the raised artwork: 概念图只作参考：照它画成 SVG（外形一个文件、凸起图案一个文件）
+What is actually visible through the window depends on the product and insert; go by the sample box: 窗口里实际能看到什么取决于产品与内衬，以样盒为准
+Window ID {window} duplicates a structural locating hole: 窗口 id {window} 与结构定位孔重复
+Window ID {window} is duplicated: 窗口 id {window} 重复
+Window {window} has insufficient board between it and structural hole {hole}: 窗口 {window} 与结构孔 {hole} 没有足够纸桥
+Window {window} is on {panel} ({role}). Windows are available on body panels only.: 窗口 {window} 开在 {panel}（{role}）上：第一版只能开在盒身面
+Window {window} is only {clearance:.1f} mm from a crease or cut edge (provisional minimum {minimum:g} mm): 窗口 {window} 离压线 / 外轮廓只有 {clearance:.1f} mm（至少 {minimum:g}）【初值】
+? Window {window} is only {clearance:.1f} mm from the glue landing along the inside edge of {panel} (provisional minimum {minimum:g} mm)
+: 窗口 {window} 离糊口落胶位置（{panel} 里面靠外边那一条）只有 {clearance:.1f} mm（至少 {minimum:g}）【初值】
+'Window {window} is too small: {width:g} × {height:g} mm (provisional minimum {minimum:g} mm per side)': 窗口 {window} 太小：{width:g} × {height:g} mm（每边至少 {minimum:g}）【初值】
+Window {window} is {shape}. Its shape sets the corner radius, so --r does not apply.: 窗口 {window} 是 {shape}，圆角由形状决定，不能给 --r
+'Window {window}: corner radius {radius:g} mm exceeds half the shorter side': 窗口 {window} 圆角 {radius:g} mm 大于短边的一半
+'Window {window}: corner radius {radius:g} mm is below the provisional minimum {minimum:g} mm. Sharp corners can tear.': 窗口 {window} 圆角 {radius:g} mm 太小（至少 {minimum:g}，尖角容易撕裂）【初值】
+'Window {window}: panel {panel} does not exist': 窗口 {window}：没有面 {panel}
+'Window {window}: windows are unavailable on {panel}': 窗口 {window}：第一版不能开在 {panel} 上
+Windows are not supported on corrugated boxes: 第一版不支持瓦楞盒开窗（ 节）
+Windows cover {ratio:.0%} of panel {panel}, above the provisional limit {maximum:.0%}. The box may lose rigidity.: '{panel} 上的窗口占了面积的 {ratio:.0%}（超过 {maximum:.0%}），盒子会变软【初值】'
+? Windows {first} and {second} have only {gap:.1f} mm between them (provisional minimum {minimum:g} mm). The narrow bridge may tear.
+: 窗口 {first} 和 {second} 只隔 {gap:.1f} mm（至少 {minimum:g}，太窄容易断）【初值】
+a draft: 草稿
+asset import: 素材
+content list assets: 信息清单的素材
+down: 下
+itself: 自己
+left: 左
+missing item {id}: 不存在的条目 {id}
+move down by {distance:.1f} mm: 往下移 {distance:.1f} mm
+move left by {distance:.1f} mm: 往左移 {distance:.1f} mm
+move right by {distance:.1f} mm: 往右移 {distance:.1f} mm
+move up by {distance:.1f} mm: 往上移 {distance:.1f} mm
+no output: 没有输出
+outline: 外形
+raised artwork: 凸起图案
+reduce the height to at most {height:.1f} mm: 把高度减到 ≤ {height:.1f} mm
+reduce the width to at most {width:.1f} mm: 把宽度减到 ≤ {width:.1f} mm
+right: 右
+the box is opened: 打开盒子
+the placeholder {text}: 占位 {text}
+up: 上
+whole outer surface: 整张外表面
+'{count} content items are pending: {items}': '{count} 条信息还没定：{items}'
+'{count} items were still pending at confirmation: {items}. The layout will use placeholders.': 确认时还有 {count} 条待定：{items}；版面上会先排占位
+'{id} (on {panel})': '{id}（在 {panel}）'
+'{id} ({name})': '{id}（{name}）'
+'{kind} {id} ({where})': '{kind} {id}（{where}）'
+'{label} ({id})': '{label}（{id}）'
+'{label} “{text}”': '{label}「{text}」'
+'{n} text block(s) are not linked to the content list: {ids}': '{n} 段文字没有关联信息清单：{ids}'
+'{n} text block(s) have no information label and are grouped as “{group}” on the confirmation page': '{n} 段文字没有信息标签，确认页里归为「{group}」'
+'{part}: {message}': '{part}：{message}'
+'{ratio:.0%} of {item} lies inside window {window} and will be cut away': '{item} 有 {ratio:.0%} 落在窗口 {window} 里，会被切掉'
+'{what} (pending)': '{what}（待定）'
+'{what} appears only as a logo; the layout has no separate brand-name text': '{what}只以 Logo 出现，版面上没有单独的品牌名文字'
+'{what} has not been replaced with a real image or graphic': '{what}还没换成真实的图片 / 图形'
+'}}, then delete the item': '}}，再删条目'

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="120mm" height="120mm" viewBox="-10 -10 120 120">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_platform_front" data-type="crease" d="M0 85 L100 85" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_platform_back" data-type="crease" d="M0 15 L100 15" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M0 100 L100 100 L100 0 L0 0 L0 100" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="50" y="50" font-size="4" text-anchor="middle" fill="#888">platform</text>
+<text x="50" y="92.5" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="50" y="7.5" font-size="4" text-anchor="middle" fill="#888">back</text>
+</g>
+</svg>

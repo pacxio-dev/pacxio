@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1067mm" height="526mm" viewBox="-10 -10 1067 526">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_glue_back" data-type="crease" d="M35 376 L35 130" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_top" data-type="crease" d="M39 126 L285 126" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_btm" data-type="crease" d="M39 380 L285 380" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_side_a" data-type="crease" d="M289 380 L289 126" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_top" data-type="crease" d="M293 126 L539 126" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_btm" data-type="crease" d="M293 380 L539 380" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_front" data-type="crease" d="M543 380 L543 126" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_top" data-type="crease" d="M547 126 L793 126" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_btm" data-type="crease" d="M547 380 L793 380" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_side_b" data-type="crease" d="M797 380 L797 126" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_top" data-type="crease" d="M801 126 L1043 126" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_btm" data-type="crease" d="M801 380 L1043 380" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M0 366.6218 L35 376 L35 380 L39 380 L39 506 L285 506 L285 380 L293 380 L293 506 L539 506 L539 380 L547 380 L547 506 L793 506 L793 380 L801 380 L801 506 L1043 506 L1043 380 L1047 380 L1047 126 L1043 126 L1043 0 L801 0 L801 126 L793 126 L793 0 L547 0 L547 126 L539 126 L539 0 L293 0 L293 126 L285 126 L285 0 L39 0 L39 126 L35 126 L35 130 L0 139.3782 L0 366.6218" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="17.5" y="253" font-size="4" text-anchor="middle" fill="#888">glue</text>
+<text x="162" y="253" font-size="4" text-anchor="middle" fill="#888">back</text>
+<text x="416" y="253" font-size="4" text-anchor="middle" fill="#888">side_a</text>
+<text x="670" y="253" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="922" y="253" font-size="4" text-anchor="middle" fill="#888">side_b</text>
+<text x="162" y="63" font-size="4" text-anchor="middle" fill="#888">top_back</text>
+<text x="416" y="63" font-size="4" text-anchor="middle" fill="#888">top_side_a</text>
+<text x="670" y="63" font-size="4" text-anchor="middle" fill="#888">top_front</text>
+<text x="922" y="63" font-size="4" text-anchor="middle" fill="#888">top_side_b</text>
+<text x="162" y="443" font-size="4" text-anchor="middle" fill="#888">btm_back</text>
+<text x="416" y="443" font-size="4" text-anchor="middle" fill="#888">btm_side_a</text>
+<text x="670" y="443" font-size="4" text-anchor="middle" fill="#888">btm_front</text>
+<text x="922" y="443" font-size="4" text-anchor="middle" fill="#888">btm_side_b</text>
+</g>
+</svg>

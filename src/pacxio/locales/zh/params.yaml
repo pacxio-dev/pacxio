@@ -1,0 +1,140 @@
+# Box style parameter descriptions (Field(description=...)); translated at output time.
+Adhesive flap depth left on the front panel; default glue width + glue margins on both sides: 留在前板的粘接片深，默认胶宽+两侧胶边距
+Adhesive strip distance from the perforation / free edge of the adhesive flap: 胶条离齿线 / 粘接片自由边距离
+Adhesive strip end inset; sets the front panel ink-free receiving area: 胶条两端缩进，联动前板禁墨接收区
+Adhesive strip width, on the back of the adhesive flap: 胶条宽，位于粘接片纸背
+Angle between the roof panel and horizontal: 屋顶板和水平面的夹角
+Back centre seal width (each side); default 10 (provisional): 背中缝封宽（每边），默认 10【初值】
+Base depth: 底板深
+Base length (front width): 底板长（正面宽）
+Base receiving hole depth; sets the interrupted base crease: 底板接收孔深；联动断开的底板压线
+Body height (without roof and handle panel): 盒身高（不含屋顶和手提板）
+Bottle diameter mm (label width = π·L + overlap): 瓶身直径 mm（标签宽 = π·L + 搭接）
+Bottle diameter mm at the label's bottom edge: 标签下沿处的瓶身直径 mm
+Bottle diameter mm at the label's top edge: 标签上沿处的瓶身直径 mm
+Bottom depth mm (= unfolded side gusset width); 0 = 0.4 × front width: 底深 mm（= 侧风琴面展开宽）；0 = 按 0.4 × 正面宽
+Bottom gusset / side gusset depth mm; 0 = derived from pouch width (stand-up) or none (back seal): 底褶 / 侧风琴深 mm；0 = 按袋宽推（自立袋）或没有（背封袋）
+Bottom panel four-side seal width; default 6 (provisional): 底片四边封宽，默认 6【初值】
+Boundary between the glued web triangle and the panel: 糊胶三角离面的分界
+CLI compatibility placeholder; not used in the dieline: CLI 兼容占位；不参与刀线
+CLI compatibility placeholder; not used in the flat structure (board thickness comes from the material): CLI 兼容占位；不参与平面结构，纸厚来自材料
+Centre distance between the two lock tabs; the receiving slots move with it: 两枚锁舌中心距；接收槽同步移动
+Centre seal width (each side); default 9 (provisional): 中缝封宽（每边），默认 9【初值】
+Clear window rect / oval (front, position marked): 透明窗 rect / oval（正面，标位置）
+Clearance between lid side and the inner edge of the roll-over: 盖侧与卷边内沿让位
+Clearance between the back of the apron and the front panel: 外包片纸背与前板的间距
+Clearance between the tuck and the back of the front wall; sets lid depth: 插舌与前壁纸背的间距；联动盖深
+Corner radius; round_rect default 3: 圆角，round_rect 默认 3
+'Custom outline: one closed outline as SVG, Béziers become arcs; as seen from the front': 异形外形：单条闭合轮廓 SVG，贝塞尔转圆弧；正面看的样子
+Depth in the pull direction: 抽拉方向的深
+Depth of the side wall lug receiving hole (not the front lock slot): 侧壁插脚接收孔深，非前锁槽
+Drawer front width (left to right): 抽屉脸宽（左右）
+Dust flap end bevel: 防尘翼端斜角
+Dust flap end bevel, degrees: 防尘翼两端斜角，度
+Dust flap free corner radius: 防尘翼自由角半径
+Ear distance from the base crease; default 3: 夹耳离底板压线距离，默认 3
+Ear distance from the bottom; default 3: 夹耳离底距离，默认 3
+Flat height mm: 展开高 mm
+Flat width mm: 展开宽 mm
+Four vertical corner seals (quad seal; the pouch stands up straighter): 四条竖角封（立体边封，袋子立得更挺）
+Front panel cut-out depth; default 0.35·H; 0 = no cut-out: 前板缺口深，默认 0.35·H；0 = 不挖
+Front panel cut-out width; default 0.6·L: 前板缺口宽，默认 0.6·L
+Front width mm: 正面宽 mm
+Front/back ear depth; default 0.4Wi: 前后夹耳深，默认 0.4Wi
+Front/back ear end inset; default t: 前后夹耳端缩，默认 t
+Front/back wall end clearance; default t: 前后壁两端让位，默认 t
+Full depth of the bottom major flap; default 0.8·Wi: 底主翼全深，默认 0.8·Wi
+Gap between lid side and roll-over: 盖侧与卷边间距
+Gap between the two outer top flaps when closed: 两片顶外摇盖合上后的间隙
+Glue flap width: 糊口宽
+Handle hole (punched at the top, large pouches): 手提孔（顶部冲孔，大袋）
+Handle hole (punched at the top, large pouches; needs seam=corner): 手提孔（顶部冲孔，大袋；要 seam=corner）
+Handle hole height (stadium shape, round at both ends): 提手孔高（跑道形，两头半圆）
+Handle hole width; default 0.33·Li: 提手孔宽，默认 0.33·Li
+Handle panel height; default 0.25·Wi + 30: 手提板高，默认 0.25·Wi + 30
+Header card height above the tray; default = W: 头卡高出托盘的高度，默认 = W
+Height: 高
+Height mm: 高 mm
+How deep the diagonal crease is cut near the corner; default 0.0447·Wi + 1.4: 斜压线靠角切开多深，默认 0.0447·Wi + 1.4
+Inner side wall end clearance; default t: 侧内壁两端让位，默认 t
+Inner side wall end inset; default t: 内侧壁端缩，默认 t
+Inner side wall lug length; default 2.5t: 侧内壁插脚长，默认 2.5t
+Inner side wall lug root width; receiving hole changes with it: 侧内壁插脚根宽；接收孔同步变化
+Inner side wall lug root width; receiving hole follows: 侧内壁插脚根宽，接收孔同步
+Inner tuck depth; default min(25, 0.55Hi): 内插舌深，默认 min(25,0.55Hi)
+Inward lean of the end flaps (from vertical); if not given, derived from the handle panel V-notch: 端翼向盒内斜的角度（离竖直）；不给按手提板 V 口的位置算
+Joint flap end bevel: 接舌两端斜角
+Joint flap width; default 35 (40 for BC flute): 接舌宽，默认 35（BC 楞 40）
+Label height mm: 标签高 mm
+Label vertical height mm (along the bottle axis): 标签竖直高度 mm（沿瓶轴量）
+Label width mm (diameter for round labels): 标签宽 mm（圆标是直径）
+Legacy v1 jobs only; has no effect on the v2 dieline and is not an editable item: 仅兼容旧 v1 job；当前 v2 不参与刀版几何，不作为有效编辑项
+Length (front width): 长（正面宽）
+Length (front width, the lid hinge side): 长（正面宽，盖的铰链边）
+Length (front width, the long side of the opening; the major flaps hang here): 长（正面宽，开口的长边；主翼挂在这边）
+Length (front width; the handle panel runs this way): 长（正面宽；手提板沿这个方向）
+Length (long side of the opening, front width): 长（开口的长边，正面宽）
+Length along the tube axis / belly band width: 筒轴方向长度 / 腰封宽度
+Length of each perforation cut: 齿线每段切长
+Length of each perforation cut (explicit production segments): 每段齿刀切长，显式生产线段
+Length, front width mm: 长，正面宽 mm
+Lid front connecting flap depth: 盖前连接片深
+Lid side dust flap depth: 盖侧防尘翼深
+Lid side dust flap depth; default min(25, 0.5Hi): 盖侧防尘翼深，默认 min(25,0.5Hi)
+Lock head free corner chamfer: 锁头自由角倒角
+Lock shoulder flare per side; the head must be wider than the receiving slot: 锁肩单侧外扩，头宽须大于接收槽
+Lock tab / front slot assembly allowance: 锁舌 / 前槽装配余量
+Neck length before the lock shoulder; must pass through all front wall layers: 锁肩前的颈段长，须跨过全部前壁纸层
+Neck width of both lock tabs; sets the front panel receiving slot width: 两锁舌颈宽，联动前板接收槽宽
+'One-way degassing valve (coffee, fresh tea): centred at the upper front, position marked': 单向排气阀（咖啡、新茶）：正面上部居中，标位置
+Outer front apron depth; moves the front panel lock slot height: 外包前片深；联动前板锁槽高度
+Outer taper angle of the major flap: 主翼外侧斜边角度
+Overlap mm; default from the factory profile labels.wrap_overlap_mm: 搭接 mm，默认配置档 labels.wrap_overlap_mm
+Overlap width of the two outer flaps (provisional): 两片外摇盖的重叠宽度【初值】
+Paper bridges kept between perforation cuts, also at both ends: 齿刀间保留纸桥，首尾也留桥
+'Partial wrap: angle around the bottle; not given = full wrap + overlap': 只包一部分：圆周角；不给 = 整圈 + 搭接
+Perforation paper bridge (bridges are also left on both sides of creases): 齿线纸桥（压线两边也留桥）
+Pouch height mm (laid flat, seals included): 袋高 mm（成品平放，含封边）
+Pouch height mm (top seal included): 袋高 mm（含顶封）
+Pouch width mm (laid flat, seals included): 袋宽 mm（成品平放，含封边）
+Pull tab overhang on the left of the tear strip: 撕条左侧拉口突出长度
+Roll-over width; default 3t+0.5: 卷边宽，默认 3t+0.5
+Roll-over width; default 3t+0.5; sets lid width / inner walls: 卷边宽，默认 3t+0.5；联动盖宽 / 内壁
+Rounded corners on all four corners: 四角冲圆角
+Seal width; if not given, 5 / 7 by pouch width (provisional): 封边宽；不给按袋宽取 5 / 7【初值】
+'Seam: back = centre back seal / corner = at the front left corner (quad seal, needs side gussets)': 接缝：back 背中缝 / corner 在正面左角（四边封，要侧风琴）
+'Seam: back = centre back seal / corner = at the front left corner (true eight-side seal, plain back)': 接缝：back 背中缝 / corner 在正面左角（真八边封，背面整面）
+Sleeve inside clear height: 套内净高
+Sleeve inside clear width: 套内净宽
+Slot width between top flaps; default max(3, 2t): 顶摇盖之间的槽宽，默认 max(3, 2t)
+Spout diameter; default 10 (provisional): 吸嘴口径，默认 10【初值】
+'Spout: top = top centre / corner = top-right angled corner (jelly, juice, sauce)': 吸嘴：top 顶部居中 / corner 右上斜角（果冻、果汁、酱料）
+Step at the centre of the major flap; default min(4, 0.32·(major flap depth − Ws/2)): 主翼正中台阶，默认 min(4, 0.32·(主翼深 − Ws/2))
+Tear notch (small notch position on both side seals, punched by the converter): 撕口（两侧封边上的小缺口位置，制袋时冲）
+'Tear notch style: mark = position only (punched by the converter) / v = V-notch / slit = straight slit': 撕口画法：mark 只标位置（制袋厂冲）/ v 画 V 形缺口 / slit 画一字切口
+Tear strip centre line above the lower body crease; default is half the body height: 撕拉条中线离盒身下压线，默认盒身高一半
+Tear strip width (distance between the two perforation lines): 撕拉条宽（两条齿线间距）
+'Tear strip: two perforation lines around the body plus a pull tab': 撕拉条：盒身一圈两条齿线 + 起撕口
+Tear-off strip width; the actual perforation lines on both sides follow: 可撕条宽，两侧实际齿线联动
+Thumb notch width (half-circle diameter): 手指缺口宽（半圆直径）
+'Thumb notch: a half-round notch in the top edge of the front when the tuck is at the top': 手指缺口：插舌顶时正面上沿的半圆缺口
+Top and bottom seal width; default 12 (provisional): 上下封宽，默认 12【初值】
+Top seal width; default 10 (provisional): 顶封宽，默认 10【初值】
+Total lock tab length: 锁舌总长
+Tray wall height: 托盘壁高
+Tuck free corner radius (a real cut-line parameter): 插舌自由角圆角；真实刀线参数
+Tuck inset from the lid sides: 插舌两侧相对盖侧缩进
+Width (depth): 宽（进深）
+Width (front-to-back depth): 宽（前后进深）
+Width (short side of the opening, side width): 宽（开口的短边，侧面宽）
+Width (side width): 宽（侧面宽）
+Width (side width; the roof slopes up from front and back to the middle): 宽（侧面宽；屋顶从前后两边向中间斜上）
+Width, front-to-back depth mm: 宽，前后进深 mm
+Window centre above the pouch bottom; default 0.42 × pouch height: 窗中心离袋底，默认 0.42 × 袋高
+Window height; default 0.3 × pouch height: 窗高，默认 0.3 × 袋高
+Window width; default 0.45 × pouch width: 窗宽，默认 0.45 × 袋宽
+Zipper (13–25 mm from the top, provisional): 拉链（离顶 13–25 mm【初值】）
+Zipper (13–25 mm from the top, provisional); not given = none with a spout, otherwise yes: 拉链（离顶 13–25 mm【初值】）；不给 = 有吸嘴时没有，否则有
+'custom outline: one closed outline as SVG; Béziers become arcs': custom 外形：单条闭合轮廓 SVG，贝塞尔转圆弧
+'custom shape: outline_svg gives the outline': custom 异形：outline_svg 给外形
+pouch = finished pouches / roll = roll stock (formed on a packing machine, with eye marks): pouch 成品袋 / roll 卷膜（自动包装机制袋，带光标）

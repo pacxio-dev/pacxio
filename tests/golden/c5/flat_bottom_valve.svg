@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1080mm" height="255mm" viewBox="-10 -10 1080 255">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="fold_back_a_side_a" data-type="crease" d="M150 235 L150 0" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="fold_side_a_front" data-type="crease" d="M245 235 L245 0" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="fold_front_side_b" data-type="crease" d="M525 235 L525 0" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="fold_side_b_back_b" data-type="crease" d="M620 235 L620 0" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M0 235 L770 235 L770 0 L0 0 L0 235 M780 235 L1060 235 L1060 140 L780 140 L780 235" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="75" y="117.5" font-size="4" text-anchor="middle" fill="#888">back_a</text>
+<text x="197.5" y="117.5" font-size="4" text-anchor="middle" fill="#888">side_a</text>
+<text x="385" y="117.5" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="572.5" y="117.5" font-size="4" text-anchor="middle" fill="#888">side_b</text>
+<text x="695" y="117.5" font-size="4" text-anchor="middle" fill="#888">back_b</text>
+<text x="920" y="187.5" font-size="4" text-anchor="middle" fill="#888">bottom</text>
+</g>
+</svg>

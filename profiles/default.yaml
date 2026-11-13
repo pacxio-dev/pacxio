@@ -1,0 +1,157 @@
+id: default
+name: Default
+verified: true                 # 2026-10-24 用户：实物打样验证通过，配置档数值经工厂确认（）
+units: mm
+
+bleed_mm: 3                    # 出血
+safe_margin_mm: 3              # 文字/Logo 距切线与折线
+glue_flap:
+  ink: bleed_only              # none | bleed_only | full
+  bleed_into_mm: 2             # 图文可伸入糊口的距离
+tac_limit_pct: 300             # 总墨量上限，铜版纸胶印常见 300–320%
+flexo:                         # 柔印（开槽箱水印）：job 的 print.method = flexo 时代替上面的数值
+  tac_limit_pct: 240           # 水印直接印在瓦楞纸板上，吃墨多、干得慢，总墨量比胶印低
+  min_text_pt: 8               # 水印网线粗、易糊版，小字要大一些
+  min_print_line_mm: 0.3       # 图形里最细的线（开槽箱测试 R-09，，要工厂确认，不在 2026-10-24 确认的范围里）
+  min_print_reverse_mm: 0.5    # 最窄的反白（没墨的细缝、小白点），比正线更容易糊
+min_text_pt: 6                 # 最小字号（pt），小于它给 T05 提醒；法规对净含量等另有字高要求
+icc:
+  path: null                   # 工厂给了自己的 ICC 时填：嵌入生产文件、声明 PDF/X-4
+  name: null
+  auto:                        # 没填 path 时按纸张自动选本机已有的标准 ICC（）：
+    coated:   [JapanColor2001Coated.icc, CoatedFOGRA39.icc]       # 只用来把照片转成印刷色，
+    uncoated: [JapanColor2001Uncoated.icc, UncoatedFOGRA29.icc]   # 不嵌入、不声明 PDF/X-4
+  search_dirs:                 # 装了 Adobe 软件就有；ICC 文件不进代码仓库（CLAUDE.md）
+    - /Library/Application Support/Adobe/Color/Profiles/Recommended
+    - /Library/Application Support/Adobe/Color/Profiles
+    - /Library/ColorSync/Profiles
+    - ~/Library/ColorSync/Profiles
+    - C:/Program Files (x86)/Common Files/Adobe/Color/Profiles/Recommended
+    - C:/Windows/System32/spool/drivers/color
+finish_rules:
+  foil:     { min_line_mm: 0.2, min_gap_mm: 0.3 }
+  spot_uv:  { min_line_mm: 0.3, min_gap_mm: 0.5 }
+  spot_uv_digital: { min_line_mm: 0.1, min_gap_mm: 0.2 }   # 数码 UV（喷墨）：用户确认工厂能做时，工艺加 --process digital 才用（2026-10-30 用户定，；不在工厂确认的范围里）
+  emboss:   { min_line_mm: 0.5, min_gap_mm: 1.0 }   # 击凸、压凹共用
+  white:    { min_line_mm: 0.3, min_gap_mm: 0.5 }   # 白墨
+  crease_clearance_mm: 2
+  registration_tolerance_mm: 0.1   # 工艺超出对应的印刷图形多少就提醒没对齐（F04， 新加，不在工厂确认的范围里）【初值】
+attachment:                    # 配件（金属标，； 新加，不在工厂确认的范围里）
+  fold_clearance_mm: 3          # 标的外形离折线 / 刀线至少多远（A01）【初值】
+labels:                        # 不干胶标签（C4，；不在工厂确认的范围里，全部【初值】）
+  bleed_mm: 2                  # 标签出血
+  safe_margin_mm: 2            # 文字、条码离模切外形至少多远
+  wrap_overlap_mm: 6           # 环标默认搭接
+  wrap_tolerance_mm: 1         # 环标长度和瓶周长 + 搭接差多少就报（L02）
+  panel_max_arc: 0.45          # 前 / 背标最宽占瓶周长的比例
+  min_corner_r_mm: 1           # 模切外形最小圆弧半径（L05）
+  min_concave_r_mm: 2          # 内凹圆弧最小半径（太小模切会撕，L05）
+  arc_fit_tol_mm: 0.05         # 椭圆 / 异形外形用双圆弧逼近的最大误差（守 D4）
+  barcode_max_arc_deg: 30      # 条码横跨的圆心角超过这个就提醒（L04；GS1 资料待查）
+  roll:                        # 卷标交付参数：规格书里写"请标签厂确认"
+    unwind: 1                  # 出标方向（标准 8 个方位）
+    core_mm: 76                # 卷芯内径
+    max_roll_od_mm: 300        # 卷外径上限
+    gap_mm: 3                  # 标签间距
+    across: 1                  # 排数
+    liner_margin_mm: 1.5       # 底纸两边留边
+pouches:                       # 软包装（C5，；参照 reference 参数化模板，不在工厂确认的范围里，全部【初值】）
+  bleed_mm: 3
+  safe_margin_mm: 3            # 文字离封边内沿至少多远
+  seal_small_mm: 5             # 封边宽：袋宽 ≤ seal_break_w 时 5，否则 7
+  seal_large_mm: 7
+  seal_break_w: 90
+  gusset_k: 0.3                # 自立袋底褶深 G = 0.3·W − 10
+  gusset_b: -10
+  zipper_top_mm: 13            # 拉链带离顶 13–25
+  zipper_w_mm: 12
+  tear_from_top_mm: 9          # 撕口离顶
+  tear_size_mm: 3
+  fin_seal_mm: 9               # 背封袋中缝封
+  end_seal_mm: 12              # 背封袋上下封
+  tolerance_mm: 1.5            # 制袋尺寸公差（规格书写"请制袋厂确认"）
+  flat_depth_k: 0.4            # 平底袋不给底深时 = 0.4 × 正面宽
+  flat_top_seal_mm: 10         # 平底袋顶封
+  flat_bottom_seal_mm: 6       # 平底袋底片四边封、袋身下沿
+  flat_fin_mm: 10              # 平底袋背中缝每边（reference 10）
+  flat_bottom_gap_mm: 10       # 平底袋的底单独一片，排在右边、和袋身之间空 10
+  corner_seal_mm: 3            # 平底袋四条竖角封（跨折线）
+  valve_d_mm: 22               # 单向排气阀直径
+  valve_gap_mm: 10             # 排气阀离拉链带 / 顶封
+  spout_d_mm: 10               # 吸嘴口径（常见 8.6 / 10 / 16 / 22）
+  spout_base_k: 2.6            # 吸嘴船形底座宽 = 2.6 × 口径
+  spout_base_h_mm: 12
+  spout_corner_mm: 28          # 斜角吸嘴的切角直角边
+  handle_w_k: 0.4              # 手提孔宽 = 0.4 × 袋宽，最多 90
+  handle_max_w_mm: 90
+  handle_h_mm: 20
+  handle_top_mm: 15            # 手提孔上沿离顶
+  handle_margin_mm: 8          # 孔四周的手提封
+  window_min_mm: 15            # 透明窗最小边
+  shape_tol_mm: 0.05           # 异形外形转圆弧误差
+  roll:                        # 卷膜交付（自动包装机制袋；请印刷厂、包装机厂确认）
+    unwind: 1                  # 出卷方向（标准 8 个方位）
+    core_mm: 76
+    max_roll_od_mm: 400
+    max_splices: 2             # 每卷接头上限，接头处做标记
+    eye_w_mm: 10               # 光标（电眼色标）横向宽
+    eye_h_mm: 5                # 光标沿走膜方向长
+    eye_edge_mm: 2             # 光标离膜边 / 中缝封
+    eye_lane_mm: 3             # 光标两边留空的电眼通道
+    eye_cmyk: [0, 0, 0, 100]
+    lane_min_lum: 0.6          # 通道里亮度低于 0.6（0 黑 – 1 白）算深，电眼会误读（PO07）
+  fill_default: 0.7            # 装满效果图的鼓起量（job.json 的 pouch.fill 可改）
+  puff_k: 0.25                 # 每面最大鼓起 = 鼓起量 × 0.25 × 内容区短边
+  base_k: 0.9                  # 自立袋底 / 侧风琴撑开的半深 = 鼓起量 × 0.9 × 褶深
+  stretch_warn: 0.08           # PO05：装满后膜要变形超过 8% 的地方
+  small_text_pt: 8             # PO05：小于 8 pt 算小字
+window:                        # 开窗（）
+  min_size_mm: 10              # 窗口最小边长
+  min_corner_r_mm: 1           # 最小圆角（尖角容易撕裂）
+  default_corner_r_mm: 3       # 圆角矩形窗不给 --r 时的圆角
+  edge_clearance_mm: 6         # 窗口离压线 / 外轮廓 / 糊口落胶位置至少多远（贴窗是工厂的后续工序，不在这里管）
+  min_web_mm: 8                # 两个窗口之间至少留多宽的纸
+  max_area_ratio: 0.6          # 窗口占面积的比例超过这个就提醒（盒子变软）
+
+spot_names:                    # PDF 专色名
+  cut: Dieline_Cut
+  crease: Dieline_Crease
+  perf: Dieline_Perf
+  partial_cut: Dieline_Score
+  reverse_crease: Dieline_ReverseCrease
+  foil_gold: Foil_Gold
+  foil_silver: Foil_Silver
+  foil_copper: Foil_Copper     # 铜金 / 玫瑰金一类的箔（2026-10-29 天地盖测试 F-01）
+  spot_uv: Spot_UV
+  emboss: Emboss
+  deboss: Deboss
+  white: White_Ink
+  glue_area: Glue_Area         # 糊胶区标注（信息层，不印； 起生产文件里也有这一层）
+  keep_clear: Keep_Clear       # 封口 / 拉链 / 撕口 / 搭接区标注（软袋、标签；信息层，不印；C5）
+  annotation: Info_Annotation  # 生产文件的"标注"层（各面尺寸、图例、文件信息；只在出血外，不印）
+  attachment: Attach_Position  # 配件（金属标）的贴标位置：外形线 + 中心十字，信息层，不印（ 新加，不在工厂确认的范围里）
+
+dxf:
+  version: R12
+  layers:                      # ACI 颜色号：1 红 3 绿 5 蓝 6 洋红 2 黄
+    cut:            { name: CUT,      aci: 1 }
+    crease:         { name: CREASE,   aci: 3 }
+    perf:           { name: PERF,     aci: 5 }
+    partial_cut:    { name: SCORE,    aci: 6 }
+    reverse_crease: { name: RCREASE,  aci: 2 }
+    glue_area:      { name: GLUE,     aci: 4 }   # 糊胶区标注图层（不是刀线；常规标法）
+    keep_clear:     { name: SEAL,     aci: 6 }   # 封口 / 拉链 / 撕口区标注图层（软袋、标签；不是刀线）
+    attachment:     { name: ATTACH,   aci: 30 }  # 配件贴标位置（不是刀线；）
+
+cf2:
+  units: mm
+  linetypes: { cut: 1, crease: 2, perf: 3, partial_cut: 4, reverse_crease: 5 }   # 参照 CFF2 线型表；反压线按常规单独编号，刀模厂按需映射【初值】
+
+compensation:                  # 见
+  folding_carton: { k_panel: 1.0, k_height: 1.0, k_lid: 1.0 }
+  corrugated:     { k_panel: 1.0, k_height: 1.0, k_lid: 1.0, k_flap: 0.5 }   # k_lid：飞机盒的盖（v0.2）
+
+deliverables: [production_pdf, spec_sheet, dxf]   # 交付包（发给工厂）：分层的生产文件、规格书、刀模 DXF（）
+archive: [confirm_png, preflight_report, preview_png, dieline_pdf, cf2, finish_pdfs]   # 存档（<交付包>_archive/，工厂另要时再给）
+file_preferences:
+  editable_source: layered_pdf   # 有工厂要求 ai / cdr 时在这里标注

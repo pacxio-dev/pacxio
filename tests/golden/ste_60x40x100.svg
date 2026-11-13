@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="236.92mm" height="229.44mm" viewBox="-10 -10 236.92 229.44">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_glue_back" data-type="crease" d="M15 154.96 L15 54.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_side_a" data-type="crease" d="M75.48 154.72 L75.48 54.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_front" data-type="crease" d="M115.96 154.72 L115.96 54.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_side_b" data-type="crease" d="M176.44 154.72 L176.44 54.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_top_lid" data-type="crease" d="M15 54.48 L75.48 54.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_btm_lid" data-type="crease" d="M15 154.96 L75.48 154.96" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_top_lid_tuck" data-type="crease" d="M23.24 14 L67.24 14" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_btm_lid_tuck" data-type="crease" d="M23.24 195.44 L67.24 195.44" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_dust_ta" data-type="crease" d="M76.48 54.72 L114.96 54.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_dust_ba" data-type="crease" d="M76.48 154.72 L114.96 154.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_dust_tb" data-type="crease" d="M177.44 54.72 L215.92 54.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_dust_bb" data-type="crease" d="M177.44 154.72 L215.92 154.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M0 149.96 L15 154.96 L15 195.44 L15.24 195.44 L15.24 204.44 A5 5 0 0 0 20.24 209.44 L70.24 209.44 A5 5 0 0 0 75.24 204.44 L75.24 195.44 L75.48 195.44 L75.48 154.96 L75.48 154.72 L76.48 154.72 L78.6 156.84 L80.48 178.72 L103.0907 178.72 A6.1633 6.1633 0 0 0 109.1216 173.8274 L112.13 159.55 L114.96 156.72 L114.96 154.72 L115.96 154.72 L115.96 154.96 L176.44 154.96 L176.44 154.72 L177.44 154.72 L177.44 156.72 L180.27 159.55 L183.2784 173.8274 A6.1633 6.1633 0 0 0 189.3093 178.72 L211.92 178.72 L213.8 156.84 L215.92 154.72 L216.92 154.72 L216.92 54.72 L215.92 54.72 L213.8 52.6 L211.92 30.72 L189.3093 30.72 A6.1633 6.1633 0 0 0 183.2784 35.6126 L180.27 49.89 L177.44 52.72 L177.44 54.72 L176.44 54.72 L176.44 54.48 L115.96 54.48 L115.96 54.72 L114.96 54.72 L114.96 52.72 L112.13 49.89 L109.1216 35.6126 A6.1633 6.1633 0 0 0 103.0907 30.72 L80.48 30.72 L78.6 52.6 L76.48 54.72 L75.48 54.72 L75.48 54.48 L75.48 14 L75.24 14 L75.24 5 A5 5 0 0 0 70.24 0 L20.24 0 A5 5 0 0 0 15.24 5 L15.24 14 L15 14 L15 54.48 L0 59.48 L0 149.96" fill="none" stroke="#d40000"/>
+<path id="cut_btm_tuck_slit_l" data-type="cut" d="M15.24 195.92 L23.24 195.92 L23.24 195.44" fill="none" stroke="#d40000"/>
+<path id="cut_btm_tuck_slit_r" data-type="cut" d="M75.24 195.92 L67.24 195.92 L67.24 195.44" fill="none" stroke="#d40000"/>
+<path id="cut_top_tuck_slit_l" data-type="cut" d="M15.24 13.52 L23.24 13.52 L23.24 14" fill="none" stroke="#d40000"/>
+<path id="cut_top_tuck_slit_r" data-type="cut" d="M75.24 13.52 L67.24 13.52 L67.24 14" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="7.5" y="104.72" font-size="4" text-anchor="middle" fill="#888">glue</text>
+<text x="45.24" y="104.72" font-size="4" text-anchor="middle" fill="#888">back</text>
+<text x="95.72" y="104.72" font-size="4" text-anchor="middle" fill="#888">side_a</text>
+<text x="146.2" y="104.72" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="196.68" y="104.72" font-size="4" text-anchor="middle" fill="#888">side_b</text>
+<text x="45.24" y="34" font-size="4" text-anchor="middle" fill="#888">top_lid</text>
+<text x="45.24" y="175.44" font-size="4" text-anchor="middle" fill="#888">btm_lid</text>
+<text x="45.24" y="7" font-size="4" text-anchor="middle" fill="#888">top_tuck</text>
+<text x="45.24" y="202.44" font-size="4" text-anchor="middle" fill="#888">btm_tuck</text>
+<text x="95.72" y="42.72" font-size="4" text-anchor="middle" fill="#888">dust_ta</text>
+<text x="196.68" y="42.72" font-size="4" text-anchor="middle" fill="#888">dust_tb</text>
+<text x="95.72" y="166.72" font-size="4" text-anchor="middle" fill="#888">dust_ba</text>
+<text x="196.68" y="166.72" font-size="4" text-anchor="middle" fill="#888">dust_bb</text>
+</g>
+</svg>

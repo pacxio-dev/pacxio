@@ -1,0 +1,476 @@
+' (provisional)': 【初值】
+A Euro slot requires hole_w greater than hole_h + 2·hole_rise: 欧式孔 hole_w 必须大于 hole_h + 2·hole_rise
+A corner-seam four-side seal pouch requires side gussets: 四边封（接缝在角上）要有侧风琴
+A custom SVG outline is available only for flat, unfolded pieces: 异形 SVG 暂只用于不对折平面件
+A custom shape (shape=custom) requires outline_svg with a single closed outline: 异形（shape=custom）要给 outline_svg（单条闭合轮廓）
+A custom shape requires outline_svg with a single closed outline: custom 外形要给 outline_svg（单条闭合轮廓）
+A handle hole would cut through the centre back seam: 背中缝的袋子手提孔会切到中缝
+A perforation cut or bridge is too long to fit on the glue flap or side panel: 齿线切段 / 纸桥太长，糊口或侧面放不下一段
+A three-side seal sachet has no bottom gusset: 三边封小袋没有底褶
+Adjust --H (bottom depth). Set it to 0 to use 0.4 × the front width.: 改 --H（底深），0 = 按 0.4 × 正面宽
+Adjust --H (bottom gusset depth). Set it to 0 to derive it from pouch width.: 改 --H（底褶深），0 = 按袋宽推
+Adjust cut_w or cut_d: 调整 cut_w / cut_d
+Adjust handle_h: 调整 handle_h
+Adjust header_h: 调整 header_h
+Adjust lid_notch_r or set lid_notch=false: 改 lid_notch_r，或 lid_notch=false
+Adjust notch_r or set pull=none: 调整 notch_r，或 pull=none
+Adjust sleeve_len: 调整 sleeve_len
+Adjust tear_y or tear_w: 调整 tear_y / tear_w
+Adjust the body, corner flaps, or locking parameters. These values are provisional pending a physical sample.: 调整盒身、角翼 / 插接参数；本版仅为待折样初值
+Adjust the connecting flap, tear strip, adhesive strip, or bridge widths, or increase box height or length: 调整连接片 / 撕条 / 胶条尺寸与桥宽，或增大盒高
+  / 盒长
+Adjust the platform, foot height, or locating hole size, array, or margin: 调整平台、脚高、定位孔尺寸 / 阵列 / 边距
+Adjust the tab and slot fit, wrap depth, spacing, or box dimensions. Keep the receiving slot aligned with the mechanism.: 调整锁舌
+  / 槽配合、包片深、中心距或盒体尺寸，勿独立移动接收槽
+Adjust window_w, window_h, or window_y to keep the window within the front content area: 改 window_w / window_h / window_y，让窗留在正面的内容区里
+An angled corner spout requires square corners: 斜角吸嘴不做圆角
+Ask the factory for the board width and maximum print-slotter size: 问工厂纸板幅宽与印刷开槽机的最大尺寸
+Ask the factory for the maximum sheet and die-cutter dimensions: 问工厂印张和模切机的最大尺寸
+Bottle diameter {diameter:g} or label height {height:g} is too small (provisional minimum {minimum:g}): 瓶径 {diameter:g} /
+  标签高 {height:g} 太小（最小 {minimum:g}【初值】）
+Bottom depth {depth:g} must be between {minimum:g} and the front width {width:g}: 底深 {depth:g} 要在 {minimum:g} 到 正面宽 {width:g}
+  之间
+Bottom gusset depth {depth:g} must be between the seal width plus 2 and 0.4 × pouch height: 底褶深 {depth:g} 要在 封边 + 2 到 0.4
+  × 袋高 之间
+Card width and height must be at least 20 mm (provisional): 卡片宽高须至少 20 mm【初值】
+Check dimensions, material, glue flap, flap relief, end_overlap, and glue_band: 检查尺寸、材料、糊口、翼让位及 end_overlap / glue_band
+Check outline_svg, L, and W: 检查 outline_svg 和 L、W
+Check shape, corner_radius, outline_svg, L, and W: 检查 shape / corner_radius / outline_svg 和 L、W
+Check the flat dimensions, radii, SVG, hole type, and hole clearance: 检查展开尺寸、圆角、SVG、孔型和孔边距
+Check the inside dimensions, material, glue flap, and notch parameters: 检查净尺寸、材料、糊口和缺口参数
+Choose one of the two: 二选一
+Clear window {width:g} × {height:g} is too small (provisional minimum side length {minimum:g}): 透明窗 {width:g} × {height:g}
+  太小（最小边 {minimum:g}【初值】）
+Close the SVG path explicitly with Z: SVG path 必须用 Z 显式闭合
+Confirm that {flute} flute is intended, or choose a {usual} flute material preset: 确认要用 {flute} 楞；否则换成 {usual} 楞的材料预设
+? Confirm the adhesive and ink-free areas, perforation cuts, and bridges with the factory, then fold a sample. Return shipping
+  would require a separate adhesive strip.
+: 与工厂核对胶面 / 禁墨、显式 PERF 切段及纸桥工艺后折样；不表示支持回寄第二胶条
+Confirm the gluing process with the factory before ordering: 下单前和工厂确认糊盒工艺
+Could not find the upper edge of the front panel for the tuck lid: 插舌顶的正面上沿没找到
+Counter display cartons do not support material type {material}: 柜台展示盒不支持材料类型 {material}
+Crash-lock bottom slotted container: 自动锁底开槽箱
+Custom sachets allow a tear-position mark. Hang holes and rounded corners are unavailable.: 异形小袋不打挂孔、不做圆角、撕口只标位置
+Disable thumb_notch or increase L or H: 关掉 thumb_notch，或加大 L / H
+Edge seal {seal:g} is too narrow for the registration mark ({mark_height:g} along the film direction): 封边 {seal:g} 放不下光标（沿走膜方向
+  {mark_height:g}）
+End seal {seal:g} is too narrow for the registration mark: 横封 {seal:g} 放不下光标
+Flap relief is too large, or the glue band and relief extend past the overlap: 翼让位过大，或胶带宽度及让位超过重叠区
+Flat cards support folding carton board: 平面卡片只支持卡纸
+Flat-bottom pouches cannot have hang holes: 平底袋不打挂孔
+Flat-bottom pouches require square corners: 平底袋不做圆角
+'For a round label, L and W must both equal the diameter. Current dimensions: {length:g} × {width:g}.': 圆标宽高要相等（L = W = 直径），现在
+  {length:g} × {width:g}
+Front notch depth {depth:g} must be between 0 and H−15: 前板缺口深 {depth:g} 要在 0–H−15 之间
+Front notch width {width:g} does not fit. Allow cut_d for each bevel plus 10 on each side.: 前板缺口宽 {width:g} 放不下（两边斜边各占 cut_d，再各留
+  10）
+Give --H (side gusset depth) or use --set seam=back: 给 --H（侧风琴深），或 --set seam=back
+Handle hole height must be smaller than its width to leave room for semicircular ends: 提手孔高要小于宽（跑道形两头半圆）
+? Handle hole {width:g} × {height:g} does not fit on the {panel_width:.1f} × {panel_height:.1f} handle panel with a margin
+  of {margin:g} on every side
+: 提手孔 {width:g} × {height:g} 放不进手提板（{panel_width:.1f} × {panel_height:.1f}，四边各留 {margin:g}）
+Increase H: 增大 H
+Increase H or W: 加大 H / W
+Increase L or W: 加大 L / W
+Increase L, top_d, or W: 加大 L / top_d / W
+Increase dust_depth or W, or disable friction_lock: 增大 dust_depth（或 W），或关掉 friction_lock
+Increase end_seal: 加宽 end_seal
+Increase pouch height or reduce end_seal: 加高袋子或减小 end_seal
+Increase pouch height or remove the handle hole: 加高袋子或去掉手提孔
+Increase pouch height or remove the zipper: 加高袋子或去掉拉链
+Increase pouch height, reduce bottom depth, or remove the zipper or handle hole: 加高袋子、减小底深或去掉拉链 / 手提孔
+Increase pouch size or remove the vent valve: 加大袋子或去掉排气阀
+Increase pouch width or reduce spout_d: 加宽袋子或减小 spout_d
+Increase spout_corner_mm in the profile or reduce spout_d: 加大配置档 spout_corner_mm 或减小 spout_d
+Increase the box dimensions or reduce slot_w or flap_gap: 加大尺寸，或减小 slot_w / flap_gap
+Increase the dimensions or set dim_basis to inner: 增大尺寸或改用 inner
+Increase the dimensions or use --basis inner: 增大尺寸，或改用 --basis inner
+Increase the hanger panel size or reduce the radius or hole width: 增大挂板，或减小圆角 / 孔宽
+Increase the hanger panel size, or reduce the radius or hole width and adjust hole_top: 增大挂板，或减小圆角 / 孔宽并调整 hole_top
+Increase the seal width with --set seal=… or adjust roll.eye_h_mm in the profile: 加宽封边 --set seal=…，或改配置档 roll.eye_h_mm
+Increase the span or height, or reduce the number of rows or columns: 增大跨度 / 高度，或减少行列数
+Increase this part's wall height to at least {minimum:.1f} mm: 把这个部件的壁高加到 ≥ {minimum:.1f} mm
+Increase tuck_len or reduce tuck_radius: 增大 tuck_len 或减小 tuck_radius
+Increase window_w or window_h: 加大 window_w / window_h
+Inside height must be at least 30 mm: 内高至少 30 mm
+'Invalid SVG XML: {error}': SVG XML 无效：{error}
+Joint tab width {width:g} exceeds half the side width ({maximum:.1f}): 接舌宽 {width:g} 大于侧面宽的一半（{maximum:.1f}）
+L / W = {ratio:.2f} exceeds the provisional limit {maximum:g}: L / W = {ratio:.2f} 大于 {maximum:g}【初值】
+L / W = {ratio:.2f} exceeds the provisional limit {maximum}: L / W = {ratio:.2f} 大于 {maximum}【初值】
+L is the long edge of a slotted container opening. W={width:g} > L={length:g}.: 开槽箱的 L 是开口的长边，现在 W={width:g} > L={length:g}
+Label {length:g} × {width:g} is too small (provisional minimum side length {minimum:g}): 标签 {length:g} × {width:g} 太小（最小边
+  {minimum:g}【初值】）
+Labels require self-adhesive label stock. The current material type is {material}.: 标签只用不干胶标签材料，不能用 {material}
+Lid height lid_h={lid_height:.1f} exceeds total closed height {closed_height:.1f}, so the base would hang inside the lid: 盖高
+  lid_h={lid_height:.1f} 大于合上后的总高 {closed_height:.1f}（地盒会悬在盖里）
+Locating holes must fit within the platform with the specified margin and clear the support creases: 定位孔须在平台内并留足 margin，不能跨支撑压线
+Locating holes require hole_w. Rectangular holes also require hole_h.: 定位孔需要 hole_w，矩形孔还需要 hole_h
+Locking tab neck width must be 10–40 mm: 锁舌颈宽应为 10–40 mm
+Make W larger: 加大 W
+Minimum inside length and width are 40 mm and minimum usable height is 15 mm (provisional): 内长 / 宽至少 40，净高至少 15 mm【初值】
+Minimum inside width is 30 mm. Minimum usable height and sleeve length are 15 mm (provisional).: 套内宽至少 30、净高及筒轴长至少 15 mm【初值】
+Omit lean_deg to calculate it from the V-notch, or increase lean_deg or handle_h: 不给 lean_deg（按 V 口算），或加大 lean_deg / handle_h
+Overlap {overlap:g} exceeds one quarter of the label width: 搭接 {overlap:g} 太长（超过标签宽的 1/4）
+Platform length and width must be at least 30 mm. Foot height must be 5 mm to half the shorter side (provisional).: 平台长宽至少
+  30，脚高 5 到短边一半 mm【初值】
+Pouch {width:g} × {height:g} is too small (provisional minimum side length {minimum:g}): 袋子 {width:g} × {height:g} 太小（最小边
+  {minimum:g}【初值】）
+Pouches require laminate film. The current material type is {material}.: 软袋只用复合膜材料，不能用 {material}
+Radius {radius:g} cannot exceed half the shorter side: 圆角 {radius:g} 不能超过短边的一半
+Reduce --H: 减小 --H
+Reduce L or increase W: 减小 L 或增大 W
+Reduce `{ear_part}.ear_depth` or `{gap_part}.ear_gap`, or increase this part's height: 减小 `{ear_part}.ear_depth` / `{gap_part}.ear_gap`，或加高这个部件
+Reduce `{part}.roll_gap`: 减小 `{part}.roll_gap`
+Reduce `{width_part}.lug_w` or use `--set {tab_part}.lugs=false`: 减小 `{width_part}.lug_w`，或 `--set {tab_part}.lugs=false`
+Reduce corner_radius: 减小 corner_radius
+Reduce cut_d: 减小 cut_d
+Reduce ear_gap or increase H: 减小 ear_gap，或加大 H
+Reduce flap_gap: 减小 flap_gap
+Reduce flap_overlap. Use fefco_0203 for full overlap.: 减小 flap_overlap；全叠盖用 fefco_0203
+Reduce glue_inset or glue_bevel_deg: 减小 glue_inset 或 glue_bevel_deg
+Reduce hole_h: 减小 hole_h
+Reduce hole_w or hole_h, or increase L or handle_h: 减小 hole_w / hole_h，或加大 L / handle_h
+Reduce joint_bevel_deg: 减小 joint_bevel_deg
+Reduce joint_inset or joint_bevel_deg: 减小 joint_inset 或 joint_bevel_deg
+Reduce joint_w or increase W: 减小 joint_w，或加大 W
+Reduce lid_flap_depth or lid_flap_taper_deg: 减小 lid_flap_depth 或 lid_flap_taper_deg
+Reduce lug_w or increase W: 减小 lug_w，或加大 W
+Reduce major_taper_deg or major_depth: 减小 major_taper_deg 或 major_depth
+Reduce overlap: 减小 overlap
+Reduce perf_cut or perf_bridge: 减小 perf_cut / perf_bridge
+Reduce the radius or use --set tear_cut=mark to mark the position: 减小圆角，或 --set tear_cut=mark（只标位置）
+Reduce the taper or use arc_deg for a partial wrap (flat sector angle ≤ {maximum:g}°): 减小锥度或用 arc_deg 只包一部分（展开角 ≤ {maximum:g}°）
+Reduce thumb_w: 减小 thumb_w
+Reduce tongue_w or increase notch_w: 减小 tongue_w 或加大 notch_w
+Reduce tuck_inset or tuck_radius: 减小 tuck_inset 或 tuck_radius
+Reduce tuck_len: 减小 tuck_len
+Reduce web_clear: 减小 web_clear
+Reduce web_corner: 减小 web_corner
+Remove the hang or handle hole: 去掉挂孔 / 手提孔
+Remove the zipper or hang hole, or use a round hole: 去掉拉链 / 挂孔，或改圆孔（round）
+Roll stock for automatic forming requires a centre back seam and no handle hole: 卷膜（自动包装机制袋）只做背中缝的袋子，不带手提孔
+Roll-end mailer (thick board can crack at the rollover or block the locking tabs): 飞机盒（太厚卷边会爆线、插脚插不进）
+SVG A requires a positive-radius circular arc and flags of 0 or 1: SVG A 必须为正半径圆弧，标志须为 0/1
+SVG ellipse and circle radii must be positive: SVG ellipse / circle 半径须为正
+SVG path command {command} is unsupported: SVG path 不支持命令 {command}
+SVG rect supports only valid circular corner radii: SVG rect 只支持合法的圆形圆角
+Seal-end cartons require inside dimensions of at least 20 mm (provisional): 粘合封口盒内尺寸至少 20 mm【初值】
+Seal-end cartons support folding carton board: 粘合封口盒只支持卡纸
+Set --H to 0, or use pouch_standup for a bottom gusset: --H 0（要底褶用 pouch_standup）
+Set L and W to at least {minimum:g}: 把 L / W 改为 ≥ {minimum:g}
+Set W to at least {minimum}: 把 W 改为 ≥ {minimum}
+Set `--set {part}.{parameter}=…` to {minimum:.2f}–{maximum:.2f}: '`--set {part}.{parameter}=…` 改为 {minimum:.2f}–{maximum:.2f}'
+Set corner_radius to at most one quarter of the shorter side: corner_radius ≤ 短边的 1/4
+Set dust_depth to at most {maximum:.2f}: 把 dust_depth 改为 ≤ {maximum:.2f}
+Set end_overlap between 2 and inside width minus 2, then reduce end_relief or glue_band: end_overlap 在 2–内宽−2 之间，减小 end_relief
+  / glue_band
+Set flap_gap to 0–{maximum:g}: 把 flap_gap 改为 0–{maximum:g}
+Set glue_w to at most {maximum:.1f} or increase H: 把 glue_w 改为 ≤ {maximum:.1f}，或加大 H
+Set glue_w to at most {maximum:.2f}: 把 glue_w 改为 ≤ {maximum:.2f}
+Set glue_w to between {minimum} and {maximum}: 把 glue_w 改为 {minimum}–{maximum} 之间
+Set hook to 0–{maximum:.2f}: 把 hook 改为 0–{maximum:.2f}
+Set it to 0–5: 改为 0–5
+Set it to 0–{maximum:g}: 改为 0–{maximum:g}
+Set it to {minimum:g}–{maximum:g}: 改为 {minimum:g}–{maximum:g}
+Set joint_bevel_deg to 0–{maximum:g}: 把 joint_bevel_deg 改为 0–{maximum:g}
+Set joint_inset to 0–{maximum:g}: 把 joint_inset 改为 0–{maximum:g}
+Set joint_w to {minimum:g}–{maximum:g}: 把 joint_w 改为 {minimum:g}–{maximum:g}
+Set last_panel_short to 0–{maximum:g}: 把 last_panel_short 改为 0–{maximum:g}
+Set lean_deg to {minimum:g}–{maximum:g}: 把 lean_deg 改为 {minimum:g}–{maximum:g}
+Set lid_clearance to {minimum:g}–{maximum:g}: 把 lid_clearance 改为 {minimum:g}–{maximum:g}
+Set lid_h to at most {maximum:.1f}. An equal height makes a full-depth lid.: 把 lid_h 改为 ≤ {maximum:.1f}（等于它就是全罩）
+Set lock_step to 0–{maximum:.2f}: 把 lock_step 改为 0–{maximum:.2f}
+Set major_depth to {minimum:.2f}–{maximum:.2f}: 把 major_depth 改为 {minimum:.2f}–{maximum:.2f}
+Set major_taper_deg to 0–25: 把 major_taper_deg 改为 0–25
+Set major_taper_deg to {minimum:g}–{maximum:g} or leave it unset to use 0.2·Wi − 2 from the reference dieline: 把 major_taper_deg
+  改为 {minimum:g}–{maximum:g}，或不给（按标准刀版取 0.2·Wi − 2）
+Set minor_depth to {minimum}–{maximum:.2f}: 把 minor_depth 改为 {minimum}–{maximum:.2f}
+Set notch_d to {minimum}–{maximum:.2f}: 把 notch_d 改为 {minimum}–{maximum:.2f}
+Set notch_w to {minimum:.2f}–{maximum:.2f}: 把 notch_w 改为 {minimum:.2f}–{maximum:.2f}
+Set roof_deg to {minimum:g}–{maximum:g}: 把 roof_deg 改为 {minimum:g}–{maximum:g}
+Set slot_w to {minimum:g}–{maximum:g}: 把 slot_w 改为 {minimum:g}–{maximum:g}
+Set tear_from_top_mm in the profile to place the notch above the zipper band: 撕口要在拉链带上面：调配置档 tear_from_top_mm
+Set the dimensions to at least {minimum:g}: 把尺寸改为 ≥ {minimum:g}
+Set tongue_len to {minimum}–{maximum:.2f}: 把 tongue_len 改为 {minimum}–{maximum:.2f}
+Set tongue_r to at most tongue_len / 2: 把 tongue_r 改为 ≤ tongue_len / 2
+Set tongue_w to {minimum:.2f}–{maximum:.2f}: 把 tongue_w 改为 {minimum:.2f}–{maximum:.2f}
+Set top=tuck or disable thumb_notch: 改 top=tuck，或去掉 thumb_notch
+Set tuck_len to at most {maximum:.2f}: 把 tuck_len 改为 ≤ {maximum:.2f}
+Set tuck_len to between {minimum} and {maximum}: 把 tuck_len 改为 {minimum}–{maximum} 之间
+Set {parameter} to at least {minimum:g}: 把 {parameter} 改为 ≥ {minimum:g}
+Set {parameter} to at least {minimum}: 把 {parameter} 改为 ≥ {minimum}
+Set {parameter} to {minimum:.2f}–{maximum:.2f}: 把 {parameter} 改为 {minimum:.2f}–{maximum:.2f}
+Set {parameter} to {minimum:.2f}–{maximum:.2f}. Increase the box dimensions if needed.: 调整 {parameter} 至 {minimum:.2f}–{maximum:.2f}；必要时增大盒体尺寸
+Set {parameter} to {minimum:g}–{maximum:g}: 把 {parameter} 改为 {minimum:g}–{maximum:g}
+Side gusset depth {depth:g} exceeds 0.6 × the front width: 侧风琴深 {depth:g} 太大（> 0.6 × 正面宽）
+Sleeves and belly bands support folding carton board: 外套 / 腰封首版只支持卡纸
+Slotted container: 开槽箱
+Split a complete circle into two arcs: 完整圆请拆为两段圆弧
+Spouted pouches cannot have a zipper: 吸嘴袋不做拉链
+Subtracting board caliper and rollovers leaves no positive inside cavity: 外尺寸扣除纸厚 / 卷边后内腔非正
+Subtracting board thickness and clearance leaves nonpositive inside dimensions: 外尺寸扣除纸板厚度与间隙后非正
+Subtracting the board caliper leaves nonpositive inside dimensions: 外尺寸扣除纸厚后非正
+Swap L and W: 交换 L 和 W
+Swap L and W so the front becomes the narrower panel, or use snaplock: 把 L、W 对调（正面变成窄面），或改用扣底盒 snaplock
+The SVG may contain only one closed subpath: SVG 只能有一个闭合子路径
+The SVG may contain only one subpath: SVG 只能有一个子路径
+? The SVG must contain a single outline. Flatten transforms first. Multiple shapes, references, and compound holes are unsupported.
+: SVG 须只含一条轮廓，先展开 transform；不支持多图形 / 引用 / 复合孔
+The SVG outline aspect ratio does not match L×W. Circular arcs require uniform scaling.: SVG 轮廓比例与 L×W 不符，禁止非等比拉伸圆弧
+The SVG outline aspect ratio {ratio:.4f} does not match L×W. Set W to {width:.2f}.: SVG 轮廓宽高比 {ratio:.4f} 和 L×W 不符（应把 W 设为
+  {width:.2f}）
+The SVG outline contains nonfinite coordinates: SVG 轮廓含非有限坐标
+The SVG outline must be closed, have positive area, and be free of self-intersections: SVG 轮廓必须闭合、无自交、面积为正
+The SVG outline width and height must be positive: SVG 轮廓宽高必须为正
+The SVG path contains invalid characters: SVG path 存在无效字符
+The SVG path has no starting point: SVG path 缺少起点
+The SVG path has too few parameters: SVG path 参数不足
+The SVG path must start with M: SVG path 必须以 M 开始
+The SVG path supports M, L, H, V, A, and Z commands. Bézier curves are unsupported.: SVG 仅接受 M/L/H/V/A/Z，不接受贝塞尔
+The SVG polygon point list is invalid: SVG polygon 点列表无效
+The SVG rect has invalid dimensions or corner radii: SVG rect 尺寸或圆角无效
+The adhesive flap is too small for the adhesive strip and both margins: 粘接片放不下胶条及其两侧边距
+The adhesive strip must retain at least 20 mm of usable length after both end insets: 胶条两端缩进后须保留至少 20 mm 有效胶长
+The angled cut {cut:g} cannot fit a spout base of diameter {diameter:g}: 斜角切口 {cut:g} 放不下 {diameter:g} 口径的吸嘴底座
+? The auto-lock bottom requires L ≥ W, but L {length:.2f} < W {width:.2f}. The major flaps attach to the long sides. Otherwise
+  the bisectors cross past the flap centreline and the locking step cannot be formed.
+: 自动锁底要求 L ≥ W（现在 L {length:.2f} < W {width:.2f}）：主翼挂在长边上，L < W 时两条角平分线交到主翼中线另一边，台阶做不出来
+The auto-lock bottom requires W ≥ {minimum} to leave room for the glue triangles (provisional): 自动锁底要求 W ≥ {minimum}（糊胶三角要够大）【初值】
+? The blank is {width:.0f} × {height:.0f} mm, beyond typical equipment capacity ({max_width:g} × {max_height:g} mm, provisional)
+: 展开尺寸 {width:.0f} × {height:.0f} mm 超过常见设备（{max_width:g} × {max_height:g}）【初值】
+The board bridge between locating holes is smaller than margin: 定位孔之间纸桥小于 margin
+The carton is too short for the bevels or arcs at the ends of the glue flap: 盒身太矮，糊口两端的斜切 / 圆弧放不下
+The clear window overlaps a seal area such as the edge seal, zipper, or bottom gusset: 透明窗碰到封边 / 拉链 / 底褶等封口区
+'The component outline is disconnected: {end} → {start}': 部件外轮廓未接合：{end} → {start}
+The corner flap relief or bevel exceeds the available board area: 角翼退让 / 斜切超出可用纸面
+The corner flaps are too shallow or the front and rear flaps collide on the side wall: 角翼深不足，或前后角翼在侧壁相撞
+The corner radius is too large: 圆角太大
+The crash-lock bottom requires L ≥ W because the major flaps attach to the long sides. W={width:g} > L={length:g}.: 自动锁底要求
+  L ≥ W（主翼挂在长边上），现在 W={width:g} > L={length:g}
+? The crash-lock bottom requires a folder-gluer for the side seam and two bottom glue areas. Confirm the glue and ink-free
+  areas on corrugated board with the factory.
+: 自动锁底需要工厂糊盒机做侧缝 + 底部两处糊胶；瓦楞上糊胶三角的胶面与禁墨待工厂确认
+The custom outline is too narrow to leave a usable area inside the seals: 异形外形太窄：去掉封边以后几乎没有内容区
+The custom outline-to-arc fitting error {error:.3f} mm exceeds {tolerance:g} mm: 异形外形转圆弧的误差 {error:.3f} mm 超过 {tolerance:g}
+  mm
+The dimensions are too small (provisional minimum {minimum:g}): 尺寸太小（最小 {minimum:g}【初值】）
+The divider half-height or cell width is too small. Allow at least a 3 mm bridge for the slots (provisional).: 隔板半高 / 格宽不足，须给插槽留至少
+  3 mm 纸桥【初值】
+? The dust flap does not fit. Depth {depth:.2f} and side width {side_width:.2f} leave too little room for the root relief
+  and lock.
+: 防尘翼放不下：深 {depth:.2f}、侧面宽 {side_width:.2f} 容不下根部的让位和卡口
+The ears at both ends of the handle panel are only {width:.1f} mm wide. The end-flap angle {angle:.0f}° is too small.: 手提板两头的耳朵只有
+  {width:.1f} mm（端翼斜度 {angle:.0f}° 太小）
+The flap dimensions are not positive: 摇盖尺寸非正
+The flat sector angle {angle:.0f}° is too large. The taper makes the blank nearly a full circle.: 展开角 {angle:.0f}° 太大（锥度太大，展开接近整圆）
+The front lid connector must be at least 4 mm deep: 盖前连接片至少 4 mm
+? The front lock uses provisional L0 dimensions. Tab insertion depends on board flexibility. Retention has yet to be checked
+  on a physical sample.
+: 前锁扣为 L0 工程初值；锁头插入需要纸张弹性，保持力未折样验证
+The front locking ear is only {height:.1f} mm high (minimum {minimum:g} mm): 前板耳朵只有 {height:.1f} mm 高（至少 {minimum:g}）
+The front locking slots extend beyond the left or right edge of the front wall: 前板锁槽越过前壁左右边界
+The front locking slots must fit inside the front wall with at least 1 mm clearance at the top and bottom: 前板锁槽须完整位于前壁，离上下边至少
+  1 mm
+The front tuck depth or radius is outside the allowed range: 前插舌深度或圆角超限
+The gable-top carrier supports folding carton board. The current material is {material}.: 山形手提盒第一版只做卡纸，当前材料类型为 {material}
+The glue flap is too short after beveling both ends: 接舌两端斜切后长度不足
+The glue flap must fit on the side panel with 2 mm clearance: 糊口须装入侧面并留 2 mm
+? The glue flap width {value:.1f} does not fit. It must be {minimum:g}–{maximum:g} and no more than the side width minus 2
+  ({side_limit:.1f}).
+: 接舌宽 {value:.1f} 放不下（{minimum:g}–{maximum:g}，且 ≤ 侧面宽 − 2 = {side_limit:.1f}）
+The glued closure cannot fit end_overlap, end_relief, and glue_band: 粘合封口：end_overlap / end_relief / glue_band 放不下
+The handle hole and hang hole both occupy the top seal: 手提孔和挂孔都在顶上
+The hang hole and its {margin:g} mm margin must fit entirely inside {panel}: 挂孔及 {margin:g} mm 边距必须完整落在 {panel} 内
+The hang hole does not fit. Only {available:g} mm is available between the top and the zipper band.: 挂孔放不下：顶上到拉链带只有 {available:g}
+  mm
+The hanger panel height must be 20–100 mm. Its corner radius cannot exceed half the shorter side.: 挂板高度须在 20–100 mm，圆角不得超过短边一半
+The inner wall is too short: 内壁太短
+The inside dimensions are not positive after subtracting board thickness: 外尺寸扣除纸板厚度后非正
+The joint tab is too short after beveling both ends: 接舌两端斜切后高度不足
+The lid side flaps are too deep and overlap when folded: 盖侧翼过深，折合后发生重叠
+The lid thumb notch radius {radius:.1f} does not fit ({minimum:g}–{maximum:.1f}): 盖的手指缺口半径 {radius:.1f} 放不下（{minimum:g}–{maximum:.1f}）
+The locating hole radius exceeds half its shorter side: 定位孔圆角大于短边一半
+The locking head bevel is too large: 锁头倒角过大
+The locking shoulder does not reach past the inside of the front wall: 锁肩尚未越过前壁纸背
+The locking tab head is wider than the available corner flap height: 锁舌端头宽于角翼可用高度
+The locking tab head must be at least 1 mm wider than the receiving slot: 锁头宽须大于接收槽至少 1 mm
+The locking tab must fit its neck and head without hitting the back wall: 锁舌长度须容纳颈段 / 头部，且不能撞后壁
+The locking tab width {width:.2f} needs at least {clearance} clearance to fit the notch width {notch:.2f}: 锁舌宽 {width:.2f}
+  不比缺口 {notch:.2f} 窄 {clearance}，插不进去
+The notch radius exceeds the panel width or sleeve length: 缺口半径超出面宽或筒轴长度
+The outline cannot be empty: 外轮廓不能为空
+The outline-to-arc fitting error {error:.3f} mm exceeds {tolerance:g} mm: 外形转圆弧的误差 {error:.3f} mm 超过 {tolerance:g} mm
+The outside dimensions leave no positive inside dimensions after subtracting twice the board caliper: 外尺寸扣除两倍纸厚后非正
+The outward normal at attachment {attachment} must be perpendicular to its edge: 挂接口 {attachment} 的外向法线必须垂直于挂接边
+? The peel-and-seal closure uses provisional L0 dimensions. Adhesive, release liner, perforation bridges, bond strength, and
+  tear strength have yet to be tested on a physical sample.
+: 自封撕拉为 L0 工程初值；胶种 / 剥离纸、齿刀桥宽、粘接与撕开强度未实物验证
+The peel-and-seal tear-strip style requires at least 35 mm inside height: 自封撕拉款内高至少 35 mm
+The perforation must fit at least three cut-and-bridge cycles: 齿线至少须容纳三个切段 / 纸桥周期
+The pouch is too narrow for the spout base: 袋子太窄，放不下吸嘴底座
+The pouch is too short to leave a usable area below the handle seal: 袋子太矮，手提封下面放不下内容
+The pouch is too short to leave a usable area between the top and bottom seals: 袋子太矮，上下封之间放不下内容
+? The pouch is too short to leave a usable area between the top seal, zipper, or handle seal, the tucked gusset, and the bottom
+  seal
+: 袋子太矮：顶封 / 拉链 / 手提封、风琴顶部折进去的部分和底边封之间放不下内容
+The pouch is too short to leave a usable area between the zipper band and bottom gusset: 袋子太矮，拉链带和底褶之间放不下内容
+The pull tab is too short to accommodate the rounded tear-strip end: 拉口突出长度放不下撕条圆头
+The radius cannot exceed half the shorter side: 圆角不能超过短边的一半
+The receiving slot is too close to the side-wall edge: 接收槽离侧壁边缘过近
+The receiving slot must be shorter than the locking tab shoulder: 接收槽长度须小于锁舌咬合肩宽
+The return locking tab must be shorter than the corner flap depth with room for edge clearance: 折返锁舌须短于角翼深，并留边距
+The short crease at the tuck root extends beyond the straight section of the tab: 插舌根部的短压线超出插舌直边范围
+The side panel is too narrow to fit a slot in the end flap: 侧面太窄，端翼放不下缝
+'The snap-lock tab flap can attach to front or back only. Current wall: {wall}.': 扣底的锁舌翼只能挂 front / back，不能挂 {wall}
+The spout and hang or handle hole cannot both fit at the pouch opening: 吸嘴和挂孔 / 手提孔都在袋口，放不下
+? The tabs do not fit. {count} slots plus spacing need {needed:.1f} mm, but the inner side panel is only {available:.1f} mm
+  wide.
+: 插脚放不下：{count} 个插孔加间距要 {needed:.1f} mm，内侧板只有 {available:.1f}
+The tapered lid dust flap is too narrow for the outside radius: 盖防尘翼斜边收窄后放不下外角圆角
+The tear notch at ({x:g}, {y:g}) is outside a straight edge of the outline: 撕口 ({x:g}, {y:g}) 不在外轮廓的直边上
+The tear notch falls on a rounded corner: 撕口落在圆角上，画不出缺口
+The tear notch falls on the zipper band: 撕口落在拉链带上
+The tear strip (centre {centre:.1f}, width {width:g}) is outside the usable body height {minimum:.1f}–{maximum:.1f}: 撕拉条（中线
+  {centre:.1f}、宽 {width:g}）超出盒身可用高度 {minimum:.1f}–{maximum:.1f}
+The thumb notch does not fit (radius 12 mm): 手指缺口放不下（半径 12）
+The thumb notch requires a tuck lid with a free upper edge on the front panel: 手指缺口只用于插舌顶（正面上沿是空着的边）
+? The tooth on the left section of the major flap is only {width:.2f} mm wide (minimum {minimum:g}), so the two major flaps
+  cannot lock
+: 主翼左段的齿只有 {width:.2f} mm 宽（至少 {minimum:g}），两片主翼扣不住
+? The tooth on the left section of the major flap is only {width:.2f} mm wide (minimum {minimum}), so the two major flaps
+  cannot lock
+: 主翼左段的齿只有 {width:.2f} mm 宽（至少 {minimum}），两片主翼扣不住
+The top and bottom diameters differ by less than 1 mm. Use a cylindrical label.: 上下直径差不到 1 mm，是圆柱
+The top flap dimensions are not positive: 顶摇盖尺寸非正
+The tray is too low or too shallow for the locking ears: 托盘太矮或太浅，耳朵放不下
+The tuck tab width {width:.2f} is too small for corner radius {radius}: 插舌宽度 {width:.2f} 不足以容纳圆角半径 {radius}
+The two locking tab heads do not fit or overlap: 两个锁舌头放不下或相互重叠
+The vent valve (diameter {diameter:g}) does not fit on the front: 排气阀（直径 {diameter:g}）在正面放不下
+? The {part} blank is {width:.0f} × {height:.0f} mm, larger than a typical half sheet (about {sheet_width:g} × {sheet_height:g}
+  mm, provisional)
+: '{part}展开 {width:.0f} × {height:.0f} mm 超过卡纸对开（约 {sheet_width:g} × {sheet_height:g}）【初值】'
+This drawer box supports folding carton board: 抽屉盒第一版只做卡纸
+This insert supports folding carton board: 定位内托首版仅支持卡纸
+This single-wall tray supports folding carton board: 此单壁托盘首版仅支持卡纸
+Thumb notch radius {radius:.1f} is outside {minimum:g}–{maximum:.1f}: 手指缺口半径 {radius:.1f} 超出 {minimum:g}–{maximum:.1f}
+Thumb notch {width:g} does not fit the front panel: 手指缺口 {width:g} 放不进正面
+Too little straight edge remains after beveling both ends of the glue flap: 糊口两端斜切后没有足够直边
+Total closure flap depth exceeds the usable front-wall height: 闭合片总深超过前壁可用高度
+Tuck length {length} exceeds lid depth {depth:.2f}: 插舌长 {length} 大于盖深 {depth:.2f}
+Tuck-in mailer. Verify all closure parameters with a physical sample.: 内插舌飞机盒；全部机构参数待折样
+Two-piece lid and base box: 天地盖
+Unknown bottom fold type {kind}: 未知底部折法 {kind}
+Use --material label_coated, label_pp_white, label_pp_clear, or another preset from `pacxio styles list`: 用 --material label_coated
+  / label_pp_white / label_pp_clear 等（`pacxio styles list` 看材料）
+Use --material pouch_pet_vmpet_pe, pouch_kraft_pe, pouch_pet_pe_clear, or another pouch film preset: 用 --material pouch_pet_vmpet_pe
+  / pouch_kraft_pe / pouch_pet_pe_clear 等
+Use --set hang_hole=none. Use handle for larger pouches.: --set hang_hole=none；大袋用手提孔 handle
+Use --set seam=back handle=false, or set supply=pouch: --set seam=back handle=false，或 supply=pouch
+Use --set seam=corner for a four- or eight-side seal with an uninterrupted back panel: --set seam=corner（四边封 / 八边封，背面整面）
+Use --set zipper=false. With a spout, the zipper defaults to off.: --set zipper=false（不给 zipper 时有吸嘴自动不做）
+Use a 1:1 sample to check how the tab inserts and engages and how the board springs back: 用 1:1 打样稿检查锁头穿槽 / 咬合与材料回弹
+Use a corrugated preset (flute_e, flute_b, flute_c, or flute_bc): 改用瓦楞材料预设（flute_e / flute_b / flute_c / flute_bc）
+Use a folding carton board preset such as sbs_350: 改用卡纸类材料预设（如 sbs_350）
+Use a folding carton material preset: 改用卡纸材料预设
+Use a folding carton preset such as sbs_350: 改用卡纸材料预设（如 sbs_350）
+Use a single SVG path, polygon, or rect. Curves must be circular arcs.: SVG 只支持单个 path / polygon / rect；曲线须为圆弧，不能转折线凑形
+Use a single SVG path, polygon, rect, ellipse, or circle: SVG 只支持单个 path / polygon / rect / ellipse / circle
+Use corrugated board or folding carton: 改用瓦楞或卡纸
+Use label_wrap (wraparound label): 改用 label_wrap（环标）
+Use sbs_350 or sbs_400: 改用 sbs_350 / sbs_400
+corner_radius cannot exceed half the shorter side: corner_radius 不能超过短边的一半
+divider is a multi-part structure. Use generate_parts.: divider 是多部件结构，请使用 generate_parts
+dust_depth={value:.2f} must be in (0, 0.5·Li − 1 = {maximum:.2f}]: dust_depth={value:.2f} 必须在 (0, 0.5·Li − 1 = {maximum:.2f}]
+  内
+flap_gap must be smaller than the inside width: flap_gap 必须小于内宽
+flap_gap={value:g} is outside 0–{maximum:g} or is at least as large as the inside width: flap_gap={value:g} 超出 0–{maximum:g}
+  或不小于内宽
+flap_gap={value:g} is outside 0–{maximum:g}. The outer flaps cannot overlap.: flap_gap={value:g} 超出 0–{maximum:g}（外摇盖不能重叠）
+flap_overlap must be greater than 0 and smaller than the inside width: flap_overlap 必须大于 0 且小于内宽
+glue_bevel_deg={value:g} is outside 0–{maximum:g}: glue_bevel_deg={value:g} 超出 0–{maximum:g}
+glue_inset={value:g} is outside 0–5: glue_inset={value:g} 超出 0–5
+glue_w and end_overlap must fit inside the width with 2 mm clearance: glue_w / end_overlap 必须装入内宽并留 2 mm
+glue_w={value} is outside the range {allowed}: glue_w={value} 超出范围 {allowed}
+glue_w={value} must be at most Wi − {margin} (currently {maximum:.2f}): glue_w={value} 必须 ≤ Wi − {margin}（当前 {maximum:.2f}）
+handle_h={height:g} is outside {minimum:g}–{maximum:g}: handle_h={height:g} 超出 {minimum:g}–{maximum:g}
+header_h={value:g} is outside 20–3·W: header_h={value:g} 超出 20–3·W
+hook={value:.2f} exceeds half the side-flap bevel inset ({maximum:.2f}): hook={value:.2f} 太大（不能超过侧翼斜边收进的一半 {maximum:.2f}）
+joint_bevel_deg={value:g} is outside 0–{maximum:g}: joint_bevel_deg={value:g} 超出 0–{maximum:g}
+joint_inset={value:g} is outside 0–3t ({maximum:g}): joint_inset={value:g} 超出 0–3t（{maximum:g}）
+joint_w={value:g} is outside the provisional range {minimum:g}–{maximum:g}: joint_w={value:g} 超出 {minimum:g}–{maximum:g}【初值】
+last_panel_short={value:g} is outside 0–2t ({maximum:g}): last_panel_short={value:g} 超出 0–2t（{maximum:g}）
+lean_deg={value:g} is outside {minimum:g}–{maximum:g}: lean_deg={value:g} 超出 {minimum:g}–{maximum:g}
+lid_clearance={value:g} is outside the provisional range {minimum:g}–{maximum:g}: lid_clearance={value:g} 超出 {minimum:g}–{maximum:g}【初值】
+lock_step={value:.2f} is outside 0–{maximum:.2f}: lock_step={value:.2f} 超出 0–{maximum:.2f}
+lock_step={value:.2f} is outside 0–{maximum:.2f}. The step cannot exceed the angled shoulder.: lock_step={value:.2f} 超出 0–{maximum:.2f}（台阶不能比斜肩高）
+? major_depth={value:.2f} is outside 0.5·Wi–0.95·Wi ({minimum:.2f}–{maximum:.2f}). Too shallow prevents overlap at the centre.
+  Too deep reaches the opposite wall.
+: major_depth={value:.2f} 超出 0.5·Wi–0.95·Wi（{minimum:.2f}–{maximum:.2f}）（太浅两片主翼在盒底中间搭不上，太深顶到对面）
+? major_depth={value:.2f} is outside {minimum:.2f}–{maximum:.2f}. Too shallow leaves too little engagement at the step. Too
+  deep removes the base of the glue triangle.
+: major_depth={value:.2f} 超出 {minimum:.2f}–{maximum:.2f}（太浅齿比台阶底深不了多少、扣不住，太深糊胶三角的底边没了）
+? major_depth={value:.2f} is outside {minimum:.2f}–{maximum:.2f}. Too shallow prevents locking. Too deep removes the base
+  of the glue triangle.
+: major_depth={value:.2f} 超出 {minimum:.2f}–{maximum:.2f}（太浅扣不住，太深糊胶三角的底边没了）
+major_taper_deg={value:g} is outside 0–25: major_taper_deg={value:g} 超出 0–25
+major_taper_deg={value} is outside {minimum:g}–{maximum:g}: major_taper_deg={value} 超出 {minimum:g}–{maximum:g}
+margin is too large and leaves no usable area for holes: margin 过大，平台没有可开孔区域
+? minor_depth={value:.2f} must be between {minimum} and 0.5·Li − 1 ({maximum:.2f}). Too shallow prevents locking. Too deep
+  makes the side flaps collide.
+: minor_depth={value:.2f} 必须在 {minimum}–0.5·Li − 1（{maximum:.2f}）（太浅塞不住，太深两片侧翼打架）
+notch_d={value:.2f} is outside {minimum} to major flap depth minus {margin}: notch_d={value:.2f} 超出 {minimum}–主翼深 − {margin}
+notch_w={value:.2f} is outside 0.3·Li–0.7·Li ({minimum:.2f}–{maximum:.2f}) or leaves too little board on either side: notch_w={value:.2f}
+  超出 0.3·Li–0.7·Li（{minimum:.2f}–{maximum:.2f}），或缺口两边留得太窄
+roof_deg={value:g} is outside {minimum:g}–{maximum:g}: roof_deg={value:g} 超出 {minimum:g}–{maximum:g}
+sleeve_clearance={value:g} is outside the provisional range {minimum:g}–{maximum:g}: sleeve_clearance={value:g} 超出 {minimum:g}–{maximum:g}【初值】
+sleeve_len={value:.1f} is outside {minimum:.1f}–{maximum:.1f} (inner tray depth): sleeve_len={value:.1f} 超出 {minimum:.1f}–{maximum:.1f}（内托深）
+slot_w={value:g} is outside t–3t+2 ({minimum:g}–{maximum:g}): slot_w={value:g} 超出 t–3t+2（{minimum:g}–{maximum:g}）
+tongue_len={value:.2f} is outside {minimum} to major flap depth minus {margin}: tongue_len={value:.2f} 超出 {minimum}–主翼深 −
+  {margin}
+tongue_r={value:.2f} is too large: tongue_r={value:.2f} 太大
+tongue_w={value:.2f} is outside 0.25·Li–0.6·Li ({minimum:.2f}–{maximum:.2f}): tongue_w={value:.2f} 超出 0.25·Li–0.6·Li（{minimum:.2f}–{maximum:.2f}）
+tuck_len must be smaller than Hi (currently {value} ≥ {inside_height:.2f}): tuck_len 必须小于 Hi（当前 {value} ≥ {inside_height:.2f}）
+tuck_len={value} is outside the range {allowed}: tuck_len={value} 超出范围 {allowed}
+web_clear={value:g} is outside 0–{maximum:.2f}: web_clear={value:g} 超出 0–{maximum:.2f}
+web_corner={value:.2f} is outside 0–{maximum:.2f}, leaving no diagonal crease: web_corner={value:.2f} 超出 0–{maximum:.2f}（斜压线没有了）
+'{parameter}={value:.2f} is outside the provisional range {minimum:.2f}–{maximum:.2f}': '{parameter}={value:.2f} 超出 {minimum:.2f}–{maximum:.2f}【初值】'
+'{parameter}={value:g} is below the provisional minimum {minimum:g}': '{parameter}={value:g} 小于下限 {minimum:g}【初值】'
+'{parameter}={value:g} is outside the provisional range {minimum:g}–{maximum:g}': '{parameter}={value:g} 超出 {minimum:g}–{maximum:g}【初值】'
+'{parameter}={value} is below the minimum {minimum}': '{parameter}={value} 小于 MVP 范围下限 {minimum}'
+'{part}: ear_depth={depth:.1f} is too large. The ears will collide inside the end wall (maximum {maximum:.1f}).': '{part}：ear_depth={depth:.1f}
+  太深，两头的耳朵会在端壁里相撞（≤ {maximum:.1f}）'
+'{part}: the ear''s free end is only {height:.1f} mm high (minimum {minimum:g})': '{part}：耳朵自由端只有 {height:.1f} mm 高（至少 {minimum:g}）'
+'{part}: the locking tab does not fit in an inner wall only {width:.1f} mm wide': '{part}：插脚放不下（内壁只有 {width:.1f} mm 宽）'
+'{part}: the rollover is too wide and leaves no positive inner wall height': '{part}：卷边太宽，内壁高度非正'
+? '{part}: wall height {height:.1f} mm leaves too little room for the ear (depth at least {min_depth:g}, free end at least
+  {min_free:g}, provisional)'
+: '{part}：壁太矮（{height:.1f} mm），耳朵放不下（深至少 {min_depth:g}、自由端至少 {min_free:g}）【初值】'
+'{part}: {parameter}={value:.2f} is outside the provisional range {minimum:.2f}–{maximum:.2f}': '{part}：{parameter}={value:.2f}
+  超出 {minimum:.2f}–{maximum:.2f}【初值】'
+'{style} is a corrugated style. The current material type is {material}.': '{style} 是瓦楞盒型，当前材料类型为 {material}'
+'{style} normally uses {usual} flute. This job uses {flute} flute (provisional guidance).': '{style}一般用 {usual} 楞，现在是 {flute}
+  楞【初值】'
+'{style} supports {supported}. The current material type is {material}.': '{style} 只支持 {supported}，当前材料类型为 {material}'
+'{style}: {parameter}={value} is below the provisional minimum {minimum}': '{style}：{parameter}={value} 小于下限 {minimum}【初值】'
+
+"PDF forms are nested too deeply": "PDF Form 嵌套过深"
+"The reference PDF contains non-finite coordinates": "参考 PDF 包含非有限坐标"
+"The PDF graphics state stack is unbalanced": "PDF 图形状态栈不匹配"
+"A PDF line operator has no starting point": "PDF l 缺少 m"
+"A PDF curve has no starting point": "PDF 曲线缺少起点"
+"A coloured dieline uses a clipping path. Flatten the PDF clipping before calibrating": "有色刀线受裁切路径影响，须先展开 PDF 裁切"
+"The cut and crease colours cannot be distinguished": "刀线 / 压线颜色无法区分"
+"The reference PDF must contain one page and one dieline": "参考 PDF 须只有一页 / 一个刀版"
+"The PDF page inheritance tree is too deep": "PDF 页面继承层级过深"
+"Apply the page rotation to the PDF content first. Calibration does not rotate the reference": "先展开 PDF 页面旋转；工具不自动旋转对齐"
+"No vector cut lines matched the cut colour in the reference. Bitmap or black-and-white references cannot be detected automatically": "参考中未找到红色矢量刀线（位图 / 黑白 PDF 不能自动识别）"
+"Tolerance must be a finite positive number": "容差须为有限正数"
+"--size requires positive dimensions in LxWxH format": "--size 须为 LxWxH 正尺寸"
+"An unrecognised box style parameter was supplied": "存在未知盒型参数"
+"--part is not available for single-piece styles": "单部件盒型不接受 --part"
+"Alignment uses translation only. Sampled reference curves do not become production cut lines. A synthetic reference does not establish L1 or change the physical verification status": "仅平移对齐；参考曲线采样不进入生产刀线；合成参考不等于 L1，未改变实物验证标记"
+"The reference differs from the generated dieline by more than the tolerance": "参考与生成刀版差异超过容差"
+"Inspect the overlay and the distances in both directions for each line type. Check the dimensions, board, parameters and reference orientation first": "查看叠图与分线型双向距离；先确认尺寸、材料、参数与参考方向"
+"Check the local vector reference, dimensions, board, line colours and part. Use a vector dieline at a known scale": "检查本地矢量参考、尺寸、材料、线色和部件；不要使用位图 / 不明比例刀版"
+"For a multi-part style, use --part to select one of {parts}": "多部件盒型须用 --part 选择 {parts}"
+"The {key} line type is missing; calibration cannot pass": "{key} 线型缺失，不能声称校准通过"

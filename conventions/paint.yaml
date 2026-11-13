@@ -1,0 +1,58 @@
+# 常规参考表："Home improvement · Paint"（ 2.2）
+#
+# 用途：出概念图时写进提示词，告诉 AI "这类包装一般这么排"——只是提示，AI 可以按设计需要变通；
+# 看图后 agent 用它核对：哪些信息放得不寻常、有没有漏掉通常必有的东西。
+# 全部是【初值】：来自通常做法，未经品牌方、印厂或法规顾问确认。法规相关的只做提醒，由用户确认。
+
+id: paint
+name_zh: "Home improvement · Paint"
+description: "Folding cartons and shipping cases for wall paint, wood finishes and primers"
+verified: false
+
+# 各类信息通常放在哪些面（front 正面 / back 背面 / side 侧面 / top 顶面 / bottom 底面），排在前面的更常见
+faces:
+  brand: [front, back, top, side]
+  logo: [front, back, top, side]
+  product_name: [front, back]
+  variant: [front]            # 内墙 / 外墙、木器、底漆面漆；颜色、光泽
+  spec: [front, side]         # 容量（1L、5L）
+  net_content: [front]
+  slogan: [front, side]
+  selling_point: [front, back, side]
+  icon: [front, side]
+  description: [back, side]
+  usage: [back, side]         # 施工步骤
+  technical: [back, side]     # 涂布率、表干 / 实干、重涂间隔、VOC
+  ingredients: [side]
+  caution: [side, back]       # 安全警示、急救
+  storage: [side]
+  standard: [side]
+  manufacturer: [side]
+  contact: [side]
+  origin: [side]
+  barcode: [side]
+  certification: [side, front]
+  batch: [bottom, side]
+
+# 常见版式（提示词里给 AI 参考；也用于看图后说明这个方向属于哪一种）
+layouts:
+  - id: same_front_back
+    name_zh: "Matching front and back"
+    front: "Key visual, brand, product name, category / colour and sheen, volume, main selling points"
+    back: "Same as the front"
+    sides: "Use one side for application instructions and technical data. Use the other for precautions, applicable standards, manufacturer, barcode and country of origin. Vertical branding is also common."
+    common_for: "Shipping cases, cartons for large paint containers, and products displayed with either face outward"
+  - id: split
+    name_zh: "Different roles for front and back"
+    front: "Key visual, brand, product name, category / colour and sheen, volume, main selling points"
+    back: "Brand story or product introduction, application steps and technical data"
+    sides: "Precautions, applicable standards, manufacturer, barcode and country of origin. Use the other side for the brand or tagline."
+    common_for: "Small retail cartons and gift boxes"
+
+# 提醒（不是规定）：看图核对时逐条提示用户，由用户按现行标准与法规确认
+reminders:
+  - "For paint packaging, check the applicable marking standard in the target market (for example, GB/T 9750 in China). Verify requirements for product name and model, applicable standards, net contents, production date or batch, manufacturer name and address, storage and safety information."
+  - "Check whether the target market requires packaging disclosures about hazardous substance limits for architectural coatings and wood finishes."
+  - "Net contents usually appear on the principal display panel. Check the target market’s requirements for placement and character height."
+  - "Leave sufficient quiet zones around the barcode, use a white or light background, and keep it clear of folds."
+  - "Batch codes and production dates are usually added after printing. Reserve blank space for them in the artwork."

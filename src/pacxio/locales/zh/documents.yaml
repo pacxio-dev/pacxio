@@ -1,0 +1,294 @@
+' (container size inferred from the label)': （容器尺寸是按标签推的）
+' (over window {windows} or too close to it)': （压到窗口 {windows} 或离它太近）
+' (the user has confirmed they accept the licensing risk)': （用户已确认承担授权风险）
+' ({tag})': （{tag}）
+' “{label}”': 「{label}」
+--cmyk takes four numbers from 0–100 separated by commas, e.g. 75,0,40,0: --cmyk 写四个 0–100 的数，逗号分隔，如 75,0,40,0
+. Text is outlined; the delivery pack contains no font files: 。文字已转曲，交付包不含字体文件
+; the print PDF does not declare PDF/X-4: ；印刷 PDF 不声明 PDF/X-4
+; this text is copied from {id}: ；这段文字复制自 {id}
+; this value is an initial value, not verified; ask the factory how fine it can print (flexo section of the profile): ；这个数值是【初值】，最细能做多少问工厂（配置档 flexo 一节）
+? 'A cut-line segment (outline or window edge): coverage inside {inside}, only {outside} in the bleed band; artwork does not fill the bleed'
+: 裁切线一段（外轮廓或窗口边）：内侧覆盖率 {inside}，出血带只有 {outside}，图文没有铺满出血
+Add it under finish_rules in the profile: 在配置档 finish_rules 中补充
+Add spot_uv_digital (line width, gap) to finish_rules in the profile: 在配置档 finish_rules 里加 spot_uv_digital（线宽、间距）
+? Add white ink where it must be opaque / show true color (`finish add --type white ...`); flood it for a full white base, and leave clear windows and metallic areas open
+: 需要不透明 / 显本色的地方加白墨（`finish add --type white ...`）；整版白底就铺满，透明窗、金属光泽处留空
+? Add white ink where it must be opaque / show true color (`finish add --type white ...`); leave clear windows and metallic areas open
+: 需要不透明 / 显本色的地方加白墨（`finish add --type white ...`），透明窗、金属光泽处留空
+Adjust coverage first, or remove the extra exclusion: 先调整 coverage 或移除多余避让
+Adjust the threshold, or check whether the image is blank: 调整阈值（threshold），或检查图像是否为空白
+All shapes in {name} are white (knocked out); there is no area to apply the finish to: '{name} 里的图形全是白色（镂空），没有可上工艺的区域'
+All text is set and outlined by the engine (D7); do not embed fonts in print files: 文字一律由引擎排版并转曲（D7），不要把字体写进印刷文件
+Arc-fitting error of the outline is {err} mm, over {tol} mm: 外形转圆弧的误差 {err} mm 超过 {tol} mm
+'Available panels: ': 可用面：
+'Available types: ': 可用类型：
+'Barcode {id} is where the film deforms by about {k} when filled (fill {fill}): it may not scan': 条码 {id} 在装满后膜要变形约 {k} 的地方（鼓起量 {fill}）：可能扫不出
+? Barcode {id} is {w} mm wide and spans {deg}° on a Ø{d} body (> {max}°); scanners may fail to read it (initial value, GS1 reference not yet checked)
+: 条码 {id} 宽 {w} mm，在 Ø{d} 的瓶身上横跨 {deg}°（> {max}°），扫码枪可能读不出【初值，GS1 资料待查】
+Barcode {id} sits in the overlap strip that will be covered: 条码 {id} 压在会被盖住的搭接条里
+Barcode {id} sits on a seal / zipper / tear area and will not scan: 条码 {id} 压在封口 / 拉链 / 撕口区上，扫不出
+BleedBox does not contain TrimBox: BleedBox 没有包住 TrimBox
+'Brand font {name}: {license}; embedding flag {embedding}': 品牌字体 {name}：{license}；嵌入许可位 {embedding}
+'Cannot use ICC {path}: {error}': 无法使用 ICC {path}：{error}
+Change container.label_z / height, or reduce the label height: 改 container.label_z / height，或减小标签高
+Change the concave radius to ≥ {min} mm: 内凹处半径改到 ≥ {min} mm
+Change the corner radius to ≥ {min} mm: 圆角改到 ≥ {min} mm
+? Change the text color (light text on dark backgrounds), put a background block behind the text, or move the text / graphic apart
+: 换文字颜色（深底用浅色字）、给文字垫一块底色，或把文字 / 图形挪开
+Check coverage and exclusions: 检查 coverage 和 exclusions
+Check that the finish is written into the combined print file and that the spot name matches the profile: 检查工艺是否被写进印刷总文件，且专色名与配置档一致
+Check the finish area position and source file: 检查工艺区域的位置与源文件
+Check the source file: 检查源文件
+Check the source path: 检查 source 路径
+Check the source path and the SVG graphic: 检查 source 路径与 SVG 图形
+? 'Check the values: change it to the color actually used in the layout (`color add` with the same name changes it), or `color remove` it if it is not needed'
+: 核对数值：改成版面里实际用的颜色（color add 同名再加就是改），不要了就 color remove
+Checks not run: 未执行的检查
+Colors use a fallback conversion (no ICC); they are for layout reference only.: 色彩为降级转换（没有 ICC），颜色仅供版面参考。
+Confirm that the font license allows use on printed products: 请确认该字体的许可证允许用于印刷品
+Content streams use rg/RG (RGB color): 内容流使用 rg/RG（RGB 着色）
+Convert all images and colors to CMYK or spot colors before output: 所有位图与颜色须转成 CMYK 或专色后再输出
+'Could not read the exclusion SVG: {error}': 避让 SVG 读不出来：{error}
+Declares PDF/X-4 but the OutputIntent has no embedded output profile: 声明 PDF/X-4 但 OutputIntent 没有嵌入输出配置
+Declares PDF/X-4 but the PDF version is below 1.6: 声明 PDF/X-4 但 PDF 版本低于 1.6
+Diameter {d} mm: 直径 {d} mm
+Dielines and finishes must use named spot colors, not registration: 刀线与工艺必须用命名专色，不得用套版色
+? Draw the parts to be finished in black (or any non-white color); for a reversed logo use the normal print logo file instead
+: 要做工艺的部分请用黑色（或任何非白颜色）画；反白 Logo 请换成印刷用的正常 Logo 文件
+Entire surface: 整面
+Error: 错误
+Exclusion graphics must be final SVGs, not concept images: 避让图形须为正式 SVG，不能用概念图
+Export the print PDF again: 重新导出印刷 PDF
+Extend the artwork {bleed}mm past the bleed edge, or use a full-bleed background color / pattern: 把素材延伸到出血边外 {bleed}mm，或使用铺满的底色 / 图案
+Fill in this text, or remove the finish: 给这段文字填上内容，或去掉这个工艺
+Find the text placement id with `art list`, then `finish set <job> <id> --placement <text id>`: '`art list` 查文字放置的 id，`finish set <job> <id> --placement <文字 id>`'
+Findings: 问题清单
+Finish graphic: 工艺图形
+Finish layers must be 100% solid; remove gradients / transparency: 工艺层必须是 100% 实地，去掉渐变 / 透明
+Finish source files must be pure vector; remove the bitmaps: 工艺源文件只能是纯矢量，请移除位图
+Finish source format {suffix} is not supported: 工艺源文件格式 {suffix} 不支持
+Finish type {type} has no minimum line / gap rule in the profile; not checked: 工艺类型 {type} 在配置档里没有最小线宽 / 间距规则，未做检查
+'Finish {id} cannot go into the print files: {why}': 工艺 {id} 不能进入印刷文件：{why}
+Finish {id} has details thinner than {mm}mm: 工艺 {id} 有线宽小于 {mm}mm 的细节
+Finish {id} has gaps narrower than {mm}mm: 工艺 {id} 有间距小于 {mm}mm 的部分
+Finish {id} is less than {mm}mm from a crease / cut line (deepest overrun {depth}mm): 工艺 {id} 离压线 / 切线不足 {mm}mm（最深越界 {depth}mm）
+'Finish {id} is not aligned with print graphic {graphic}: the finish extends up to {mm}mm beyond the graphic': 工艺 {id} 和印刷图形 {graphic} 没对齐：工艺超出图形最多 {mm}mm
+Finish {id} is on panel {panel}, but the text {text} it refers to is on panel {text_panel}: 工艺 {id} 在面 {panel}，引用的文字 {text} 却在面 {text_panel}
+Finish {id} refers to text placement {text}, which does not exist (or is not text): 工艺 {id} 引用的文字放置 {text} 不存在（或不是文字）
+'Finish {id}: panel {panel} does not exist': 工艺 {id} 的面 {panel} 不存在
+'Finish {id}: panel {panel} has no usable finish area': 工艺 {id} 所在的面 {panel} 没有可用的工艺区
+'Finish {id}: the text {text} it refers to has no glyphs (empty text?)': 工艺 {id} 引用的文字 {text} 没有字形（空文字？）
+'Finish {id}: type {type} has no spot color name in the profile''s spot_names': 工艺 {id} 的类型 {type} 在配置档 spot_names 中没有专色名
+'Finish {id}: {message}': 工艺 {id}：{message}
+Finishes {a} and {b} overlap with the same material: 工艺 {a} 与 {b} 的同类材质区域重叠
+? First try `pacxio finish fit <job> {id}` (ink traps at sharp glyph corners are often reported as too narrow); if that is not enough, widen the gap to at least {mm}mm or merge the neighbouring shapes
+: 先试 `pacxio finish fit <job> {id}`（字形锐角处的墨阱常被报成太窄）；还不行再把间距加大到至少 {mm}mm，或把相邻图形合并
+? First try `pacxio finish fit <job> {id}` (removes sharp corners, fills narrow gaps, and makes a before / after image for the user); if that is not enough, thicken this part to at least {mm}mm or remove it from the graphic
+: 先试 `pacxio finish fit <job> {id}`（去掉尖角、填掉窄缝，出前后对比图给用户看）；还不行再把这部分加粗到至少 {mm}mm，或从图形里去掉
+'Fix: {fix}': 修复：{fix}
+Flat {w} × {h} mm (outer cut line, without bleed) · dimensions in mm · panels show width × height when upright: 展开 {w} × {h} mm（刀线外轮廓，不含出血）· 尺寸单位 mm · 面上标的是正立时的宽 × 高
+'Flexo: about {area} mm² of lines on {panel} are thinner than {width}mm and may break or drop out': 柔印：{panel} 上有约 {area} mm² 的线比 {width}mm 细，印出来可能断线、丢掉
+'Flexo: about {area} mm² of reversed-out gaps on {panel} are narrower than {width}mm and may fill in': 柔印：{panel} 上有约 {area} mm² 的反白比 {width}mm 窄，印出来可能糊住
+? 'Front / back label width {w} mm covers {arc} of the circumference, over {max}: the edges will lift and the front cannot be seen in full'
+: 前 / 背标宽 {w} mm 占瓶周长的 {arc}，超过 {max}：贴上去两边会翘、正面看不全
+Ghostscript (gs) not found: 未找到 Ghostscript（gs）
+Ghostscript is not installed (brew install ghostscript): 未安装 Ghostscript（brew install ghostscript）
+? Give the finish the same box as {graphic} (`finish set {id} --box {box}`) and export the finish file and print file from the same artboard; ignore this if it is deliberately larger
+: 让工艺用和 {graphic} 一样的框（`finish set {id} --box {box}`），工艺文件和印刷文件用同一块画板导出；故意做大一圈的可以忽略
+Graphic area: 图形区域
+'ICC file not found: {path}': ICC 文件不存在：{path}
+'ICC: {icc} (set in the factory profile, embedded in the production files)': ICC：{icc}（工厂配置档指定，已嵌入生产文件）
+If the factory supplies its own ICC, set icc.path in the profile (it is then embedded and PDF/X-4 is declared): 工厂给了自己的 ICC 时填到配置档 icc.path（会嵌入、声明 PDF/X-4）
+If this is not intended, bring the text to the top with `pacxio art move <job> {id} --top`, or adjust the position: 如果不是有意的，用 `pacxio art move <job> {id} --top` 把文字移到最上层，或调整位置
+In a one-color finish graphic, black (or any non-white color) means finish and white means no finish: 单色工艺图里，黑色（或任何非白颜色）表示有工艺，白色表示没有
+'Incomplete PDF/X-4 structure: {problem}': PDF/X-4 结构不完整：{problem}
+? Increase the font size, enlarge the text box, or shorten the copy; confirm legally required information (such as net contents) against the character-height rules of the market
+: 加大字号、加大文字框或精简文案；法规要求的信息（如净含量）按销售市场的字高规定确认
+Info: 说明
+Info Trapped is not /False: Info 的 Trapped 不是 /False
+Info declares PDF/X-4 but XMP does not: Info 声明了 PDF/X-4 但 XMP 没有
+? Installing Adobe software (Photoshop / Illustrator) provides standard ICC profiles; if the factory supplies its own ICC, set icc.path in the profile
+: 装了 Adobe 软件（Photoshop / Illustrator）就有标准 ICC；工厂给了自己的 ICC 时填到配置档 icc.path
+'Invalid key color: {error}': 关键色写法不对：{error}
+? Keep a light or blank strip {mm} mm each side of the eye mark along the whole web direction (the eye-mark lane on the dieline) (initial value, not verified)
+: 光标两边 {mm} mm、沿走膜方向一整条（刀版上的光标通道）留浅色或空白【初值】
+Keep text at least {mm} mm from the inner edge of the seals (initial value, not verified): 文字离封边内沿至少留 {mm} mm【初值】
+Knock the white ink graphic out at the window: 白墨图形在窗口处挖空
+Leave out part for a single-part box; for multi-part boxes resolve by part first: 单部件不要给 part；多部件先按部件解析
+Lid label {need} mm is larger than the cap (Ø{cap}) and will not lie flat{given}: 盖顶标 {need} mm 比盖子（Ø{cap}）大，贴不平{given}
+Make sure the SVG contains solid shapes (not just text): 确认 SVG 里有实心图形（非纯文字）
+Make the box taller, reduce the font size, or shorten the copy: 加大放置框高度、减小字号或精简文案
+Make the concave corners arcs of radius ≥ {min} mm: 内凹处做成半径 ≥ {min} mm 的圆弧
+Make the label narrower or change container.diameter: 缩小标签宽或改 container.diameter
+Make the label narrower, or make it a wraparound label (label_wrap): 缩小标签宽，或改做环标（label_wrap）
+Make the label smaller or change cap_d under container in the job: 缩小标签或在 job 的 container 里改 cap_d
+Maximum total ink {max}%, over the limit of {limit}% ({pct}% of inked pixels are over): 总墨量最高 {max}%，超过上限 {limit}%（{pct}% 的有墨像素超限）
+MediaBox does not contain BleedBox: MediaBox 没有包住 BleedBox
+? Merge graphics of the same finish or separate their areas; complex layered processes must be specified first and are not stacked from the list automatically
+: 合并相同工艺的图形或分开范围；复杂叠加工序须先明确，不自动按列表覆盖
+'Metal badge {id} covers finish {hit}: that finish is wasted, and an adhesive badge on foil / UV comes off easily': 金属标 {id} 盖住了工艺 {hit}：那块工艺白做，背胶贴在箔 / UV 上也容易掉
+Metal badge {id} goes outside panel {panel}, or is less than {mm} mm from a fold / cut line: 金属标 {id} 超出面 {panel}，或离折线 / 刀线不到 {mm} mm
+'Metal badge {id} overlaps window {window}: the window is empty, so it cannot be attached': 金属标 {id} 压到了开窗 {window}：窗口是空的，贴不上
+Missing OutputIntent: 缺少 OutputIntent
+Missing XMP metadata: 缺少 XMP 元数据
+Missing {key}: 缺少 {key}
+Move it to a printable panel: 改放到可印的面上
+? Move it to the flatter middle of the pouch, or increase the size to {pt} pt or more; the threshold and the fill model are initial values, not verified; the proof decides
+: 移到袋子中间较平的地方，或字号加到 {pt} pt 以上；阈值和鼓起模型都是【初值】，以打样为准
+Move it with `attach set <job> {id} --box …`, or change the window: '`attach set <job> {id} --box …` 挪开，或改窗口'
+Move the barcode out of the overlap strip: 把条码移出搭接条
+Move the barcode to a flat content area: 把条码移到平整的内容区
+Move the text inside the seals (dashed boxes on the dieline confirmation are the seal / zipper / tear areas): 把文字移进封边以内（刀版确认图上虚线框是封口 / 拉链 / 撕口区）
+Move the text right, out of the x < {w} mm area: 把文字往右移出 x < {w} mm 的区域
+? Move {id} out of window {windows}, keeping a safe margin from the window edge; windows[].keep_out_local_mm in `pacxio panels` is the area to avoid
+: 把 {id} 挪出窗口 {windows}，离窗口边至少留安全边距；`pacxio panels` 的 windows[].keep_out_local_mm 是要避开的区域
+Move {id} {move} into the safe area: 将 {id} {move} 进入安全区
+Move {id} {move}, or make the graphic smaller: 将 {id} {move}，或缩小图形
+No combined print file: 没有印刷总文件
+No key color named {name}: 没有关键色 {name}
+No photos or full-color illustrations in the layout; all colors print as the specified CMYK: 版面里没有照片和全彩插画，颜色都按指定的 CMYK 出
+No photos or full-color illustrations in the layout; all colors print as the specified CMYK (no ICC conversion): 版面里没有照片和全彩插画，颜色都按指定的 CMYK 出（不经 ICC 换算）
+No problems found.: 没有发现问题。
+? 'No standard ICC found on this computer: photos are converted to print colors with a simple formula; the proof is the color reference'
+: 本机没找到标准 ICC：照片按简单公式转成印刷色，颜色以打样为准
+No standard ICC found on this computer; {plain}: 本机没找到标准 ICC；{plain}
+No {spot} plate after separating the print file: 印刷文件分色后没有 {spot} 色版
+Once the image is ready, replace the placeholder with `pacxio art fill <job> {id} --source <image>`: 出好图后 `pacxio art fill <job> {id} --source 图片` 换掉占位框
+Outline the text in your design software and export the SVG again: 在设计软件里把文字转曲后重新导出 SVG
+'Page {page}: spot fill {color} does not overprint': 第 {page} 页：专色填充 {color} 未叠印
+'Page {page}: spot stroke {color} does not overprint': 第 {page} 页：专色描边 {color} 未叠印
+? Photos are converted to print colors with a simple formula (no standard ICC found on this computer); the proof is the color reference
+: 照片按简单公式转成印刷色（本机没找到标准 ICC）；颜色以打样为准
+Photos are converted to print colors with {icc} (standard {paper}): 照片按 {icc}（{paper}常规）转成印刷色
+? Photos are converted to print colors with {icc} (standard {paper}); the ICC is not embedded in the production files; the proof is the color reference
+: 照片按 {icc}（{paper}常规）转成印刷色，ICC 未嵌入生产文件；颜色以打样为准
+Placeholder {id}{what} has not been replaced with a real image / graphic: 占位框 {id}{what}还没换成真实的图片 / 图形
+Plate {name} has {n} inked pixels in the glue-flap no-ink zone: '{name} 版在糊口禁墨区内有 {n} 个有墨像素'
+Plate {spot} has {n} inked pixels outside its assigned area: '{spot} 版在指定区域之外有 {n} 个有墨像素'
+Preflight report  {job}: 印前检查报告  {job}
+'Print content still contains RGB / Lab: {what}': 印刷内容残留 RGB / Lab：{what}
+Problem locations: 问题位置标注
+Provide an SVG without gradients or transparency: 提供无渐变、无透明度的 SVG
+Provide the finish graphic again as a vector (SVG) or a two-tone PNG: 工艺图形请用矢量（SVG）或二值 PNG 重新提供
+? Pull the box of {id} back inside panel {panel} (a panel with creases on all four sides needs no bleed); for graphics that continue across panels use `--space body` or `--space blank`
+: 把 {id} 的框收进面 {panel} 里（四边是压线的面不用出血）；要跨面连续的图形用 `--space body` 或 `--space blank`
+? Put the barcode in the flatter middle of the pouch; the threshold and the fill model are initial values, not verified; the proof decides
+: 条码放在袋子中间较平的地方；阈值和鼓起模型都是【初值】，以打样为准
+RGB or CMYK out of range: RGB 或 CMYK 超出范围
+Red box = error, orange box = warning; labels are rule IDs.: 红框 = 错误，橙框 = 警告，标签为检查编号。
+Reduce CMY in dark areas (use K black instead), or convert again with the factory's ICC: 降低深色区域的 CMY 量（改用 K 黑），或换用工厂提供的 ICC 重新转换
+Registration color (/All) is used; it prints on every plate: 使用了套版色（/All），它会印在每一个色版上
+Remove the finish under the badge (`finish remove`), or move the badge: 去掉标下面的工艺（`finish remove`），或挪开标
+'Result: not passed — {n} errors; no factory delivery pack may be produced.': 结论：未通过——{n} 个错误，不得输出工厂交付包。
+'Result: passed (no errors).': 结论：通过（没有错误）。
+? Rotate the barcode 90° (bars perpendicular to the bottle axis, ladder orientation) or make it smaller; confirm with an actual scan test
+: 条码转 90°（条和瓶轴垂直，ladder 方向）或缩小；以实际扫码测试为准
+See panel names with `panels`; for multi-part boxes use part.panel: 用 panels 查看面名；多部件用 部件.面
+See the names with `color list` first: 先用 color list 查看名称
+Separate them by panels or exclusions; record only one surface treatment per area: 用指定面或 exclusions 分开；同一区域只记录一种表面处理
+'Separation rendering failed: {error}': 分色渲染失败：{error}
+Set the label's L (bottle diameter) to the container diameter, or change container.diameter: 把标签的 L（瓶径）改成容器直径，或改 container.diameter
+Simplify the SVG outline or adjust labels.arc_fit_tol_mm in the profile: 简化 SVG 外形或调配置档 labels.arc_fit_tol_mm
+'Source file for finish {id} not found: {path}': 工艺 {id} 的源文件不存在：{path}
+Spot color name {name} is not in the profile's spot_names: 专色名 {name} 不在配置档的 spot_names 里
+'Spot color names must match the profile: ': 专色名必须与配置档一致：
+Spot colors (dieline / finishes) must be set to overprint: 专色（刀线 / 工艺）必须设为叠印
+Surface treatment {id} covers an empty area: 表面处理 {id} 覆盖区域为空
+'Surface treatment {id}: panels not found: {panels}': 表面处理 {id} 的面不存在：{panels}
+Surface treatments {a} and {b} overlap: 表面处理 {a} 与 {b} 范围重叠
+Switch to clear film (pouch_pet_pe_clear etc.) with a white ink base, or confirm the window method with the factory: 换透明膜（pouch_pet_pe_clear 等）+ 白墨打底，或和工厂确认开窗做法
+Text: 文字
+Text area: 文字区域
+? 'Text {id} ({size} pt) is where the film deforms by about {k} when filled (fill {fill}): small text will be distorted by wrinkles and curvature'
+: 文字 {id}（{size} pt）在装满后膜要变形约 {k} 的地方（鼓起量 {fill}）：小字会被褶皱和曲面扭曲
+'Text {id} is less than {mm} mm from a seal / zipper area: any shift during pouch making will press on it': 文字 {id} 离封口 / 拉链区不到 {mm} mm：制袋时偏位就会压到
+Text {id} is {size}pt, smaller than the minimum size {min}pt: 文字 {id} 字号 {size}pt，小于最小字号 {min}pt
+Text {id} sets in {n} columns and overflows its box width by {mm}mm: 文字 {id} 排成 {n} 列，宽度超出放置框 {mm}mm
+Text {id} sets in {n} lines and overflows its box height by {mm}mm: 文字 {id} 排成 {n} 行，高度超出放置框 {mm}mm
+? Text {id} sits in the overlap strip at the start of the wraparound label ({w} mm wide) and will be covered by the other end
+: 文字 {id} 压在环标起贴那头的搭接条里（宽 {w} mm），贴上去会被另一头盖住
+'Text {id} sits on {kinds}: heat-seal texture and zipper pressing will blur or cut off the text': 文字 {id} 压在{kinds}上：热封压纹、拉链压合会让字看不清或被切掉
+The CMYK of key color “{name}” ({cmyk}) is not used anywhere in the layout: 关键色「{name}」的 CMYK（{cmyk}）在版面里一处都没用到
+The die-cut outline has a concave arc of radius {r} mm (< {min}); it tears easily when stripping waste: 模切外形有半径 {r} mm 的内凹圆弧（< {min}），排废时容易撕
+The die-cut outline has a small corner radius of {r} mm (< {min}); the die cannot cut it cleanly / the corner may lift: 模切外形上有半径 {r} mm 的小圆角（< {min}），刀模做不出 / 容易翘角
+The die-cut outline has {n} sharp concave corners; the label tears when stripping waste: 模切外形有 {n} 个内凹尖角，排废时会撕标签
+The factory profile has not been confirmed by the factory.: 工厂配置档未经工厂确认。
+The finish graphic has zero width or height: 工艺图形的宽或高为 0
+The glue flap may only carry ink within {mm}mm inside the crease; pull back the artwork in the glue-flap area: 糊口只允许压线内侧 {mm}mm 内有墨，请缩回糊口区的图文
+The label is wider than the front of the square bottle and runs onto the rounded corners: 标签比方瓶正面宽，贴到圆角上了
+The label sits at {z0}–{z1} mm height, outside the labelable band {lo}–{hi} mm (over the bottom radius){given}: 标签贴在 {z0}–{z1} mm 高处，超出瓶身可贴段 {lo}–{hi} mm（压到瓶底圆角）{given}
+The label sits at {z0}–{z1} mm height, outside the labelable band {lo}–{hi} mm (over the shoulder){given}: 标签贴在 {z0}–{z1} mm 高处，超出瓶身可贴段 {lo}–{hi} mm（压到瓶肩）{given}
+? 'The material is {what} with no white ink plate: process colors will show through (clear film) or look grey and metallic (metallized)'
+: 材料是{what}，没有白墨版：四色印上去会透（透明膜）或发灰带金属色（镀铝）
+? 'The material is {what} with no white ink plate: process colors will show through (clear) or look grey and metallic (metallized)'
+: 材料是{what}，没有白墨版：四色印上去会透（透明）或发灰带金属色（镀铝）
+? The material is {what}; a clear window needs local demetallizing / a window patch with clear film; confirm the process and price with the factory
+: 材料是{what}，做透明窗要局部去铝 / 开窗贴透明膜，工艺和价格请工厂确认
+'The print PDF has fonts that are not outlined: {fonts}': 印刷 PDF 里有未转曲的字体：{fonts}
+The profile has no digital spot UV rule (finish_rules.spot_uv_digital); checked with the standard UV rule: 配置档没有数码 UV 的规则（finish_rules.spot_uv_digital），按常规 UV 查
+The total ink limit must be within 0–400%: 总墨量上限须在 0–400%
+Thicken them to at least {width}mm, or simplify (fine engraving lines, leaf tips in illustrations): 加粗到至少 {width}mm，或简化掉（插画的细刻线、叶尖）
+Use SVG (preferred) or a two-tone PNG: 用 SVG（首选）或二值 PNG
+Use a higher-resolution asset or a smaller placement; `pacxio panels` shows the pixels needed for 300ppi: 换用更高分辨率的素材，或缩小放置尺寸；用 `pacxio panels` 查看 300ppi 所需像素
+Warning: 警告
+'White ink {id} covers the clear window: the contents cannot be seen through it': 白墨 {id} 盖到了透明窗：窗里看不到内容物
+Widen the box, reduce the font size / column gap, or shorten the copy: 加宽放置框、减小字号 / 列距或精简文案
+Widen the gaps / small white dots to at least {width}mm, or fill them in: 把缝 / 小白点放宽到至少 {width}mm，或填掉
+Window (cut out · {film}): 开窗（切掉 · {film}）
+? Wraparound label length {w} mm; circumference plus overlap needs {need} mm (container diameter {d}, label calculated for {ld})
+: 环标长 {w} mm，容器周长 + 搭接要 {need} mm（容器直径 {d}，标签按 {ld} 算的）
+'`attach set <job> {id} --box …`: {move}, or make it smaller': '`attach set <job> {id} --box …`：{move}，或缩小'
+'`finish set <job> {id} --panel {panel}` (the finish and its text must be on the same panel)': '`finish set <job> {id} --panel {panel}`（工艺和文字要在同一个面）'
+'`pacxio render / preflight / export / mockup / plan` support multi-part styles': '`pacxio render / preflight / export / mockup / plan` 支持多部件盒型'
+clear film: 透明膜
+coated paper: 涂布纸
+down {d}mm: 下移 {d}mm
+it uses a concept image: 引用了概念图
+kraft paper laminate: 牛皮纸复合
+left {d}mm: 左移 {d}mm
+metallized / foil film: 镀铝 / 铝箔膜
+opaque film: 不透明的膜
+open: 敞口
+right {d}mm: 右移 {d}mm
+shrink it: 缩小尺寸
+silver metallized film: 镀铝银膜
+t(" (container size inferred from the label)"): （容器尺寸是按标签推的）
+? 't("No standard ICC found on this computer: photos are converted to print colors with a simple formula; the proof is the color reference")'
+: 本机没找到标准 ICC：照片按简单公式转成印刷色，颜色以打样为准
+? t("Put the barcode in the flatter middle of the pouch; the threshold and the fill model are initial values, not verified; the proof decides")
+: 条码放在袋子中间较平的地方；阈值和鼓起模型都是【初值】，以打样为准
+uncoated paper: 非涂布纸
+up {d}mm: 上移 {d}mm
+white film: 白膜
+'{finish} (digital)': '{finish}（数码）'
+'{id} is larger than the safe area; make it smaller (safe area {w} x {h} mm)': '{id} 比安全区还大，需缩小尺寸（安全区 {w} x {h} mm）'
+'{id} is placed only on panel {panel} but runs over the crease onto {hit} (about {depth} mm)': '{id} 只放在面 {panel} 上，却越过压线画到了 {hit} 上（约 {depth} mm）'
+'{id} still has part={part} in a single-part view': '{id} 在单部件视图中仍带 part={part}'
+'{id}: excluded panel {panel} is outside the coverage': '{id} 避让面 {panel} 不在覆盖范围'
+'{job} preflight report': '{job} 印前检查报告'
+'{kind} {id} goes outside the safe area of panel {panel}{where}': '{kind} {id} 超出面 {panel} 的安全区{where}'
+'{kind} {id} has an effective resolution of {ppi}ppi ({w}x{h}px), below {limit}ppi': '{kind} {id} 有效分辨率 {ppi}ppi（{w}x{h}px）低于 {limit}ppi'
+'{kind} {id} is on panel {panel}, which is not printable or has no safe area': '{kind} {id} 所在的面 {panel} 不可印或没有安全区'
+'{kind} · {size} · {thickness} mm thick · {material} · {plating} plating · {mount}': '{kind} · {size} · 厚 {thickness} mm · {material} · 电镀{plating} · {mount}'
+'{name} area': '{name}区域'
+'{name} contains <text>; glyphs cannot be guaranteed to match': '{name} 含 <text>，无法保证字形一致'
+'{name} contains embedded bitmaps': '{name} 含内嵌位图'
+'{name} has no inked pixels after thresholding': '{name} 二值化后没有任何有墨像素'
+'{name} has no usable filled or stroked shapes': '{name} 中没有可用的填充或描边形状'
+? '{name} has {n} white shapes that do not sit on colored shapes: white means no finish in a finish graphic, so these parts will not be finished (white text in a reversed logo behaves like this)'
+: '{name} 里有 {n} 个白色图形没有压在彩色图形上：白色在工艺图里表示不做工艺，这些部分不会做（反白 Logo 的白字就是这样）'
+'{name} text area': '{name}文字区域'
+'{n} pixels inside the solid areas of plate {spot} are not 100% (likely a gradient or halftone)': '{spot} 版的实地内部有 {n} 个像素不是 100%（疑似渐变或半调）'
+'{n} warnings; rules run: {rules}': 警告 {n} 个；已执行规则：{rules}
+'{panel} · made separately, attached · {spec}': '{panel} · 另做，贴装 · {spec}'
+'{rule}: {why}': '{rule}：{why}'
+'{scope}, avoiding {n} areas': '{scope}，避让 {n} 处'
+'{shape} {size}, {finish}': '{shape} {size}，{finish}'
+'{share} of text {id} is covered by later placements {by}': 文字 {id} 有 {share} 被后面放置的 {by} 盖住
+? '{share} of the eye-mark lane is too dark (luminance < {limit}): the sensor cannot see the eye mark and may misread or cut off-register'
+: 光标（电眼）通道里 {share} 的地方颜色太深（亮度 < {limit}）：电眼看不清光标，可能误读、切偏
+'{share} of the strokes of text {id} have too little contrast with the background (lowest {ratio}:1, usually at least 3:1)': 文字 {id} 有 {share} 的笔画和底色对比度不足（最低 {ratio}:1，一般至少 3:1）
+'{style} is a multi-part style ({parts}); this command does not support it yet': '{style} 是多部件盒型（{parts}），这个命令还不支持'
+'{what}; the ICC is not embedded and the print PDF does not declare PDF/X-4': '{what}；ICC 未嵌入，印刷 PDF 不声明 PDF/X-4'
+…and {n} more of the same kind: ……另有 {n} 处同类问题

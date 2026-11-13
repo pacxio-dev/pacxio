@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="391.92mm" height="477.88mm" viewBox="-10 -10 391.92 477.88">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_base_front" data-type="crease" d="M60.48 397.4 L311.44 397.4" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_base_back" data-type="crease" d="M60.48 236.44 L311.44 236.44" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_base_side_a" data-type="crease" d="M311.44 397.4 L311.44 236.44" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_base_side_b" data-type="crease" d="M60.48 397.4 L60.48 236.44" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_corner_front_b" data-type="crease" d="M60.48 398.4 L60.48 456.88" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_corner_front_a" data-type="crease" d="M311.44 398.4 L311.44 456.88" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_corner_back_b" data-type="crease" d="M60.48 235.44 L60.48 176.96" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_corner_back_a" data-type="crease" d="M311.44 235.44 L311.44 176.96" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_lid" data-type="crease" d="M60.48 175.96 L311.44 175.96" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_lid_tuck" data-type="crease" d="M61.48 15 L310.44 15" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_lid_dust_a" data-type="crease" d="M311.44 174.96 L311.44 16" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_lid_dust_b" data-type="crease" d="M60.48 174.96 L60.48 16" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M60.48 397.4 L60.48 398.4 L47.48 398.4 L45.48 400.4 L45.48 454.88 L47.48 456.88 L60.48 456.88 L60.48 457.88 L311.44 457.88 L311.44 456.88 L324.44 456.88 L326.44 454.88 L326.44 400.4 L324.44 398.4 L311.44 398.4 L311.44 397.4 L371.92 397.4 L371.92 236.44 L311.44 236.44 L311.44 235.44 L324.44 235.44 L326.44 233.44 L326.44 178.96 L324.44 176.96 L311.44 176.96 L311.44 175.96 L311.44 174.96 L326.44 172.96 L326.44 18 L311.44 16 L311.44 15 L310.44 15 L310.44 4 A4 4 0 0 0 306.44 0 L65.48 0 A4 4 0 0 0 61.48 4 L61.48 15 L60.48 15 L60.48 16 L45.48 18 L45.48 172.96 L60.48 174.96 L60.48 175.96 L60.48 176.96 L47.48 176.96 L45.48 178.96 L45.48 233.44 L47.48 235.44 L60.48 235.44 L60.48 236.44 L0 236.44 L0 397.4 L60.48 397.4" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="185.96" y="316.92" font-size="4" text-anchor="middle" fill="#888">base</text>
+<text x="185.96" y="427.64" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="185.96" y="206.2" font-size="4" text-anchor="middle" fill="#888">back</text>
+<text x="341.68" y="316.92" font-size="4" text-anchor="middle" fill="#888">side_a</text>
+<text x="30.24" y="316.92" font-size="4" text-anchor="middle" fill="#888">side_b</text>
+<text x="52.98" y="427.64" font-size="4" text-anchor="middle" fill="#888">corner_front_b</text>
+<text x="318.94" y="427.64" font-size="4" text-anchor="middle" fill="#888">corner_front_a</text>
+<text x="52.98" y="206.2" font-size="4" text-anchor="middle" fill="#888">corner_back_b</text>
+<text x="318.94" y="206.2" font-size="4" text-anchor="middle" fill="#888">corner_back_a</text>
+<text x="185.96" y="95.48" font-size="4" text-anchor="middle" fill="#888">lid</text>
+<text x="185.96" y="7.5" font-size="4" text-anchor="middle" fill="#888">lid_tuck</text>
+<text x="318.94" y="95.48" font-size="4" text-anchor="middle" fill="#888">lid_dust_a</text>
+<text x="52.98" y="95.48" font-size="4" text-anchor="middle" fill="#888">lid_dust_b</text>
+</g>
+</svg>

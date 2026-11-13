@@ -1,0 +1,139 @@
+', or use `visual import`': ；或改用 `visual import`
+A finish, surface treatment, or attachment ID is duplicated: 局部工艺、表面处理、配件的 id 重复
+A solid green background was requested for background removal: 要求了纯绿背景以便抠图
+Add a fallback font for Latin copy: 拉丁文案请加兜底字体
+Add the item graphic with `content edit <job> {item} --asset <file>`, or supply --source on the placement: '`content edit
+  <job> {item} --asset 文件` 补上素材，或给放置加 --source'
+'Available image providers: ': 可用：
+'Available panels: ': 可用面：
+'Available roles: ': 可用角色：
+CMYK components must each be between 0 and 100 percent: CMYK 各分量须在 0–100 之间（百分比）
+Check the path: 检查路径
+Check the path or use --codex-latest: 检查路径，或用 --codex-latest
+Check whether the licence allows outlining for print. The delivery pack does not include the font file.: 转曲印刷通常可行，但请确认字体许可证允许；交付包里不会带字体文件
+Check with `visual prepare --check-text`. Typeset copy with `art add --kind text`.: 用 `visual prepare --check-text` 检查；文字一律由
+  `art add --kind text` 排版
+Choose a distinct --name so neither font hides the other: 用 --name 换一个名字，避免同名字体互相遮盖
+Choose another --name: 换一个 --name
+Choose another --name or remove the old asset first: 换一个 --name，或先删除旧素材
+Confirm permission to outline for print with the rights holder. The report keeps a record.: 请自行向字体权利人确认转曲印刷的授权；报告里会保留这条记录
+Confirm that the font is licensed for print. Brand fonts are usually licensed by the brand owner.: 请确认它可以用于印刷品；品牌字体通常由品牌方持有授权
+'Could not find font {font} (searched: {paths})': 找不到字体 {font}（已查找：{paths}）
+'Could not read font {font}: {error}': 无法读取字体 {font}：{error}
+'Could not read image {image}: {error}': 无法读取图片 {image}：{error}
+'Create the style with `pacxio style set <job> {style} --font ... --size-pt ...`. Existing styles: {styles}': '`pacxio style
+  set <job> {style} --font ... --size-pt ...` 先建样式；现有：{styles}'
+Excluded panel {panel} is not part of {part}: 避让面 {panel} 不属于部件 {part}
+Excluded panel {panel} is outside coverage.panels: 避让面 {panel} 不在 coverage.panels 中
+Explicit exclusions require at least one exclusions area. Use full_sheet for full coverage.: 明确避让需要至少一个 exclusions 区域；整张覆盖用
+  full_sheet
+Finish {id} requires either a source graphic or a text placement: 工艺 {id} 要给图形文件 source 或文字放置 text，二选一
+'Finish {id}: --process digital applies only to spot_uv': 工艺 {id}：数码（--process digital）只用于局部 UV（spot_uv）
+'Font file not found: {path}': 找不到字体文件：{path}
+Font file {file} already exists: '{file} 已存在'
+Font name {name} conflicts with an installed font ({file}): 字体名 {name} 与已有字体重名（{file}）
+Font {font} contains no licence information: 字体 {font} 没有附带授权信息
+Font {font} has the “{embedding}” embedding flag and was added with your confirmation: 字体 {font} 的嵌入许可位为「{embedding}」，已按你的确认收入
+Font {font} has the “{embedding}” flag, which limits embedding to preview and print or to document editing: 字体 {font} 的嵌入许可位为「{embedding}」（只允许预览打印
+  / 编辑文档时嵌入）
+Font {font} lacks basic Latin letters: 字体 {font} 缺少基本拉丁字母
+Font {font} lacks common Chinese glyphs: 字体 {font} 没有常用中文字形
+'For Chinese copy, add Source Han Sans as a fallback in --font: {font},SourceHanSansSC-Regular': 中文文案请在 --font 里加思源黑体兜底：{font},SourceHanSansSC-Regular
+Generate an image in Codex first, set CODEX_HOME, or supply the image path: 先让 Codex 内置出图；或设置 CODEX_HOME；或直接给出图片路径
+? If the port is busy, choose another with --port. Check studio/server.log or run `pacxio studio serve <job>` in the foreground
+  for details.
+: 端口被占用就换一个（--port）；其它情况看 studio/server.log，或用 `pacxio studio serve <job>` 在前台跑、直接看报错
+'Image not found: {path}': 找不到图片：{path}
+'Invalid hexadecimal colour {value!r}. Use #RRGGBB.': '不是十六进制颜色：{value!r}（应为 #RRGGBB）'
+Item ID {id} is duplicated: 条目 id 重复：{id}
+'Item IDs may contain letters, numbers, underscores, and hyphens, up to 40 characters: {id!r}': 条目 id 只能用字母、数字、下划线、连字符（≤40
+  个字符）：{id!r}
+Item {id} requires text, an asset, or a pending note: 条目 {id} 要有原文（text）、图形素材（asset）或待定说明（pending）之一
+No image found in {folder}: 在 {folder} 里没有找到图片
+Place graphic items with `art add --kind image / vector --content`: 图形条目用 `art add --kind image / vector --content` 放置
+Placement {id} contains a reference to missing item {{{{{item}}}}}: 放置 {id} 的文字里引用了清单里没有的条目 {{{{{item}}}}}
+Placement {id} contains a text reference to graphic item {item}, which has no text: 放置 {id} 的文字里引用的条目 {item} 是图形素材，没有文字
+Placement {id} is {width:.1f} mm wide, exceeding the body circumference of {circumference:.1f} mm: 放置 {id} 的宽度 {width:.1f}mm
+  超过盒身一圈 {circumference:.1f}mm
+Placement {id} references content item {item}, which is missing from the list: 放置 {id} 引用的信息条目 {item} 不在信息清单里
+Placement {id} references item {item}, which has no graphic. The placement also has no --source.: 放置 {id} 引用的条目 {item} 没有图形素材，放置自己也没给
+  --source
+Placement {id} references line {line} of item {item}, which has only {total} lines: 放置 {id} 引用了条目 {item} 的第 {line} 行，但它只有
+  {total} 行
+Placement {id} refers to missing panel {panel}: 放置 {id} 的面 {panel} 不存在
+Placement {id} refers to missing text style {style}: 放置 {id} 用了不存在的文字样式 {style}
+'Profile cf2.linetypes is missing line types: {types}': 配置档 cf2.linetypes 缺少线型：{types}
+Profile dxf.layers is missing attachment for attachment-position marks: 配置档 dxf.layers 缺少 attachment（配件的贴标位置）
+Profile dxf.layers is missing glue_area for the auto-lock bottom glue annotation: 配置档 dxf.layers 缺少 glue_area（自动锁底的糊胶区标注）
+'Profile dxf.layers is missing line types: {types}': 配置档 dxf.layers 缺少线型：{types}
+Profile spot_names is missing glue_area for the auto-lock bottom glue annotation: 配置档 spot_names 缺少 glue_area（自动锁底的糊胶区标注）
+'Profile spot_names is missing line types: {types}': 配置档 spot_names 缺少线型：{types}
+Run `pacxio content list <job>` to check item IDs, or add the item with `content add`: 用 `pacxio content list <job>` 查看条目
+  id，或先 `content add` 补上这条信息
+Run `pacxio content list <job>` to see item IDs or add the item with `content add`: 用 `pacxio content list <job>` 查看条目 id，或先
+  `content add` 补上
+? Run `pacxio notes list <job> --open` before each round of work, then reply with `notes reply`. Leave confirmations and closing
+  notes to the user. Stop the service with `pacxio studio stop <job>`.
+: 每轮先 `pacxio notes list <job> --open` 看用户的批注，改完 `notes reply`；不代用户确认、不关用户的批注；关掉服务：`pacxio studio stop <job>`
+Run `visual prepare <job> assets/{name}.png --role {role} --chroma-key` next: 下一步运行 `visual prepare <job> assets/{name}.png
+  --role {role} --chroma-key`
+'SVG is available for logo or icon assets. Current role: {role}.': SVG 只能用作 logo / icon，当前 role={role}
+Set box width to at most {maximum:.1f} mm. A width of exactly {full_width:.1f} mm wraps once around the body.: box 宽度不超过 {maximum:.1f}mm（正好
+  {full_width:.1f}mm 就是绕盒身一整圈）
+Stop it manually with kill {pid}: 手动结束进程：kill {pid}
+Supply a PNG or JPEG for hero, pattern, or texture: hero / pattern / texture 请提供位图（PNG / JPEG）
+Supply a font name such as SourceHanSansSC-Bold: 给出字体名，如 SourceHanSansSC-Bold
+Supply a static font file for the desired weight, such as Regular or Bold: 请提供某个字重的静态字体文件（Regular / Bold 等）
+Text in item {id} references {target}: 条目 {id} 的原文里引用了{target}
+Text placement {id} references item {item}, which contains artwork without text: 文字放置 {id} 引用的条目 {item} 是图形素材，没有文字
+? The Workbench lets the user review and annotate the job. Only the user can confirm wording, drafts, concept direction, flats,
+  and the dieline proof.
+: 工作台给用户看、写批注；确认（措辞、初稿、选概念图、这组平面图、刀版确认图）只能由用户本人做
+'The Workbench service could not start: ': 工作台服务没能起来：
+The body panels in style {style} do not form a continuous horizontal strip. space=body is unavailable.: 盒型 {style} 的盒身面不是一条水平相接的长条，不支持
+  space=body
+? The font licence determines whether outlining for print is allowed. Confirm with the rights holder before adding it with
+  --accept-license-risk. The check report records that choice.
+: 转曲印刷是否被允许取决于该字体的许可证，请先向字体权利人确认；确认后用 --accept-license-risk 收入（会在检查报告里留下记录）
+The font's embedding flag is “{embedding}” (fsType={flag}), which restricts embedding or distributing its outlines: 字体的嵌入许可位标为「{embedding}」（fsType={flag}）：字体作者不允许嵌入或分发其轮廓
+'The image provider returned an invalid image: {error}': 出图服务返回的不是有效图片：{error}
+The prompt requests artwork without text. The model may still draw text.: 已在提示词里强制要求无文字，但引擎无法保证模型照做
+The text for item {id} is empty: 条目 {id} 的原文是空的
+Try again later: 稍后重试
+Unknown asset role {role}: 未知素材角色 {role}
+'Unknown category {category!r}. Available categories: {available}.': 未知类别 {category!r}，可用：{available}
+'Unknown content categories: {categories}': 未知的信息类别：{categories}
+Unknown image provider {provider}: 未知出图来源 {provider}
+Unsupported font format {format}: 不支持的字体格式 {format}
+Use OTF or TTF. TTC, WOFF, and WOFF2 are also supported.: 用 OTF / TTF（也支持 TTC、WOFF、WOFF2）
+Use PNG or JPEG: 换用 PNG 或 JPEG
+Use a unique ID for each area: 为各区域使用唯一 id
+Use align=top or bottom for vertical text, or left, center, or right for horizontal text: align=top / bottom 只用于竖排（vertical）；横排用
+  left / center / right
+Use either color for one overall colour or colors for per-colour mapping: color（整体单色）与 colors（逐色对应）只能二选一
+Use label or label_en to describe a placeholder, image, or vector: label / label_en 只用于 placeholder / image / vector（写明这是什么）
+Use space=blank for dieline coordinates, or place the artwork separately on each panel: 改用 space=blank（刀版坐标）放置，或按面分别放置
+Use {{{{{first}:1}}}}–{{{{{last}:{lines}}}}}, or use {{{{{item}}}}} for the entire item: 改成 {{{{{first}:1}}}}–{{{{{last}:{lines}}}}}，或用
+  {{{{{item}}}}} 引用整条
+Variable fonts are not supported: 可变字体（variable font）暂不支持
+When a part is specified, all panels must belong to it and use part.panel names: 指定部件时，panels 必须都属于该部件（部件.面）
+With space={space}, the box is not tied to a panel. Omit panel.: space={space} 时 box 不属于某个面，不要给 panel
+Workbench process {pid} did not exit: 工作台进程 {pid} 没有退出
+clip applies only to kind=image or kind=placeholder: clip（裁切形状）只用于 kind=image / placeholder
+colors applies only to kind=vector: colors 只用于 kind=vector
+font is empty: font 为空
+hanging_indent applies only to kind=text: hanging_indent（悬挂缩进）只用于 kind=text
+hanging_indent is unavailable for vertical text: 竖排第一版不支持 hanging_indent（悬挂缩进）
+hanging_indent requires left-aligned text (align=left): hanging_indent（悬挂缩进）只用于左对齐的文字（align=left）
+hanging_indent {indent:g} mm must be smaller than the text box width {width:g} mm: hanging_indent {indent:g}mm 不小于文字框宽 {width:g}mm
+'kind={kind} requires: {fields}': kind={kind} 必须提供：{fields}
+scope=panels requires panels. Omit panels for outside_all.: scope=panels 时必须给 panels；outside_all 不给 panels
+skew_x and skew_y apply only to horizontal kind=text: skew_x / skew_y（倾斜）只用于横排的 kind=text
+space={space} applies to image, vector, and placeholder. It is unavailable for {kind}.: space={space} 只用于 image / vector /
+  placeholder（{kind} 不支持）
+style applies only to kind=text: style（文字样式）只用于 kind=text
+tracking and line_height apply only to kind=text: tracking（字距）/ line_height（行距）只用于 kind=text
+vertical applies only to kind=text: vertical（竖排）只用于 kind=text
+'{file} is a concept image': '{file} 是概念图'
+'{file} is identical to concept image {concept}': '{file} 和概念图 {concept} 是同一张图'
+'{file} was cropped from an unfolded concept ({source}) and can only be used as a tracing reference': '{file} 是从展开平面图裁出来的（{source}），只能拿去描摹'

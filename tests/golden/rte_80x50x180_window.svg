@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="296.92mm" height="333.44mm" viewBox="-10 -10 296.92 333.44">
+<g stroke-width="0.25" stroke-linejoin="round">
+<path id="crease_glue_back" data-type="crease" d="M15 246.96 L15 66.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_side_a" data-type="crease" d="M95.48 246.72 L95.48 66.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_front" data-type="crease" d="M145.96 246.72 L145.96 66.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_side_b" data-type="crease" d="M226.44 246.72 L226.44 66.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_back_top_lid" data-type="crease" d="M15 66.48 L95.48 66.48" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_front_btm_lid" data-type="crease" d="M145.96 246.96 L226.44 246.96" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_top_lid_tuck" data-type="crease" d="M23.24 16 L87.24 16" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_btm_lid_tuck" data-type="crease" d="M154.2 297.44 L218.2 297.44" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_dust_ta" data-type="crease" d="M96.48 66.72 L144.96 66.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_a_dust_ba" data-type="crease" d="M96.48 246.72 L144.96 246.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_dust_tb" data-type="crease" d="M227.44 66.72 L275.92 66.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="crease_side_b_dust_bb" data-type="crease" d="M227.44 246.72 L275.92 246.72" fill="none" stroke="#00a000" stroke-dasharray="4 2"/>
+<path id="cut_outline" data-type="cut" d="M1.3675 242.4158 L15 246.96 L95.48 246.96 L95.48 246.72 L96.03 246.72 A0.45 0.45 0 0 1 96.48 247.17 L96.48 249.3867 L99.1054 252.012 A1 1 0 0 1 99.3737 252.4989 L104.1922 273.8427 A6.2546 6.2546 0 0 0 110.2933 278.72 L139.0819 278.72 A2 2 0 0 0 141.0779 276.8456 L142.8163 249.2171 A1 1 0 0 1 143.1072 248.5728 L144.7647 246.9153 A0.6667 0.6667 0 0 1 145.2361 246.72 L145.96 246.72 L145.96 246.96 L145.96 297.44 L146.2 297.44 L146.2 308.44 A5 5 0 0 0 151.2 313.44 L221.2 313.44 A5 5 0 0 0 226.2 308.44 L226.2 297.44 L226.44 297.44 L226.44 246.96 L226.44 246.72 L227.1639 246.72 A0.6667 0.6667 0 0 1 227.6353 246.9153 L229.2928 248.5728 A1 1 0 0 1 229.5837 249.2171 L231.3221 276.8456 A2 2 0 0 0 233.3181 278.72 L262.1067 278.72 A6.2546 6.2546 0 0 0 268.2078 273.8427 L273.0263 252.4989 A1 1 0 0 1 273.2946 252.012 L275.92 249.3867 L275.92 247.17 A0.45 0.45 0 0 1 276.37 246.72 L276.92 246.72 L276.92 66.72 L276.3342 66.72 A1 1 0 0 1 275.6271 66.4271 L274.0672 64.8672 A1 1 0 0 1 273.7763 64.2229 L272.0379 36.5944 A2 2 0 0 0 270.0419 34.72 L241.2533 34.72 A6.2546 6.2546 0 0 0 235.1522 39.5973 L230.3337 60.9411 A1 1 0 0 1 230.0654 61.428 L227.44 64.0533 L227.44 66.27 A0.45 0.45 0 0 1 226.99 66.72 L226.44 66.72 L226.44 66.48 L145.96 66.48 L145.96 66.72 L145.41 66.72 A0.45 0.45 0 0 1 144.96 66.27 L144.96 64.0533 L142.3346 61.428 A1 1 0 0 1 142.0663 60.9411 L137.2478 39.5973 A6.2546 6.2546 0 0 0 131.1467 34.72 L102.3581 34.72 A2 2 0 0 0 100.3621 36.5944 L98.6237 64.2229 A1 1 0 0 1 98.3328 64.8672 L96.6753 66.5247 A0.6667 0.6667 0 0 1 96.2039 66.72 L95.48 66.72 L95.48 66.48 L95.48 16 L95.24 16 L95.24 5 A5 5 0 0 0 90.24 0 L20.24 0 A5 5 0 0 0 15.24 5 L15.24 16 L15 16 L15 66.48 L1.3675 71.0242 A2 2 0 0 0 0 72.9215 L0 240.5185 A2 2 0 0 0 1.3675 242.4158" fill="none" stroke="#d40000"/>
+<path id="cut_btm_tuck_slit_l" data-type="cut" d="M146.2 297.92 L154.2 297.92 L154.2 297.44" fill="none" stroke="#d40000"/>
+<path id="cut_btm_tuck_slit_r" data-type="cut" d="M226.2 297.92 L218.2 297.92 L218.2 297.44" fill="none" stroke="#d40000"/>
+<path id="cut_top_tuck_slit_l" data-type="cut" d="M15.24 15.52 L23.24 15.52 L23.24 16" fill="none" stroke="#d40000"/>
+<path id="cut_top_tuck_slit_r" data-type="cut" d="M95.24 15.52 L87.24 15.52 L87.24 16" fill="none" stroke="#d40000"/>
+<path id="cut_window_w1" data-type="cut" d="M169.2 196.96 L203.2 196.96 A3 3 0 0 0 206.2 193.96 L206.2 99.96 A3 3 0 0 0 203.2 96.96 L169.2 96.96 A3 3 0 0 0 166.2 99.96 L166.2 193.96 A3 3 0 0 0 169.2 196.96" fill="none" stroke="#d40000"/>
+<path id="cut_window_w2" data-type="cut" d="M120.72 136.72 A10 10 0 0 0 130.72 126.72 A10 10 0 0 0 120.72 116.72 A10 10 0 0 0 110.72 126.72 A10 10 0 0 0 120.72 136.72" fill="none" stroke="#d40000"/>
+</g>
+<g font-family="sans-serif">
+<text x="7.5" y="156.72" font-size="4" text-anchor="middle" fill="#888">glue</text>
+<text x="55.24" y="156.72" font-size="4" text-anchor="middle" fill="#888">back</text>
+<text x="120.72" y="156.72" font-size="4" text-anchor="middle" fill="#888">side_a</text>
+<text x="186.2" y="156.72" font-size="4" text-anchor="middle" fill="#888">front</text>
+<text x="251.68" y="156.72" font-size="4" text-anchor="middle" fill="#888">side_b</text>
+<text x="55.24" y="41" font-size="4" text-anchor="middle" fill="#888">top_lid</text>
+<text x="186.2" y="272.44" font-size="4" text-anchor="middle" fill="#888">btm_lid</text>
+<text x="55.24" y="8" font-size="4" text-anchor="middle" fill="#888">top_tuck</text>
+<text x="186.2" y="305.44" font-size="4" text-anchor="middle" fill="#888">btm_tuck</text>
+<text x="120.8069" y="50.72" font-size="4" text-anchor="middle" fill="#888">dust_ta</text>
+<text x="251.6621" y="50.72" font-size="4" text-anchor="middle" fill="#888">dust_tb</text>
+<text x="120.6331" y="262.72" font-size="4" text-anchor="middle" fill="#888">dust_ba</text>
+<text x="251.7669" y="262.72" font-size="4" text-anchor="middle" fill="#888">dust_bb</text>
+</g>
+</svg>
