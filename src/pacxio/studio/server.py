@@ -49,6 +49,7 @@ KEEPALIVE_S = 15.0
 THUMB_WIDTHS = (480, 960, 1920)
 STATIC_DIR = Path(__file__).parent / "static"
 CONTENT_TYPES = {
+    ".gz": "application/octet-stream",
     ".png": "image/png",
     ".jpg": "image/jpeg",
     ".jpeg": "image/jpeg",
@@ -313,6 +314,11 @@ class Handler(BaseHTTPRequestHandler):
                     "application/json; charset=utf-8",
                     {"Cache-Control": "no-store"},
                 )
+            elif path == "/api/onboarding":
+                from pacxio.studio.onboarding import seen
+
+                self._send(HTTPStatus.OK, json.dumps({"ok": True, "seen": seen()}).encode(),
+                           "application/json; charset=utf-8", {"Cache-Control": "no-store"})
             elif path == "/api/events":
                 self._events()
             elif path == "/api/ui-zh":
@@ -347,6 +353,19 @@ class Handler(BaseHTTPRequestHandler):
             return
         if path == "/api/zoom":
             self._zoom(body)
+            return
+        if path == "/api/onboarding":
+            from pacxio.studio.onboarding import dismiss
+
+            if set(body) != {"seen"} or body["seen"] is not True:
+                self._error(HTTPStatus.BAD_REQUEST, "Expected seen: true")
+                return
+            try:
+                dismiss()
+            except OSError:
+                self._error(HTTPStatus.INTERNAL_SERVER_ERROR, "Could not save guide preference")
+                return
+            self._send(HTTPStatus.OK, b'{"ok":true}', "application/json; charset=utf-8")
             return
         try:
             result = self._note_action(path, body)
@@ -585,6 +604,8 @@ class Handler(BaseHTTPRequestHandler):
             return None
         if not inside.parts or _skipped(inside) or not target.is_file():
             return None
+        if target.suffix.lower() == ".gz" and not target.name.endswith(".pxa.gz"):
+            return None
         return target if target.suffix.lower() in CONTENT_TYPES else None
 
     def _file(self, rel: str, width: str | None, versioned: bool) -> None:
@@ -599,6 +620,18 @@ class Handler(BaseHTTPRequestHandler):
             w = int(width) if width.isdigit() else 0
             if w in THUMB_WIDTHS:
                 target = thumbnail(self.server.directory, target, w)
+        if target.name == "scene.json":
+            from pacxio.studio.display_assets import validated_scene
+
+            try:
+                scene = json.loads(target.read_bytes())
+                if isinstance(scene, dict) and "display" in scene:
+                    data = json.dumps(validated_scene(scene, target.parent), ensure_ascii=False).encode()
+                    self._send(HTTPStatus.OK, data, CONTENT_TYPES[".json"],
+                               {"Cache-Control": "no-store"})
+                    return
+            except (ValueError, OSError):
+                pass
         ctype = CONTENT_TYPES[target.suffix.lower()]
         size = target.stat().st_size
         self.send_response(HTTPStatus.OK)

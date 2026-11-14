@@ -20,7 +20,7 @@ from pacxio.model.dieline import Dieline
 from pacxio.model.job import Job
 
 runner = CliRunner()
-VIEWER = Path(__file__).parents[2] / "src/pacxio/studio/static/viewer3d.js"
+VIEWER = Path(__file__).parents[2] / "src/pacxio/studio/static/viewer3d-legacy.js"
 TOL = 1e-6
 CARTON = ("--L", "80", "--W", "50", "--H", "120")
 CASES = {

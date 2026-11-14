@@ -27,3 +27,7 @@ output/playwright/
 
 # 本机 MCP 登记（pacxio mcp install 写的，里面是本机 Python 路径）
 .mcp.json
+
+# Local renderer build dependencies and diagnostics
+node_modules/
+reports/

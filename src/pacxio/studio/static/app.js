@@ -2,6 +2,7 @@ import { apiUrl, localizePage, tr } from "./i18n.js";
 // pacxio 工作台 · S1 画布、实时刷新、侧栏；S2 批注；S3 确认按钮；S4 可转动 3D（）
 
 import { mountViewer } from "./viewer3d.js";
+import { initGuide } from "./guide.js";
 // 不引用任何外部资源；读 /api/state、/api/events、/files/，写批注走 /api/notes（带页面口令）。
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -201,6 +202,7 @@ window.addEventListener("keyup", (e) => {
   if (e.key === " ") spaceHeld = false;
 });
 window.addEventListener("keydown", (e) => {
+  if (document.querySelector("#studio-guide[open]")) return;
   if (e.key === "Escape") {
     cancelComposer();
     closeBubble();
@@ -396,7 +398,7 @@ function imageCard(card) {
   e.append(media);
   const cap = head(card);
   if (concept) cap.prepend(el("span", "tag-concept", concept)); // 标在底栏，不遮图
-  const open = el("a", "open-link", tr("Original ↗"));
+  const open = el("a", "btn open-link", tr("Original ↗"));
   open.href = fileUrl(card.file, card.mtime);
   open.target = "_blank";
   open.rel = "noopener";
@@ -439,7 +441,7 @@ function tableCard(card) {
       if (!row.required) txt.append(el("span", "opt-tag", tr("Optional")));
       if (row.pending) txt.append(el("span", "pend", tr("Pending: {1}", row.pending)));
       const act = el("div", "row-act");
-      const add = el("button", "row-add", tr("Notes"));
+      const add = el("button", "btn row-add", tr("Notes"));
       add.title = tr("Add a note about this item, its wording, or its placement");
       add.addEventListener("click", (ev) => {
         ev.stopPropagation();
@@ -561,6 +563,15 @@ function viewerCard(card) {
       v.nextBackground();
     });
     bar.append(reset, bg);
+    v.ready.then((kind) => {
+      if (kind !== "enhanced" || !e.isConnected) return;
+      const standard = el("button", "vbtn", tr("Standard preview"));
+      standard.title = tr("Switch to the standard 3D preview for this view");
+      standard.addEventListener("click", (ev) => {
+        ev.stopPropagation(); v.useLegacy(); standard.remove();
+      });
+      bar.append(standard);
+    });
     v.buttons = btns;
   }
   if (v && card.data.version >= 2) {
@@ -627,19 +638,27 @@ function viewerCard(card) {
     sync();
     controls.append(lightRow);
     if (card.data.regions?.length) {
-      // 点一下在盒子上用蓝色标出这项工艺的范围，再点取消
+      // Selection and colour overlay are separate; the material is shown by default.
       const regionRow = el("div", "mc-row");
       regionRow.append(el("span", "mc-title", tr("Finishes")));
+      let selectedRegion = "";
+      const showLabel = el("label", "mc-region-toggle");
+      const showAreas = el("input"); showAreas.type = "checkbox";
+      showAreas.setAttribute("aria-label", tr("Show finish areas"));
+      showAreas.addEventListener("change", () => v.selectRegion(showAreas.checked ? selectedRegion : ""));
+      showLabel.append(showAreas, document.createTextNode(tr("Show finish areas")));
+      regionRow.append(showLabel);
       const counts = {};
       for (const r of card.data.regions) counts[r.label] = (counts[r.label] || 0) + 1;
       const chips = [];
       for (const r of card.data.regions) {
         const b = el("button", "vbtn", `${r.label}${counts[r.label] > 1 ? `（${r.id}）` : ""}`);
-        b.title = tr("{1}Click to highlight this area. Click again to clear it.", r.detail ? r.detail + tr("; ") : "");
+        b.title = tr("{1}Select a finish. Enable Show finish areas to highlight it.", r.detail ? r.detail + tr("; ") : "");
         b.addEventListener("click", () => {
           const on = !b.classList.contains("on");
           for (const x of chips) x.classList.toggle("on", on && x === b);
-          v.selectRegion(on ? r.id : "");
+          selectedRegion = on ? r.id : "";
+          v.selectRegion(showAreas.checked ? selectedRegion : "");
         });
         chips.push(b);
       }
@@ -652,7 +671,7 @@ function viewerCard(card) {
   }
   host.append(bar);
   const caption=head(card);
-  const still=el("a","open-link",tr("Static overview ↗"));
+  const still=el("a","btn open-link",tr("Static overview ↗"));
   still.title=tr("Open the static overview of all panels");
   still.href=fileUrl(card.file.replace(/[^/]*$/,"00_mockup_sheet.png"),card.mtime);still.target="_blank";still.rel="noopener";caption.append(still);
   e.append(caption);
@@ -2755,6 +2774,7 @@ function connect() {
 }
 
 localizePage();
+initGuide();
 apply();
 load().catch(() => setLive(false));
 connect();

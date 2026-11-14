@@ -8,6 +8,7 @@ import json
 import math
 import os
 import re
+import sys
 import tempfile
 import threading
 import time
@@ -117,7 +118,7 @@ def _lock(directory: Path) -> Iterator[bool]:
     folder = _folder(directory)
     folder.mkdir(parents=True, exist_ok=True)
     with (folder / "agent.lock").open("a+b") as handle:
-        if os.name == "nt":
+        if sys.platform == "win32":
             import msvcrt
 
             if os.fstat(handle.fileno()).st_size == 0:

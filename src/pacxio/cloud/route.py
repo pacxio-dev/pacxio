@@ -187,6 +187,14 @@ def forward(argv: list[str], cwd: Path) -> Result:
     data = _local_paths(data, job, prep.inbox)
     out = Result.model_validate(data)
     out.exit_code = int(run.get("exit_code") or 0)
+    if cmd == "mockup" and out.ok and not changed_locally:
+        # Build only from the preview bytes actually returned by the server.
+        # No renderer bundle, private artwork, or server update is required.
+        from pacxio.mockup.display.service import prepare_job_display
+
+        status, assets = prepare_job_display(job)
+        out.data["display_renderer"] = status
+        out.artifacts.extend(str(p) for p in assets)
     if changed_locally:
         out.warnings.append(Issue(id="CLOUD_CONFLICT", message=t("job.json changed on this machine while the cloud run was going; it was not overwritten with the cloud version"),
                                   fix=t("Rerun this command so both sides match")))  # fmt: skip

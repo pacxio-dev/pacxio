@@ -486,7 +486,13 @@ def _make_mockup(directory: Path, require: list[str] | None = None) -> Result:
 
         material_scenes, maps, regions = material_states(job, parts)
         files += write_scene(out, material_scenes, fingerprint, maps, regions)
+    # The ordinary scene remains usable if enhanced preparation is unsupported or fails.
+    from pacxio.mockup.display.service import prepare_display
+
+    display_status, display_files = prepare_display(out / "scene.json", job.style)
+    files += display_files
     manifest = {
+        "display_renderer": display_status,
         "job_id": job.job_id,
         "fingerprint": fingerprint,
         "style_version": style_version(job),
@@ -513,6 +519,7 @@ def _make_mockup(directory: Path, require: list[str] | None = None) -> Result:
 
     r.artifacts = [str(f) for f in files]
     r.data = {
+        "display_renderer": display_status,
         "sheet": str(out / SHEET_NAME),
         "fingerprint": fingerprint,
         "tags": content.tags,

@@ -1,0 +1,11 @@
+import {build} from 'esbuild';
+import fs from 'node:fs/promises';
+const root=new URL('../',import.meta.url);
+const result=await build({entryPoints:[new URL('display-viewer.js',import.meta.url).pathname],bundle:true,format:'esm',minify:true,metafile:true,outfile:new URL('src/pacxio/studio/static/viewer3d-display.js',root).pathname});
+if(Object.values(result.outputs||result.metafile.outputs).some(output=>output.imports.some(item=>item.external)))throw Error('External renderer dependency');
+await fs.mkdir(new URL('reports/',root),{recursive:true});
+await fs.writeFile(new URL('reports/renderer-build.json',root),JSON.stringify(result.metafile,null,2));
+const threeEntry=import.meta.resolve('three');
+const license=await fs.readFile(new URL('../LICENSE',threeEntry));
+await fs.mkdir(new URL('src/pacxio/studio/static/renderer-assets/',root),{recursive:true});
+await fs.writeFile(new URL('src/pacxio/studio/static/renderer-assets/LICENSE.three',root),license);

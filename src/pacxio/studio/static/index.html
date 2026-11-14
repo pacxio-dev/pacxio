@@ -6,6 +6,7 @@
 <meta name="studio-token" content="{{TOKEN}}">
 <meta name="studio-version" content="{{VERSION}}">
 <title data-l10n="text">pacxio Workbench</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 256 256%22%3E%3Cpath fill=%22%232337FF%22 fill-rule=%22evenodd%22 d=%22M128 86.99 L169.01 128 L128 169.01 L86.99 128ZM138.61 76.38 L179.62 117.39 L240 57.01 L198.99 16ZM179.62 138.61 L138.61 179.62 L198.99 240 L240 198.99ZM117.39 179.62 L76.38 138.61 L16 198.99 L57.01 240ZM76.38 117.39 L117.39 76.38 L57.01 16 L16 57.01Z%22/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -16,7 +17,7 @@
   </span>
   <span class="name" id="job-name" data-l10n="text">Workbench</span>
   <span class="meta" id="job-meta"></span>
-  <button class="btn" id="edit-structure" hidden title="Change dimensions, material, or structural details and preview the dieline and folded box" data-l10n="title text">Edit structure</button>
+  <button class="btn" id="edit-structure" hidden title="Change dimensions, material, or structural details and preview the dieline and folded box" data-l10n="title text">Edit dimensions</button>
   <span class="grow"></span>
   <span class="live" id="live" data-l10n="text">Connecting…</span>
   <button class="lang" id="language-toggle" type="button" hidden></button>
@@ -67,9 +68,9 @@
 <div id="bubble" class="popup" hidden></div>
 <div id="toast" hidden></div>
 <div id="confirm" hidden role="dialog" aria-modal="true"><div class="dialog"></div></div>
-<div id="struct-editor" hidden role="dialog" aria-modal="true" aria-label="Edit structure" data-l10n="aria-label">
+<div id="struct-editor" hidden role="dialog" aria-modal="true" aria-label="Edit dimensions" data-l10n="aria-label">
   <header class="se-head">
-    <span class="se-title" data-l10n="text">Edit structure</span>
+    <span class="se-title" data-l10n="text">Edit dimensions</span>
     <span class="se-maturity" id="se-maturity"></span>
     <span class="grow"></span>
     <button class="btn" id="se-close" data-l10n="text">Close</button>
@@ -92,9 +93,9 @@
           <svg id="se-dims" aria-hidden="true"></svg>
         </div>
         <div class="se-zoom">
-          <button class="btn" id="se-zoom-in" title="Zoom in" data-l10n="title">＋</button>
-          <button class="btn" id="se-zoom-out" title="Zoom out" data-l10n="title">−</button>
-          <button class="btn" id="se-zoom-fit" title="Fit the entire dieline" data-l10n="title text">Fit</button>
+          <button class="control-btn" id="se-zoom-in" title="Zoom in" data-l10n="title">＋</button>
+          <button class="control-btn" id="se-zoom-out" title="Zoom out" data-l10n="title">−</button>
+          <button class="control-btn" id="se-zoom-fit" title="Fit the entire dieline" data-l10n="title text">Fit</button>
           <label class="se-dimtoggle"><input type="checkbox" id="se-show-dims" checked> <span data-l10n="text">Dimensions</span></label>
         </div>
       </div>

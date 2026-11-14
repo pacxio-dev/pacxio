@@ -48,7 +48,7 @@ def test_frontmatter_has_only_name_and_description_and_meets_both_agents_rules()
         assert word in desc.split("Not for")[0] and word not in desc.split("Not for")[1], word
 
 
-def test_referenced_files_exist_and_symlink_resolves() -> None:
+def test_referenced_files_exist_and_font_script_matches() -> None:
     _, body = split_frontmatter()
     refs = set(re.findall(r"`((?:references|scripts)/[\w./-]+)`", body))
     assert {"references/box-styles.md", "references/visual-prompts.md", "references/factory-profile.md",
@@ -60,7 +60,10 @@ def test_referenced_files_exist_and_symlink_resolves() -> None:
     on_disk = {f"references/{p.name}" for p in (SKILL / "references").glob("*.md")}
     assert on_disk <= refs
     link = SKILL / "scripts" / "fetch_fonts.py"
-    assert link.is_symlink() and link.resolve() == (ROOT / "tools" / "fetch_fonts.py").resolve()
+    assert link.is_file()
+    assert link.read_bytes() == (ROOT / "tools" / "fetch_fonts.py").read_bytes()
+    if link.is_symlink():
+        assert link.resolve() == (ROOT / "tools" / "fetch_fonts.py").resolve()
     assert body.count("\n") < 500  # 正文保持精简（详细内容放 references，按需加载）
 
 
