@@ -35,6 +35,7 @@ def make_font(
     license_description: str | None = "Test license: free for print use",
     license_url: str | None = "https://example.com/license",
     copyright: str | None = "Copyright (c) Test Brand",
+    version: str | None = None,
     variable: bool = False,
     extra: str = "",
 ) -> Path:
@@ -60,6 +61,8 @@ def make_font(
         strings["licenseInfoURL"] = license_url
     if copyright:
         strings["copyright"] = copyright
+    if version:
+        strings["version"] = version
     fb.setupNameTable(strings)
     fb.setupOS2(
         fsType=fs_type, sTypoAscender=800, sTypoDescender=-200, usWinAscent=800, usWinDescent=200

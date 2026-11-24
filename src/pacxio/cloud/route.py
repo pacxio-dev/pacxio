@@ -139,6 +139,120 @@ def prepare(argv: list[str], cwd: Path) -> _Prepared:
     return out
 
 
+# ---------------- 瞬时字体子集与单字体授权门禁（R2-5）----------------
+
+
+def prepare_ephemeral_fonts(
+    job_dir: Path,
+) -> tuple[list[tuple[str, str, bytes]], list[dict[str, Any]], list[Issue]]:
+    """检查 job 用到的非开源字体授权并切出最小字形子集（只用于单次云端运行，用后即删）。
+
+    返回 `(inbox_blobs, ephemeral_specs, errors)`：
+    - `inbox_blobs`: `[(sha256, filename, bytes), ...]`，发往本次请求的 `inbox/`；
+    - `ephemeral_specs`: 附在 `POST /v1/jobs/{id}/runs` 请求体里的 `ephemeral_fonts` 契约；
+    - `errors`: 未授权或被 `no_subsetting` 拦截时的错误清单（非空则本地直接拦截，不发任何请求）。
+    """
+    from pydantic import ValidationError
+
+    from pacxio.fonts import get_font_consent, referenced_fonts, resolve_non_open_font
+    from pacxio.fontsubset import (
+        SUBSET_SUFFIX,
+        FontSubsetError,
+        SubsetMeta,
+        job_font_chars,
+        subset_font_bytes,
+    )
+    from pacxio.model.job import Job
+
+    try:
+        job = Job.load(job_dir)
+    except (OSError, ValueError, ValidationError):
+        return [], [], []
+
+    char_map = job_font_chars(job)
+    blobs: list[tuple[str, str, bytes]] = []
+    specs: list[dict[str, Any]] = []
+    errors: list[Issue] = []
+
+    for fname in sorted(referenced_fonts(job)):
+        info = resolve_non_open_font(fname, job_dir)
+        if info is None:
+            continue
+        consent = get_font_consent(info.source_sha256)
+        if consent is None:
+            errors.append(
+                Issue(
+                    id="FONT_LICENSE",
+                    message=t(
+                        "Font {font} ({origin}) requires your one-time upload authorization before cloud typesetting",
+                        font=info.name,
+                        origin=info.origin,
+                    ),
+                    fix=t(
+                        "Confirm that your license permits uploading glyph subsets for cloud outlining with `pacxio font authorize <job> {font} --by <your-name>`",
+                        font=info.name,
+                    ),
+                )
+            )
+            continue
+        chars = char_map.get(fname, {" "})
+        try:
+            font_bytes, ext, is_subset, glyph_count = subset_font_bytes(
+                info.path,
+                chars,
+                font_name=info.name,
+                face_index=info.face_index,
+                allow_full_upload=consent.allow_full_upload,
+            )
+        except FontSubsetError as e:
+            errors.append(e.issue)
+            continue
+        sub_sha = sha256_bytes(font_bytes)
+        sub_filename = f"{info.name}{ext}"
+        meta = SubsetMeta(
+            name=info.name,
+            subset=is_subset,
+            subset_sha256=sub_sha,
+            source_sha256=info.source_sha256,
+            source_version=info.version,
+            origin=info.origin,
+            glyph_count=glyph_count,
+            char_count=len(chars),
+            ephemeral=True,
+            delete_after_run=True,
+            consent_confirmed_at=consent.confirmed_at,
+            consent_confirmed_by=consent.confirmed_by,
+        )
+        meta_bytes = (meta.model_dump_json(indent=2) + "\n").encode("utf-8")
+        meta_sha = sha256_bytes(meta_bytes)
+        meta_filename = f"{info.name}{SUBSET_SUFFIX}"
+        blobs.append((sub_sha, sub_filename, font_bytes))
+        blobs.append((meta_sha, meta_filename, meta_bytes))
+        specs.append(
+            {
+                "name": info.name,
+                "filename": sub_filename,
+                "inbox": f"{sub_sha}/{sub_filename}",
+                "sha256": sub_sha,
+                "meta_filename": meta_filename,
+                "meta_inbox": f"{meta_sha}/{meta_filename}",
+                "source_sha256": info.source_sha256,
+                "source_version": info.version,
+                "origin": info.origin,
+                "subset": is_subset,
+                "glyph_count": glyph_count,
+                "char_count": len(chars),
+                "ephemeral": True,
+                "delete_after_run": True,
+                "consent": {
+                    "confirmed_by": consent.confirmed_by,
+                    "confirmed_at": consent.confirmed_at,
+                },
+            }
+        )
+    return blobs, specs, errors
+
+
 # ---------------- 转发 ----------------
 
 
@@ -154,6 +268,11 @@ def forward(argv: list[str], cwd: Path) -> Result:
                               fix=t("Pass the job folder as an argument, e.g. `pacxio render jobs/<name>`")), 2)  # fmt: skip
     job = prep.job
     res.job = str(job)
+    font_blobs, ephemeral_fonts, font_errors = prepare_ephemeral_fonts(job)
+    if font_errors:
+        res.errors += font_errors
+        res.ok, res.exit_code = False, 2
+        return res
     try:
         login = auth.ensure()
     except CloudError as e:
@@ -164,8 +283,14 @@ def forward(argv: list[str], cwd: Path) -> Result:
         for key, path in prep.inbox.items():
             sha, _, name = key.partition("/")
             client.put_inbox(jid, sha, name, path.read_bytes())
+        for sha, name, payload in font_blobs:
+            client.put_inbox(jid, sha, name, payload)
         before = _sha(job / "job.json")
-        rid = client.start_run(jid, prep.argv)
+        rid = (
+            client.start_run(jid, prep.argv, ephemeral_fonts=ephemeral_fonts)
+            if ephemeral_fonts
+            else client.start_run(jid, prep.argv)
+        )
         run = _wait(client, rid)
         if run["status"] != "done":
             return res.fail(Issue(id="CLOUD_RUN", message=t("The cloud run did not finish: {why}", why=run.get("error") or run["status"]),

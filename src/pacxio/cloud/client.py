@@ -82,12 +82,17 @@ class Client:
             "PUT", f"/v1/jobs/{job}/inbox/{sha}/{urllib.parse.quote(name, safe='')}", data=data
         )
 
-    def start_run(self, job: str, argv: list[Any]) -> str:
-        return str(
-            self._json("POST", f"/v1/jobs/{job}/runs", body={"argv": argv, "lang": lang_now()})[
-                "run"
-            ]
-        )
+    def start_run(
+        self,
+        job: str,
+        argv: list[Any],
+        *,
+        ephemeral_fonts: list[dict[str, Any]] | None = None,
+    ) -> str:
+        body: dict[str, Any] = {"argv": argv, "lang": lang_now()}
+        if ephemeral_fonts:
+            body["ephemeral_fonts"] = ephemeral_fonts
+        return str(self._json("POST", f"/v1/jobs/{job}/runs", body=body)["run"])
 
     def get_run(self, run: str) -> dict[str, Any]:
         return dict(self._json("GET", f"/v1/runs/{run}"))
@@ -116,7 +121,7 @@ class Client:
         self._req("POST", "/v1/logout", body={})
 
     def crop(self, job: str, rel: str, box: tuple[float, float, float, float]) -> bytes:
-        """确认图原分辨率的一块局部（PNG，带水印）；box 是 0–1 相对位置，原点在左上角。"""
+        """确认图原分辨率的一块局部（PNG）；box 是 0–1 相对位置，原点在左上角。"""
         return self._req("POST", f"/v1/jobs/{job}/crop", body={"path": rel, "box": list(box)})
 
 

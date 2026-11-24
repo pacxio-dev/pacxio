@@ -1006,7 +1006,7 @@ def next_cmd(
 @app.command(
     "zoom",
     help=t(
-        "Read small text on the confirmation image: crop a region at full resolution (200 DPI) into studio/zoom/.\n\nIn the open-source version the confirmation image comes back as a 100 DPI watermarked preview; crops are requested from the cloud (watermarked, up to 24 per image)."
+        "Read small text on the confirmation image: crop a region at full resolution (200 DPI) into studio/zoom/.\n\nIn the open-source version the confirmation image comes back as a 100 DPI preview; crops are requested from the cloud (up to 24 per image)."
     ),
 )
 def zoom_cmd(
@@ -1028,7 +1028,7 @@ def zoom_cmd(
 ) -> None:
     """看清确认图上的小字：取一块原分辨率（200 DPI）的局部，存到 studio/zoom/。
 
-    开源版里确认图回传的是 100 DPI 加水印的预览，局部向云端要（带水印，同一张最多 24 次）。"""
+    开源版里确认图回传的是 100 DPI 的预览，局部向云端要（同一张最多 24 次）。"""
     from pacxio.zoom import zoom
 
     _emit(zoom(directory, panel=panel, box=_floats(box, 4, "--box"), image=image), json_out)
@@ -1513,6 +1513,13 @@ def art_set(
     skew_y: Annotated[
         float | None, typer.Option("--skew-y", help=SKEW_Y_HELP + t("; remove with --clear skew_y"))
     ] = None,
+    locked: Annotated[
+        bool | None,
+        typer.Option(
+            "--lock/--unlock",
+            help=t("Lock or unlock this placement so automatic restore iteration leaves it untouched"),
+        ),
+    ] = None,
     clear: Annotated[
         list[str] | None,
         typer.Option(
@@ -1524,6 +1531,9 @@ def art_set(
     """修改一个放置（位置、样式、颜色、形状……）：id 与叠放次序不变；校验不过时不改动。"""
     c = _floats(color, 4, "--color")
     b = _floats(box, 4, "--box")
+    clear_list = list(clear or [])
+    if locked is False and "locked" not in clear_list:
+        clear_list.append("locked")
     fields = {
         "panel": panel, "box": dict(zip("xywh", b, strict=True)) if b else None, "space": space,
         "style": style, "text": text.replace("\\n", "\n") if text else None, "content": content,
@@ -1531,9 +1541,9 @@ def art_set(
         "colors": _color_map(colors), "align": align, "fit": fit, "clip": clip, "source": source,
         "label": label, "label_en": label_en, "tag": tag, "tracking": tracking, "line_height": line_height,
         "hanging_indent": _hanging(hanging_indent), "vertical": True if vertical else None,
-        "skew_x": skew_x, "skew_y": skew_y,
+        "skew_x": skew_x, "skew_y": skew_y, "locked": True if locked is True else None,
     }  # fmt: skip
-    _emit(api.art_set(directory, art_id, fields, clear), json_out)
+    _emit(api.art_set(directory, art_id, fields, clear_list or None), json_out)
 
 
 @art_app.command("remove", help=t("Delete a placement (the asset file stays in assets/)."))
@@ -2157,6 +2167,29 @@ def visual_gen(
 
 
 @visual_app.command(
+    "symbol",
+    help=t("Generate a print-ready standard vector regulatory symbol (pao | mobius | e-mark) into job/assets"),
+)
+def visual_symbol(
+    directory: Annotated[Path, typer.Argument(help=t("Job folder"))],
+    symbol: Annotated[str, typer.Argument(help=t("Symbol name: pao | mobius | e-mark"))],
+    name: Annotated[
+        str | None,
+        typer.Option("--name", help=t("Output asset stem in job/assets/ (defaults to symbol-<id>)")),
+    ] = None,
+    color: Annotated[
+        str,
+        typer.Option("--color", help=t("Stroke/fill hex color (#RRGGBB)")),
+    ] = "#3f3f42",
+    json_out: JsonOpt = False,
+) -> None:
+    """生成标准印刷级法规矢量符号（PAO 开口罐 / 莫比乌斯回收环 / EU ℮ 标）并写入 job/assets。"""
+    from pacxio.symbols import add_symbol_asset
+
+    _emit(add_symbol_asset(directory, symbol, name=name, color=color), json_out)
+
+
+@visual_app.command(
     "trace",
     help=t(
         "Trace an image as vector SVG, then use art add --kind vector. Full illustrations are traced in full color (converted with ICC); line art, icons and flat graphics are traced as color areas (CMYK set by hand from brand colors). Without --method the engine picks by looking at the image."
@@ -2235,7 +2268,7 @@ def visual_trace(
         typer.Option(
             "--method",
             help=t(
-                "auto (pick by image) | shapes (line art, icons, flat-color graphics: trace color areas) | vtracer (full illustrations: full-color tracing)"
+                "auto (pick by image) | shapes (line art, icons, flat-color graphics: trace color areas) | vtracer (full illustrations: full-color tracing) | gradient (smooth linear/radial gradient SVG without banding)"
             ),
         ),
     ] = "auto",
@@ -2275,6 +2308,33 @@ def visual_trace(
             ),
         ),
     ] = 1.0,
+    gradient_steps: Annotated[
+        int | None,
+        typer.Option(
+            "--gradient-steps",
+            help=t(
+                "vtracer: smooth soft-gradient regions into this many clean flat bands along gradient contours before tracing (2–16; default is to print gradients as redrawn images)"
+            ),
+        ),
+    ] = None,
+    route_only: Annotated[
+        bool,
+        typer.Option(
+            "--route-only",
+            help=t(
+                "Analyze region routing only (vector / image / svg) and save the result into the asset's .meta.json without tracing"
+            ),
+        ),
+    ] = False,
+    region_route: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--region-route",
+            help=t(
+                "Override a region's route as id=vector|image|svg (repeatable, e.g. --region-route r1=image); saved in .meta.json"
+            ),
+        ),
+    ] = None,
     json_out: JsonOpt = False,
 ) -> None:
     """把图描成矢量 SVG，之后用 art add --kind vector。整片插画全彩描（颜色按 ICC 换算），
@@ -2286,6 +2346,14 @@ def visual_trace(
     for box in erase or []:
         x, y, w, h = (round(v) for v in _floats(box, 4, "--erase") or (0.0, 0.0, 0.0, 0.0))
         boxes.append((x, y, w, h))
+    overrides: dict[str, str] = {}
+    for item in region_route or []:
+        if "=" not in item:
+            raise typer.BadParameter(
+                t("Expected id=vector|image|svg for --region-route, got: {value}", value=item)
+            )
+        k, v = item.split("=", 1)
+        overrides[k.strip()] = v.strip()
     _emit(
         trace_asset(
             directory,
@@ -2303,6 +2371,9 @@ def visual_trace(
             erase=boxes or None,
             tones=tones,
             strength=strength,
+            gradient_steps=gradient_steps,
+            route_only=route_only,
+            region_routes=overrides or None,
         ),  # fmt: skip
         json_out,
     )
@@ -2848,6 +2919,219 @@ def font_list(
             )
         if not r.data["job_fonts"]:
             typer.echo(t("No fonts of its own in this job yet"))
+        if r.data.get("pinned"):
+            typer.echo(t("Pinned fonts:"))
+            for name, pin in r.data["pinned"].items():
+                typer.echo(
+                    t(
+                        "  {name:28} {version}  sha256 {sha}",
+                        name=name,
+                        version=pin.get("version") or "-",
+                        sha=pin["sha256"][:12],
+                    )
+                )
+    _emit(r, json_out)
+
+
+@font_app.command(
+    "pin",
+    help=t("Pin or verify the font versions and hashes recorded in job.json."),
+)
+def font_pin(
+    directory: Annotated[Path, typer.Argument(help=t("Job folder"))],
+    refresh: Annotated[
+        bool,
+        typer.Option(
+            "--refresh",
+            help=t(
+                "Update existing pins to the currently installed font files (changes the design fingerprint)"
+            ),
+        ),
+    ] = False,
+    check: Annotated[
+        bool,
+        typer.Option("--check", help=t("Verify existing pins without modifying job.json")),
+    ] = False,
+    json_out: JsonOpt = False,
+) -> None:
+    """把 job 用到的字体版本与哈希写进 job.json，或核对现有锁定（--check）。"""
+    from pacxio import fonts
+
+    r = fonts.pin_fonts(directory, refresh=refresh, check=check)
+    if not json_out and r.ok:
+        pinned = r.data.get("pinned") or {}
+        if pinned:
+            typer.echo(t("Pinned fonts:"))
+            for name, pin in pinned.items():
+                typer.echo(
+                    t(
+                        "  {name:28} {version}  sha256 {sha}",
+                        name=name,
+                        version=pin.get("version") or "-",
+                        sha=pin["sha256"][:12],
+                    )
+                )
+        else:
+            typer.echo(t("No fonts are used in this job yet"))
+    _emit(r, json_out)
+
+
+@font_app.command(
+    "system",
+    help=t("List usable system fonts installed on this machine (local candidate discovery)."),
+)
+def font_system(
+    search: Annotated[
+        str | None, typer.Option("--search", help=t("Filter by font name or family"))
+    ] = None,
+    cjk: Annotated[bool, typer.Option("--cjk", help=t("Only show fonts with Chinese glyphs"))] = False,
+    serif: Annotated[bool, typer.Option("--serif", help=t("Only show serif fonts"))] = False,
+    limit: Annotated[int, typer.Option("--limit", help=t("Maximum entries to show (0 = all)"))] = 50,
+    refresh: Annotated[
+        bool, typer.Option("--refresh", help=t("Rescan system font folders instead of using the cache"))
+    ] = False,
+    json_out: JsonOpt = False,
+) -> None:
+    """列出本机发现的可用系统字体（候选列表只在本机生成）。"""
+    from pacxio import fonts
+
+    r = fonts.list_system_fonts(search=search, cjk=cjk, serif=serif, limit=limit, refresh=refresh)
+    if not json_out and r.ok:
+        items = r.data["fonts"]
+        if not items:
+            typer.echo(t("No matching system fonts found"))
+        for f in items:
+            tags = []
+            if f["serif"]:
+                tags.append("serif")
+            if f["has_cjk"]:
+                tags.append("CJK")
+            if f["no_subsetting"]:
+                tags.append("no-subset")
+            if f["authorized"]:
+                tags.append("authorized")
+            tag_str = ", ".join(tags) if tags else "-"
+            typer.echo(f"{f['name']:32} {f['embedding']:13} [{tag_str}]  {f['family'] or ''}")
+        typer.echo(
+            t(
+                "Showing {shown} of {matched} matched ({total} total system fonts)",
+                shown=r.data["shown"],
+                matched=r.data["matched"],
+                total=r.data["total"],
+            )
+        )
+    _emit(r, json_out)
+
+
+@font_app.command(
+    "use",
+    help=t("Extract a local system font into job/fonts as a static font file with license metadata."),
+)
+def font_use(
+    directory: Annotated[Path, typer.Argument(help=t("Job folder"))],
+    system_name: Annotated[
+        str, typer.Argument(help=t("System font name (see `pacxio font system`)"))
+    ],
+    name: Annotated[
+        str | None, typer.Option("--name", help=t("Alias to use in --font (default: system font name)"))
+    ] = None,
+    accept_license_risk: Annotated[
+        bool,
+        typer.Option(
+            "--accept-license-risk",
+            help=t(
+                "When the font's embedding permission is restricted: confirm you have checked the license with the rights holder"
+            ),
+        ),
+    ] = False,
+    confirm_upload: Annotated[
+        bool,
+        typer.Option(
+            "--confirm-upload",
+            help=t(
+                "Also record one-time cloud upload authorization for this font (glyph subsets only, deleted after render)"
+            ),
+        ),
+    ] = False,
+    by: Annotated[
+        str, typer.Option("--by", help=t("Name of the person confirming font upload authorization"))
+    ] = "User",
+    allow_full_upload: Annotated[
+        bool,
+        typer.Option(
+            "--allow-full-upload",
+            help=t(
+                "For fonts with the no_subsetting flag: authorize ephemeral full-file upload (still deleted after render)"
+            ),
+        ),
+    ] = False,
+    json_out: JsonOpt = False,
+) -> None:
+    """按名字从本机系统字体提取静态字体到 job/fonts，并可选同步确认单字体云端上传授权。"""
+    from pacxio import fonts
+
+    _emit(
+        fonts.use_system_font(
+            directory,
+            system_name,
+            name=name,
+            accept_license_risk=accept_license_risk,
+            confirm_upload=confirm_upload,
+            by=by,
+            allow_full_upload=allow_full_upload,
+        ),
+        json_out,
+    )
+
+
+@font_app.command(
+    "authorize",
+    help=t(
+        "Check, confirm, or revoke one-time cloud upload authorization for a non-open font (brand or system font)."
+    ),
+)
+def font_authorize(
+    directory: Annotated[Path, typer.Argument(help=t("Job folder"))],
+    font_name: Annotated[
+        str | None,
+        typer.Argument(help=t("Font name to authorize (omit to list authorization status for this job)")),
+    ] = None,
+    by: Annotated[
+        str, typer.Option("--by", help=t("Name of the person confirming font upload authorization"))
+    ] = "User",
+    allow_full_upload: Annotated[
+        bool,
+        typer.Option(
+            "--allow-full-upload",
+            help=t(
+                "For fonts with the no_subsetting flag: authorize ephemeral full-file upload (still deleted after render)"
+            ),
+        ),
+    ] = False,
+    revoke: Annotated[
+        bool, typer.Option("--revoke", help=t("Revoke previously recorded upload authorization"))
+    ] = False,
+    json_out: JsonOpt = False,
+) -> None:
+    """查看、逐字体确认或撤销非开源字体的云端上传授权（只传字形子集，渲染完立即删除）。"""
+    from pacxio import fonts
+
+    r = fonts.authorize_font(
+        directory,
+        font_name,
+        by=by,
+        allow_full_upload=allow_full_upload,
+        revoke=revoke,
+    )
+    if not json_out and r.ok and font_name is None:
+        rows = r.data.get("fonts") or []
+        if not rows:
+            typer.echo(t("No non-open fonts require upload authorization in this job"))
+        for row in rows:
+            status = t("authorized") if row["authorized"] else t("pending")
+            typer.echo(
+                f"{row['name']:28} {row['origin']:6} {status:10} sha256 {row['sha256'][:12]}"
+            )
     _emit(r, json_out)
 
 
@@ -3985,12 +4269,38 @@ def restore_text(
             ),
         ),
     ] = False,
+    no_library: Annotated[
+        bool,
+        typer.Option(
+            "--no-library",
+            help=t(
+                "Do not compare fonts from the open font library (only the job's and your own fonts)"
+            ),
+        ),
+    ] = False,
+    no_system_fonts: Annotated[
+        bool,
+        typer.Option(
+            "--no-system-fonts",
+            help=t("Do not compare system fonts installed on this machine"),
+        ),
+    ] = False,
     json_out: JsonOpt = False,
 ) -> None:
     """从平面图量字号、行距、位置；--tracking 量单行字距。字体默认只报建议，颜色不改。"""
     from pacxio_pro.restore.text import text_fit
 
-    _emit(text_fit(directory, apply, fonts, tracking), json_out)
+    _emit(
+        text_fit(
+            directory,
+            apply,
+            fonts,
+            tracking,
+            library=not no_library,
+            system_fonts=not no_system_fonts,
+        ),
+        json_out,
+    )
 
 
 @restore_app.command(
@@ -4088,9 +4398,36 @@ def restore_strip(
             ),
         ),
     ] = None,
+    faces: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--faces",
+            help=t(
+                "Stitch adjacent panels in continuous blank coordinates (comma-separated or repeatable, e.g. back,top_lid or lid.top,lid.front) instead of the body wrap"
+            ),
+        ),
+    ] = None,
+    seam: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--seam",
+            help=t(
+                "Per-seam alignment choice panelA|panelB=panelA|panelB|both (repeatable; both meets halfway across the crease)"
+            ),
+        ),
+    ] = None,
+    blend_mm: Annotated[
+        float | None,
+        typer.Option(
+            "--blend-mm",
+            help=t(
+                "Width of the local seam adjustment band in mm (default 8 mm)"
+            ),
+        ),
+    ] = None,
     json_out: JsonOpt = False,
 ) -> None:
-    """拼盒身一圈：展开平面图的盒身各面按真实尺寸接成一条（去文字、接缝去折线、小台阶对齐），给 visual trace 描。"""
+    """拼跨折线连续源图：默认盒身一圈（space=body），传 --faces 时按刀版连续坐标（space=blank）拼盖/底/飞机盒/多部件相邻面。"""
     from pacxio.concept.service import FACE_ALIASES
     from pacxio_pro.restore.strip import strip_asset
 
@@ -4098,5 +4435,227 @@ def restore_strip(
     for text in erase or []:
         x, y, w, h = _floats(text, 4, "--erase") or (0.0, 0.0, 0.0, 0.0)
         boxes.append((x, y, w, h))
-    faces = [FACE_ALIASES.get(f.strip(), f.strip()) for f in keep or []]
-    _emit(strip_asset(directory, name, px_per_mm, boxes, faces), json_out)
+    keep_faces = [FACE_ALIASES.get(f.strip(), f.strip()) for f in keep or []]
+    face_list: list[str] = []
+    for item in faces or []:
+        face_list += [f.strip() for f in item.split(",") if f.strip()]
+    seam_map: dict[str, str] = {}
+    for entry in seam or []:
+        if "=" not in entry:
+            _emit(
+                Result(command="restore strip", job=str(directory)).fail(
+                    Issue(
+                        id="ARG",
+                        message=f"--seam 格式不对：{entry}",
+                        fix="写成 面A|面B=面A|面B|both，例如 --seam back|side_a=both",
+                    ),
+                    2,
+                ),
+                json_out,
+            )
+            return
+        k, v = entry.split("=", 1)
+        seam_map[k.strip()] = v.strip()
+    _emit(
+        strip_asset(
+            directory,
+            name,
+            px_per_mm,
+            boxes,
+            keep_faces,
+            faces=face_list or None,
+            seam_choices=seam_map or None,
+            blend_mm=blend_mm,
+        ),
+        json_out,
+    )
+
+
+@restore_app.command(
+    "lettering",
+    help=t(
+        "Scan display titles and large lettering for tracing candidates (writes flat/lettering.json and side-by-side comparisons); --auto traces recommended items as smooth vectors for dieline review, --confirm + --by confirms explicitly, or --revert switches back to font typesetting."
+    ),
+)
+def restore_lettering(
+    directory: Annotated[Path, typer.Argument(help=t("Job folder"))],
+    auto: Annotated[
+        bool,
+        typer.Option(
+            "--auto",
+            help=t(
+                "Automatically trace recommended display lettering candidates as smooth vectors (signed off together with dieline approval)"
+            ),
+        ),
+    ] = False,
+    confirm: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--confirm",
+            help=t(
+                "Placement id to confirm and trace as vector lettering (repeatable; only after the user has checked the side-by-side comparison)"
+            ),
+        ),
+    ] = None,
+    by: Annotated[
+        str | None,
+        typer.Option(
+            "--by",
+            help=t("Who confirmed tracing these display lettering items (required with --confirm)"),
+        ),
+    ] = None,
+    revert: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--revert",
+            help=t(
+                "Revert a traced lettering placement back to its original font typesetting (repeatable)"
+            ),
+        ),
+    ] = None,
+    allow_gray: Annotated[
+        bool,
+        typer.Option(
+            "--allow-gray",
+            help=t(
+                "Allow confirming gray-zone candidates (font NCC 0.50–0.65) when the user prefers tracing over adding a closer font"
+            ),
+        ),
+    ] = False,
+    json_out: JsonOpt = False,
+) -> None:
+    """展示艺术字还原：扫描候选项并生成并排对照图；--auto 自动转平滑矢量（随刀版确认签章）、--confirm 显式确认或 --revert 换回字体排。"""
+    from pacxio_pro.restore.lettering import lettering_command
+
+    _emit(
+        lettering_command(
+            directory,
+            confirm=confirm,
+            by=by,
+            revert=revert,
+            allow_gray=allow_gray,
+            auto=auto,
+        ),
+        json_out,
+    )
+
+
+@restore_app.command(
+    "iterate",
+    help=t(
+        "Automatic restore iteration (R2-6): score, adjust positions/colors up to N rounds, roll back if score stops improving or preflight regresses, record flat/iterations.json, and write remaining diffs into flat --diff."
+    ),
+)
+def restore_iterate(
+    directory: Annotated[Path, typer.Argument(help=t("Job folder"))],
+    max_rounds: Annotated[
+        int,
+        typer.Option(
+            "--max-rounds",
+            help=t("Maximum iteration rounds (default 3)"),
+        ),
+    ] = 3,
+    steps: Annotated[
+        str | None,
+        typer.Option(
+            "--steps",
+            help=t(
+                "Comma-separated restore steps to run each round (default: graphics,frames,rows,text,colors)"
+            ),
+        ),
+    ] = None,
+    fonts: Annotated[
+        bool,
+        typer.Option(
+            "--fonts",
+            help=t("Allow restore text / rows to switch fonts (default: suggest only)"),
+        ),
+    ] = False,
+    tracking: Annotated[
+        bool,
+        typer.Option(
+            "--tracking",
+            help=t("Allow restore text to measure single-line tracking"),
+        ),
+    ] = False,
+    no_library: Annotated[
+        bool,
+        typer.Option(
+            "--no-library",
+            help=t("Do not compare fonts from the open font library during restore text"),
+        ),
+    ] = False,
+    no_system_fonts: Annotated[
+        bool,
+        typer.Option(
+            "--no-system-fonts",
+            help=t("Do not compare system fonts installed on this machine during restore text"),
+        ),
+    ] = False,
+    auto_lettering: Annotated[
+        bool,
+        typer.Option(
+            "--auto-lettering/--no-auto-lettering",
+            help=t(
+                "Automatically trace recommended display lettering when no font matches well (default on)"
+            ),
+        ),
+    ] = True,
+    lock: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--lock",
+            help=t(
+                "Placement id(s) to protect from automatic edits (repeatable or comma-separated)"
+            ),
+        ),
+    ] = None,
+    write_diff: Annotated[
+        bool,
+        typer.Option(
+            "--write-diff/--no-write-diff",
+            help=t(
+                "Write remaining differences into flat/manifest.json (same as flat --diff) and re-render for the workbench"
+            ),
+        ),
+    ] = True,
+    force: Annotated[
+        bool,
+        typer.Option(
+            "--force",
+            help=t("Run even if the current dieline confirmation is already approved"),
+        ),
+    ] = False,
+    dry_run: Annotated[
+        bool,
+        typer.Option(
+            "--dry-run",
+            help=t("Run the loop and write flat/iterations.json, then restore job.json"),
+        ),
+    ] = False,
+    json_out: JsonOpt = False,
+) -> None:
+    """自动迭代还原（R2-6）：评分 → 调整位置与颜色 → 复核印前与提分，最多 N 轮；退步或新增印前问题时退回上一轮。"""
+    from pacxio_pro.restore.iterate import iterate_job
+
+    step_list = [s.strip() for s in steps.split(",") if s.strip()] if steps else None
+    lock_ids: list[str] = []
+    for item in lock or []:
+        lock_ids += [x.strip() for x in item.split(",") if x.strip()]
+    _emit(
+        iterate_job(
+            directory,
+            max_rounds=max_rounds,
+            steps=step_list,
+            fonts=fonts,
+            tracking=tracking,
+            library=not no_library,
+            system_fonts=not no_system_fonts,
+            auto_lettering=auto_lettering,
+            lock=lock_ids or None,
+            write_diff=write_diff,
+            force=force,
+            dry_run=dry_run,
+        ),
+        json_out,
+    )

@@ -51,3 +51,5 @@ Wait for it to finish and try again: 等它跑完再试
 Waited a long time and the browser approval has not come: 等了很久还没在浏览器里确认
 When exporting in the cloud the delivery pack always goes to <job>/out; --out is not supported: 云端导出时交付包固定放在 <job>/out，不支持 --out
 job.json changed on this machine while the cloud run was going; it was not overwritten with the cloud version: 云端运行期间本机 job.json 改过，没有用云端的版本覆盖
+'Font {font} ({origin}) requires your one-time upload authorization before cloud typesetting': '非开源字体 {font}（{origin}）在云端排字前需要先做一次上传授权确认'
+'Confirm that your license permits uploading glyph subsets for cloud outlining with `pacxio font authorize <job> {font} --by <your-name>`': '请确认你的字体授权允许上传字形子集供云端转曲后运行 `pacxio font authorize <job> {font} --by <你的名字>`'

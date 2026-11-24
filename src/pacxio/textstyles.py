@@ -56,6 +56,13 @@ def style_set(directory: Path, name: str, fields: dict[str, Any]) -> Result:
         return r.fail(e.issue, 2)
     styles[name] = style
     job.styles = styles
+    from pacxio.fonts import sync_font_pins
+
+    pin_errs = sync_font_pins(job, directory)
+    if pin_errs:
+        r.errors += pin_errs
+        r.ok, r.exit_code = False, 2
+        return r
     r.artifacts = [str(job.save(directory))]
     users = [p.id for p in job.placements if p.style == name]
     r.data = {"name": name, "style": style.model_dump(exclude_none=True), "used_by": users}
@@ -96,6 +103,10 @@ def style_remove(directory: Path, name: str) -> Result:
             2,
         )
     job.styles = {k: v for k, v in job.styles.items() if k != name} or None
+    if job.font_pins:
+        from pacxio.fonts import prune_font_pins
+
+        prune_font_pins(job)
     r.artifacts = [str(job.save(directory))]
     r.data = {"removed": name}
     return r

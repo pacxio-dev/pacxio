@@ -77,6 +77,8 @@ Every error / warning carries a `fix` field; follow it first. Below is a quick r
 
 0 success · 1 errors (checks failed, style constraints not met) · 2 bad arguments · 3 missing environment (dependency / API key / network).
 
+Any other failure (a traceback, a crash, output that contradicts the docs) is an engine bug. Tell the user the command, the error text and the version from `pacxio update status --json`, and suggest reporting it to the developers. Do not edit or patch the installed engine, the MCP server, the Skill or `~/.pacxio` on your own to get around it (hard rule 13).
+
 ## Vector graphics / clipping / across panels
 
 | Error | Cause | Fix |

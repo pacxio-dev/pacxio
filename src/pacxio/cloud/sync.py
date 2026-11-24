@@ -9,11 +9,13 @@ from pathlib import Path
 from typing import Any
 
 from pacxio.cloud.client import Client, CloudError
+from pacxio.fontfiles import JOB_FONT_DIR
+from pacxio.fontsubset import EPHEMERAL_FONT_DIR, FONT_BINARY_SUFFIXES
 from pacxio.messages import t
 
 STATE_DIR = ".cloud"
-# 生成物不上传（服务器自己会生成）；.cloud 是本机记账
-SKIP_TOP = {STATE_DIR, "out", "mockup", "studio"}
+# 生成物不上传（服务器自己会生成）；.cloud 是本机记账；.ephemeral_fonts 仅单次运行时瞬时挂载
+SKIP_TOP = {STATE_DIR, "out", "mockup", "studio", EPHEMERAL_FONT_DIR}
 SKIP_NAMES = {".DS_Store"}
 
 
@@ -34,6 +36,10 @@ def local_manifest(job: Path) -> dict[str, str]:
     for p in sorted(job.rglob("*")):
         rel = p.relative_to(job)
         if rel.parts[0] in SKIP_TOP or p.name in SKIP_NAMES or p.is_symlink() or not p.is_file():
+            continue
+        # R2-5：完整非开源字体二进制不进持久化 job 同步（避免在服务器留存 30 天）；
+        # 只保留轻量 .meta.json 留痕，实际排字由单次运行的瞬时字形子集提供并在转曲后立即删除。
+        if rel.parts[0] == JOB_FONT_DIR and p.suffix.lower() in FONT_BINARY_SUFFIXES:
             continue
         out[rel.as_posix()] = sha256_file(p)
     return out

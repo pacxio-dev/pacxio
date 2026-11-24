@@ -240,6 +240,27 @@ def content_edit(directory: Path, item_id: str, fields: dict[str, Any], clear: l
     except ValidationError as e:
         return r.fail(_validation_issues(e)[0], 2)
     _save(directory, job, r)
+    stale_let = [
+        p.id
+        for p in job.placements
+        if p.lettering is not None
+        and p.lettering.content_id == item_id
+        and new.text != p.lettering.text
+    ]
+    if stale_let:
+        r.warnings.append(
+            Issue(
+                id="LETTERING",
+                message=t(
+                    "Traced lettering {ids} no longer matches the edited content item {item}; confirmation has expired",
+                    ids=", ".join(stale_let),
+                    item=item_id,
+                ),
+                fix=t(
+                    "Regenerate the flat and re-confirm with `pacxio restore lettering`, or revert to font typesetting with `--revert`"
+                ),
+            )
+        )
     r.data = {"id": item_id, "item": new.model_dump(exclude_none=True)}
     return r
 

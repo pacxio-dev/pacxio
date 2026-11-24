@@ -23,6 +23,9 @@ def pytest_configure(config: pytest.Config) -> None:
     os.environ["PACXIO_LANG"] = "zh"
     _EMPTY.append(tempfile.mkdtemp(prefix="pacxio-no-icc-"))
     os.environ["PACXIO_ICC_DIRS"] = _EMPTY[-1]
+    # restore text 默认不比本机装的开源字体库（）和系统字体（R2-5）；要测的测试自己打开
+    os.environ["PACXIO_FONT_LIBRARY"] = "off"
+    os.environ["PACXIO_SYSTEM_FONTS"] = "off"
 
 
 def pytest_unconfigure(config: pytest.Config) -> None:

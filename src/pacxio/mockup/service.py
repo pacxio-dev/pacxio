@@ -617,6 +617,25 @@ def approve_design(
     chosen = read_chosen(directory)
     a = make_approval(state.current, by, note, orientation_ok, acknowledged,
                       chosen.id if chosen else None, style_version(job))  # fmt: skip
+    from pacxio.visual.meta import sign_off_auto_lettering
+
+    signed_lettering, let_errors = sign_off_auto_lettering(
+        directory, job, by=by or "用户", at=a.approved_at
+    )
+    if let_errors:
+        return r.fail(
+            Issue(
+                id="CONCEPT",
+                message=translate(
+                    "Approval is blocked because traced lettering is no longer valid: {items}",
+                    items="; ".join(let_errors[:4]),
+                ),
+                fix=translate(
+                    "Re-confirm or revert the traced lettering with `pacxio restore lettering`, then rerun `render`"
+                ),
+            ),
+            1,
+        )
     path = write_approval(directory, a)
     r.artifacts = [str(path)]
     r.data.update(
@@ -625,6 +644,7 @@ def approve_design(
             "approved_at": a.approved_at,
             "acknowledged": acknowledged,
             "concept": a.concept_id,
+            **({"signed_lettering": signed_lettering} if signed_lettering else {}),
         }
     )
     for code in acknowledged:

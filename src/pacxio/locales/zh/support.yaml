@@ -135,5 +135,41 @@ style applies only to kind=text: style（文字样式）只用于 kind=text
 tracking and line_height apply only to kind=text: tracking（字距）/ line_height（行距）只用于 kind=text
 vertical applies only to kind=text: vertical（竖排）只用于 kind=text
 '{file} is a concept image': '{file} 是概念图'
+'{file} was traced from the unfolded concept with AI-drawn text still in it: {words}': '{file} 是从展开平面图描的，描的时候里面还有 AI 画的字：{words}'
 '{file} is identical to concept image {concept}': '{file} 和概念图 {concept} 是同一张图'
 '{file} was cropped from an unfolded concept ({source}) and can only be used as a tracing reference': '{file} 是从展开平面图裁出来的（{source}），只能拿去描摹'
+'Pinned font {font} ({pinned}) is missing': '已锁定的字体 {font}（{pinned}）缺失'
+'Install the matching version of {font} (or add it with `pacxio font add <job> <file> --name {font}`), or switch fonts and update the pin with `pacxio font pin <job> --refresh`': '安装对应版本的 {font}（或用 `pacxio font add <job> <文件> --name {font}` 收入），或更换字体后用 `pacxio font pin <job> --refresh` 更新锁定'
+'Font {font} does not match the version pinned in job.json (pinned {pinned}; installed {installed})': '字体 {font} 与 job.json 锁定的版本不一致（锁定：{pinned}；当前：{installed}）'
+'Restore the pinned version of {font}, or review the layout and run `pacxio font pin <job> --refresh` to accept the installed version': '恢复锁定版本的 {font}；若确认改用当前版本，核对版面后运行 `pacxio font pin <job> --refresh`'
+'Cannot combine --refresh with --check': '--refresh 和 --check 不能同时使用'
+'Use --check to verify existing pins, or --refresh to update them to the installed fonts': '--check 只核对现有锁定，--refresh 按当前安装的字体更新锁定'
+'lettering applies only to kind=vector': 'lettering（已描艺术字）只用于 kind=vector'
+'Placement {id} lettering content_id must match content': '放置 {id} 的 lettering.content_id 必须与 content 一致'
+'Traced lettering {ids} no longer matches the edited content item {item}; confirmation has expired': '已描艺术字 {ids} 与修改后的信息条目 {item} 不再一致，原确认已失效'
+'Regenerate the flat and re-confirm with `pacxio restore lettering`, or revert to font typesetting with `--revert`': '请更新展开平面图后用 `pacxio restore lettering` 重新确认，或用 `--revert` 换回字体排'
+'Category {category} is informational or regulatory copy and must be typeset by the engine': '类别 {category} 属于信息 / 法规或非展示类文字，必须由引擎用字体排'
+'Copy contains {kind} and must be typeset by the engine regardless of size': '文案含 {kind}，按规矩再大也必须由引擎用字体排'
+'Chinese character count {count} exceeds the limit of {limit} for traced lettering': '中文字数 {count} 超过艺术字上限 {limit} 字，不能描成图形'
+'Word count {count} exceeds the limit of {limit} for traced lettering': '拉丁词数 {count} 超过艺术字上限 {limit} 词，不能描成图形'
+'Mixed copy length ({cjk} CJK chars + {latin} words) exceeds the limit for traced lettering': '中英混排字数过多（{cjk} 中文字 + {latin} 词），不能描成图形'
+'Missing user confirmation record (unconfirmed lettering cannot enter print files)': '缺少用户确认记录（未确认的艺术字不能进印刷文件）'
+'Auto-traced lettering has not been confirmed yet (approve the dieline proof or confirm explicitly)': '自动描摹的艺术字尚未经确认（请确认刀版图或显式确认艺术字）'
+'Content item {item} is missing from the content list (lettering confirmation expired)': '信息清单里找不到对应条目 {item}（艺术字确认已失效）'
+'Content item {item} changed from “{old}” to “{new}” (lettering confirmation expired)': '信息清单条目 {item} 的文案已从「{old}」改为「{new}」（原艺术字确认作废）'
+'Source flat concept {concept} no longer exists (lettering confirmation expired)': '来源平面图 {concept} 已不存在（艺术字确认已失效）'
+'Source flat concept {concept} changed since confirmation (lettering confirmation expired)': '来源平面图 {concept} 在确认后已更换（原艺术字确认作废）'
+'Lettering confirmation fingerprint mismatch (re-confirmation required)': '艺术字确认指纹不匹配（请重新确认）'
+'{file} is traced lettering and requires a job context to verify confirmation': '{file} 是描出的艺术字，缺少 job 上下文无法校验确认记录'
+'{file} is traced lettering and job.json could not be read to verify confirmation': '{file} 是描出的艺术字，无法读取 job.json 校验确认记录'
+'{file} traced lettering failed verification: {why}': '{file} 艺术字未通过校验：{why}'
+'Open-license library fonts are built into the cloud service and do not require upload authorization': 开源字体库字体已内置在云端服务中，不需要上传授权确认
+'System font {font} was not found on this machine': 本机找不到系统字体 {font}
+'Run `pacxio font system --search {font}` to see available system fonts': 运行 `pacxio font system --search {font}` 查看本机可用的系统字体
+'Font {font} sets the no_subsetting flag (fsType={flag}) and cannot be subset automatically': '字体 {font} 标记了禁止切子集位 no_subsetting（fsType={flag}），不能自动切字形子集'
+'Switch to a font that allows subsetting, or authorize ephemeral full-file upload with `pacxio font authorize <job> {font} --allow-full-upload`': '请换用允许切子集的字体，或运行 `pacxio font authorize <job> {font} --allow-full-upload` 显式授权以瞬时整文件方式上传（渲染完仍立即删除）'
+'Could not find non-open font {font} in this job or on this machine': 在当前 job 和本机系统字体里都找不到非开源字体 {font}
+'Add a brand font with `pacxio font add`, or check system fonts with `pacxio font system`': 品牌字体请先 `pacxio font add`，系统字体请运行 `pacxio font system` 查看
+'Check that the font file exists and is a valid static OTF/TTF/TTC font': 请确认字体文件存在且为有效的静态 OTF / TTF / TTC 字体
+'System font {name}: {license}; embedding flag {embedding}': '系统字体 {name}：{license}；嵌入许可位 {embedding}'
+' (cloud upload authorized by {by})': '（云端上传已由 {by} 授权确认）'

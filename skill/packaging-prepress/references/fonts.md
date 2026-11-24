@@ -69,7 +69,8 @@ When a numbered list (tips, steps, cautions) wraps, continuation lines align wit
    ```
 
    Latin and digits use the brand font, CJK characters fall back to Source Han Sans. Every name in the chain must exist, or `art add` reports an error.
-4. `pacxio font list jobs/<name>` shows added fonts, CJK coverage and licence information.
+4. `pacxio font list jobs/<name>` shows added fonts, CJK coverage, licence information and pinned font versions.
+5. **Version pinning**: `art add / set`, `style set` and `restore text --apply` record each used font's version and SHA-256 hash in `job.json` (`font_pins`). If the font is missing or its file changes later, typesetting stops with a `FONT` error instead of silently substituting another version. Use `pacxio font pin jobs/<name> --check` to verify pins, or `--refresh` after reviewing the layout to accept a newer installed font.
 
 ## Embedding bits and what you do
 

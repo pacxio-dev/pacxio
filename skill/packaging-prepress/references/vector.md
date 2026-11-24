@@ -48,6 +48,8 @@ pacxio art add jobs/x --kind vector --source assets/body.svg --space body --box 
 pacxio restore score jobs/x                     # per-panel fidelity: SSIM, color difference, thin-line recall; breaks, kinks, spikes, both sides of folds
 ```
 
+Before tracing, read the text warnings of `restore strip / face`: `TEXT_ERASED` (AI text matching the copy list was painted out — check those spots), `TEXT_LEFT` (listed AI text still readable — a vector traced from it is refused at render), `TEXT_UNLOCATED` (text that `restore text` did not find on the flat still has ink in its placement box — OCR cannot read bold outlined, script or Chinese lettering, and render cannot catch it). Look at the image in each box: AI text → `--erase x,y,w,h` with a box that covers the whole text and ends on background; illustration (badge, pattern) → ignore.
+
 A single panel (top, bottom, mailer panels):
 
 ```bash

@@ -151,3 +151,5 @@ white liner: 白面纸
 '{target} already has placements: {own}; they will sit on top of the copied layout': '{target} 上本来就有放置：{own}，会叠在复制过来的版面上'
 '{target} and {source} cannot refer to each other or to themselves': '{target} 不能和 {source} 互相引用或引用自己'
 '{target} and {source} differ in size and cannot be the same': '{target} 和 {source} 的尺寸不同，不能设成相同'
+'Traced lettering {id} is not confirmed for export: {why}': '描摹艺术字 {id} 尚未确认，不能导出印刷文件：{why}'
+'Approve the dieline proof (`pacxio approve`) or revert to font typesetting (`pacxio restore lettering --revert`)': '请先确认刀版图（`pacxio approve`）或用 `pacxio restore lettering --revert` 退回字体排'

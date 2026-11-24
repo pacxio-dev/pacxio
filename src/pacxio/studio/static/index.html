@@ -17,7 +17,7 @@
   </span>
   <span class="name" id="job-name" data-l10n="text">Workbench</span>
   <span class="meta" id="job-meta"></span>
-  <button class="btn" id="edit-structure" hidden title="Change dimensions, material, or structural details and preview the dieline and folded box" data-l10n="title text">Edit dimensions</button>
+  <button class="btn" id="edit-structure" hidden title="Change dimensions, material, or structural details and preview the dieline and folded box" data-l10n="title text">Edit structure</button>
   <span class="grow"></span>
   <span class="live" id="live" data-l10n="text">Connecting…</span>
   <button class="lang" id="language-toggle" type="button" hidden></button>
@@ -35,7 +35,7 @@
   <div class="banner" id="banner" hidden></div>
   <div id="minimap" title="Click to jump to this area" data-l10n="title"></div>
   <div id="zoomctl">
-    <button id="zoom-sharp" class="sharp" hidden title="The proof preview is 100 DPI. Zoom in and click to see the visible area at 200 DPI with a watermark. Requests per image are limited." data-l10n="title text">Zoom for detail</button>
+    <button id="zoom-sharp" class="sharp" hidden title="The proof preview is 100 DPI. Zoom in and click to see the visible area at 200 DPI. Requests per image are limited." data-l10n="title text">Zoom for detail</button>
     <button id="fit-all" class="fit" title="Fit everything on the canvas (0)" data-l10n="title text">Fit all</button>
     <button id="zoom-out" title="Zoom out (-)" data-l10n="title">−</button>
     <span class="pct" id="zoom-pct">100%</span>
@@ -68,9 +68,9 @@
 <div id="bubble" class="popup" hidden></div>
 <div id="toast" hidden></div>
 <div id="confirm" hidden role="dialog" aria-modal="true"><div class="dialog"></div></div>
-<div id="struct-editor" hidden role="dialog" aria-modal="true" aria-label="Edit dimensions" data-l10n="aria-label">
+<div id="struct-editor" hidden role="dialog" aria-modal="true" aria-label="Edit structure" data-l10n="aria-label">
   <header class="se-head">
-    <span class="se-title" data-l10n="text">Edit dimensions</span>
+    <span class="se-title" data-l10n="text">Edit structure</span>
     <span class="se-maturity" id="se-maturity"></span>
     <span class="grow"></span>
     <button class="btn" id="se-close" data-l10n="text">Close</button>
@@ -93,9 +93,9 @@
           <svg id="se-dims" aria-hidden="true"></svg>
         </div>
         <div class="se-zoom">
-          <button class="control-btn" id="se-zoom-in" title="Zoom in" data-l10n="title">＋</button>
-          <button class="control-btn" id="se-zoom-out" title="Zoom out" data-l10n="title">−</button>
-          <button class="control-btn" id="se-zoom-fit" title="Fit the entire dieline" data-l10n="title text">Fit</button>
+          <button class="btn" id="se-zoom-in" title="Zoom in" data-l10n="title">＋</button>
+          <button class="btn" id="se-zoom-out" title="Zoom out" data-l10n="title">−</button>
+          <button class="btn" id="se-zoom-fit" title="Fit the entire dieline" data-l10n="title text">Fit</button>
           <label class="se-dimtoggle"><input type="checkbox" id="se-show-dims" checked> <span data-l10n="text">Dimensions</span></label>
         </div>
       </div>

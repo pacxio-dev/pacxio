@@ -40,6 +40,13 @@ STRAIN_STEP_MM = 2.0  # PO05 算变形量的网格
 TEX_PX_PER_MM = 6.0
 BASE_ROWS = 4
 GUSSET_REACH = 2.0  # 背封袋侧风琴从上下封往里多长（× 褶深）撑到位
+# 自立袋效果图的样子（2026-11-15，"立不起来"重做；只管看，PO05 变形量仍按上面的物理近似）【初值】：
+# 拉链带以上压平、顶封一条直线；往下鼓到 body，截面更饱满（sin^LOOK_P）；到底变成椭圆底（sin^0.5），
+# 底深不超过 LOOK_BASE_MAX × 袋宽（真实自立袋底面约宽的一半）；膜不伸长要收的宽度只收 LOOK_NARROW（其余在实物上是褶皱）
+LOOK_P = 0.65
+LOOK_NARROW = 0.35
+LOOK_BASE_MAX = 0.3  # 每面（半深）
+LOOK_RISE = 0.22  # 拉链带下沿往下多长（× 袋高）鼓到位
 
 Vec3 = tuple[float, float, float]
 
@@ -93,30 +100,52 @@ def filled_sheets(
     rules: PouchRules,
     grid: tuple[int, int] = GRID,
     open_gusset: bool = True,
+    look: bool = False,
 ) -> list[Sheet]:
-    """装满后的各张膜；坐标 mm，原点在包围盒左前下角，z 向上，正面朝 -y。"""
+    """装满后的各张膜；坐标 mm，原点在包围盒左前下角，z 向上，正面朝 -y。
+
+    look：效果图用的样子（自立袋顶封平直、底撑成椭圆、立得住）；False 是 PO05 用的物理近似。"""
     info = dl.style_meta["pouch"]
     nu, nv = grid
     nu += nu % 2  # 背封袋背面在中缝处分两半：中缝落在网格线上
     if info["kind"] in ("pouch_backseal", "pouch_flat_bottom"):
         sheets = _backseal(dl, info, fill, rules, nu, nv, open_gusset)
     else:
-        sheets = _two_face(dl, info, fill, rules, nu, nv)
+        sheets = _two_face(dl, info, fill, rules, nu, nv, look)
     lo = np.min([s.pos.reshape(-1, 3).min(axis=0) for s in sheets], axis=0)
     for s in sheets:
         s.pos = s.pos - lo
     return sheets
 
 
+def _standup_look(info: dict[str, Any], fill: float, rules: PouchRules, x0: np.ndarray,
+                  y0: np.ndarray, t: float) -> tuple[np.ndarray, np.ndarray, np.ndarray]:  # fmt: skip
+    """效果图用的自立袋：返回 (x, 高度 v, 每面鼓起 z)。顶封、拉链带以上平；底是椭圆、贴地。"""
+    w, h, s = float(info["width"]), float(info["height"]), float(info["seal"])
+    g = float(info.get("gusset") or 0.0)
+    top = h - (float(info.get("zip_top") or 0) + float(info.get("zip_w") or 0) if info.get("zipper") else s)
+    rise = np.sin(np.pi / 2 * np.clip((top - y0) / (LOOK_RISE * h), 0.0, 1.0))
+    fall = np.clip(1 - y0 / (STANDUP_FALL * h), 0.0, 1.0) ** 2
+    base = min(fill * rules.base_k * g, LOOK_BASE_MAX * w)
+    u = np.clip((x0 - s) / (w - 2 * s), 0.0, 1.0)
+    p = LOOK_P + (0.5 - LOOK_P) * fall  # 越往下越接近椭圆
+    z = np.sin(np.pi * u) ** p * rise * (t + (base - t) * fall)
+    x_phys = _pull(x0, z, axis=1, anchor=x0.shape[1] // 2)
+    return x0 + LOOK_NARROW * (x_phys - x0), y0.copy(), z
+
+
 def _two_face(
-    dl: Dieline, info: dict[str, Any], fill: float, rules: PouchRules, nu: int, nv: int
-) -> list[Sheet]:
+    dl: Dieline, info: dict[str, Any], fill: float, rules: PouchRules, nu: int, nv: int,
+    look: bool = False,
+) -> list[Sheet]:  # fmt: skip
     w, h, s = float(info["width"]), float(info["height"]), float(info["seal"])
     standup = info["kind"] == "pouch_standup"
     x0, y0 = _grid(w, h, nu, nv)
     a = _bump((x0 - s) / (w - 2 * s))
     t = fill * rules.puff_k * min(w - 2 * s, h - 2 * s)
-    if standup:
+    if standup and look and info.get("shape") != "custom":
+        x, v, z = _standup_look(info, fill, rules, x0, y0, t)
+    elif standup:
         g = float(info.get("gusset") or 0.0)
         rise = np.sin(np.pi / 2 * np.clip((h - s - y0) / (STANDUP_RISE * h), 0.0, 1.0)) ** PROFILE_P
         base = fill * rules.base_k * g
@@ -124,10 +153,11 @@ def _two_face(
         z = a * rise * (t + (base - t) * fall)
     else:
         z = t * a * _bump((y0 - s) / (h - 2 * s))
-    if info.get("shape") == "custom":  # 异形：按离封边内沿的距离鼓（外面是废边，不鼓）
-        z = _shape_bulge(dl, x0, y0, s, fill, rules)
-    x = _pull(x0, z, axis=1, anchor=nu // 2)
-    v = _pull(y0, z, axis=0, anchor=nv if standup else nv // 2)
+    if not (standup and look and info.get("shape") != "custom"):
+        if info.get("shape") == "custom":  # 异形：按离封边内沿的距离鼓（外面是废边，不鼓）
+            z = _shape_bulge(dl, x0, y0, s, fill, rules)
+        x = _pull(x0, z, axis=1, anchor=nu // 2)
+        v = _pull(y0, z, axis=0, anchor=nv if standup else nv // 2)
     front = np.stack([x, -(EPS_MM + z), v], axis=-1)
     back = np.stack([x, EPS_MM + z, v], axis=-1)[:, ::-1]  # 从背后看：左边是正面的右边
     fx, bx = _panel_x0(dl, "front"), _panel_x0(dl, "back")
@@ -447,7 +477,7 @@ def filled_scene(dl: Dieline, art: Image.Image, mapping: _Map, fill: float, rule
                  grid: tuple[int, int] = GRID, bake_shading: bool = True, film: str | None = None) -> tuple[BoxModel, dict[str, Image.Image]]:  # fmt: skip
     """装满的袋子：每格两个三角形，各用一张矩形小平面 + 三角形以外透明的小贴图。bake_shading：
     把格内的光滑明暗烘进贴图（静态图用；工作台自己打光，不烘）。"""
-    sheets = filled_sheets(dl, fill, rules, grid)
+    sheets = filled_sheets(dl, fill, rules, grid, look=True)
     for sh in sheets:
         if sh.key == "base":  # 自立袋的底不印刷，按膜的本色
             sh.rgb = FILM_RGB.get(film or "white", FILM_RGB["white"])

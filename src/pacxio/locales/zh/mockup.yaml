@@ -65,3 +65,5 @@
 "{part}·{face}": "{part}·{face}"
 "{name} ({style})  closed outer size {l} x {w} x {h} mm": "{name}（{style}）  合上外尺寸 {l} x {w} x {h} mm"
 "Flat comparison  {job}": "平面图对照  {job}"
+"Approval is blocked because traced lettering is no longer valid: {items}": "以下描摹艺术字已失效，暂不能确认刀版：{items}"
+"Re-confirm or revert the traced lettering with `pacxio restore lettering`, then rerun `render`": "请用 `pacxio restore lettering` 重新确认或 `--revert` 退回字体排，然后重新 `render`"

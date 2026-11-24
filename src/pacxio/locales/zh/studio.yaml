@@ -66,6 +66,13 @@ Dieline confirmation image: 刀版确认图
 Differences from the flats (written by the agent): 和平面图不一样的地方（agent 写）
 Digital: 数码
 Directions not chosen: 没选的方向
+Display lettering comparisons: 展示艺术字并排对照
+'Display lettering · {id} ({text})': '展示艺术字 · {id}（{text}）'
+Auto-traced · confirmed with dieline approval: 自动转矢量 · 随刀版确认一并生效
+Revert to font: 退回字体排
+Trace as smooth vector: 转平滑矢量
+Gray zone: 灰区（建议先加字体）
+Recommend trace: 建议描摹
 Drag to rotate, scroll to zoom: 拖动旋转、滚轮缩放
 Each panel: 各面
 Export the delivery pack: 导出交付包
@@ -202,3 +209,14 @@ zoom requires a file and a box with four numbers: zoom 要 file 和 4 个数的 
 '{why}; make the 3D mockup again (mockup)': '{why}，重新出 3D 效果图（mockup）'
 '{why}; render the dieline confirmation image again': '{why}，重新 render 出刀版确认图'
 ★ Chosen: ★ 选定
+'Stop reason: {reason}': 停止原因：{reason}
+'Rounds: {completed}/{attempted} accepted · Passing faces: {b_pass} → {f_pass}/{total} · Score: {b_sc} → {f_sc}': 轮次：{completed}/{attempted} 轮已采纳 · 达标面：{b_pass} → {f_pass}/{total} · 综合分：{b_sc} → {f_sc}
+'Protected (untouched): {items}': 受保护（未改动）：{items}
+'Auto-restore iterations': 自动迭代还原记录
+'Non-open fonts & upload authorization': 非开源字体与云端上传授权
+'system font': 系统字体
+'brand font': 品牌字体
+'full file · deleted after render': 整文件瞬时上传 · 渲染完即删
+'glyph subset · deleted after render': 最小字形子集 · 渲染完即删
+'authorized by {by}': 已由 {by} 授权确认
+'pending authorization (`pacxio font authorize <job> {font}`)': '待确认授权（运行 `pacxio font authorize <job> {font}`）'

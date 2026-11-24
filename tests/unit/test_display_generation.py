@@ -238,7 +238,7 @@ def test_cloud_route_prepares_downloaded_preview_only(tmp_path, monkeypatch, con
     monkeypatch.setattr(
         route.auth, "ensure", lambda: config.Login("https://example.invalid", "test")
     )
-    monkeypatch.setattr(route, "Client", lambda *a: SimpleNamespace(start_run=lambda *a: "run"))
+    monkeypatch.setattr(route, "Client", lambda *a: SimpleNamespace(start_run=lambda *a, **kw: "run"))
     monkeypatch.setattr(route, "push_with_retry", lambda *a: "job")
 
     def wait(*args):

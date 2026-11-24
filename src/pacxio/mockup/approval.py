@@ -85,22 +85,30 @@ def design_fingerprint(directory: Path, job: Job) -> str:
                     fonts[name] = _sha(find_font(name, directory))
                 except TextError:
                     fonts[name] = "MISSING"
+    job_dump = job.model_dump(
+        mode="json",
+        exclude_none=True,
+        exclude={
+            "key_colors": True,
+            "container": True,  # 标签贴的瓶子只影响效果图展示（C4）
+            "pouch": True,  # 软袋鼓起量只影响装满效果图（C5）
+            "placements": {"__all__": {"label_en", "locked"}},
+            "finishes": {"__all__": {"note"}},
+            **({"attachments": {"__all__": {"note"}}} if job.attachments else {}),
+        },
+    )
+    # 艺术字随刀版确认签章（auto_traced → confirmed）只更新确认人/时间/指纹，不改印刷像素；
+    # 仍保留 content_id/text/concept/concept_sha256 及 assets 里的 SVG 哈希参与设计指纹。
+    for pl_d in job_dump.get("placements") or []:
+        let_d = pl_d.get("lettering")
+        if isinstance(let_d, dict):
+            for k in ("status", "confirmed_by", "confirmed_at", "fingerprint"):
+                let_d.pop(k, None)
     blob = json.dumps(
         {
             # 关键颜色、工艺说明只是给工厂的标注，英文说明只进出图提示词，都不改印刷内容和确认时
             # 看的图：改了不让确认过期
-            "job": job.model_dump(
-                mode="json",
-                exclude_none=True,
-                exclude={
-                    "key_colors": True,
-                    "container": True,  # 标签贴的瓶子只影响效果图展示（C4）
-                    "pouch": True,  # 软袋鼓起量只影响装满效果图（C5）
-                    "placements": {"__all__": {"label_en"}},
-                    "finishes": {"__all__": {"note"}},
-                    **({"attachments": {"__all__": {"note"}}} if job.attachments else {}),
-                },
-            ),
+            "job": job_dump,
             "assets": assets,
             "fonts": dict(sorted(fonts.items())),
         },

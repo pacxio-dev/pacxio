@@ -20,8 +20,12 @@
 "Flatten transparency in your design software, then export again": "在设计软件里拼合透明度后重新导出"
 "A shape uses transparency ({value})": "形状用了透明度（{value}）"
 "Change it to an opaque solid color (flatten transparency in your design software); print colors must be explicit": "改成不透明的实色（在设计软件里拼合透明度），印刷用的颜色要明确"
-"The {paint} of a shape uses a gradient or pattern ({value})": "形状的 {paint} 用了渐变或图案（{value}）"
-"Change it to a solid color; for a gradient look, make a bitmap asset and place it with `art add --kind image`": "改成实色；需要渐变效果时做成位图素材，用 `art add --kind image` 放置"
+"The {paint} of a shape uses an unsupported pattern or paint server ({value})": "形状的 {paint} 用了不支持的图案填充或引用（{value}）"
+"Use solid colors or standard linear/radial gradients; for patterns, place a bitmap asset with `art add --kind image`": "改用实色或标准线性 / 径向渐变；图案填充请做成位图素材，用 `art add --kind image` 放置"
+"A gradient stop has an invalid color ({value})": "渐变色标的颜色无效（{value}）"
+"Use standard hex / rgb stop-color values in the SVG gradient": "在 SVG 渐变里改用标准的十六进制 / RGB stop-color 颜色值"
+"The gradient uses spreadMethod={spread}, which print PDF shadings cannot reproduce": "渐变用了 spreadMethod={spread}，印刷 PDF 原生渐变无法如实还原"
+"Use standard pad gradients, or rasterize the repeating gradient as a 300ppi image": "改用标准 pad 渐变，或把重复渐变导出为 300ppi 位图素材"
 "The fill color has transparency ({value})": "填充色带透明度（{value}）"
 "Change it to an opaque solid color": "改成不透明的实色"
 "The stroke color has transparency ({value})": "描边色带透明度（{value}）"
@@ -66,3 +70,9 @@
 "The hanging indent of placement {id} ({indent}mm) is not smaller than the text box width ({width}mm)": "放置 {id} 的悬挂缩进 {indent}mm 不小于文字框宽 {width}mm"
 "Reduce --hanging-indent, or widen the text box (--box)": "减小 --hanging-indent，或加宽文字框（--box）"
 "Fonts {names} are all missing glyphs: {glyphs} (placement {id})": "字体 {names} 都缺少字形：{glyphs}（放置 {id}）"
+'Erase the AI-drawn text with `restore strip / face --erase x,y,w,h` and trace again; text is set by the engine': 用 `restore strip / face --erase x,y,w,h` 框掉 AI 画的字再描；文字由引擎排
+'Re-confirm the traced lettering with `pacxio restore lettering`, or revert to font typesetting with `--revert`': 用 `pacxio restore lettering` 重新确认艺术字，或用 `--revert` 换回字体排
+'Traced lettering': 描摹艺术字
+'Traced lettering {id} is no longer valid: {why}': 描摹艺术字 {id} 确认已失效：{why}
+'Traced lettering {id} has strokes thinner than {mm}mm that may break or drop out in print': 描摹艺术字 {id} 存在细于 {mm}mm 的笔画，印刷可能断线或糊版
+'Enlarge the lettering box, simplify fine outlines, or revert to font typesetting with `pacxio restore lettering <job> --revert {id}`': 放大艺术字框、简化过细描边，或用 `pacxio restore lettering <job> --revert {id}` 换回字体排

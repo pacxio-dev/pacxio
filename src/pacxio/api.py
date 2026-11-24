@@ -1524,10 +1524,16 @@ def _check_art_files(directory: Path, placement: Placement, job: Job) -> list[Is
             profile = load_profile(job.profile)
             icc = resolve_icc(profile, job, directory).path
             illustration = is_illustration(read_meta(directory / rel))
-            _, note = resolve_colors(placement, [s.hex for s in art.shapes], ColorConverter(icc),
-                                     illustration)  # fmt: skip
+            conv = ColorConverter(icc)
+            solid_hexes = [s.hex for s in art.shapes if s.gradient is None]
+            grad_hexes = [h for s in art.shapes if s.gradient is not None for h in s.gradient.hexes]
+            _, note = resolve_colors(placement, solid_hexes, conv, illustration)
             if note is not None:
                 warnings.append(note)
+            if grad_hexes:
+                _, gnote = resolve_colors(placement, grad_hexes, conv, illustration=True)
+                if gnote is not None and note is None:
+                    warnings.append(gnote)
     return warnings
 
 
@@ -1706,6 +1712,12 @@ def art_add(directory: Path, fields: dict[str, Any]) -> Result:
         return _fail(r, [e.issue], 2)
     index = ids.index(before) if before is not None else len(job.placements)
     job.placements.insert(index, placement)
+    if placement.kind == "text" or job.font_pins:
+        from pacxio.fonts import sync_font_pins
+
+        pin_errs = sync_font_pins(job, directory)
+        if pin_errs:
+            return _fail(r, pin_errs, 2)
     r.artifacts = [str(job.save(directory))]
     r.data = {
         "id": placement.id,
@@ -1884,7 +1896,7 @@ def art_same_face(
 
 SETTABLE_CLEAR = {"clip", "color", "colors", "tag", "style", "font", "size_pt", "tracking",
                   "line_height", "label", "label_en", "fit", "align", "content", "hanging_indent",
-                  "vertical", "skew_x", "skew_y"}  # fmt: skip
+                  "vertical", "skew_x", "skew_y", "locked"}  # fmt: skip
 
 
 def art_set(
@@ -1977,6 +1989,10 @@ def art_remove(directory: Path, art_id: str) -> Result:
             2,
         )
     del job.placements[ids.index(art_id)]
+    if job.font_pins:
+        from pacxio.fonts import prune_font_pins
+
+        prune_font_pins(job)
     r.artifacts = [str(job.save(directory))]
     r.data = {"removed": art_id, "order": [x.id for x in job.placements]}
     return r
@@ -2209,6 +2225,32 @@ def export_job(
     approval = approval_state(directory, job)
     if require_approval and not approval.ok:
         return _fail(r, [_approval_issue(approval.status)], 1)
+    if require_approval:
+        from pacxio.visual.meta import validate_lettering_record
+
+        unconfirmed_let: list[Issue] = []
+        for pl in job.placements:
+            if pl.lettering is None:
+                continue
+            why = validate_lettering_record(
+                directory, job, pl.lettering.model_dump(), require_confirmed=True
+            )
+            if why is not None:
+                unconfirmed_let.append(
+                    Issue(
+                        id="CONCEPT",
+                        message=t(
+                            "Traced lettering {id} is not confirmed for export: {why}",
+                            id=pl.id,
+                            why=why,
+                        ),
+                        fix=t(
+                            "Approve the dieline proof (`pacxio approve`) or revert to font typesetting (`pacxio restore lettering --revert`)"
+                        ),
+                    )
+                )
+        if unconfirmed_let:
+            return _fail(r, unconfirmed_let, 1)
     with use_language(dielines.job_output_language(directory)):  # 排版时的提示（V01 等）进报告
         parts, dset, errs = pipeline.prepare_parts(directory)
     if errs or dset is None:

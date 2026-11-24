@@ -29,7 +29,7 @@ export function localizePage() {
   const toggle = document.querySelector("#language-toggle");
   const target = language === "zh" ? "en" : "zh";
   toggle.lang = target === "zh" ? "zh-CN" : "en";
-  toggle.textContent = target === "zh" ? "中文" : "EN";
+  toggle.textContent = target === "zh" ? "CN" : "EN";
   toggle.title = target === "zh" ? "切换到中文" : "Switch to English";
   toggle.hidden = false;
   toggle.addEventListener("click", () => {

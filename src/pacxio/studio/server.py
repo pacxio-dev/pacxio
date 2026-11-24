@@ -100,6 +100,26 @@ def _approve(d: Path, by: str, note: str | None) -> Result:
     return approve_design(d, by=by, note=note)
 
 
+def _lettering_revert_and_render(d: Path, pid: str) -> Result:
+    from pacxio.api import render_job
+    from pacxio_pro.restore.lettering import revert_lettering
+
+    res = revert_lettering(d, [pid])
+    if res.ok:
+        render_job(d)
+    return res
+
+
+def _lettering_trace_and_render(d: Path, pid: str, by: str) -> Result:
+    from pacxio.api import render_job
+    from pacxio_pro.restore.lettering import confirm_lettering
+
+    res = confirm_lettering(d, [pid], by=by)
+    if res.ok:
+        render_job(d)
+    return res
+
+
 def studio_dir(directory: Path) -> Path:
     return directory / STUDIO_DIR
 
@@ -488,6 +508,16 @@ class Handler(BaseHTTPRequestHandler):
             return use_concept(d, str(target), by=BY_STUDIO, note=text)
         if action == "flats":
             return confirm_flats(d, by=BY_STUDIO, note=text)
+        if action == "lettering_revert":
+            return _local_or_cloud(
+                ["restore", "lettering", str(d), "--revert", str(target)],
+                lambda: _lettering_revert_and_render(d, str(target)),
+            )
+        if action == "lettering_trace":
+            return _local_or_cloud(
+                ["restore", "lettering", str(d), "--confirm", str(target), "--by", BY_STUDIO],
+                lambda: _lettering_trace_and_render(d, str(target), BY_STUDIO),
+            )
         return _local_or_cloud(["approve", str(d), "--by", BY_STUDIO, *extra],
                                lambda: _approve(d, BY_STUDIO, text))  # fmt: skip
 
@@ -627,8 +657,12 @@ class Handler(BaseHTTPRequestHandler):
                 scene = json.loads(target.read_bytes())
                 if isinstance(scene, dict) and "display" in scene:
                     data = json.dumps(validated_scene(scene, target.parent), ensure_ascii=False).encode()
-                    self._send(HTTPStatus.OK, data, CONTENT_TYPES[".json"],
-                               {"Cache-Control": "no-store"})
+                    self._send(
+                        HTTPStatus.OK,
+                        data,
+                        CONTENT_TYPES[".json"],
+                        {"Cache-Control": "no-store"},
+                    )
                     return
             except (ValueError, OSError):
                 pass

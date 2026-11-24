@@ -398,7 +398,7 @@ function imageCard(card) {
   e.append(media);
   const cap = head(card);
   if (concept) cap.prepend(el("span", "tag-concept", concept)); // 标在底栏，不遮图
-  const open = el("a", "btn open-link", tr("Original ↗"));
+  const open = el("a", "open-link", tr("Original ↗"));
   open.href = fileUrl(card.file, card.mtime);
   open.target = "_blank";
   open.rel = "noopener";
@@ -441,7 +441,7 @@ function tableCard(card) {
       if (!row.required) txt.append(el("span", "opt-tag", tr("Optional")));
       if (row.pending) txt.append(el("span", "pend", tr("Pending: {1}", row.pending)));
       const act = el("div", "row-act");
-      const add = el("button", "btn row-add", tr("Notes"));
+      const add = el("button", "row-add", tr("Notes"));
       add.title = tr("Add a note about this item, its wording, or its placement");
       add.addEventListener("click", (ev) => {
         ev.stopPropagation();
@@ -568,7 +568,9 @@ function viewerCard(card) {
       const standard = el("button", "vbtn", tr("Standard preview"));
       standard.title = tr("Switch to the standard 3D preview for this view");
       standard.addEventListener("click", (ev) => {
-        ev.stopPropagation(); v.useLegacy(); standard.remove();
+        ev.stopPropagation();
+        v.useLegacy();
+        standard.remove();
       });
       bar.append(standard);
     });
@@ -638,27 +640,19 @@ function viewerCard(card) {
     sync();
     controls.append(lightRow);
     if (card.data.regions?.length) {
-      // Selection and colour overlay are separate; the material is shown by default.
+      // 点一下在盒子上用蓝色标出这项工艺的范围，再点取消
       const regionRow = el("div", "mc-row");
       regionRow.append(el("span", "mc-title", tr("Finishes")));
-      let selectedRegion = "";
-      const showLabel = el("label", "mc-region-toggle");
-      const showAreas = el("input"); showAreas.type = "checkbox";
-      showAreas.setAttribute("aria-label", tr("Show finish areas"));
-      showAreas.addEventListener("change", () => v.selectRegion(showAreas.checked ? selectedRegion : ""));
-      showLabel.append(showAreas, document.createTextNode(tr("Show finish areas")));
-      regionRow.append(showLabel);
       const counts = {};
       for (const r of card.data.regions) counts[r.label] = (counts[r.label] || 0) + 1;
       const chips = [];
       for (const r of card.data.regions) {
         const b = el("button", "vbtn", `${r.label}${counts[r.label] > 1 ? `（${r.id}）` : ""}`);
-        b.title = tr("{1}Select a finish. Enable Show finish areas to highlight it.", r.detail ? r.detail + tr("; ") : "");
+        b.title = tr("{1}Click to highlight this area. Click again to clear it.", r.detail ? r.detail + tr("; ") : "");
         b.addEventListener("click", () => {
           const on = !b.classList.contains("on");
           for (const x of chips) x.classList.toggle("on", on && x === b);
-          selectedRegion = on ? r.id : "";
-          v.selectRegion(showAreas.checked ? selectedRegion : "");
+          v.selectRegion(on ? r.id : "");
         });
         chips.push(b);
       }
@@ -671,7 +665,7 @@ function viewerCard(card) {
   }
   host.append(bar);
   const caption=head(card);
-  const still=el("a","btn open-link",tr("Static overview ↗"));
+  const still=el("a","open-link",tr("Static overview ↗"));
   still.title=tr("Open the static overview of all panels");
   still.href=fileUrl(card.file.replace(/[^/]*$/,"00_mockup_sheet.png"),card.mtime);still.target="_blank";still.rel="noopener";caption.append(still);
   e.append(caption);
@@ -935,7 +929,7 @@ async function zoomVisible() {
     width: `${(box[2] - box[0]) * 100}%`, height: `${(box[3] - box[1]) * 100}%`,
   });
   layer.append(patch);
-  toast(tr("Showing this area at 200 DPI with a watermark"));
+  toast(tr("Showing this area at 200 DPI"));
 }
 
 // 正式稿上的面名与印前问题框：按 preview.map.json 的毫米 ↔ 像素换算，用百分比定位
@@ -1851,7 +1845,15 @@ const CONFIRM_TEXT = {
   },
   approve: {
     title: tr("Approve the dieline proof for export"),
-    body: tr("Check the text, artwork placement, dimensions, and finish annotations against what should go to print. If the design changes, approve the proof again before export. Confirm a physical proof before mass production."),
+    body: tr("Check the text, artwork placement, dimensions, and finish annotations against what should go to print. Any auto-traced display lettering is signed off together with this approval. If the design changes, approve the proof again before export. Confirm a physical proof before mass production."),
+  },
+  lettering_revert: {
+    title: tr("Revert display lettering to font typesetting"),
+    body: tr("Switch this traced display lettering back to its original engine-typeset font placement and re-render the dieline proof."),
+  },
+  lettering_trace: {
+    title: tr("Trace display lettering as smooth vector"),
+    body: tr("Trace this display lettering from the flat concept as smooth print-ready vector curves and re-render the dieline proof."),
   },
 };
 
@@ -1922,6 +1924,8 @@ function confirmPreview(a, card) {
   } else if (a.id === "use") {
     box.append(previewImg(card));
     box.append(el("div", "warn-line", tr("Ask the agent to regenerate the flat proof and mockup proof to see this version there.")));
+  } else if (a.id === "lettering_revert" || a.id === "lettering_trace") {
+    if (card) box.append(previewImg(card));
   } else if (a.id === "approve") {
     const st = stageById("design");
     for (const c of st.cards.filter((x) => x.kind === "image")) box.append(previewImg(c));

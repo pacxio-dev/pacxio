@@ -192,6 +192,7 @@ Delete an item (refused while a placement uses it).: 删一条信息（被放置
 'Design language (English): colors, type style, graphics, photo mood …': 设计语言（英文）：配色、字体风格、图形、照片气质……
 Die inner-corner radius mm; 0 = none, auto = by material (carton board 1): 刀模内角圆角 mm；0 不倒，auto 按材料（卡纸 1）
 Die outer-corner radius mm; 0 = none, auto = by material (carton board 2): 刀模外角圆角 mm；0 不倒，auto 按材料（卡纸 2）
+Do not compare fonts from the open font library (only the job's and your own fonts): 不比开源字体库里的字体（只比 job 和你自己的字体）
 Do not open the browser: 不自动打开浏览器
 Done: 做了这些
 Download Source Han Sans if missing (about 33 MB, uses the network): 缺思源黑体时下载（约 33 MB，联网）
@@ -399,8 +400,8 @@ Raised pattern SVG (lettering, border, ornament; same artboard as the outline): 
 ? 'Read small text on the confirmation image: crop a region at full resolution (200 DPI) into studio/zoom/.
 
 
-  In the open-source version the confirmation image comes back as a 100 DPI watermarked preview; crops are requested from the cloud (watermarked, up to 24 per image).'
-: "看清确认图上的小字：取一块原分辨率（200 DPI）的局部，存到 studio/zoom/。\n\n    开源版里确认图回传的是 100 DPI 加水印的预览，局部向云端要（带水印，同一张最多 24 次）。"
+  In the open-source version the confirmation image comes back as a 100 DPI preview; crops are requested from the cloud (up to 24 per image).'
+: "看清确认图上的小字：取一块原分辨率（200 DPI）的局部，存到 studio/zoom/。\n\n    开源版里确认图回传的是 100 DPI 的预览，局部向云端要（同一张最多 24 次）。"
 'Read: ': 要读：
 Recipe JSON file: 配方 JSON 文件
 ? Record a key color (the spec sheet's Colors section and the color swatches on the production files' callout layer). The engine does not convert Pantone numbers to CMYK.
@@ -497,6 +498,11 @@ Wanted pixel size WxH; the closest supported aspect ratio is used: 期望像素�
 'When the font''s embedding permission is restricted: confirm you have checked the license with the rights holder': 字体嵌入许可位为受限时，确认你已向权利人确认授权
 ? When the seam is far off, keep this panel fixed (repeatable) and bend the other one to meet it; right / left work as short forms
 : 接缝错开太多时以这个面为准（可重复），另一面弯过去接上；right / left 可作简写
+? Stitch adjacent panels in continuous blank coordinates (comma-separated or repeatable, e.g. back,top_lid or lid.top,lid.front) instead of the body wrap
+: 按刀版连续坐标（space=blank）拼任意共享折线的相邻面（逗号分隔或可重复，如 back,top_lid 或 lid.top,lid.front），用于盖/底与盒身、飞机盒或多部件盒
+? Per-seam alignment choice panelA|panelB=panelA|panelB|both (repeatable; both meets halfway across the crease)
+: 逐条接缝指定对齐基准 面A|面B=面A|面B|both（可重复；both 表示两边各让一半在接缝处对接）
+Width of the local seam adjustment band in mm (default 8 mm): 接缝局部调整带宽（毫米，默认 8 mm）
 Where it is used, e.g. logo, title underline: 用在哪，如 Logo、标题下划线
 ? Where the job stands, who it waits on, what to do next (same source as the workbench's "Now"); run it before every round of work.
 : 现在到哪一步、等谁、下一步做什么（和工作台的"现在"同一个来源）；每一轮动手前先跑。
@@ -532,8 +538,8 @@ Write the change; without it, only show which file would change and what: 真的
 '[{label} {part}]': 【{label} {part}】
 already running, reused: 已在运行，复用
 auto: 自动
-? 'auto (pick by image) | shapes (line art, icons, flat-color graphics: trace color areas) | vtracer (full illustrations: full-color tracing)'
-: auto（看图选）| shapes（线框、图标、纯色图形：分色描色块）| vtracer（整片插画：全彩描）
+? 'auto (pick by image) | shapes (line art, icons, flat-color graphics: trace color areas) | vtracer (full illustrations: full-color tracing) | gradient (smooth linear/radial gradient SVG without banding)'
+: auto（看图选）| shapes（线框、图标、纯色图形：分色描色块）| vtracer（整片插画：全彩描）| gradient（规则线性 / 径向渐变：直接拟合不分阶平滑渐变 SVG）
 auto ({value:g}{unit}): 自动（{value:g}{unit}）
 both ends change together: 两端一起变
 calibrated construction: 已校准做法
@@ -610,6 +616,13 @@ unreachable: 连不上
 'vector: single color c,m,y,k': vector：整体单色 c,m,y,k
 ? 'vtracer: line strength, 1 = as is; 0.35 = pull colors toward the background, keeping 35% of the difference (for faded side scenery used as a background texture)'
 : vtracer：线条深浅，1 原样；0.35 = 颜色往底色拉、和底色的差只留 35%（侧面山水退成底纹时用）
+? 'vtracer: smooth soft-gradient regions into this many clean flat bands along gradient contours before tracing (2–16; default is to print gradients as redrawn images)'
+: vtracer：渐变区域非描不可时，先顺着渐变方向保边平滑并分成这么多阶纯色再描（2–16；默认建议按重画位图印）
+? 'Analyze region routing only (vector / image / svg) and save the result into the asset''s .meta.json without tracing'
+: 只按区域做分路分析（vector / image / svg）并把结果写入素材 .meta.json，不描摹
+? 'Override a region''s route as id=vector|image|svg (repeatable, e.g. --region-route r1=image); saved in .meta.json'
+: 覆盖区域分路，格式 id=vector|image|svg（可多次指定，如 --region-route r1=image）；结果写入 .meta.json
+'Expected id=vector|image|svg for --region-route, got: {value}': --region-route 参数格式应为 id=vector|image|svg，收到：{value}
 ? 'vtracer: merge non-background colors into this many levels (for one-color line art; 6 is chosen automatically for line art)'
 : vtracer：底色以外的颜色并成几档（单色线稿用；看图选到线稿时自动 6 档）
 'vtracer: merge specks smaller than this (pixels, default 4); raise it when there are too many shapes': vtracer：并掉比这小的碎块（像素，默认 4）；嫌形状太多时调大
@@ -629,3 +642,54 @@ zinc_alloy (die-cast zinc alloy, default) | aluminum (stamped aluminum): zinc_al
 '{title}Blank {w} x {h} mm, with bleed {pw} x {ph} px@300ppi; bleed {bleed} mm, safe margin {safe} mm': '{title}展开 {w} x {h} mm，含出血 {pw} x {ph} px@300ppi；出血 {bleed} mm，安全边距 {safe} mm'
 '{what} must be name=value: {item}': '{what} 要写成 名字=值：{item}'
 '{what} needs {n} comma-separated numbers, e.g. ': '{what} 需要 {n} 个用逗号分隔的数字，例如 '
+'Pin or verify the font versions and hashes recorded in job.json.': 把 job 用到的字体版本与哈希锁定到 job.json，或核对现有锁定。
+'Update existing pins to the currently installed font files (changes the design fingerprint)': 按当前安装的字体文件更新锁定（会改变设计指纹）
+'Verify existing pins without modifying job.json': 只核对现有锁定，不改 job.json
+'Pinned fonts:': 已锁定字体：
+'No fonts are used in this job yet': 这个 job 还没有用到任何字体
+'  {name:28} {version}  sha256 {sha}': '  {name:28} {version}  sha256 {sha}'
+'Scan display titles and large lettering for tracing candidates (writes flat/lettering.json and side-by-side comparisons); --auto traces recommended items as smooth vectors for dieline review, --confirm + --by confirms explicitly, or --revert switches back to font typesetting.': 扫描标题和大字展示艺术字候选项（写 flat/lettering.json 与并排对照图）；--auto 自动把推荐项转成平滑矢量进初稿并随刀版确认签章，--confirm + --by 显式确认，或 --revert 一键换回字体排。
+'Automatically trace recommended display lettering candidates as smooth vectors (signed off together with dieline approval)': 自动将推荐的展示艺术字候选项转成平滑矢量进初稿（随阶段 ⑤ 刀版确认一并签章）
+'Automatically trace recommended display lettering when no font matches well (default on)': 字体匹配不上时自动将推荐的展示艺术字转成平滑矢量（默认开启）
+'Placement id to confirm and trace as vector lettering (repeatable; only after the user has checked the side-by-side comparison)': 确认并描成矢量艺术字的放置 id（可重复；须用户看过并排对照图并逐字核对后给出）
+'Who confirmed tracing these display lettering items (required with --confirm)': 确认描摹艺术字的确认人（与 --confirm 一起给）
+'Revert a traced lettering placement back to its original font typesetting (repeatable)': 把已描摹的艺术字一键换回原字体排版（可重复）
+'Allow confirming gray-zone candidates (font NCC 0.50–0.65) when the user prefers tracing over adding a closer font': 允许确认灰区候选项（字体相关性 0.50–0.65；仅当用户看过对照图后仍选描摹时使用）
+'List usable system fonts installed on this machine (local candidate discovery).': 列出本机已安装的可用系统字体（候选列表只在本机生成）。
+'Extract a local system font into job/fonts as a static font file with license metadata.': 从本机系统字体提取静态字体文件到 job/fonts，并记录授权信息。
+'Check, confirm, or revoke one-time cloud upload authorization for a non-open font (brand or system font).': 查看、逐字体确认或撤销非开源字体（品牌字体与系统字体）的单次云端上传授权。
+'Automatic restore iteration (R2-6): score, adjust positions/colors up to N rounds, roll back if score stops improving or preflight regresses, record flat/iterations.json, and write remaining diffs into flat --diff.': 自动迭代还原（R2-6）：评分、最多 N 轮自动调位置与颜色、提分停止或印前退步自动回滚、记录 flat/iterations.json，并把剩余差异写进 flat --diff。
+'Showing {shown} of {matched} matched ({total} total system fonts)': 显示 {shown} / 匹配 {matched} 项（本机共发现 {total} 个可用系统字体）
+'No matching system fonts found': 没有找到匹配的系统字体
+'No non-open fonts require upload authorization in this job': 这个 job 里没有需要上传授权的非开源字体
+'authorized': 已授权
+'pending': 待确认
+'Lock or unlock this placement so automatic restore iteration leaves it untouched': 锁定或解锁此放置，防止自动迭代还原改动它
+'Filter by font name or family': 按字体名或家族名筛选
+'Only show fonts with Chinese glyphs': 只显示含中文字形的字体
+'Only show serif fonts': 只显示衬线字体
+'Maximum entries to show (0 = all)': 最多显示多少条（0 = 全部）
+'Rescan system font folders instead of using the cache': 忽略缓存重新扫描本机系统字体目录
+'System font name (see `pacxio font system`)': 本机系统字体名称（见 `pacxio font system`）
+'Alias to use in --font (default: system font name)': 在 --font 里使用的别名（默认沿用系统字体名）
+'Also record one-time cloud upload authorization for this font (glyph subsets only, deleted after render)': 同时记录该字体的单次云端上传授权（只传用到的字形子集，渲染完立即删除）
+'Name of the person confirming font upload authorization': 确认字体上传授权的确认人姓名
+'For fonts with the no_subsetting flag: authorize ephemeral full-file upload (still deleted after render)': 对标了 no_subsetting 的字体：显式授权以瞬时整文件方式上传（渲染完仍立即删除）
+'Font name to authorize (omit to list authorization status for this job)': 要确认上传授权的字体名（不给则列出当前 job 各非开源字体的授权状态）
+'Revoke previously recorded upload authorization': 撤销已记录的上传授权
+'Do not compare system fonts installed on this machine': 不比对本机安装的系统字体
+'Maximum iteration rounds (default 3)': 最多自动迭代轮数（默认 3）
+'Comma-separated restore steps to run each round (default: graphics,frames,rows,text,colors)': 每轮依次执行的还原步骤，逗号分隔（默认：graphics,frames,rows,text,colors）
+'Allow restore text / rows to switch fonts (default: suggest only)': 允许 restore text / rows 更换字体（默认只报建议）
+'Allow restore text to measure single-line tracking': 允许 restore text 量单行字距
+'Do not compare fonts from the open font library during restore text': 在 restore text 中不比对开源字体库
+'Do not compare system fonts installed on this machine during restore text': 在 restore text 中不比对本机安装的系统字体
+'Placement id(s) to protect from automatic edits (repeatable or comma-separated)': 保护不让自动迭代改动的放置 id（可重复或逗号分隔）
+'Write remaining differences into flat/manifest.json (same as flat --diff) and re-render for the workbench': 把剩余差异写入 flat/manifest.json（同 flat --diff）并重出确认图供工作台展示
+'Run even if the current dieline confirmation is already approved': 即使当前刀版确认图已经正式确认也强制执行
+'Run the loop and write flat/iterations.json, then restore job.json': 试跑迭代并写入 flat/iterations.json，结束后恢复原 job.json
+'Generate a print-ready standard vector regulatory symbol (pao | mobius | e-mark) into job/assets': 生成标准印刷级法规矢量符号（pao | mobius | e-mark）并写入 job/assets
+'Symbol name: pao | mobius | e-mark': 符号名：pao | mobius | e-mark
+'Output asset stem in job/assets/ (defaults to symbol-<id>)': 输出到 job/assets/ 的文件名（默认 symbol-<id>）
+'Stroke/fill hex color (#RRGGBB)': 线条/填充十六进制颜色（#RRGGBB）
+'Available symbols: ': '可用符号：'

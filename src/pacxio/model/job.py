@@ -97,6 +97,34 @@ def normalize_hex(value: str) -> str:
     return "#" + ("".join(c * 2 for c in h) if len(h) == 3 else h)
 
 
+class TracedLettering(_Strict):
+    """从展开平面图描成平滑矢量图形的标题 / 大字展示艺术字（，R2-4）。
+
+    - `status="auto_traced"`：字体配不上或命中特殊展示造型且通过准入/OCR 检查时默认自动描摹进初稿，
+      保留原文字放置快照 `fallback_text` 支持一键换回字体排，随阶段 ⑤ 刀版确认一并签章升级为 `confirmed`；
+    - `status="confirmed"`：已由用户显式确认或随刀版图确认签章。
+    记录来源平面图哈希、对应清单条目与逐字文案及防篡改指纹；一旦信息清单改字或平面图更换，自动失效并由 CONCEPT 检查拦截。"""
+
+    content_id: str
+    text: str
+    concept: str
+    concept_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    confirmed_by: str | None = None
+    confirmed_at: str | None = None
+    fingerprint: str = Field(pattern=r"^[0-9a-f]{64}$")
+    status: Literal["confirmed", "auto_traced"] = "confirmed"
+    fallback_text: dict[str, Any] | None = None
+
+    @model_validator(mode="after")
+    def _check_confirmation_fields(self) -> TracedLettering:
+        if self.status == "confirmed":
+            if not (self.confirmed_by and self.confirmed_by.strip()):
+                raise ValueError("confirmed_by is required when lettering status is confirmed")
+            if not (self.confirmed_at and self.confirmed_at.strip()):
+                raise ValueError("confirmed_at is required when lettering status is confirmed")
+        return self
+
+
 class Placement(_Strict):
     """图文放置（）。按列表顺序自下而上绘制（文字也一样，后放的盖住先放的）。
 
@@ -156,6 +184,10 @@ class Placement(_Strict):
     label: str | None = None  # 是什么 / 放什么（如"卫浴照片""喷码区"）；占位框换图后沿用
     # 英文说明：只用在英文版式简报和出图提示词里（label 写中文给人看时补上）；不进设计指纹
     label_en: str | None = None
+    # 已确认描成图形的展示艺术字元数据（，R2-4）；None 时旧 job 不变
+    lettering: TracedLettering | None = None
+    # 锁定：为 True 时自动还原迭代（restore iterate）不改动此放置；None 时旧 job 不变
+    locked: bool | None = None
 
     @field_validator("colors")
     @classmethod
@@ -220,6 +252,13 @@ class Placement(_Strict):
         labelled = self.label is not None or self.label_en is not None
         if labelled and self.kind not in ("placeholder", "image", "vector"):
             raise ValueError(t("Use label or label_en to describe a placeholder, image, or vector"))
+        if self.lettering is not None:
+            if self.kind != "vector":
+                raise ValueError(t("lettering applies only to kind=vector"))
+            if self.content != self.lettering.content_id:
+                raise ValueError(
+                    t("Placement {id} lettering content_id must match content", id=self.id)
+                )
         # 注意：旧版本给每个放置都写了 fit（如 fill 上的 "cover"），这里不能拒绝，否则旧 job 读不进来
         return self
 
@@ -255,6 +294,15 @@ class TextStyle(_Strict):
     color: ColorSpec | None = None
     # 悬挂缩进：同 Placement.hanging_indent；用这个样式的居中 / 右对齐文字不缩进
     hanging_indent: HangingIndent | None = None
+
+
+class FontPin(_Strict):
+    """锁定字体的版本与哈希（字体版本锁）：换机器或服务器升级字体库后，缺对应版本或哈希变了就报错，
+    不悄悄换成别的字体或版本导致折行、字形跑偏。"""
+
+    sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    version: str | None = None  # OpenType nameID 5（字体文件里的版本串）
+    source: str | None = None  # 来源（如开源字体库的上游网址，或 "job"）
 
 
 FINISH_ZH = {
@@ -457,6 +505,8 @@ class Job(BaseModel):
     finishes: list[FinishPlacement] = Field(default_factory=list)
     content: ContentInventory | None = None  # 信息清单（ 2.1）
     styles: dict[str, TextStyle] | None = None  # 文字样式（层级）， 2.2
+    # 字体版本锁（字体名 → 锁定时的版本与 SHA-256）：排版时核对，缺文件或哈希变了报错；None 时旧 job 不变
+    font_pins: dict[str, FontPin] | None = None
     # 面与面相同（正反同款）：{"back": "front"} 表示背面的版面就是正面的版面——只有一份数据，
     # 排版、效果图里自动复制过去，改正面时背面一起变
     same_faces: dict[str, str] | None = None

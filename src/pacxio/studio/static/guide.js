@@ -82,7 +82,7 @@ function showWelcome() {
   actions.append(start, button(tr("See stage examples"), () => showExample("concept")));
   intro.append(actions);
   body.append(intro);
-  start.focus();
+  dialog.focus({ preventScroll: true });
 }
 
 function sampleRows(rows) {
@@ -105,7 +105,7 @@ function showExample(id) {
   const nav = node("nav", "guide-stage-nav");
   nav.setAttribute("aria-label", tr("Example stages"));
   for (const [i, s] of stages.entries()) {
-    const b = button(`${String(i + 1).padStart(2, "0")} ${tr(s.title)}`, () => showExample(s.id), "guide-step");
+    const b = button(`${String(i + 1).padStart(2, "0")} ${tr(s.title)}`, () => showExample(s.id));
     if (i === index) b.setAttribute("aria-current", "step");
     nav.append(b);
   }
@@ -146,6 +146,7 @@ function showExample(id) {
 export async function initGuide() {
   dialog = node("dialog", "guide-dialog");
   dialog.id = "studio-guide";
+  dialog.tabIndex = -1;
   dialog.setAttribute("aria-labelledby", "guide-title");
   const header = node("header", "guide-head");
   title = node("h2", "", tr("Your first packaging project")); title.id = "guide-title";

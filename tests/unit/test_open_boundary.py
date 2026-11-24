@@ -112,10 +112,13 @@ def test_open_commands_run_locally_and_closed_commands_forward(tmp_path: Path) -
         ["window", "add", "j", "--panel", "front", "--box", "20,40,30,40"],
         ["notes", "add", "j", "--text", "x"],
         ["visual", "import", "j", "a.png", "--role", "graphic", "--name", "mark"],
+        ["visual", "symbol", "j", "pao", "--name", "pao-jar"],
         ["concept", "import", "j", "a.png", "--name", "c1"],
         ["concept", "tag", "j", "c1", "--view", "main"],
         ["concept", "list", "j"],
         ["font", "list", "j"],
+        ["font", "system"],
+        ["font", "authorize", "j"],
         ["studio", "status", "j"],
         ["structures", "files", "0427", "--L", "200", "--W", "150", "--H", "50", "--out", "files"],
     ]

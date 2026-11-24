@@ -48,7 +48,7 @@ def test_frontmatter_has_only_name_and_description_and_meets_both_agents_rules()
         assert word in desc.split("Not for")[0] and word not in desc.split("Not for")[1], word
 
 
-def test_referenced_files_exist_and_font_script_matches() -> None:
+def test_referenced_files_exist_and_symlink_resolves() -> None:
     _, body = split_frontmatter()
     refs = set(re.findall(r"`((?:references|scripts)/[\w./-]+)`", body))
     assert {"references/box-styles.md", "references/visual-prompts.md", "references/factory-profile.md",
