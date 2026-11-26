@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pacxio"
-version = "0.0.6"
+version = "0.0.7"
 description = "Packaging prepress for coding agents: dielines, 3D, print-ready factory files"
 license = "MIT"
 license-files = ["LICENSE"]

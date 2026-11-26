@@ -5,6 +5,8 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import secrets
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any
 
@@ -14,6 +16,7 @@ from pacxio.fontsubset import EPHEMERAL_FONT_DIR, FONT_BINARY_SUFFIXES
 from pacxio.messages import t
 
 STATE_DIR = ".cloud"
+SYNC_WORKERS = 4
 # 生成物不上传（服务器自己会生成）；.cloud 是本机记账；.ephemeral_fonts 仅单次运行时瞬时挂载
 SKIP_TOP = {STATE_DIR, "out", "mockup", "studio", EPHEMERAL_FONT_DIR}
 SKIP_NAMES = {".DS_Store"}
@@ -60,7 +63,13 @@ def read_state(job: Path) -> dict[str, Any]:
 def write_state(job: Path, state: dict[str, Any]) -> None:
     p = _state_path(job)
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(state, indent=2))
+    tmp = p.with_name(f".{p.name}.{secrets.token_hex(4)}.tmp")
+    try:
+        tmp.write_text(json.dumps(state, indent=2))
+        os.replace(tmp, p)
+    except BaseException:
+        tmp.unlink(missing_ok=True)
+        raise
 
 
 def remote_job(client: Client, job: Path) -> str:
@@ -74,12 +83,21 @@ def remote_job(client: Client, job: Path) -> str:
 
 
 def push(client: Client, jid: str, job: Path) -> int:
-    """把本机有、云端没有或不一样的文件传上去。返回传了几个。"""
+    """把本机有、云端没有或不一样的文件传上去（多文件并发复用连接）。返回传了几个。"""
     files = local_manifest(job)
     missing = client.missing(jid, files)
-    for rel in missing:
+
+    def upload_one(rel: str) -> None:
         data = (job / rel).read_bytes()
         client.put_file(jid, rel, data, sha256_bytes(data))
+
+    if len(missing) <= 1:
+        for rel in missing:
+            upload_one(rel)
+    else:
+        with ThreadPoolExecutor(max_workers=min(SYNC_WORKERS, len(missing))) as pool:
+            for _ in pool.map(upload_one, missing):
+                pass
     return len(missing)
 
 
@@ -99,17 +117,22 @@ def push_with_retry(client: Client, job: Path) -> str:
 
 def pull(client: Client, jid: str, job: Path, files: dict[str, dict[str, Any]],
          keep: set[str] | None = None) -> list[str]:  # fmt: skip
-    """下载服务器回传的文件（校验哈希）；keep 里的不覆盖。返回实际写了哪些。"""
-    written: list[str] = []
+    """下载服务器回传的文件（校验哈希、原子写、多文件并发）；keep 里的不覆盖。返回实际写了哪些。"""
+    job_root = job.resolve()
+    needed: list[tuple[str, Path, str]] = []
     for rel, info in sorted(files.items()):
         if keep and rel in keep:
             continue
         target = (job / rel).resolve()
-        if not target.is_relative_to(job.resolve()):
+        if not target.is_relative_to(job_root):
             continue  # 不信任服务器给的路径
         sha = str(info.get("sha256", ""))
         if target.is_file() and sha256_file(target) == sha:
             continue
+        needed.append((rel, target, sha))
+
+    def download_one(item: tuple[str, Path, str]) -> str:
+        rel, target, sha = item
         data = client.get_file(jid, rel)
         if sha256_bytes(data) != sha:
             raise CloudError(
@@ -118,8 +141,17 @@ def pull(client: Client, jid: str, job: Path, files: dict[str, dict[str, Any]],
                 t("Run this command again"),
             )
         target.parent.mkdir(parents=True, exist_ok=True)
-        tmp = target.with_name(f".{target.name}.part")
-        tmp.write_bytes(data)
-        os.replace(tmp, target)
-        written.append(rel)
-    return written
+        tmp = target.with_name(f".{target.name}.{secrets.token_hex(4)}.part")
+        try:
+            tmp.write_bytes(data)
+            os.replace(tmp, target)
+        except BaseException:
+            tmp.unlink(missing_ok=True)
+            raise
+        return rel
+
+    if len(needed) <= 1:
+        return [download_one(item) for item in needed]
+    with ThreadPoolExecutor(max_workers=min(SYNC_WORKERS, len(needed))) as pool:
+        written = list(pool.map(download_one, needed))
+    return sorted(written)

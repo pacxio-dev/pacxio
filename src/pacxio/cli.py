@@ -2599,6 +2599,15 @@ def concept_prompt(
             "--back-view", help=t("Which back view the flat follows (default: the one in use)")
         ),
     ] = None,
+    ground: Annotated[
+        str | None,
+        typer.Option(
+            "--ground",
+            help=t(
+                "(back / flat) Base colour of the box in the chosen design as #RRGGBB; written into the prompt so the background does not drift"
+            ),
+        ),
+    ] = None,
     text: Annotated[
         list[str] | None,
         typer.Option(
@@ -2703,6 +2712,7 @@ def concept_prompt(
         pairs,
         separate,
         brief,
+        ground,
     )
     if not json_out and r.ok:
         typer.echo(t("  {n} images in all; generate them first, then import:", n=r.data["images"]))

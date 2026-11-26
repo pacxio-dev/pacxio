@@ -319,3 +319,89 @@ def test_credentials_file_is_private(tmp_path: Path, cloud_env: None) -> None:
     assert p.stat().st_mode & 0o077 == 0
     assert config.login().url == "https://example.test"
     assert config.clear() and config.login().token is None
+
+
+def test_client_retries_transient_502_and_429_during_polling_and_fixes_429_hint(
+    job: Path, tmp_path: Path, cloud_env: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Transient gateway 502/503 and rate-limit 429 during polling recover automatically;
+    non-zoom 429 errors must not tell users to re-render before zooming."""
+    import pacxio.cloud.client as cmod
+    import pacxio.cloud.route as rmod
+
+    monkeypatch.setattr(cmod.time, "sleep", lambda _s: None)
+    monkeypatch.setattr(rmod.time, "sleep", lambda _s: None)
+
+    state = {"polls": 0, "limit_429": False}
+
+    class H(BaseHTTPRequestHandler):
+        def log_message(self, *a: Any) -> None:
+            pass
+
+        def _send(self, code: int, body: Any, headers: dict[str, str] | None = None) -> None:
+            data = json.dumps(body).encode()
+            self.send_response(code)
+            self.send_header("Content-Length", str(len(data)))
+            for k, v in (headers or {}).items():
+                self.send_header(k, v)
+            self.end_headers()
+            self.wfile.write(data)
+
+        def do_POST(self) -> None:  # noqa: N802
+            self.rfile.read(int(self.headers.get("Content-Length") or 0))
+            if self.path == "/v1/jobs":
+                return self._send(200, {"job": "j1"})
+            if self.path.endswith("/manifest"):
+                return self._send(200, {"missing": []})
+            if self.path.endswith("/runs"):
+                if state["limit_429"]:
+                    return self._send(429, {"detail": "the cloud queue is currently full"}, {"Retry-After": "5"})
+                return self._send(200, {"run": "r1"})
+            return self._send(404, {})
+
+        def do_GET(self) -> None:  # noqa: N802
+            if self.path == "/v1/runs/r1":
+                state["polls"] += 1
+                if state["polls"] == 1:
+                    return self._send(200, {"status": "running"})
+                if state["polls"] == 2:
+                    return self._send(502, {"detail": "bad gateway"})
+                if state["polls"] == 3:
+                    return self._send(429, {"detail": "rate limited"}, {"Retry-After": "0"})
+                return self._send(
+                    200,
+                    {
+                        "status": "done",
+                        "exit_code": 0,
+                        "files": {},
+                        "result": {
+                            "ok": True,
+                            "command": "render",
+                            "job": "@job",
+                            "artifacts": [],
+                            "data": {},
+                            "errors": [],
+                            "warnings": [],
+                        },
+                    },
+                )
+            return self._send(404, {})
+
+    srv = ThreadingHTTPServer(("127.0.0.1", 0), H)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    url = f"http://127.0.0.1:{srv.server_address[1]}"
+    try:
+        config.save(url, "tok")
+        code, text = route.maybe_forward(["render", str(job), "--json"], cwd=tmp_path) or (-1, "{}")
+        out = json.loads(text)
+        assert code == 0 and out["ok"] is True, out
+        assert state["polls"] == 4
+
+        # Queue-full 429 on start_run gives general backoff hint, NOT zoom hint
+        state["limit_429"] = True
+        code, text = route.maybe_forward(["render", str(job), "--json"], cwd=tmp_path) or (-1, "{}")
+        err = json.loads(text)["errors"][0]
+        assert code == 1 and err["id"] == "CLOUD_LIMIT"
+        assert "局部" not in err["fix"] and "zoom" not in err["fix"].lower()
+    finally:
+        srv.shutdown()

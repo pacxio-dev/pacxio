@@ -82,8 +82,10 @@ Using the chosen main view as reference, make one more 3D image **from behind**,
 The engine writes the prompt (run `pacxio plan jobs/x` first to refresh the layout brief):
 
 ```bash
-pacxio concept prompt jobs/x --step back --design "<optional: design language in English>"
+pacxio concept prompt jobs/x --step back --ground "#C98478" --design "<optional: design language in English>"
 ```
+
+**Always give `--ground`** (back and flat steps, the same value): the box's base colour in the chosen main view as `#RRGGBB` — the colour of the box surface around the artwork, not the backdrop and not a window or label colour. Pick it from the palette `concept choose` printed (that list is by area and may lead with a window or the backdrop) or measure the box in the image. Without it the prompt only points at the image and backgrounds drift lighter (2026-11-15: a dusty-rose box came back cream in the back view and every flat); the engine warns and lists the sampled colours. The prompt also lists those colours, says brief colours belong to their element only, and forbids props in the back view.
 
 It goes to `concept-prompts/<chosen>-back1.txt` (back2 if back1 exists …): style and outside size, proportions, same-front-and-back notes, the layout brief's left side (and back) paragraphs and input images (the chosen main view, the original logo) are filled in; the top of the file says "generate first, then import" with the import command. It refuses to overwrite a file of the same name with different content (edited by hand); add `--force` once you are sure it is not needed. The prompt follows this skeleton (English; `<>` is filled in by the engine):
 
@@ -91,6 +93,8 @@ It goes to `concept-prompts/<chosen>-back1.txt` (back2 if back1 exists …): sty
 Use case: product-mockup, REAR view of an already chosen design.
 Input image 1 (concepts/<chosen>.png) is the CHOSEN DESIGN seen from the front. Keep exactly the same
 design language: colors, typography style, graphic motifs, photo style, paper, scene and lighting.
+BACKGROUND COLOUR: the background of every panel is <--ground>, the base colour of the box in input image 1 ...
+Scene: the same backdrop, surface and lighting as input image 1, with the box alone - add no props ...
 Input image 2 is the real brand logo artwork.
 Show the SAME closed <style>, outer <L x W x H> mm, from behind: a rear three-quarter view showing the
 BACK face and, to its right, the LEFT SIDE panel (the side on the left when looking at the front),
@@ -148,7 +152,7 @@ Why this grouping:
 - **Resolution tier**: tracing illustrations from the flats needs at least 8 px/mm per panel; the engine picks 1k / 2k / 4k by size and writes it in the file header (large boxes get 4k).
 
 ```bash
-pacxio concept prompt jobs/x --step flat              # default grouping; refers to the back view in use (--back-view <id> to choose)
+pacxio concept prompt jobs/x --step flat --ground "#C98478"   # default grouping; refers to the back view in use (--back-view <id> to choose)
 pacxio concept prompt jobs/x --step flat --separate   # non-continuous artwork: each panel of the wrap its own picture
 pacxio concept prompt jobs/x --step flat --pairs      # single-part styles back to two panels per image
 pacxio concept prompt jobs/x --step flat --ref lid.top=A:348,37,1432,203,1305,900,97,652

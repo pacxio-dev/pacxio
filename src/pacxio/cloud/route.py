@@ -7,14 +7,23 @@
 from __future__ import annotations
 
 import json
+import random
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any
 
 from pacxio.cloud import auth, config
-from pacxio.cloud.client import Client, CloudError
-from pacxio.cloud.sync import SKIP_TOP, pull, push_with_retry, sha256_bytes, sha256_file
+from pacxio.cloud.client import RETRY_STATUSES, Client, CloudError
+from pacxio.cloud.sync import (
+    SKIP_TOP,
+    SYNC_WORKERS,
+    pull,
+    push_with_retry,
+    sha256_bytes,
+    sha256_file,
+)
 from pacxio.messages import t
 from pacxio.model.common import Issue, Result
 
@@ -280,11 +289,18 @@ def forward(argv: list[str], cwd: Path) -> Result:
     client = Client(login.url, login.token)
     try:
         jid = push_with_retry(client, job)
+        inbox_items: list[tuple[str, str, bytes]] = []
         for key, path in prep.inbox.items():
             sha, _, name = key.partition("/")
-            client.put_inbox(jid, sha, name, path.read_bytes())
-        for sha, name, payload in font_blobs:
-            client.put_inbox(jid, sha, name, payload)
+            inbox_items.append((sha, name, path.read_bytes()))
+        inbox_items.extend(font_blobs)
+        if len(inbox_items) <= 1:
+            for sha, name, payload in inbox_items:
+                client.put_inbox(jid, sha, name, payload)
+        else:
+            with ThreadPoolExecutor(max_workers=min(SYNC_WORKERS, len(inbox_items))) as pool:
+                for _ in pool.map(lambda it: client.put_inbox(jid, it[0], it[1], it[2]), inbox_items):
+                    pass
         before = _sha(job / "job.json")
         rid = (
             client.start_run(jid, prep.argv, ephemeral_fonts=ephemeral_fonts)
@@ -305,6 +321,8 @@ def forward(argv: list[str], cwd: Path) -> Result:
             Issue(id=e.id, message=e.message, fix=e.fix),
             3 if e.id in ("CLOUD_NET", "CLOUD_AUTH", "CLOUD_LOGIN") else 1,
         )
+    finally:
+        client.close()
     data = run.get("result")
     if not isinstance(data, dict):
         return res.fail(Issue(id="CLOUD_RUN", message=t("The cloud command returned no result: {tail}", tail=(run.get("error") or "")[-800:]),
@@ -333,15 +351,28 @@ def _sha(p: Path) -> str | None:
 def _wait(client: Client, rid: str) -> dict[str, Any]:
     deadline = time.monotonic() + RUN_TIMEOUT_S
     delay = POLL_S
+    transient_errs = 0
     while True:
-        run = client.get_run(rid)
+        try:
+            run = client.get_run(rid)
+            transient_errs = 0
+        except CloudError as e:
+            retryable = e.id == "CLOUD_NET" or (
+                e.status_code is not None and e.status_code in RETRY_STATUSES
+            )
+            transient_errs += 1
+            if not retryable or transient_errs > 3 or time.monotonic() > deadline:
+                raise
+            wait_s = e.retry_after if e.retry_after is not None else min(delay * 2.0, 5.0)
+            time.sleep(min(max(0.2, wait_s), 10.0))
+            continue
         if run.get("status") in ("done", "failed"):
             return run
         if time.monotonic() > deadline:
             raise CloudError(
                 "CLOUD_TIMEOUT", t("The cloud run timed out"), t("Try the same command again later")
             )
-        time.sleep(delay)
+        time.sleep(delay * (0.85 + 0.3 * random.random()))
         delay = min(delay * 1.5, 3.0)
 
 

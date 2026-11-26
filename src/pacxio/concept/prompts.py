@@ -19,7 +19,14 @@ from pathlib import Path
 
 from PIL import Image
 
-from pacxio.brief import FACE_EN, PART_EN, box_name, chinese_brief_lines, label_language_issue
+from pacxio.brief import (
+    FACE_EN,
+    PART_EN,
+    PLAIN_FACE,
+    box_name,
+    chinese_brief_lines,
+    label_language_issue,
+)
 from pacxio.concept.rectify import (
     CORNER_PAIRS,
     blank_strip,
@@ -44,6 +51,7 @@ from pacxio.concept.service import (
     split_face_issues,
 )
 from pacxio.messages import lang, t
+from pacxio.mockup.approval import confirmation_status
 from pacxio.mockup.fold import build_box
 from pacxio.model.common import Issue, Result
 from pacxio.model.dieline import Dieline, PanelRole
@@ -97,11 +105,42 @@ HOW_TO = (
     "#   Run the import command after generation. --codex-latest imports the latest existing image; it does not generate one.\n"
     "#   Identical images are rejected (DUPLICATE). Tell the user how many images you will generate first."
 )
+# 长段文字以前写"可以照抄示意图，或画逼真的小字块"：AI 自己编了一段读得通的文案（SPOT 测试 2026-11-15）。
+# 长段反正由引擎排版，平面图里只要位置、大小、行数：画成灰线，和背面视角同一个口径
 SPELL = (
-    "Spell headings and short texts exactly. Long paragraphs and numbered lists: follow the text blocks "
-    "of the layout wireframe (their position, size and number of lines) - you may copy the wireframe "
-    "text, or draw realistic small-text blocks. In quoted strings ' / ' means a line break."
+    "Spell headings and short texts exactly. Long paragraphs and numbered lists (blocks of about N lines): "
+    "draw them as rows of thin grey lines with the position, size and number of lines of the wireframe's "
+    "text blocks - do NOT write readable sentences there and do not invent wording (pacxio typesets the "
+    "real text later). In quoted strings ' / ' means a line break."
 )
+HEX_COLOUR = re.compile(r"^#[0-9A-Fa-f]{6}$")
+MAX_PALETTE = 6  # 提示词里列几个取到的颜色
+
+
+def _colour_lines(
+    palette: list[str], ground: str | None, main: int, flat: bool, thing: str = "box"
+) -> list[str]:
+    """选定方向的颜色写成字。只说"照输入图的配色"时，SPOT 测试（2026-11-15）的背面视角、平面图都从玫瑰粉底
+    漂成了奶油底：平面图的第一张输入图是白底灰框的版式示意图，简报里唯一的颜色词又是"奶油色拱窗"（占满整面的
+    图形区），都把底色往浅里拉；同一份提示词写明 #C98478 底色后重出，背面视角、平面图都回到玫瑰粉。
+    ground：盒子底色（--ground）；palette：concept choose 取到的主色，只当参考列出（按面积排，可能含背景）。"""
+    tone = f"{ground.upper()}, " if ground else ""
+    lines = [
+        f"BACKGROUND COLOUR: the background of every panel is {tone}the base colour of the {thing} in input "
+        f"image {main} (the colour of the {thing} surface around the artwork) - not the photo backdrop or "
+        "tabletop"
+        + (", and not the white or grey of the layout wireframe" if flat else "")
+        + ". Do not lighten, wash out or replace it.",
+        "A colour named in the layout brief belongs to that element only (for example a cream window stays a "
+        "window on the background colour); it never becomes the panel background.",
+    ]
+    if palette:
+        lines.append(
+            f"Colours sampled from input image {main} (approximate, largest area first; may include the "
+            f"backdrop): {', '.join(palette[:MAX_PALETTE])}. Use only the hues of the chosen design; do not "
+            "introduce hues it does not have."
+        )
+    return lines
 
 
 @dataclass
@@ -153,6 +192,21 @@ def _section(face: str, sections: dict[str, list[str]], same: dict[str, str]) ->
         return [f"{_face_en(face)} (identical to the {_face_en(src)}):",
                 *sections[src][1:]]  # fmt: skip
     return [f"{_face_en(face)}:", "- (no layout brief for this face)"]
+
+
+def _concept_sections(sections: dict[str, list[str]]) -> dict[str, list[str]]:
+    """先选概念再排版：空示意图不等于用户要求删掉概念图的文字和图案。底面纯色默认仍保留。"""
+    follow = (
+        "- Follow the chosen concept's design and the corresponding reference for this face. "
+        "The empty layout wireframe defines panel geometry only; it does not request removal "
+        "of text or artwork. Do not invent additional wording."
+    )
+    return {
+        face: [follow if line == f"- {PLAIN_FACE}" else line for line in lines]
+        if _local(face) not in ("btm_lid", "base", "bottom")
+        else list(lines)
+        for face, lines in sections.items()
+    }
 
 
 def _logo(job: Job, directory: Path) -> str | None:
@@ -294,7 +348,7 @@ def _body_order(dl: Dieline) -> list[str]:
 def _back_prompt(
     job: Job, dl: Dieline, chosen: ConceptMeta, name: str, sections: dict[str, list[str]], logo: str | None,
     design: str | None, faces: dict[str, str] | None = None, bottom: str | None = None,
-    top: str | None = "top_lid",
+    top: str | None = "top_lid", palette: list[str] | None = None, ground: str | None = None,
 ) -> _Prompt:  # fmt: skip
     """faces：多部件盒型合上后的位置 → "部件.面"（盖的背面是 lid.back……）；尺寸用合上后的外形。
     top：顶面的面 id；两片摇盖拼成的顶（开槽箱）是 None，不列进这张图画到的面（开槽箱测试 R-05）。
@@ -345,7 +399,12 @@ def _back_prompt(
         f"Input image {main} ({chosen.file}) is the CHOSEN DESIGN seen from the front. Keep exactly the same "
         "design language: colors, typography style, graphic motifs, photo style, "
         f"{'film' if pouch else 'paper'}, scene and lighting.",
-    ]
+        *_colour_lines(palette or [], ground, main, flat=False, thing="pouch" if pouch else "box"),
+        # "product-mockup" 让 AI 自己布景：SPOT 测试第一版加了花瓶、花瓣、毛巾和大理石台面（2026-11-15）
+        f"Scene: the same backdrop, surface and lighting as input image {main}, with the {'pouch' if pouch else 'box'} "
+        f"alone - add no props (flowers, petals, vases, fabric, stones or other objects) that are not in input "
+        f"image {main}.",
+    ]  # fmt: skip
     body += liner_line(job.material.liner)  # 牛皮面纸（开槽箱测试 R-01）
     if design:
         body.append(f"Design language: {design}")
@@ -480,6 +539,7 @@ def _look(
     back: int | None,
     same: dict[str, str],
     back_faces: list[str] | None = None,
+    ground: str | None = None,
 ) -> str:
     """这个面该照哪张 3D 图的样子画。back_faces：背面视角画到的面（扁平盒从底下看时有底面）。"""
     en = _face_en(face)
@@ -502,17 +562,21 @@ def _look(
     if back is not None and full in (back_faces or []):  # 扁平盒：背面视角是从底下看的
         return f"The {en} must look like the bottom face of input image {back} (the approved view from below), flattened."
     # 3D 图里看不到的面（底盖）：以前写"照主视角的设计语言设计"，AI 画满插画（STE 测试 S-03）；
-    # 底面默认纯底色，初稿给它排了插画占位时简报里会写
-    return (f"The {en} is not visible in the 3D images: use the background colour of input image {main} "
-            "and draw only what the layout brief lists for it - no extra illustration or pattern.")  # fmt: skip
+    # 底面默认纯底色，初稿给它排了插画占位时简报里会写。"图的背景色"会被读成照片的背景，SPOT 测试
+    # （2026-11-15）的底盖成了选定设计里没有的鼠尾草绿：写明是盒子本身的底色
+    tone = f" ({ground.upper()})" if ground else ""
+    return (f"The {en} is not visible in the 3D images: use the base colour of the box in input image {main}{tone} "
+            "- not the photo backdrop - and draw only what the layout brief lists for it - no extra illustration "
+            "or pattern.")  # fmt: skip
 
 
 def _flat_prompt(
     job: Job, dl: Dieline, chosen: ConceptMeta, back: ConceptMeta | None, faces: list[str], name: str,
     ref: str, sections: dict[str, list[str]], logo: str | None, design: str | None,
-    face_refs: dict[str, str] | None = None, separate: bool = False,
+    face_refs: dict[str, str] | None = None, separate: bool = False, palette: list[str] | None = None,
+    ground: str | None = None, geometry_only: bool = False,
 ) -> _Prompt:  # fmt: skip
-    """separate：各面各自成画（盒身一圈 / 两面一张时图形不跨折线）。"""
+    """separate：各面各自成画（盒身一圈 / 两面一张时图形不跨折线）。palette / ground 见 _colour_lines。"""
     layout = drawn_layout(dl, faces)  # 抽屉外套 左侧 | 顶 | 右侧 照刀版画成一条：侧面躺着
     sizes = [size for size, _ in layout]
     axis = stack_axis(dl, faces)  # y：等宽的面正着上下叠（天地盖侧壁、抽屉内托前后脸）
@@ -530,7 +594,8 @@ def _flat_prompt(
     p = _Prompt(
         name, t("Unfolded view ({title})", title=t("Body wrap: {title}", title=title) if ring else title), "flat", faces, canvas=cv
     )
-    wire = p.image(ref, t("Layout wireframe: actual proportions and content placement"))  # 第一张：模型照它分格
+    wire = p.image(ref, t("Layout wireframe: panel geometry only") if geometry_only
+                   else t("Layout wireframe: actual proportions and content placement"))  # fmt: skip
     main = p.image(chosen.file, t("Chosen design {id}, front and right 3D view", id=chosen.id))
     below = back is not None and any(
         _local(f) == "btm_lid" or f == "base" for f in back.faces or []
@@ -645,11 +710,19 @@ def _flat_prompt(
         if notch:
             body.append(notch)
     body += _closed_width_notes(dl, faces, names)
+    wire_instruction = (
+        f"Input image {wire} ({ref}) defines the EXACT panel proportions and fold positions only. "
+        "No artwork has been placed in this draft yet. Its empty panels are not an instruction "
+        "to erase the chosen design. Follow the concept references for composition, text and graphics; "
+        "do not copy the wireframe's white background, grey styling, boxes or captions."
+        if geometry_only
+        else f"Input image {wire} ({ref}) is the layout wireframe with the EXACT panel proportions and the real "
+        "text: follow which information goes where and the size of each text block; do not copy its white "
+        "background, grey styling or grey boxes. The small captions inside the grey boxes are instructions about what to "
+        "draw there - never draw these captions as text."
+    )
     body += [
-        f"Input image {wire} ({ref}) is the layout wireframe with the EXACT panel proportions and the real "
-        "text: follow which information goes where and the size of each text block; do not copy its grey "
-        "styling or grey boxes. The small captions inside the grey boxes are instructions about what to "
-        "draw there - never draw these captions as text.",
+        wire_instruction,
         f"Input image {main} ({chosen.file}) is the CHOSEN DESIGN in 3D (front, right side and top).",
     ]
     if back is not None and back_n is not None:
@@ -673,13 +746,18 @@ def _flat_prompt(
                 "more illustration than it has."
             )
     body.append("Keep exactly the design language of the chosen design.")
+    body += _colour_lines(palette or [], ground, main, flat=True,
+                          thing="pouch" if job.style in POUCH_SHAPES else "box")  # fmt: skip
+    # 简报写"玫瑰金小圆饰"，AI 把顶盖画成了金属浮雕（SPOT 测试 2026-11-15）：平面图是设计稿，金属色画成平涂
+    body.append("Draw metallic colours (gold, rose gold, copper, silver, foil) as flat ink colours: no metallic "
+                "shine, no embossed or 3D relief, no shading.")  # fmt: skip
     body.append(
         "Keep the density of the chosen design: areas that are empty or pale in it stay empty or pale; "
         "do not fill the panels with extra illustration."
     )
     if design:
         body.append(f"Design language: {design}")
-    body += [_look(f, main, back_n, same, back.faces if back else None) for f in faces]
+    body += [_look(f, main, back_n, same, back.faces if back else None, ground) for f in faces]
     if axis == "x" and len(faces) > 1 and separate:
         body.append(
             "The panels are SEPARATE designs: nothing crosses the folds; each panel is composed on its own."
@@ -966,6 +1044,7 @@ def make_prompts(
     pairs: bool = False,
     separate: bool = False,
     brief: bool = False,
+    ground: str | None = None,
 ) -> Result:
     """生成出图提示词，写到 concept-prompts/，不出图：第 3 步主视角（main）、第 4 步背面视角（back）、
     第 5 步展开平面图（flat）。words（盒子上的文字）/ scene / name 只用于 main。flat 必须先有背面视角
@@ -973,7 +1052,8 @@ def make_prompts(
     （背 | 左 | 正 | 右）画成一张——跨折线、跨糊口接缝的图形在一张图里才连得上（）；一圈比 3:1 还细长
     时两面一张，body 强制一圈、pairs 强制两面一张，separate 写明各面各自成画、图形不跨折线。
     face_refs 只用于 flat：面 → (概念图 id, 图里这个面的四个角)：把选定设计里这个面拉正，当"照这个构图画"的
-    参考图加进含这个面的提示词（2026-10-30：平面图重画时构图、留白、线条深浅偏离概念图）。"""
+    参考图加进含这个面的提示词（2026-10-30：平面图重画时构图、留白、线条深浅偏离概念图）。
+    ground 只用于 back / flat：盒子底色 #RRGGBB，写进提示词（SPOT 测试 2026-11-15：没写颜色时底色漂了）。"""
     r = Result(command="concept prompt", job=str(directory))
     job = _load(directory, r)
     if job is None:
@@ -983,6 +1063,9 @@ def make_prompts(
                             fix=t("--step main (main view) | back (back + left view) | flat (flats)")), 2)  # fmt: skip
     if step == "main":
         return _main_prompt(r, job, directory, design, words or [], scene, name, force, brief)
+    if ground is not None and not HEX_COLOUR.match(ground):
+        return r.fail(Issue(id="ARG", message=t("--ground must be a colour like #C98478, not {value}", value=ground),
+                            fix=t("Give the box's base colour as #RRGGBB, e.g. one of the colours concept choose sampled")), 2)  # fmt: skip
     chosen = read_chosen(directory)
     chosen_meta = read_meta(directory, chosen.id) if chosen else None
     if chosen is None or chosen_meta is None:
@@ -1015,11 +1098,18 @@ def make_prompts(
                             t("; ").join(ln.strip() for ln in stale),
                             fix=t("Run pacxio plan {job} again to refresh the brief, then make the prompts again", job=directory)), 2)  # fmt: skip
     sections = brief_sections(brief_text)
+    geometry_only = not job.placements and confirmation_status(directory, job) != "confirmed"
+    if geometry_only:
+        sections = _concept_sections(sections)
     logo = _logo(job, directory)
     logo = _viewable(directory, logo) if logo else None
     if logo is None:
         r.warnings.append(Issue(id="CONCEPT", message=t("The content list has no logo file, so the prompt has no original logo"),
                                 fix=t("If there is a logo, add its file to the logo item in the list (content edit --asset), then make the prompts again")))  # fmt: skip
+    palette = [str(c["hex"]) for c in chosen.palette if isinstance(c.get("hex"), str)]
+    if ground is None:
+        r.warnings.append(Issue(id="CONCEPT", message=t("No --ground: the prompt names the box's base colour only by pointing at the chosen image, and the background may drift lighter"),
+                                fix=t("Add --ground with the box's base colour as #RRGGBB (concept choose sampled: {colours}) and make the prompts again", colours=t(", ").join(palette[:MAX_PALETTE]) or "-")))  # fmt: skip
     back: ConceptMeta | None = None
     prompts: list[_Prompt] = []
     if step == "back":
@@ -1030,7 +1120,7 @@ def make_prompts(
             seen["top"][0] if "top" in seen and not seen["top"][1] else None
         )  # 开槽箱：两片摇盖拼的
         prompts.append(_back_prompt(job, dl, chosen_meta, name, sections, logo, design,
-                                    at if isinstance(at, dict) else None, bottom, top))  # fmt: skip
+                                    at if isinstance(at, dict) else None, bottom, top, palette, ground))  # fmt: skip
     else:
         if back_id is not None:
             back = read_meta(directory, back_id)
@@ -1094,6 +1184,9 @@ def make_prompts(
                     design,
                     refs,
                     separate,
+                    palette,
+                    ground,
+                    geometry_only,
                 )
             )
     out = directory / PROMPT_DIR

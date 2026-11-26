@@ -228,6 +228,7 @@ def test_busy_worker_keeps_foreign_lock_and_legacy(tmp_path):
 @pytest.mark.parametrize("conflict", [False, True])
 def test_cloud_route_prepares_downloaded_preview_only(tmp_path, monkeypatch, conflict):
     from types import SimpleNamespace
+    from unittest.mock import Mock
 
     from pacxio.cloud import config, route
 
@@ -238,7 +239,8 @@ def test_cloud_route_prepares_downloaded_preview_only(tmp_path, monkeypatch, con
     monkeypatch.setattr(
         route.auth, "ensure", lambda: config.Login("https://example.invalid", "test")
     )
-    monkeypatch.setattr(route, "Client", lambda *a: SimpleNamespace(start_run=lambda *a, **kw: "run"))
+    client = SimpleNamespace(start_run=lambda *a, **kw: "run", close=Mock())
+    monkeypatch.setattr(route, "Client", lambda *a: client)
     monkeypatch.setattr(route, "push_with_retry", lambda *a: "job")
 
     def wait(*args):
@@ -263,6 +265,7 @@ def test_cloud_route_prepares_downloaded_preview_only(tmp_path, monkeypatch, con
     monkeypatch.setattr(route, "pull", pull)
     result = route.forward(["mockup", str(job)], tmp_path)
     assert result.ok
+    client.close.assert_called_once_with()
     if conflict:
         assert "display" not in json.loads((job / "mockup/scene.json").read_bytes())
         assert any(w.id == "CLOUD_CONFLICT" for w in result.warnings)

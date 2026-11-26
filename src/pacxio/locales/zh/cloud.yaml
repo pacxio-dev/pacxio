@@ -53,3 +53,4 @@ When exporting in the cloud the delivery pack always goes to <job>/out; --out is
 job.json changed on this machine while the cloud run was going; it was not overwritten with the cloud version: 云端运行期间本机 job.json 改过，没有用云端的版本覆盖
 'Font {font} ({origin}) requires your one-time upload authorization before cloud typesetting': '非开源字体 {font}（{origin}）在云端排字前需要先做一次上传授权确认'
 'Confirm that your license permits uploading glyph subsets for cloud outlining with `pacxio font authorize <job> {font} --by <your-name>`': '请确认你的字体授权允许上传字形子集供云端转曲后运行 `pacxio font authorize <job> {font} --by <你的名字>`'
+'Wait a moment and try again; too many concurrent requests or queued jobs': '稍等片刻再试；当前并发请求或排队任务过多'
