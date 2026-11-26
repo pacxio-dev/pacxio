@@ -74,6 +74,14 @@ STYLES_WITH_FLAT = {
     "crashlock_rsc",  # 2026-11-11 示例项目 Tidewell：盒身四面同 0201，平面图对照照常用
     "tray_lid",
     "drawer",
+    # R3-3：软袋与瓶罐标签
+    "pouch_standup",
+    "sachet_3side",
+    "pouch_backseal",
+    "pouch_flat_bottom",
+    "label_panel",
+    "label_wrap",
+    "label_cone",
 }
 # restore 的评分 / 文字 / 图形命令共用上面的能力表；这里只扩展 flat 对照页入口。
 FLAT_PAGE_STYLES = STYLES_WITH_FLAT | {"structure"}
@@ -285,6 +293,17 @@ def _row_note(row: FlatRow) -> str:
     return note if row.folds_found else t("{note}; no fold line found, cut by proportion", note=note)
 
 
+def _as_rgb(img: Image.Image) -> Image.Image:
+    """将带透明通道的软袋/标签正式稿合成到纸底 RGB，保证与平面图同模式可叠图。"""
+    if img.mode == "RGB":
+        return img
+    if img.mode == "RGBA":
+        bg = Image.new("RGB", img.size, PAPER)
+        bg.paste(img, mask=img.getchannel("A"))
+        return bg
+    return img.convert("RGB")
+
+
 def flat_section(rows: list[FlatRow], missing: list[str]) -> Image.Image:
     """ "和展开平面图对照"一节（单独画好，再贴进确认页）：每个面 AI 平面图 | 正式稿 | 50% 叠图。"""
     avail = SHEET_W - 2 * MARGIN
@@ -299,8 +318,8 @@ def flat_section(rows: list[FlatRow], missing: list[str]) -> Image.Image:
              SMALL_PT + 2, color=MUTED)  # fmt: skip
     for row in rows:
         cur.text(_row_note(row), SMALL_PT + 4, bold=True, gap=6)
-        ai = _tile(row.ai, tile_w, FLAT_TILE_H)
-        eng = row.engine.resize(ai.size, Image.Resampling.LANCZOS)
+        ai = _as_rgb(_tile(row.ai, tile_w, FLAT_TILE_H))
+        eng = _as_rgb(row.engine.resize(ai.size, Image.Resampling.LANCZOS))
         mix = Image.blend(ai, eng, 0.5)
         x, top = MARGIN, cur.y
         for caption, im in ((t("AI flat (straightened)"), ai), (t("Final artwork"), eng), (t("Overlay 50%"), mix)):
@@ -318,8 +337,8 @@ def flat_section(rows: list[FlatRow], missing: list[str]) -> Image.Image:
 def flat_detail(row: FlatRow, scale: float) -> Image.Image:
     """一个面的大图对照（AI | 正式稿 | 叠图），flat/vs_flat_<面>.png，放大看细节用。"""
     size = (max(1, round(row.engine.width * scale)), max(1, round(row.engine.height * scale)))
-    ai = row.ai.resize(size, Image.Resampling.LANCZOS)
-    eng = row.engine.resize(size, Image.Resampling.LANCZOS)
+    ai = _as_rgb(row.ai.resize(size, Image.Resampling.LANCZOS))
+    eng = _as_rgb(row.engine.resize(size, Image.Resampling.LANCZOS))
     head, pad = 40, 20
     out = Image.new("RGB", (3 * size[0] + 4 * pad, size[1] + head + pad), PAPER)
     d = ImageDraw.Draw(out)

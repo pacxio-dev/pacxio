@@ -4659,3 +4659,156 @@ def restore_iterate(
         ),
         json_out,
     )
+
+
+@restore_app.command(
+    "run",
+    help=t(
+        "One-click full restoration pipeline (R3-1): from confirmed flats to refined print layout, dieline confirmation image, preflight check, and flat --diff. Auto-detects cold start vs existing draft without spending image credits."
+    ),
+)
+def restore_run(
+    directory: Annotated[Path, typer.Argument(help=t("Job folder"))],
+    max_rounds: Annotated[
+        int,
+        typer.Option(
+            "--max-rounds",
+            help=t("Maximum iteration rounds (default 3)"),
+        ),
+    ] = 3,
+    fonts: Annotated[
+        bool,
+        typer.Option(
+            "--fonts/--no-fonts",
+            help=t("Allow switching fonts during text fitting (default: suggest only)"),
+        ),
+    ] = False,
+    tracking: Annotated[
+        bool,
+        typer.Option(
+            "--tracking",
+            help=t("Allow restore text to measure single-line tracking"),
+        ),
+    ] = False,
+    no_library: Annotated[
+        bool,
+        typer.Option(
+            "--no-library",
+            help=t("Do not compare fonts from the open font library during restore text"),
+        ),
+    ] = False,
+    no_system_fonts: Annotated[
+        bool,
+        typer.Option(
+            "--no-system-fonts",
+            help=t("Do not compare system fonts installed on this machine during restore text"),
+        ),
+    ] = False,
+    auto_lettering: Annotated[
+        bool,
+        typer.Option(
+            "--auto-lettering/--no-auto-lettering",
+            help=t(
+                "Automatically trace recommended display lettering when no font matches well (default on)"
+            ),
+        ),
+    ] = True,
+    seam: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--seam",
+            help=t(
+                "Per-seam alignment choice for fold transitions: faceA|faceB=faceA|faceB|both (repeatable)"
+            ),
+        ),
+    ] = None,
+    blend_mm: Annotated[
+        float | None,
+        typer.Option(
+            "--blend-mm",
+            help=t("Seam transition bandwidth in mm (default 8 mm)"),
+        ),
+    ] = None,
+    lock: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--lock",
+            help=t(
+                "Placement id(s) to protect from automatic edits (repeatable or comma-separated)"
+            ),
+        ),
+    ] = None,
+    write_diff: Annotated[
+        bool,
+        typer.Option(
+            "--write-diff/--no-write-diff",
+            help=t(
+                "Write remaining differences into flat/manifest.json (same as flat --diff) and re-render for the workbench"
+            ),
+        ),
+    ] = True,
+    resume: Annotated[
+        bool,
+        typer.Option(
+            "--resume",
+            help=t("Resume from previous flat/restore_run.json checkpoint, skipping completed initial extraction"),
+        ),
+    ] = False,
+    force: Annotated[
+        bool,
+        typer.Option(
+            "--force",
+            help=t("Run even if the current dieline confirmation is already approved"),
+        ),
+    ] = False,
+    dry_run: Annotated[
+        bool,
+        typer.Option(
+            "--dry-run",
+            help=t("Run the pipeline and write flat/restore_run.json, then restore job.json"),
+        ),
+    ] = False,
+    json_out: JsonOpt = False,
+) -> None:
+    """一键全自动还原流水线（R3-1）：从确认平面图到正式稿精修、刀版确认图、印前复核与剩余差异，不擅自消耗出图额度。"""
+    from pacxio_pro.restore.run import run_restore
+
+    seam_map: dict[str, str] = {}
+    for entry in seam or []:
+        if "=" not in entry:
+            _emit(
+                Result(command="restore run", job=str(directory)).fail(
+                    Issue(
+                        id="ARG",
+                        message=f"--seam 格式应为 面A|面B=面A|面B|both：{entry}",
+                        fix="例如 --seam back|side_a=both",
+                    ),
+                    2,
+                ),
+                json_out,
+            )
+            return
+        k, v = entry.split("=", 1)
+        seam_map[k.strip()] = v.strip()
+    lock_ids: list[str] = []
+    for item in lock or []:
+        lock_ids += [x.strip() for x in item.split(",") if x.strip()]
+    _emit(
+        run_restore(
+            directory,
+            max_rounds=max_rounds,
+            fonts=fonts,
+            tracking=tracking,
+            library=not no_library,
+            system_fonts=not no_system_fonts,
+            auto_lettering=auto_lettering,
+            seam_choices=seam_map or None,
+            blend_mm=blend_mm,
+            lock=lock_ids or None,
+            write_diff=write_diff,
+            resume=resume,
+            force=force,
+            dry_run=dry_run,
+        ),
+        json_out,
+    )

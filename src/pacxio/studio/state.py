@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import functools
+import hashlib
 import json
 import math
 from collections.abc import Iterable
@@ -47,6 +48,7 @@ from pacxio.mockup.approval import (
     approval_state,
     design_fingerprint,
     is_current,
+    style_version,
 )
 from pacxio.mockup.approval import confirmation_status as plan_confirmation
 from pacxio.mockup.content import blocking_content
@@ -698,19 +700,53 @@ def _key_colors_card(job: Job) -> Card:
                 caption=t("The Pantone number is the color standard; swatches are only a screen preview"), data={"lines": lines, "swatches": swatches})  # fmt: skip
 
 
+def _placement_hash_open(pl: Any) -> str:
+    """开源侧纯函数：计算单个放置的规范化哈希（不含 locked），与 restore.iterate 保持一致。"""
+    blob = json.dumps(
+        pl.model_dump(mode="json", exclude_none=True, exclude={"locked"}),
+        sort_keys=True,
+        ensure_ascii=False,
+    )
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+def _manual_edit_summary(report: dict[str, Any], job: Job) -> dict[str, Any] | None:
+    """实时对比自动还原基线哈希与当前 job，估算人工修改率（R3-0，目标 ≤ 10%【初值】）。"""
+    base = report.get("auto_baseline_hashes") or report.get("placement_hashes")
+    if not isinstance(base, dict) or not base:
+        return None
+    cur = {pl.id: _placement_hash_open(pl) for pl in job.placements}
+    edited = sum(1 for pid, h in cur.items() if pid in base and base[pid] != h)
+    edited += sum(1 for pid in cur if pid not in base)
+    edited += sum(1 for pid in base if pid not in cur)
+    total = len(set(cur) | set(base))
+    rate = round(edited / total, 4) if total else 0.0
+    return {"edited": edited, "total": total, "rate": rate, "pct": round(rate * 100, 1)}
+
+
 def _iterations_card(directory: Path, job: Job, fp: str) -> Card | None:
-    """R2-6 自动迭代摘要卡（flat/iterations.json 存在且与当前设计匹配时显示在刀版确认阶段）。"""
+    """R2-6 / R3-0 / R3-5 自动还原与迭代摘要卡（含一键还原模式、每面耗时、待办清单与实时人工修改率）。"""
     report = _read_json(directory / flat_mod.FLAT_DIR / "iterations.json")
-    if not isinstance(report, dict):
+    run_rep = _read_json(directory / flat_mod.FLAT_DIR / "restore_run.json")
+    if not isinstance(report, dict) and not isinstance(run_rep, dict):
         return None
-    if not is_current(report, fp, job):
+    primary = report if isinstance(report, dict) else run_rep
+    assert isinstance(primary, dict)
+    current = is_current(primary, fp, job)
+    # 盒型结构版本不同时旧记录作废；仅设计手改时仍保留展示实时人工修改率
+    if not current and primary.get("style_version") != style_version(job):
         return None
-    base = report.get("baseline") or {}
-    final = report.get("final") or {}
-    completed = int(report.get("rounds_completed") or 0)
-    attempted = int(report.get("rounds_attempted") or 0)
-    secs = report.get("total_seconds")
-    stop = str(report.get("stop_reason") or "")
+    base = primary.get("baseline") or {}
+    final = primary.get("final") or {}
+    completed = int((report or {}).get("rounds_completed") or 0)
+    attempted = int((report or {}).get("rounds_attempted") or 0)
+    secs = (run_rep or primary).get("total_seconds")
+    spf = (
+        (run_rep or {}).get("seconds_per_face")
+        if isinstance(run_rep, dict) and run_rep.get("seconds_per_face") is not None
+        else ((report or {}).get("timing") or {}).get("seconds_per_face")
+    )
+    stop = str((report or {}).get("stop_reason") or (run_rep or {}).get("mode") or "")
     lines: list[str] = [
         t(
             "Rounds: {completed}/{attempted} accepted · Passing faces: {b_pass} → {f_pass}/{total} · Score: {b_sc} → {f_sc}",
@@ -740,7 +776,31 @@ def _iterations_card(directory: Path, job: Job, fp: str) -> Card | None:
         metric_parts.append(f"Pos {round(float(b_pos) * 100)}% → {round(float(f_pos) * 100)}%")
     if metric_parts:
         lines.append(" · ".join(metric_parts))
-    prot = report.get("protected_placements") or {}
+    manual = _manual_edit_summary(primary, job)
+    if manual is not None:
+        lines.append(
+            t(
+                "Manual edits since auto-restore: {edited}/{total} ({pct}%)",
+                edited=manual["edited"],
+                total=manual["total"],
+                pct=manual["pct"],
+            )
+        )
+    action_req = (run_rep or {}).get("action_required") if isinstance(run_rep, dict) else None
+    if isinstance(action_req, dict):
+        redraw_n = int((action_req.get("redraw_photos") or {}).get("count") or 0)
+        font_n = len(action_req.get("font_authorizations") or [])
+        seam_n = len(action_req.get("seams") or [])
+        if redraw_n or font_n or seam_n:
+            lines.append(
+                t(
+                    "Pending items: {photos} photo redraws · {fonts} font authorizations · {seams} seam notes",
+                    photos=redraw_n,
+                    fonts=font_n,
+                    seams=seam_n,
+                )
+            )
+    prot = primary.get("protected_placements") or {}
     if isinstance(prot, dict) and prot:
         lines.append(
             t("Protected (untouched): {items}", items=", ".join(sorted(prot)[:8]))
@@ -748,12 +808,19 @@ def _iterations_card(directory: Path, job: Job, fp: str) -> Card | None:
     stop_line = t("Stop reason: {reason}", reason=stop)
     if secs is not None:
         stop_line += f" · {secs}s"
+    if spf is not None:
+        stop_line += f" ({spf}s/face)"
     lines.append(stop_line)
     return Card(
         id="design:iterations",
         kind="text",
         title=t("Auto-restore iterations"),
-        data={"lines": lines},
+        stale=not current,
+        data={
+            "lines": lines,
+            **({"manual_edits": manual} if manual is not None else {}),
+            **({"action_required": action_req} if isinstance(action_req, dict) else {}),
+        },
     )
 
 

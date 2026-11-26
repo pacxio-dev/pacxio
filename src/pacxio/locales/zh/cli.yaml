@@ -693,3 +693,9 @@ zinc_alloy (die-cast zinc alloy, default) | aluminum (stamped aluminum): zinc_al
 'Output asset stem in job/assets/ (defaults to symbol-<id>)': 输出到 job/assets/ 的文件名（默认 symbol-<id>）
 'Stroke/fill hex color (#RRGGBB)': 线条/填充十六进制颜色（#RRGGBB）
 'Available symbols: ': '可用符号：'
+'One-click full restoration pipeline (R3-1): from confirmed flats to refined print layout, dieline confirmation image, preflight check, and flat --diff. Auto-detects cold start vs existing draft without spending image credits.': 一键全自动还原流水线（R3-1）：从确认平面图到正式稿精修、刀版确认图、印前检查与剩余差异；自动识别冷启动或已有初稿，不擅自消耗出图额度
+'Allow switching fonts during text fitting (default: suggest only)': 允许在文字拟合中更换字体（默认只报建议）
+'Per-seam alignment choice for fold transitions: faceA|faceB=faceA|faceB|both (repeatable)': 逐条折线接缝对齐策略：面A|面B=面A|面B|both（可重复）
+'Seam transition bandwidth in mm (default 8 mm)': 接缝局部过渡带宽 mm（默认 8 mm）
+'Resume from previous flat/restore_run.json checkpoint, skipping completed initial extraction': 从上次 flat/restore_run.json 检查点续跑，跳过已完成的初始拆层描摹
+'Run the pipeline and write flat/restore_run.json, then restore job.json': 试跑一键还原并写入 flat/restore_run.json，结束后恢复原 job.json

@@ -141,3 +141,13 @@ wording of the content list: 信息清单的措辞
 '{path} is not a JSON object': '{path} 不是 JSON 对象'
 '{root} already has other content (not made by pacxio setup); not overwriting': '{root} 已经有别的内容（不是 pacxio setup 生成的），不覆盖'
 '{skill} is a separately installed Skill that duplicates the plugin''s': '{skill} 是以前单独装的 Skill，和插件里的重复'
+'One-click full restoration pipeline (R3-1): rebuilds or refines the final print layout from confirmed flats, runs automatic iterations, renders the dieline confirmation image, checks preflight, and writes flat --diff. Never spends image credits automatically (lists any photos needing redraw approval in action_required).': 一键全自动还原流水线（R3-1）：从确认平面图重建或精修正式稿、执行多轮自动迭代、更新刀版确认图、复核印前并写入剩余差异；绝不自动花出图额度（需重画照片列在 action_required 中）
+'Maximum refinement rounds (default 3)': 最多精修轮数（默认 3）
+'Allow switching fonts during text fitting (default false)': 允许文字拟合时更换字体（默认否）
+'Measure single-line tracking during text fitting': 文字拟合时量单行字距
+'Automatically trace recommended display lettering as smooth vectors (default true)': 字体配不上时自动将推荐展示艺术字转为平滑矢量（默认开）
+'Per-seam alignment choices, e.g. [''back|side_a=both'']': 逐条折线接缝策略，如 ['back|side_a=both']
+'Placement IDs to protect from automatic edits': 保护不被自动改动的放置 ID 列表
+'Resume from previous restore_run checkpoint': 从上次 restore_run 检查点续跑
+'Run even if the dieline confirmation is already approved': 即使刀版已正式确认也强制执行
+'Simulate without modifying job.json': 试跑但不改动 job.json

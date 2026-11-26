@@ -132,6 +132,7 @@ def test_open_commands_run_locally_and_closed_commands_forward(tmp_path: Path) -
         ["approve", "j", "--by", "test"],
         ["art", "add", "j", "--kind", "text", "--panel", "front", "--box", "10,10,40,10", "--text", "Hi"],
         ["restore", "score", "j"],
+        ["restore", "run", "j"],
         ["visual", "trace", "j", "mark"],
         ["concept", "choose", "j", "c1", "--by", "test"],
         ["color", "list", "j"],

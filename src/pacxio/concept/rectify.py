@@ -304,6 +304,9 @@ def face_rects(dl: Dieline) -> dict[str, tuple[float, float, float, float]]:
     rects = dl.style_meta.get("set_rects")
     if isinstance(rects, dict):
         return {k: (float(v[0]), float(v[1]), float(v[2]), float(v[3])) for k, v in rects.items()}
+    if dl.style_meta.get("layout") == "pouch":
+        # 背封/八边封软袋的背面在刀版上拆成左右两片（back_a / back_b），按面板实际包围盒逐片取，避免跨全宽
+        return {p.id: p.polygon.bbox() for p in dl.panels}
     return {f.panel: f.tex_rect for f in build_box(dl).faces}
 
 

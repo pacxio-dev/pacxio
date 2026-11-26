@@ -114,6 +114,7 @@ class TracedLettering(_Strict):
     fingerprint: str = Field(pattern=r"^[0-9a-f]{64}$")
     status: Literal["confirmed", "auto_traced"] = "confirmed"
     fallback_text: dict[str, Any] | None = None
+    source_box: Box | None = None
 
     @model_validator(mode="after")
     def _check_confirmation_fields(self) -> TracedLettering:

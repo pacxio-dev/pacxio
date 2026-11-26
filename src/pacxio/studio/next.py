@@ -47,7 +47,7 @@ def _todo_step(st: Stage, j: str) -> Step:
                     [f"pacxio concept confirm {j} --by {t('<approver>')}"], ["references/concept.md"])  # fmt: skip
     if key == ("design", "none"):
         return Step(t('Build the final design from the confirmed flats, including copy, reconstructed artwork, photos, and finishes. Then render the dieline proof'),
-                    [f"pacxio panels {j}", f"pacxio render {j}"], ["references/design.md"])  # fmt: skip
+                    [f"pacxio restore run {j}", f"pacxio panels {j}", f"pacxio render {j}"], ["references/design.md"])  # fmt: skip
     if key == ("design", "stale"):
         return Step(
             t("Render the dieline proof again"), [f"pacxio render {j}"], ["references/design.md"]

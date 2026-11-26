@@ -64,7 +64,7 @@ Automatic continuation requires an active wait call. An ended conversation or cl
 | Content list (lots of copy: layout draft first, route A) | `content import / list / confirm`; `style set`, `art add`, `plan` | Confirm the wording (and the draft) | `content.md`, `layout-draft.md` |
 | Main-view concepts: one image for each of 2 directions | `concept prompt --step main` / `concept gen`, `concept import` | **Pick a direction** (`concept choose --region …`) | `concept.md` |
 | Back view (always first) → flats | `plan`, `concept prompt --step back / flat`, `concept import --view … --faces …` (several flat candidates can be imported at once; only the most accurate is kept), `concept rectify` | **Confirm the set of flats** (ask only when every proportion is within 10%; then `concept confirm --by`) | `concept.md` |
-| Final design from the flats | `art add / set / move`, `restore strip / face`, `visual trace / gen / import / prepare`, `finish add`, `surface add`, `color add`, `font add` | — | `design.md`, `vector.md`, `fonts.md`, `finishes.md`, `visual-prompts.md` |
+| Final design from the flats | `restore run` (MCP `restore_run`), `art add / set / move`, `restore strip / face / iterate`, `visual trace / gen / import / prepare`, `finish add`, `surface add`, `color add`, `font add` | — | `design.md`, `vector.md`, `fonts.md`, `finishes.md`, `visual-prompts.md` |
 | Dieline confirmation image | `render`, `flat --diff`, `approve` | **Confirm (the only gate before export)** | `mockup.md` |
 | 3D mockups | `mockup` | View only | `mockup.md`, `finishes.md` |
 | Preflight | `preflight --json` | — | `prepress-rules.md`, `troubleshooting.md` |

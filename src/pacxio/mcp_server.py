@@ -254,6 +254,58 @@ TOOLS: list[dict[str, Any]] = [
         ),  # fmt: skip
     },
     {
+        "name": "restore_run",
+        "description": t(
+            "One-click full restoration pipeline (R3-1): rebuilds or refines the final print layout from confirmed flats, runs automatic iterations, renders the dieline confirmation image, checks preflight, and writes flat --diff. Never spends image credits automatically (lists any photos needing redraw approval in action_required)."
+        ),
+        "inputSchema": _schema(
+            {
+                "job": {"type": "string", "description": t("Job folder (absolute path)")},
+                "max_rounds": {
+                    "type": "integer",
+                    "description": t("Maximum refinement rounds (default 3)"),
+                },
+                "fonts": {
+                    "type": "boolean",
+                    "description": t("Allow switching fonts during text fitting (default false)"),
+                },
+                "tracking": {
+                    "type": "boolean",
+                    "description": t("Measure single-line tracking during text fitting"),
+                },
+                "auto_lettering": {
+                    "type": "boolean",
+                    "description": t(
+                        "Automatically trace recommended display lettering as smooth vectors (default true)"
+                    ),
+                },
+                "seam": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": t("Per-seam alignment choices, e.g. ['back|side_a=both']"),
+                },
+                "lock": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": t("Placement IDs to protect from automatic edits"),
+                },
+                "resume": {
+                    "type": "boolean",
+                    "description": t("Resume from previous restore_run checkpoint"),
+                },
+                "force": {
+                    "type": "boolean",
+                    "description": t("Run even if the dieline confirmation is already approved"),
+                },
+                "dry_run": {
+                    "type": "boolean",
+                    "description": t("Simulate without modifying job.json"),
+                },
+            },
+            ["job"],
+        ),
+    },
+    {
         "name": "pacxio_help",
         "description": t(
             "Without command: list every command with a one-line description; with one: its positional arguments, options, descriptions and defaults. Workflow and rules are in the packaging-prepress resource (SKILL.md and references)."
@@ -383,6 +435,27 @@ def call(name: str, a: dict[str, Any]) -> tuple[Any, list[str]]:
 
     if name == "pacxio_run":
         return mcp_cli.run(a["command"], a.get("args")), []
+    if name == "restore_run":
+        argv: list[str] = [a["job"]]
+        if a.get("max_rounds") is not None:
+            argv += ["--max-rounds", str(int(a["max_rounds"]))]
+        if a.get("fonts") is True:
+            argv.append("--fonts")
+        if a.get("tracking") is True:
+            argv.append("--tracking")
+        if a.get("auto_lettering") is False:
+            argv.append("--no-auto-lettering")
+        for s in a.get("seam") or []:
+            argv += ["--seam", str(s)]
+        for pid in a.get("lock") or []:
+            argv += ["--lock", str(pid)]
+        if a.get("resume") is True:
+            argv.append("--resume")
+        if a.get("force") is True:
+            argv.append("--force")
+        if a.get("dry_run") is True:
+            argv.append("--dry-run")
+        return mcp_cli.run("restore run", argv), []
     if name == "pacxio_help":
         try:
             return mcp_cli.help_text(a.get("command")), []

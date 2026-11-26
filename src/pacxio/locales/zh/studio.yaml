@@ -212,6 +212,8 @@ zoom requires a file and a box with four numbers: zoom 要 file 和 4 个数的 
 'Stop reason: {reason}': 停止原因：{reason}
 'Rounds: {completed}/{attempted} accepted · Passing faces: {b_pass} → {f_pass}/{total} · Score: {b_sc} → {f_sc}': 轮次：{completed}/{attempted} 轮已采纳 · 达标面：{b_pass} → {f_pass}/{total} · 综合分：{b_sc} → {f_sc}
 'Protected (untouched): {items}': 受保护（未改动）：{items}
+'Manual edits since auto-restore: {edited}/{total} ({pct}%)': 自动还原后人工修改：{edited}/{total}（{pct}%）
+'Pending items: {photos} photo redraws · {fonts} font authorizations · {seams} seam notes': 待确认项：{photos} 处照片重画 · {fonts} 个字体授权 · {seams} 条折线接缝提示
 'Auto-restore iterations': 自动迭代还原记录
 'Non-open fonts & upload authorization': 非开源字体与云端上传授权
 'system font': 系统字体
