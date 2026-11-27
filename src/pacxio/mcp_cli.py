@@ -169,6 +169,18 @@ def run(command: str, args: list[str] | None = None) -> tuple[dict[str, Any], li
     if _confirms(parts, cmd, args):
         return _refused(command, t("Only the user confirms: the general tool cannot run confirmation commands"),
                         t("After the user clearly says they confirm in the conversation, use user_confirm (with the user's own words in user_words)")), []  # fmt: skip
+    # Parse using the running CLI schema before any cloud upload or execution.
+    from typer._click.exceptions import ClickException
+
+    try:
+        with cmd.make_context(" ".join(parts), [*args, "--json"]):
+            pass
+    except ClickException as exc:
+        return _refused(
+            command,
+            exc.format_message(),
+            t("See the arguments of {command} with pacxio_help", command=command),
+        ), []
     from pacxio.cloud.route import maybe_forward
 
     fw = maybe_forward([*parts, *args, "--json"])  # 闭源命令在云端模式下转给合成服务

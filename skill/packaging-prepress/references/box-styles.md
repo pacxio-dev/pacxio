@@ -151,6 +151,15 @@ Carton board (rte, ste, snaplock, autolock):
 | `sbs_400` | SBS 400 g | 0.55 |
 | `gd_350` | Grey-back duplex 350 g | 0.48 |
 | `kraft_350` | Kraft board 350 g | 0.50 |
+| `silver_card_350` | Silver metallic card 350 g (white back, auto white underlay) | 0.48 |
+| `gold_card_350` | Gold metallic card 350 g (white back, auto white underlay) | 0.48 |
+| `holo_card_350` | Holographic card 350 g (white back, auto white underlay) | 0.48 |
+| `black_card_350` | Dyed-through black card 350 g (auto white underlay) | 0.48 |
+| `color_card_300` | Dyed-through colored card 300 g (set swatch color with `job paper --color`, auto white underlay when dark) | 0.42 |
+| `pearl_card_300` | Pearlescent card 300 g (satin shimmer, no white underlay needed by default) | 0.42 |
+| `textured_300` | Textured art paper 300 g (uncoated matte fiber, no white underlay needed) | 0.45 |
+
+**Specialty carton papers**: choose a preset at `job init --material ...` or switch/customize later with `pacxio job paper <job>` (`--material`, `--color #RRGGBB`, `--finish paper|metallic|holographic|pearl|textured`, `--name`, `--back #RRGGBB`, `--white auto|off`, `--choke`, `--keep-metal`). Metallic, holographic, black, and dark colored papers automatically generate a `White_Ink` underlay spot plate (`white_auto` + `finish_white.pdf`) choked inward by `0.1 mm` on broad fills while preserving fine strokes and small text (`< 0.5 mm`) so fine copy stays crisp. Use `--keep-metal <id>` (or `all`) when CMYK should intentionally print directly over metallic stock without white ink; PP01 warns if printed CMYK on a dark/metallic stock lacks white ink underlay. All screen colors and thicknesses are initial values — confirm exact stock swatches and white ink method (UV offset white vs screen white) with the printer.
 
 Corrugated (fefco_0427, fefco_0201):
 

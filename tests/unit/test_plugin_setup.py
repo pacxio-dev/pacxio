@@ -8,7 +8,15 @@ from pathlib import Path
 import pytest
 
 from pacxio.mcp_install import server_command
-from pacxio.plugin_setup import MARKER, build_plugin, plugin_home, setup
+from pacxio.plugin_setup import (
+    MARKER,
+    antigravity_plugin_dir,
+    build_antigravity_plugin,
+    build_plugin,
+    detect_agents,
+    plugin_home,
+    setup,
+)
 
 
 @pytest.fixture()
@@ -16,6 +24,7 @@ def home(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     import pacxio.plugin_setup as ps
 
     monkeypatch.setenv("PACXIO_HOME", str(tmp_path / ".pacxio"))
+    monkeypatch.setenv("ANTIGRAVITY_CONFIG_DIR", str(tmp_path / ".gemini" / "config"))
     monkeypatch.setattr(ps, "_home_dir", lambda: tmp_path)
     monkeypatch.setattr(ps, "_claude_dir", lambda: tmp_path / ".claude")
     monkeypatch.setattr(ps, "_codex_dir", lambda: tmp_path / ".codex")
@@ -182,3 +191,81 @@ def test_setup_without_agent_uses_every_detected_cli(
 def test_setup_rejects_unknown_agent(home: Path) -> None:
     r = setup("claude-desktop")
     assert not r.ok and r.errors[0].id == "ARG"
+
+
+def test_build_antigravity_plugin_matches_spec(home: Path) -> None:
+    info = build_antigravity_plugin()
+    root = Path(info["dir"])
+    assert root == antigravity_plugin_dir()
+    manifest = _load(root / "plugin.json")
+    allowed_keys = {
+        "name",
+        "displayName",
+        "version",
+        "description",
+        "author",
+        "homepage",
+        "repository",
+        "suggestedPrompts",
+        "logo",
+        "disabled",
+    }
+    assert set(manifest) <= allowed_keys
+    assert manifest["name"] == "pacxio" and manifest["displayName"] == "pacxio"
+    assert len(manifest["suggestedPrompts"]) == 3
+    mcp = _load(root / "mcp_config.json")
+    cmd, args = server_command()
+    assert mcp == {"mcpServers": {"pacxio": {"command": cmd, "args": args}}}
+    assert "type" not in mcp["mcpServers"]["pacxio"]
+    skill = root / "skills" / "packaging-prepress"
+    entry = (skill / "SKILL.md").read_text(encoding="utf-8")
+    assert entry.startswith("---\nname: packaging-prepress\n")
+    assert "pacxio://skill/SKILL.md" in entry
+    assert (skill / "SKILL.local.md").is_file()
+    assert (root / MARKER).is_file()
+    # Non-managed directory is never overwritten
+    other = home / "custom-plugin"
+    other.mkdir()
+    (other / "plugin.json").write_text('{"name": "pacxio"}', encoding="utf-8")
+    with pytest.raises(FileExistsError):
+        build_antigravity_plugin(other)
+
+
+def test_setup_antigravity_preview_install_autodetect_and_duplicate_warnings(
+    home: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import pacxio.plugin_setup as ps
+
+    # Preview writes nothing
+    preview = setup("antigravity", yes=False, fonts=False)
+    assert preview.ok and preview.data["agents"] == ["antigravity"]
+    assert not antigravity_plugin_dir().exists()
+    assert not plugin_home().exists()
+
+    # Install writes ~/.gemini/config/plugins/pacxio and verifies handshake
+    installed = setup("antigravity", yes=True, fonts=False)
+    assert installed.ok, installed.errors
+    assert (antigravity_plugin_dir() / "plugin.json").is_file()
+    assert (antigravity_plugin_dir() / "mcp_config.json").is_file()
+    assert installed.data["server"]["ok"]
+    assert not plugin_home().exists()  # Claude/Codex marketplace dir untouched
+
+    # Subsequent preview reports update and warns on duplicate standalone config / skill
+    (home / ".gemini" / "config" / "mcp_config.json").write_text(
+        json.dumps({"mcpServers": {"pacxio": {"command": "x"}}}), encoding="utf-8"
+    )
+    dup_skill = home / ".gemini" / "config" / "skills" / "packaging-prepress"
+    dup_skill.mkdir(parents=True)
+    again = setup("antigravity", yes=False, fonts=False)
+    assert again.ok and again.data["already_installed"]["antigravity"] is True
+    fixes = [w.fix or "" for w in again.warnings]
+    assert any("mcp_config.json" in f for f in fixes)
+    assert any("packaging-prepress" in f for f in fixes)
+
+    # Auto-detects Antigravity via ~/.gemini/config even without agy CLI on PATH
+    monkeypatch.setattr(ps.shutil, "which", lambda name: None)
+    assert detect_agents() == ["antigravity"]
+    # Also detects via agy CLI on PATH even without config directory
+    monkeypatch.setenv("ANTIGRAVITY_CONFIG_DIR", str(home / "nonexistent-agy"))
+    monkeypatch.setattr(ps.shutil, "which", lambda name: "/x/agy" if name == "agy" else None)
+    assert detect_agents() == ["antigravity"]

@@ -16,7 +16,7 @@ import urllib.error
 import urllib.request
 import webbrowser
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
 
 from pacxio import dielines
 from pacxio.messages import t
@@ -81,9 +81,57 @@ def studio_status(directory: Path) -> Result:
     return r
 
 
-def _spawn(directory: Path, port: int) -> subprocess.Popen[bytes]:
+class _Process(Protocol):
+    pid: int
+
+    def poll(self) -> int | None: ...
+    def terminate(self) -> None: ...
+
+
+class _DetachedProcess:
+    def __init__(self, pid: int) -> None:
+        self.pid = pid
+
+    def poll(self) -> int | None:
+        try:
+            os.kill(self.pid, 0)
+        except ProcessLookupError:
+            return 0
+        return None
+
+    def terminate(self) -> None:
+        try:
+            os.kill(self.pid, signal.SIGTERM)
+        except ProcessLookupError:
+            pass
+
+
+def _spawn(directory: Path, port: int) -> _Process:
     sdir = studio_dir(directory)
     sdir.mkdir(parents=True, exist_ok=True)
+    if os.name == "posix" and os.environ.get("PACXIO_STUDIO_DETACH") == "1":
+        # WorkBuddy can retire a task's process tree during session/configuration
+        # cleanup, including start_new_session children. Give the Workbench an independent
+        # lifetime, while retaining the same PID-based stop and health checks.
+        started = subprocess.run(
+            [
+                sys.executable,
+                "-I",
+                "-m",
+                "pacxio.studio.daemon",
+                str(directory.resolve()),
+                "--port",
+                str(port),
+                "--log",
+                str(sdir / LOG_FILE),
+            ],
+            stdin=subprocess.DEVNULL,
+            capture_output=True,
+            check=True,
+            start_new_session=True,
+            timeout=START_TIMEOUT_S,
+        )
+        return _DetachedProcess(int(started.stdout.strip()))
     log = (sdir / LOG_FILE).open("wb")
     cmd = [
         sys.executable,
@@ -134,7 +182,13 @@ def studio_start(directory: Path, port: int = 0, open_browser: bool = False) -> 
                 )
             )
     else:
-        proc = _spawn(directory, port)
+        try:
+            proc = _spawn(directory, port)
+        except (OSError, subprocess.SubprocessError, ValueError) as exc:
+            return r.fail(
+                Issue(id="STUDIO", message=t("The Workbench service could not start: ") + str(exc)),
+                3,
+            )
         deadline = time.monotonic() + START_TIMEOUT_S
         while time.monotonic() < deadline:
             info = alive(directory)
@@ -185,7 +239,10 @@ def studio_stop(directory: Path) -> Result:
         info_file.unlink(missing_ok=True)  # 进程已经不在了：清掉过期的记录
         r.data = {"running": False, "stopped": False}
         return r
-    os.kill(int(info["pid"]), signal.SIGTERM)
+    try:
+        os.kill(int(info["pid"]), signal.SIGTERM)
+    except ProcessLookupError:
+        pass
     deadline = time.monotonic() + STOP_TIMEOUT_S
     while time.monotonic() < deadline and ping(int(info["port"])) is not None:
         time.sleep(0.1)

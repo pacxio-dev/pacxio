@@ -683,18 +683,19 @@ def _flats(directory: Path) -> Stage:
 
 def _key_colors_card(job: Job) -> Card:
     """⑤ 旁边的"关键颜色"卡：名称、潘通号、CMYK、用在哪；色块是屏幕示意（颜色以签样为准）。"""
-    from pacxio_pro.color import cmyk_to_rgb_naive
-    from pacxio_pro.color.keys import cmyk_text
-
     keys = job.key_colors or []
     lines, swatches = [], []
     for kc in keys:
-        parts = [kc.name, kc.pantone or t("no Pantone given"), cmyk_text(kc.cmyk)] + (
+        c, m, y, k = kc.cmyk
+        parts = [kc.name, kc.pantone or t("no Pantone given"), f"C{c:g} M{m:g} Y{y:g} K{k:g}"] + (
             [kc.where] if kc.where else []
         )
         lines.append(" · ".join(parts))
         ink = np.array([[[round(v * 255 / 100) for v in kc.cmyk]]], dtype=np.uint8)
-        r, g, b = (int(x) for x in cmyk_to_rgb_naive(ink)[0, 0])
+        # Public workbench screen swatch only; this is not an ICC conversion.
+        fractions = ink.astype(np.float32) / 255.0
+        rgb = np.clip(np.rint((1 - fractions[..., :3]) * (1 - fractions[..., 3:4]) * 255), 0, 255)
+        r, g, b = (int(x) for x in rgb[0, 0])
         swatches.append(f"#{r:02x}{g:02x}{b:02x}")
     return Card(id="design:key_colors", kind="text", title=t("Key colors (for color matching at the factory)"),
                 caption=t("The Pantone number is the color standard; swatches are only a screen preview"), data={"lines": lines, "swatches": swatches})  # fmt: skip

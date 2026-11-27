@@ -4,6 +4,56 @@ sbs_350:   { name: SBS 350 g/m²,     type: folding_carton, caliper_mm: 0.48, fl
 sbs_400:   { name: SBS 400 g/m²,     type: folding_carton, caliper_mm: 0.55, flute: null, surface: coated }
 gd_350:    { name: White-lined greyback 350 g/m², type: folding_carton, caliper_mm: 0.48, flute: null, surface: coated }
 kraft_350: { name: Kraft board 350 g/m²,   type: folding_carton, caliper_mm: 0.50, flute: null, surface: uncoated }
+# 特种卡纸（）：厚度与示意色均为【初值】，打样以工厂样卡为准
+silver_card_350:
+  name: Silver metallic card 350 g/m²
+  type: folding_carton
+  caliper_mm: 0.48
+  flute: null
+  surface: coated
+  face: { rgb: [224, 228, 234], finish: metallic, back_rgb: [248, 248, 246], name: Silver metallic card }
+gold_card_350:
+  name: Gold metallic card 350 g/m²
+  type: folding_carton
+  caliper_mm: 0.48
+  flute: null
+  surface: coated
+  face: { rgb: [232, 200, 122], finish: metallic, back_rgb: [248, 248, 246], name: Gold metallic card }
+holo_card_350:
+  name: Holographic card 350 g/m²
+  type: folding_carton
+  caliper_mm: 0.48
+  flute: null
+  surface: coated
+  face: { rgb: [226, 230, 238], finish: holographic, back_rgb: [248, 248, 246], name: Holographic card }
+black_card_350:
+  name: Black card 350 g/m²
+  type: folding_carton
+  caliper_mm: 0.48
+  flute: null
+  surface: uncoated
+  face: { rgb: [34, 34, 38], finish: paper, back_rgb: [34, 34, 38], name: Dyed-through black card }
+color_card_300:
+  name: Colored card 300 g/m²
+  type: folding_carton
+  caliper_mm: 0.42
+  flute: null
+  surface: uncoated
+  face: { rgb: [38, 62, 54], finish: paper, back_rgb: [38, 62, 54], name: Dyed-through colored card }
+pearl_card_300:
+  name: Pearlescent card 300 g/m²
+  type: folding_carton
+  caliper_mm: 0.42
+  flute: null
+  surface: coated
+  face: { rgb: [246, 241, 234], finish: pearl, back_rgb: [246, 241, 234], name: Pearlescent card }
+textured_300:
+  name: Textured art paper 300 g/m²
+  type: folding_carton
+  caliper_mm: 0.45
+  flute: null
+  surface: uncoated
+  face: { rgb: [245, 241, 233], finish: textured, back_rgb: [245, 241, 233], name: Textured art paper }
 flute_e:   { name: E-flute corrugated,     type: corrugated,     caliper_mm: 1.5,  flute: E }
 flute_b:   { name: B-flute corrugated,     type: corrugated,     caliper_mm: 3.0,  flute: B }
 flute_c:   { name: C-flute corrugated,     type: corrugated,     caliper_mm: 4.0,  flute: C }

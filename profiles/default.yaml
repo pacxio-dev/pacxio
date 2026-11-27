@@ -38,6 +38,13 @@ finish_rules:
   registration_tolerance_mm: 0.1   # 工艺超出对应的印刷图形多少就提醒没对齐（F04， 新加，不在工厂确认的范围里）【初值】
 attachment:                    # 配件（金属标，； 新加，不在工厂确认的范围里）
   fold_clearance_mm: 3          # 标的外形离折线 / 刀线至少多远（A01）【初值】
+white_underlay:                # 特种纸自动白墨打底（；不在工厂确认的范围里，全部【初值】）
+  choke_mm: 0.1                # 大面积色块 / 图片白墨相对 CMYK 向内收边（防套印偏出白边）
+  fine_width_mm: 0.5           # 细线 / 小字保护阈值（窄于此的笔画仅轻缩保护，不发灰不断裂）
+  fine_choke_mm: 0.04          # 细线 / 小字轻缩量（仅去 300 dpi 抗锯齿毛边，防止深色纸小字发虚）
+  ink_threshold_pct: 8         # PP01：总墨量超过此值算有墨
+  check_erode_mm: 0.3          # PP01：允许白墨内缩的边界允差
+  check_min_area_mm2: 4        # PP01：未打底面积超过此值才提醒
 labels:                        # 不干胶标签（C4，；不在工厂确认的范围里，全部【初值】）
   bleed_mm: 2                  # 标签出血
   safe_margin_mm: 2            # 文字、条码离模切外形至少多远

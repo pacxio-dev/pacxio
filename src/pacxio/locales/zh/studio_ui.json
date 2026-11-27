@@ -366,7 +366,5 @@
   "Trace this display lettering from the flat concept as smooth print-ready vector curves and re-render the dieline proof.": "从展开平面图将该展示艺术字描成平滑印刷级矢量曲线，并重新渲染刀版确认图。",
   "Loading 3D preview…": "正在载入 3D 预览…",
   "Using standard 3D preview": "已使用标准 3D 预览",
-  "3D preview could not be loaded.": "3D 预览未能载入。",
-  "Standard preview": "标准预览",
-  "Switch to the standard 3D preview for this view": "将当前视图切换为标准 3D 预览"
+  "3D preview could not be loaded.": "3D 预览未能载入。"
 }

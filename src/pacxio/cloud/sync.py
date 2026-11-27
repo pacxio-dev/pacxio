@@ -54,7 +54,7 @@ def _state_path(job: Path) -> Path:
 
 def read_state(job: Path) -> dict[str, Any]:
     try:
-        data = json.loads(_state_path(job).read_text())
+        data = json.loads(_state_path(job).read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return {}
     return data if isinstance(data, dict) else {}
@@ -65,7 +65,7 @@ def write_state(job: Path, state: dict[str, Any]) -> None:
     p.parent.mkdir(parents=True, exist_ok=True)
     tmp = p.with_name(f".{p.name}.{secrets.token_hex(4)}.tmp")
     try:
-        tmp.write_text(json.dumps(state, indent=2))
+        tmp.write_text(json.dumps(state, indent=2), encoding="utf-8")
         os.replace(tmp, p)
     except BaseException:
         tmp.unlink(missing_ok=True)

@@ -1,0 +1,20 @@
+Anonymous funnel telemetry and optional error reporting (local config, opt-out anytime; error details are opt-in): 匿名漏斗统计与可选错误上报（本地配置，随时可关；错误详情默认关闭需手动开启）
+Show anonymous funnel telemetry and optional error-reporting settings without contacting the network.: 查看匿名漏斗统计与可选错误上报状态（纯本地，不联网）。
+Enable anonymous funnel telemetry (milestone counts only, no paths, prompts or brand text).: 开启匿名漏斗统计（只记关键阶段计数，不含路径、提示词或品牌文案）。
+Disable anonymous funnel telemetry and clear any buffered local events.: 关闭匿名漏斗统计，并清空本地尚未发送的缓冲事件。
+Enable or disable optional scrubbed error reports (off by default).: 开启或关闭可选的脱敏错误上报（默认关闭）。
+'on or off': 'on 或 off'
+Show locally buffered telemetry events before they are sent (zero PII).: 查看本地缓冲的统计事件原文（不含个人隐私与项目内容）。
+Maximum number of recent buffered events to show: 最多显示的近期缓冲事件条数
+Send locally buffered telemetry events now.: 立即发送本地缓冲的统计事件。
+'Telemetry: {state} ({reason})  Error reports: {errors} ({error_reason})  Pending: {pending}': '漏斗统计：{state}（{reason}）  错误上报：{errors}（{error_reason}）  待发送：{pending}'
+'on': '已开启'
+'off': '已关闭'
+'Anonymous funnel telemetry is now enabled.': '已开启匿名漏斗统计。'
+'Anonymous funnel telemetry is now disabled and buffered events were cleared.': '已关闭匿名漏斗统计，并清空本地缓冲事件。'
+'Optional scrubbed error reports are now enabled.': '已开启可选的脱敏错误上报。'
+'Optional scrubbed error reports are now disabled.': '已关闭可选的脱敏错误上报。'
+'Value must be `on` or `off`': '参数必须为 `on` 或 `off`'
+'Pass `pacxio telemetry errors on` or `pacxio telemetry errors off`': '请传入 `pacxio telemetry errors on` 或 `pacxio telemetry errors off`'
+'No buffered telemetry events.': '当前没有本地缓冲的统计事件。'
+'Flushed {sent} event(s); {remaining} remaining ({status}).': '已上报 {sent} 条事件，剩余 {remaining} 条（{status}）。'

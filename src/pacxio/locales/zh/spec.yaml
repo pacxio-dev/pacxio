@@ -234,3 +234,14 @@
 "Artwork": "印刷图文 Artwork"
 "The profile's spot_names is missing line types: {missing}": "配置档 spot_names 缺少线型：{missing}"
 "{name} ({id})": "{name}（{id}）"
+'Paper': '纸面'
+'Metallic': '金属纸面'
+'Holographic': '镭射纸面'
+'Pearlescent': '珠光纸面'
+'Textured': '压纹 / 纹理纸面'
+', color {name}': '，颜色 {name}'
+'; white ink underlay under CMYK (see Finishes)': '；四色下面垫白墨（见工艺）'
+'Paper face': '纸面'
+'{finish}{color} (screen reference {hexrgb}, follow physical swatch){white}': '{finish}{color}（屏幕示意色 {hexrgb}，以纸样为准）{white}'
+'{id}, {area}; spot color {spot}; separate white ink PDF [factory to confirm white ink process: UV offset white / screen white]': '{id}，{area}；专色 {spot}；单独一份白墨 PDF【请工厂确认白墨工艺：UV 胶印白 / 丝印白】'
+'Requirement: white ink underlay choked inward {choke} mm relative to CMYK (fine strokes protected, initial value)': '要求：白墨打底比四色向内缩 {choke} mm（细线 / 小字已保护，【初值】）'

@@ -72,7 +72,17 @@ def maybe_forward(argv: list[str], cwd: Path | None = None) -> tuple[int, str] |
     if not should_forward(argv):
         return None
     as_json = "--json" in argv
+    started = time.monotonic()
     result = forward(argv, cwd or Path.cwd())
+    from pacxio.cloud import telemetry
+
+    if not telemetry.in_scoped_call():
+        telemetry.record_result(
+            result,
+            surface="cli",
+            mode="cloud",
+            duration_ms=int((time.monotonic() - started) * 1000),
+        )
     return result.exit_code, render(result, as_json)
 
 

@@ -41,7 +41,7 @@ def label() -> str:
 
 def read_pending(url: str) -> dict[str, Any] | None:
     try:
-        data = json.loads(_pending_path().read_text())
+        data = json.loads(_pending_path().read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return None
     ok = (
@@ -56,7 +56,7 @@ def _save_pending(data: dict[str, Any]) -> None:
     p = _pending_path()
     p.parent.mkdir(parents=True, exist_ok=True)
     tmp = p.with_suffix(".tmp")
-    tmp.write_text(json.dumps(data))
+    tmp.write_text(json.dumps(data), encoding="utf-8")
     tmp.chmod(0o600)
     tmp.replace(p)
 

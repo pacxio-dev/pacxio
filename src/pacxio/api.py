@@ -29,9 +29,19 @@ from pacxio.messages import lang as lang_now
 from pacxio.mockup.approval import approval_state, design_fingerprint, style_version
 from pacxio.model.common import Issue, Result, parameter_issues, validation_message
 from pacxio.model.dieline import Dieline
-from pacxio.model.job import JOB_FILE, CornerFinish, Job, Placement, PrintSpec, Window
+from pacxio.model.job import (
+    JOB_FILE,
+    CornerFinish,
+    Job,
+    Placement,
+    PrintSpec,
+    WhiteUnderlay,
+    Window,
+    normalize_hex,
+)
 from pacxio.model.profile import (
     Material,
+    PaperFace,
     ProfileNotFoundError,
     load_materials,
     load_profile,
@@ -41,6 +51,7 @@ from pacxio.model.profile import (
 )
 from pacxio.model.report import Report
 from pacxio.notes import open_notes_issue
+from pacxio.paper import needs_white, paper_face
 from pacxio.preflight.rules import check_crease_sides, check_s01
 from pacxio.styles import all_styles, get_style
 from pacxio.styles.base import ORIENTATION_VERIFIED, style_advisories
@@ -1376,6 +1387,197 @@ def set_liner(directory: Path, liner: str) -> Result:
     if before != liner:
         r.warnings.append(Issue(id="LINER", message=t("Liner changed to {liner}: render the dieline confirmation image and 3D again", liner=LINERS[liner]),
                                 fix=t("`pacxio render {job}`, `pacxio mockup {job}`; a confirmed dieline confirmation image expires, ask the user to confirm again", job=directory)))  # fmt: skip
+    return r
+
+
+PAPER_FINISHES = ("paper", "metallic", "holographic", "pearl", "textured")
+
+
+def _hex_to_rgb(value: str) -> tuple[int, int, int]:
+    h = normalize_hex(value)[1:]
+    return (int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
+
+
+def set_paper(
+    directory: Path,
+    *,
+    material: str | None = None,
+    color: str | None = None,
+    finish: str | None = None,
+    name: str | None = None,
+    back: str | None = None,
+    white: str | None = None,
+    choke_mm: float | None = None,
+    keep_metal: str | None = None,
+) -> Result:
+    """查看或修改特种纸纸面与自动白墨打底设置（，开源本地命令）。"""
+    r = Result(command="job paper", job=str(directory))
+    job = _load_job(directory, r)
+    if job is None:
+        return r
+
+    changed = False
+    if material is not None:
+        presets = load_materials()
+        if material not in presets:
+            return _fail(
+                r,
+                [
+                    Issue(
+                        id="S03",
+                        message=t("Unknown material preset {material}", material=material),
+                        fix=t("Available presets: ") + ", ".join(presets),
+                    )
+                ],
+                2,
+            )
+        target = presets[material]
+        if target.type != job.material.type:
+            same_type = [k for k, v in presets.items() if v.type == job.material.type]
+            return _fail(
+                r,
+                [
+                    Issue(
+                        id="S03",
+                        message=t(
+                            "Material {material} ({kind}) does not match this job's material type ({current})",
+                            material=material,
+                            kind=target.type,
+                            current=job.material.type,
+                        ),
+                        fix=t(
+                            "Choose a preset of type {current}: {presets}",
+                            current=job.material.type,
+                            presets=", ".join(same_type),
+                        ),
+                    )
+                ],
+                2,
+            )
+        new_mat = resolve_material(material)
+        if job.material.liner is not None and new_mat.type == "corrugated":
+            new_mat = new_mat.model_copy(update={"liner": job.material.liner})
+        job.material = new_mat
+        if not needs_white(job.material) and white is None and choke_mm is None and keep_metal is None:
+            job.white_underlay = None
+        changed = True
+
+    if any(v is not None for v in (color, finish, name, back)):
+        if finish is not None and finish not in PAPER_FINISHES:
+            return _fail(
+                r,
+                [
+                    Issue(
+                        id="ARG",
+                        message=t("Unknown paper finish {finish}", finish=finish),
+                        fix=t("Use one of: paper, metallic, holographic, pearl, textured"),
+                    )
+                ],
+                2,
+            )
+        try:
+            rgb = _hex_to_rgb(color) if color is not None else None
+            back_rgb = _hex_to_rgb(back) if back is not None else None
+        except ValueError as e:
+            return _fail(r, [Issue(id="ARG", message=str(e), fix=t("Use #RRGGBB"))], 2)
+        cur = job.material.face or paper_face(job.material) or PaperFace(rgb=(245, 245, 243))
+        upd: dict[str, Any] = {}
+        if rgb is not None:
+            upd["rgb"] = rgb
+            upd["needs_white"] = None
+            if back_rgb is None and cur.back_rgb == cur.rgb:
+                upd["back_rgb"] = rgb
+        if finish is not None:
+            upd["finish"] = finish
+            upd["needs_white"] = None
+        if name is not None:
+            upd["name"] = name.strip() or None
+        if back_rgb is not None:
+            upd["back_rgb"] = back_rgb
+        job.material.face = cur.model_copy(update=upd)
+        changed = True
+
+    if any(v is not None for v in (white, choke_mm, keep_metal)):
+        if white is not None and white not in ("auto", "off"):
+            return _fail(
+                r,
+                [
+                    Issue(
+                        id="ARG",
+                        message=t("Unknown white underlay mode {mode}", mode=white),
+                        fix=t("Use auto (generate automatic white ink underlay) or off (disable automatic underlay)"),
+                    )
+                ],
+                2,
+            )
+        if choke_mm is not None and not (0.0 <= choke_mm <= 0.5):
+            return _fail(
+                r,
+                [
+                    Issue(
+                        id="ARG",
+                        message=t("Choke must be between 0 and 0.5 mm (got {choke:g} mm)", choke=choke_mm),
+                        fix=t("Use --choke between 0 and 0.5 (default 0.1 mm)"),
+                    )
+                ],
+                2,
+            )
+        wu = job.white_underlay or WhiteUnderlay()
+        upd_wu: dict[str, Any] = {}
+        if white is not None:
+            upd_wu["auto"] = white == "auto"
+        if choke_mm is not None:
+            upd_wu["choke_mm"] = choke_mm
+        if keep_metal is not None:
+            ids = [s.strip() for s in keep_metal.split(",") if s.strip()]
+            known = {p.id for p in job.placements}
+            for pid in ids:
+                if pid != "all" and pid not in known:
+                    return _fail(
+                        r,
+                        [
+                            Issue(
+                                id="ARG",
+                                message=t("Placement {id} not found for --keep-metal", id=pid),
+                                fix=(
+                                    t("Available placement IDs: {ids} (or use all)", ids=", ".join(sorted(known)))
+                                    if known
+                                    else t("No placements in this job yet")
+                                ),
+                            )
+                        ],
+                        2,
+                    )
+            upd_wu["keep_metal"] = ids or None
+        wu = wu.model_copy(update=upd_wu)
+        job.white_underlay = (
+            None if wu.auto and wu.choke_mm is None and wu.keep_metal is None else wu
+        )
+        changed = True
+
+    if changed:
+        r.artifacts = [str(job.save(directory))]
+        r.warnings.append(
+            Issue(
+                id="PAPER",
+                message=t("Paper settings updated: render the dieline confirmation image and 3D again"),
+                fix=t(
+                    "`pacxio render {job}`, `pacxio mockup {job}`; a confirmed dieline confirmation image expires, ask the user to confirm again",
+                    job=directory,
+                ),
+            )
+        )
+    active_face = paper_face(job.material)
+    r.data = {
+        "material": job.material.preset,
+        "face": active_face.model_dump(exclude_none=True) if active_face is not None else None,
+        "needs_white": needs_white(job.material),
+        "white_underlay": (
+            job.white_underlay.model_dump(exclude_none=True)
+            if job.white_underlay is not None
+            else None
+        ),
+    }
     return r
 
 

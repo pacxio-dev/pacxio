@@ -334,8 +334,8 @@ Note id, e.g. n3: 批注 id，如 n3
 'One panel (multi-part: full name, e.g. lid.top)': 取一个面（多部件写全名，如 lid.top）
 ? 'One panel (top, bottom, each mailer panel): straighten this panel of the flat at its real size and remove text, ready for visual trace.'
 : 单个面（顶、底、飞机盒各面）：展开平面图上这个面按真实尺寸拉正、去文字，给 visual trace 描。
-? 'One-step install: add the pacxio plugin (Skill + MCP) to Claude Code / Codex (all found agents when --agent is not given), download fonts if missing, then self-check. Without --yes it only previews.'
-: 一句话安装：把 pacxio 插件（Skill + MCP）装进 Claude Code / Codex（不给 --agent 时本机有几个装几个），缺字体时下载，最后自检。不加 --yes 只预览。
+? 'One-step install: add the pacxio plugin (Skill + MCP) to Claude Code / Codex / Antigravity (all found agents when --agent is not given; WorkBuddy requires --agent workbuddy), download fonts if missing, then self-check. Without --yes it only previews.'
+: 一句话安装：把 pacxio 插件（Skill + MCP）装进 Claude Code / Codex / Antigravity（不给 --agent 时自动检测本机已装的；WorkBuddy 需显式指定 --agent workbuddy），缺字体时下载，最后自检。不加 --yes 只预览。
 Only calibrated structures: 只要已校准的
 Only notes waiting for the agent: 只列等 agent 处理的
 Only report pattern seams, do not fix them: pattern 有接缝时只报告不修复
@@ -544,7 +544,7 @@ auto ({value:g}{unit}): 自动（{value:g}{unit}）
 both ends change together: 两端一起变
 calibrated construction: 已校准做法
 changed after confirmation: 确认后又改过
-claude-code | codex; leave out to install into every agent found on this machine: claude-code | codex；不给时自动找本机装了的，都装上
+claude-code | codex | antigravity | workbuddy; leave out to detect Claude Code, Codex and Antigravity: claude-code | codex | antigravity | workbuddy；省略则自动检测 Claude Code、Codex 与 Antigravity
 closed: 已关
 confirmation expired: 确认已过期
 confirmed: 已确认
@@ -700,3 +700,12 @@ zinc_alloy (die-cast zinc alloy, default) | aluminum (stamped aluminum): zinc_al
 'Resume from previous flat/restore_run.json checkpoint, skipping completed initial extraction': 从上次 flat/restore_run.json 检查点续跑，跳过已完成的初始拆层描摹
 'Run the pipeline and write flat/restore_run.json, then restore job.json': 试跑一键还原并写入 flat/restore_run.json，结束后恢复原 job.json
 '(back / flat) Base colour of the box in the chosen design as #RRGGBB; written into the prompt so the background does not drift': '（back / flat）选定设计里盒子的底色 #RRGGBB；写进提示词，免得底色漂掉'
+'View or update specialty paper face and automatic white ink underlay settings (silver/gold/holographic/black/colored/pearl/textured card).': '查看或修改特种纸纸面与自动白墨打底设置（银卡 / 金卡 / 镭射卡 / 黑卡 / 彩卡 / 珠光卡 / 纹理艺术纸）。'
+'Switch to a specialty or standard material preset (e.g. silver_card_350, black_card_350, sbs_350)': '切换材料预设（如 silver_card_350、black_card_350、sbs_350）'
+'Custom paper face color as #RRGGBB (screen reference only)': '自定义纸面颜色 #RRGGBB（仅作屏幕示意）'
+'Paper surface finish: paper | metallic | holographic | pearl | textured': '纸面质感：paper | metallic | holographic | pearl | textured'
+'Paper color or stock name shown on the spec sheet': '写进规格书的纸张 / 色号名称'
+'Paper back color as #RRGGBB (for inside surfaces in 3D)': '纸张背面颜色 #RRGGBB（用于 3D 内表面显示）'
+'Automatic white ink underlay: auto | off': '自动白墨打底开关：auto | off'
+'White ink inward choke in mm (0–0.5, default from profile)': '白墨相对四色向内收边量（mm，0–0.5，默认按配置档）'
+'Comma-separated placement IDs to leave without white underlay (e.g. bg,logo, all, or empty string to clear)': '不垫白墨、露出金属 / 纸本色的放置 ID，逗号分隔（如 bg,logo，all 表示全版不垫，空串清空）'

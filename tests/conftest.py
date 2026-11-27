@@ -26,6 +26,8 @@ def pytest_configure(config: pytest.Config) -> None:
     # restore text 默认不比本机装的开源字体库（）和系统字体（R2-5）；要测的测试自己打开
     os.environ["PACXIO_FONT_LIBRARY"] = "off"
     os.environ["PACXIO_SYSTEM_FONTS"] = "off"
+    # 测试默认关闭漏斗上报；专门测 telemetry 的用例显式设 PACXIO_TELEMETRY=1
+    os.environ.setdefault("PACXIO_TELEMETRY", "0")
 
 
 def pytest_unconfigure(config: pytest.Config) -> None:

@@ -104,7 +104,7 @@ def _lettering_revert_and_render(d: Path, pid: str) -> Result:
     from pacxio.api import render_job
     from pacxio_pro.restore.lettering import revert_lettering
 
-    res = revert_lettering(d, [pid])
+    res: Result = revert_lettering(d, [pid])
     if res.ok:
         render_job(d)
     return res
@@ -114,7 +114,7 @@ def _lettering_trace_and_render(d: Path, pid: str, by: str) -> Result:
     from pacxio.api import render_job
     from pacxio_pro.restore.lettering import confirm_lettering
 
-    res = confirm_lettering(d, [pid], by=by)
+    res: Result = confirm_lettering(d, [pid], by=by)
     if res.ok:
         render_job(d)
     return res

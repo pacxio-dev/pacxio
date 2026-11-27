@@ -1,12 +1,14 @@
-"""一句话安装（2026-11-10 用户定，）：`pacxio setup --agent claude-code|codex`；
-不给 --agent 时自动找本机装了的 agent（PATH 上的 claude / codex），都装上。
+"""一句话安装（2026-11-10 用户定，）：`pacxio setup --agent claude-code|codex|antigravity|workbuddy`；
+不给 --agent 时自动找本机装了的 agent（PATH 上的 claude / codex，或 Antigravity 的 agy / ~/.gemini/config），都装上。
+WorkBuddy 属于项目级安装，不进自动探测，需显式 `--agent workbuddy`。
 
 做的事：
-1. 在本机生成一个插件（Skill + MCP 打在一起）和放它的本地插件市场：`~/.pacxio/plugin/`
-   （Claude Code 读 `.claude-plugin/`，Codex 读 `.codex-plugin/` 和 `.agents/plugins/`）；
-2. 用 agent 自己的命令装上：`claude plugin marketplace add / install`、`codex plugin marketplace add / add`；
-3. 缺默认字体（思源黑体）时跑随包的 `fetch_fonts.py` 下载（约 33 MB；联网只在这个脚本里，核心引擎不联网）；
-4. 起一次 MCP 服务走握手，确认能用。
+1. Claude Code / Codex：在本机生成共享插件市场 `~/.pacxio/plugin/`，并用 agent 自己的命令装上；
+2. Antigravity：直接生成原生插件目录 `~/.gemini/config/plugins/pacxio/`（`plugin.json` + `mcp_config.json` + `skills/`），
+   App / IDE / `agy` CLI 自动发现，不碰 `~/.gemini/config/config.json`；
+3. WorkBuddy：交给 `workbuddy_setup.py` 在指定项目内安装 `.codebuddy/skills/` 与 MCP 配置（带备份与回滚）；
+4. 缺默认字体（思源黑体）时跑随包的 `fetch_fonts.py` 下载（约 33 MB；联网只在这个脚本里，核心引擎不联网）；
+5. 起一次 MCP 服务走握手，确认能用。
 
 不给 --yes：只列出要做的事和要跑的命令，什么都不动（和 `mcp install` 一样）。
 以前用 `mcp install` 或手动软链接装过的，会在 warnings 里提示怎么去掉，免得工具和 Skill 重复；不替用户删。
@@ -27,9 +29,14 @@ from typing import Any
 from pacxio.messages import t
 from pacxio.model.common import Issue, Result
 
-AGENTS = ("claude-code", "codex")
-CLI = {"claude-code": "claude", "codex": "codex"}  # 各 agent 在终端里的命令
-LABEL = {"claude-code": "Claude Code", "codex": "Codex"}
+AGENTS = ("claude-code", "codex", "antigravity", "workbuddy")
+CLI = {"claude-code": "claude", "codex": "codex"}  # 通过 CLI 插件命令安装的 agent
+LABEL = {
+    "claude-code": "Claude Code",
+    "codex": "Codex",
+    "antigravity": "Antigravity",
+    "workbuddy": "WorkBuddy",
+}
 NAME = "pacxio"  # 插件名，也是插件市场名：装出来是 pacxio@pacxio
 SKILL = "packaging-prepress"
 MARKER = ".pacxio-generated"  # 只清理带这个标记的目录，别的不碰
@@ -38,6 +45,11 @@ DESCRIPTION = (
     "Packaging design to factory files: dielines, 3D, print PDF, finish plates and preflight, "
     "with a local workbench."
 )
+ANTIGRAVITY_PROMPTS = [
+    "Make a mailer box for my brand, 240 × 170 × 70 mm",
+    "Design a reverse tuck carton, 80 × 50 × 180 mm, 350g SBS",
+    "Show me the dieline and folding 3D for FEFCO 0427, 280 × 210 × 60 mm",
+]
 SKILL_ENTRY = """
 # Packaging prepress
 
@@ -89,6 +101,14 @@ def _codex_dir() -> Path:
     return Path(os.environ.get("CODEX_HOME", str(_home_dir() / ".codex")))
 
 
+def _antigravity_dir() -> Path:
+    return Path(os.environ.get("ANTIGRAVITY_CONFIG_DIR", str(_home_dir() / ".gemini" / "config")))
+
+
+def antigravity_plugin_dir() -> Path:
+    return _antigravity_dir() / "plugins" / NAME
+
+
 def _write_json(path: Path, data: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -101,10 +121,7 @@ def _skill_entry(source: str) -> str:
     return frontmatter.group(0).rstrip() + "\n" + SKILL_ENTRY
 
 
-def build_plugin(dest: Path | None = None) -> dict[str, Any]:
-    """生成插件市场目录（两种 agent 共用一份插件），返回路径和版本。"""
-    from pacxio import __version__
-    from pacxio.mcp_install import server_command
+def _prepare_skill_bundle() -> tuple[Path, str, str]:
     from pacxio.mcp_server import skill_dir
 
     src = skill_dir()
@@ -114,7 +131,10 @@ def build_plugin(dest: Path | None = None) -> dict[str, Any]:
         )
     full_skill = (src / "SKILL.md").read_text(encoding="utf-8")
     entry_skill = _skill_entry(full_skill)
-    root = dest or plugin_home()
+    return src, full_skill, entry_skill
+
+
+def _reset_managed_dir(root: Path) -> None:
     if root.exists():
         if not (root / MARKER).is_file():
             raise FileExistsError(
@@ -124,6 +144,28 @@ def build_plugin(dest: Path | None = None) -> dict[str, Any]:
                 )
             )
         shutil.rmtree(root)
+
+
+def _copy_skill_bundle(src: Path, dest_skill: Path, full_skill: str, entry_skill: str) -> None:
+    # 软链接（scripts/fetch_fonts.py）复制成真文件：插件会被 agent 复制或迁移，链接会断
+    shutil.copytree(
+        src,
+        dest_skill,
+        symlinks=False,
+        ignore=shutil.ignore_patterns("__pycache__", "*.pyc", ".DS_Store"),
+    )
+    (dest_skill / "SKILL.local.md").write_text(full_skill, encoding="utf-8")
+    (dest_skill / "SKILL.md").write_text(entry_skill, encoding="utf-8")
+
+
+def build_plugin(dest: Path | None = None) -> dict[str, Any]:
+    """生成 Claude Code / Codex 共用插件市场目录，返回路径和版本。"""
+    from pacxio import __version__
+    from pacxio.mcp_install import server_command
+
+    src, full_skill, entry_skill = _prepare_skill_bundle()
+    root = dest or plugin_home()
+    _reset_managed_dir(root)
     plugin = root / NAME
     cmd, args = server_command()
     author = {"name": "pacxio"}
@@ -148,16 +190,47 @@ def build_plugin(dest: Path | None = None) -> dict[str, Any]:
                       "defaultPrompt": ["Make a mailer box for my brand, 240 × 170 × 70 mm"]},
     })  # fmt: skip
     _write_json(plugin / ".mcp.json", {"mcpServers": {NAME: {"command": cmd, "args": args}}})
-    # 软链接（scripts/fetch_fonts.py）复制成真文件：插件会被 agent 复制进缓存，链接会断
-    skill = plugin / "skills" / SKILL
-    shutil.copytree(src, skill, symlinks=False,
-                    ignore=shutil.ignore_patterns("__pycache__", "*.pyc", ".DS_Store"))  # fmt: skip
-    (skill / "SKILL.local.md").write_text(full_skill, encoding="utf-8")
-    (skill / "SKILL.md").write_text(entry_skill, encoding="utf-8")
+    _copy_skill_bundle(src, plugin / "skills" / SKILL, full_skill, entry_skill)
     (root / MARKER).write_text(__version__ + "\n", encoding="utf-8")
     return {
         "dir": str(root),
         "plugin": str(plugin),
+        "version": __version__,
+        "command": [cmd, *args],
+    }
+
+
+def build_antigravity_plugin(dest: Path | None = None) -> dict[str, Any]:
+    """生成 Antigravity 原生插件目录（~/.gemini/config/plugins/pacxio/）。
+
+    只写 Antigravity 规范允许的顶层清单字段与 mcp_config.json，不修改 config.json。
+    """
+    from pacxio import __version__
+    from pacxio.mcp_install import server_command
+
+    src, full_skill, entry_skill = _prepare_skill_bundle()
+    root = dest or antigravity_plugin_dir()
+    _reset_managed_dir(root)
+    cmd, args = server_command()
+    _write_json(
+        root / "plugin.json",
+        {
+            "name": NAME,
+            "displayName": NAME,
+            "version": __version__,
+            "description": DESCRIPTION,
+            "author": {"name": "pacxio", "url": "https://pacxio.dev"},
+            "homepage": "https://pacxio.dev",
+            "repository": "https://github.com/pacxio-dev/pacxio",
+            "suggestedPrompts": list(ANTIGRAVITY_PROMPTS),
+        },
+    )
+    _write_json(root / "mcp_config.json", {"mcpServers": {NAME: {"command": cmd, "args": args}}})
+    _copy_skill_bundle(src, root / "skills" / SKILL, full_skill, entry_skill)
+    (root / MARKER).write_text(__version__ + "\n", encoding="utf-8")
+    return {
+        "dir": str(root),
+        "plugin": str(root),
         "version": __version__,
         "command": [cmd, *args],
     }
@@ -213,6 +286,26 @@ def _codex_state() -> tuple[bool, bool]:
     return NAME in (cfg.get("marketplaces") or {}), f"{NAME}@{NAME}" in (cfg.get("plugins") or {})
 
 
+def _antigravity_state() -> tuple[bool, bool]:
+    try:
+        installed = (antigravity_plugin_dir() / "plugin.json").is_file()
+    except OSError:
+        installed = False
+    return True, installed
+
+
+def _antigravity_detected() -> bool:
+    if shutil.which("agy"):
+        return True
+    for path in (_antigravity_dir(), _home_dir() / ".gemini" / "antigravity"):
+        try:
+            if path.is_dir():
+                return True
+        except OSError:
+            pass
+    return False
+
+
 def _old_installs(agent: str) -> list[Issue]:
     """以前装过的独立 MCP / Skill：和插件重复，提示用户去掉（不替用户删）。"""
     out: list[Issue] = []
@@ -228,7 +321,7 @@ def _old_installs(agent: str) -> list[Issue]:
         if user_mcp:
             out.append(Issue(id="SETUP", message=t("Claude Code still has a separately installed pacxio MCP that duplicates the plugin's"),
                              fix="claude mcp remove -s user pacxio"))  # fmt: skip
-    else:
+    elif agent == "codex":
         skill = _home_dir() / ".agents" / "skills" / SKILL
         try:
             codex_cfg = tomllib.loads((_codex_dir() / "config.toml").read_text(encoding="utf-8"))
@@ -238,7 +331,31 @@ def _old_installs(agent: str) -> list[Issue]:
         if old_mcp:
             out.append(Issue(id="SETUP", message=t("The Codex config still has a separately installed [mcp_servers.pacxio] that duplicates the plugin's"),
                              fix=t("Delete the [mcp_servers.pacxio] section in {path}", path=_codex_dir() / "config.toml")))  # fmt: skip
-    if skill.exists() or skill.is_symlink():
+    elif agent == "antigravity":
+        skill = _antigravity_dir() / "skills" / SKILL
+        for mcp_path in (
+            _antigravity_dir() / "mcp_config.json",
+            _home_dir() / ".gemini" / "antigravity" / "mcp_config.json",
+        ):
+            try:
+                has_old = NAME in (
+                    json.loads(mcp_path.read_text(encoding="utf-8")).get("mcpServers") or {}
+                )
+            except (OSError, ValueError, AttributeError):
+                has_old = False
+            if has_old:
+                out.append(Issue(
+                    id="SETUP",
+                    message=t("Antigravity still has a separately installed pacxio MCP in {path} that duplicates the plugin's", path=mcp_path),
+                    fix=t('Remove the "pacxio" entry under mcpServers in {path}', path=mcp_path),
+                ))  # fmt: skip
+    else:
+        return out
+    try:
+        dup_skill = skill.exists() or skill.is_symlink()
+    except OSError:
+        dup_skill = False
+    if dup_skill:
         out.append(Issue(id="SETUP", message=t("{skill} is a separately installed Skill that duplicates the plugin's", skill=skill),
                          fix=t("rm {skill} (if it is a symlink, only the link is removed)", skill=skill)))  # fmt: skip
     return out
@@ -256,13 +373,42 @@ def _fonts_ready() -> bool:
 
 
 def detect_agents() -> list[str]:
-    """本机终端里能运行的 agent（按 PATH 上有没有 claude / codex 命令判断）。"""
-    return [a for a in AGENTS if shutil.which(CLI[a])]
+    """本机能运行的 agent：PATH 上的 claude / codex，或 Antigravity（agy / ~/.gemini/config）。"""
+    found = [a for a in CLI if shutil.which(CLI[a])]
+    if _antigravity_detected():
+        found.append("antigravity")
+    return found
 
 
-def setup(agent: str | None = None, yes: bool = False, fonts: bool = True) -> Result:
+def setup(
+    agent: str | None = None,
+    yes: bool = False,
+    fonts: bool = True,
+    *,
+    project: Path | None = None,
+    scope: str | None = None,
+    remove: bool = False,
+    test_cloud_url: str | None = None,
+) -> Result:
     """agent 不给时自动找本机装了的 agent，找到几个装几个（终端一行安装：`pacxio setup --yes`）。"""
     r = Result(command="setup", job=None)
+    if agent == "workbuddy":
+        if scope not in (None, "project", "user"):
+            return r.fail(
+                Issue(id="ARG", message=t("WorkBuddy MCP scope must be project or user")), 2
+            )
+        from pacxio.workbuddy_setup import setup as setup_workbuddy
+
+        return setup_workbuddy(
+            project, yes=yes, fonts=fonts, remove=remove, scope=scope, test_cloud_url=test_cloud_url
+        )
+    if test_cloud_url is not None:
+        return r.fail(Issue(id="ARG", message=t("--test-cloud-url requires --agent workbuddy")), 2)
+    if project is not None or scope is not None or remove:
+        return r.fail(
+            Issue(id="ARG", message=t("--project, --scope and --remove require --agent workbuddy")),
+            2,
+        )
     if agent is not None and agent not in AGENTS:
         return r.fail(
             Issue(
@@ -274,23 +420,62 @@ def setup(agent: str | None = None, yes: bool = False, fonts: bool = True) -> Re
         )
     agents = [agent] if agent else detect_agents()
     if not agents:
-        return r.fail(Issue(id="SETUP", message=t("Neither Claude Code nor Codex found (no claude / codex command in the terminal)"),
-                            fix=t("Install one of them and check that claude or codex runs in the terminal; or choose with --agent")), 3)  # fmt: skip
+        return r.fail(
+            Issue(
+                id="SETUP",
+                message=t(
+                    "No supported agent found (no claude / codex / agy command or Antigravity config directory)"
+                ),
+                fix=t(
+                    "Install Claude Code, Codex, or Antigravity first (or choose explicitly with --agent claude-code|codex|antigravity|workbuddy)"
+                ),
+            ),
+            3,
+        )
+    cli_agents = [a for a in agents if a in CLI]
+    has_agy = "antigravity" in agents
     root = plugin_home()
+    agy_root = antigravity_plugin_dir()
     plan: dict[str, list[list[str]]] = {}
     installed: dict[str, bool] = {}
-    for a in agents:
+    for a in cli_agents:
         has_market, installed[a] = _claude_state() if a == "claude-code" else _codex_state()
         plan[a] = _agent_commands(a, root, installed[a], has_market)
+    if has_agy:
+        _, installed["antigravity"] = _antigravity_state()
     need_fonts = fonts and not _fonts_ready()
+    steps: list[str] = []
+    if cli_agents:
+        steps.append(t("Build the plugin (Skill + MCP) in {root}", root=root))
+        steps.extend(" ".join(x) for a in cli_agents for x in plan[a])
+    if has_agy:
+        steps.append(
+            t("Update the Antigravity plugin (Skill + MCP) in {root}", root=agy_root)
+            if installed["antigravity"]
+            else t("Install the Antigravity plugin (Skill + MCP) in {root}", root=agy_root)
+        )
+    steps.extend(
+        [
+            t("Download the open-source Source Han Sans fonts (about 33 MB)")
+            if need_fonts
+            else t("Fonts: already there, skipped")
+            if fonts
+            else t("Fonts: skipped (--no-fonts)"),
+            t(
+                "Packaged installs check for updates in the background at each MCP startup; ready updates apply on a later startup, failures keep the working version, and current sessions keep their version. Source/development installs do not auto-update."
+            ),
+            t("Start the MCP server once as a self-check"),
+        ]
+    )
     r.data = {
-        "agents": agents, "detected": agent is None, "plugin_dir": str(root),
+        "agents": agents,
+        "detected": agent is None,
+        "plugin_dir": str(root if cli_agents else agy_root),
         "already_installed": installed,
-        "steps": [t("Build the plugin (Skill + MCP) in {root}", root=root), *(" ".join(x) for a in agents for x in plan[a]),
-                  t("Download the open-source Source Han Sans fonts (about 33 MB)") if need_fonts else t("Fonts: already there, skipped") if fonts else t("Fonts: skipped (--no-fonts)"),
-                  t("Packaged installs check for updates in the background at each MCP startup; ready updates apply on a later startup, failures keep the working version, and current sessions keep their version. Source/development installs do not auto-update."),
-                  t("Start the MCP server once as a self-check")],
-    }  # fmt: skip
+        "steps": steps,
+    }
+    if has_agy:
+        r.data["antigravity_plugin_dir"] = str(agy_root)
     for a in agents:
         r.warnings.extend(_old_installs(a))
     if not yes:
@@ -298,32 +483,55 @@ def setup(agent: str | None = None, yes: bool = False, fonts: bool = True) -> Re
             Issue(id="SETUP", message=t("Not installed yet: check data.steps, then add --yes"))
         )
         return r
-    missing = [a for a in agents if shutil.which(CLI[a]) is None]
+    missing = [a for a in cli_agents if shutil.which(CLI[a]) is None]
     if missing:
         a = missing[0]
         return r.fail(Issue(id="SETUP", message=t("{cli} command not found", cli=CLI[a]),
                             fix=t("Install {label} first and check that {cli} runs in the terminal", label=LABEL[a], cli=CLI[a])), 3)  # fmt: skip
-    try:
-        r.data["plugin"] = build_plugin(root)
-    except (OSError, ValueError) as e:
-        return r.fail(Issue(id="SETUP", message=t("Building the plugin failed: {error}", error=e),
-                            fix=t("Set PACXIO_HOME to use another folder, or delete that folder and try again")), 1)  # fmt: skip
-    ran: list[dict[str, Any]] = []
-    for line in (x for a in agents for x in plan[a]):
-        done = _run(line)
-        ran.append({"run": line, "code": done.returncode})
-        if done.returncode != 0:
-            r.data["ran"] = ran
-            return r.fail(Issue(id="SETUP", message=t("{cmd} failed: {tail}", cmd=" ".join(line), tail=(done.stderr or done.stdout).strip()[-800:]),
-                                fix=t("Run this command by hand to see the full error; the plugin folder is {root}", root=root)), 1)  # fmt: skip
-    r.data["ran"] = ran
+    plugin_cmd: list[str] | None = None
+    if cli_agents:
+        try:
+            r.data["plugin"] = build_plugin(root)
+            plugin_cmd = r.data["plugin"]["command"]
+        except (OSError, ValueError) as e:
+            return r.fail(Issue(id="SETUP", message=t("Building the plugin failed: {error}", error=e),
+                                fix=t("Set PACXIO_HOME to use another folder, or delete that folder and try again")), 1)  # fmt: skip
+        ran: list[dict[str, Any]] = []
+        for line in (x for a in cli_agents for x in plan[a]):
+            done = _run(line)
+            ran.append({"run": line, "code": done.returncode})
+            if done.returncode != 0:
+                r.data["ran"] = ran
+                return r.fail(Issue(id="SETUP", message=t("{cmd} failed: {tail}", cmd=" ".join(line), tail=(done.stderr or done.stdout).strip()[-800:]),
+                                    fix=t("Run this command by hand to see the full error; the plugin folder is {root}", root=root)), 1)  # fmt: skip
+        r.data["ran"] = ran
+    if has_agy:
+        try:
+            agy_info = build_antigravity_plugin(agy_root)
+            r.data["antigravity_plugin"] = agy_info
+            if "plugin" not in r.data:
+                r.data["plugin"] = agy_info
+            plugin_cmd = plugin_cmd or agy_info["command"]
+        except (OSError, ValueError) as e:
+            return r.fail(
+                Issue(
+                    id="SETUP",
+                    message=t("Building the plugin failed: {error}", error=e),
+                    fix=t(
+                        "Set ANTIGRAVITY_CONFIG_DIR to use another folder, or check permissions on {root}",
+                        root=agy_root,
+                    ),
+                ),
+                1,
+            )
     if need_fonts:
         r.data["fonts"] = _fetch_fonts(r)
     elif fonts:
         r.data["fonts"] = "ready"
     from pacxio.mcp_install import _handshake
 
-    check = _handshake(r.data["plugin"]["command"])
+    assert plugin_cmd is not None
+    check = _handshake(plugin_cmd)
     r.data["server"] = check
     if not check.get("ok"):
         return r.fail(Issue(id="SETUP", message=t("The plugin is installed, but the MCP server does not start: {why}", why=check.get("why")),
@@ -365,4 +573,12 @@ def _fetch_fonts(r: Result) -> str:
     return "downloaded"
 
 
-__all__ = ["AGENTS", "build_plugin", "detect_agents", "plugin_home", "setup"]
+__all__ = [
+    "AGENTS",
+    "antigravity_plugin_dir",
+    "build_antigravity_plugin",
+    "build_plugin",
+    "detect_agents",
+    "plugin_home",
+    "setup",
+]

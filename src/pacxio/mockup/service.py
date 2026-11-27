@@ -492,7 +492,9 @@ def _make_mockup(directory: Path, require: list[str] | None = None) -> Result:
     display_status, display_files = prepare_display(out / "scene.json", job.style)
     files += display_files
     manifest = {
-        "display_renderer": display_status,
+        "display_renderer": {
+            k: display_status[k] for k in ("renderer", "reason") if k in display_status
+        },
         "job_id": job.job_id,
         "fingerprint": fingerprint,
         "style_version": style_version(job),

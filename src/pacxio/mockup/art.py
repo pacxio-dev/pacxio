@@ -221,6 +221,8 @@ def render_art(
     img = _base_image(layout, dpi)
     m = _Map(layout, dpi)
     for f in layout.finishes:
+        if f.type == "white" and layout.canvas.paper_rgb is not None:
+            continue  # 有基材本色（牛皮、特种纸、镀铝膜）时白墨是打底：底图已按“白墨处白”合成，不盖掉四色
         _apply_finish(img, f, m)
     for a in layout.attachments:
         _apply_attachment(img, a, m)

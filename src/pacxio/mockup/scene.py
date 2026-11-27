@@ -38,6 +38,9 @@ Source = tuple[str, Rect] | tuple[int, int, int]  # (部件, 刀版矩形) 或�
 
 def paper_rgb(dl: Dieline) -> tuple[int, int, int]:
     """纸的背面（不印刷的一面）：效果图里托盘里面、外套里面的颜色，只是示意。"""
+    back = dl.style_meta.get("paper_back_rgb")
+    if isinstance(back, list) and len(back) == 3:
+        return (int(back[0]), int(back[1]), int(back[2]))
     preset = (dl.material_preset or "").lower()
     if "kraft" in preset:
         return PAPER_RGB["kraft"]

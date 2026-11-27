@@ -893,7 +893,7 @@ wheels = [
 
 [[package]]
 name = "pacxio"
-version = "0.0.7"
+version = "0.0.8"
 source = { editable = "." }
 dependencies = [
     { name = "ezdxf" },

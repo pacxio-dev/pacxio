@@ -32,7 +32,7 @@ def creds_path() -> Path:
 
 def _saved() -> dict[str, str]:
     try:
-        data = json.loads(creds_path().read_text())
+        data = json.loads(creds_path().read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return {}
     return {k: v for k, v in data.items() if isinstance(v, str)} if isinstance(data, dict) else {}
@@ -49,7 +49,7 @@ def save(url: str, token: str) -> Path:
     p = creds_path()
     p.parent.mkdir(parents=True, exist_ok=True)
     tmp = p.with_suffix(".tmp")
-    tmp.write_text(json.dumps({"url": url.rstrip("/"), "token": token}))
+    tmp.write_text(json.dumps({"url": url.rstrip("/"), "token": token}), encoding="utf-8")
     tmp.chmod(0o600)
     tmp.replace(p)
     return p

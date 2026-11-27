@@ -22,7 +22,7 @@ from typing import Any
 from pacxio.messages import t
 from pacxio.model.common import Issue, Result
 
-CLIENTS = ("claude-code", "codex", "claude-desktop")
+CLIENTS = ("claude-code", "codex", "claude-desktop", "antigravity")
 NAME = "pacxio"
 DOCTOR_TIMEOUT_S = 60
 
@@ -31,6 +31,12 @@ def server_command() -> tuple[str, list[str]]:
     from pacxio.launcher import bootstrap_python
 
     return bootstrap_python(), ["-I", "-m", "pacxio.launcher", "mcp", "serve"]
+
+
+def _antigravity_config() -> Path:
+    from pacxio.plugin_setup import _antigravity_dir
+
+    return _antigravity_dir() / "mcp_config.json"
 
 
 def _desktop_config() -> Path:
@@ -155,6 +161,18 @@ def install(
                     message=t("Claude Desktop has no project-level config; installing globally"),
                 )
             )
+    elif client == "antigravity":
+        path = _antigravity_config()
+        old, new = _json_merge(path, cmd, args, typed=False)
+        if scope == "project":
+            r.warnings.append(
+                Issue(
+                    id="MCP",
+                    message=t(
+                        "Antigravity's standalone MCP config is global (~/.gemini/config/mcp_config.json); installing globally"
+                    ),
+                )
+            )
     else:
         path = _codex_config()
         old = path.read_text(encoding="utf-8") if path.is_file() else ""
@@ -198,7 +216,9 @@ def install(
     return r
 
 
-def _handshake(cmd: list[str]) -> dict[str, Any]:
+def _handshake(
+    cmd: list[str], *, env: dict[str, str] | None = None, cwd: Path | None = None
+) -> dict[str, Any]:
     """起一次服务，走 initialize → tools/list → resources/list。"""
     msgs = [
         {"jsonrpc": "2.0", "id": 1, "method": "initialize",
@@ -208,9 +228,10 @@ def _handshake(cmd: list[str]) -> dict[str, Any]:
         {"jsonrpc": "2.0", "id": 3, "method": "resources/list"},
     ]  # fmt: skip
     environment = os.environ.copy()
+    environment.update(env or {})
     environment["PACXIO_NO_UPDATE"] = "1"
     done = subprocess.run(cmd, input="\n".join(json.dumps(m) for m in msgs) + "\n", capture_output=True,
-                          text=True, timeout=DOCTOR_TIMEOUT_S, env=environment)  # fmt: skip
+                          text=True, timeout=DOCTOR_TIMEOUT_S, env=environment, cwd=cwd)  # fmt: skip
     replies = {}
     for line in done.stdout.splitlines():
         try:
@@ -231,13 +252,18 @@ def _registered(project: Path) -> list[dict[str, Any]]:
     for client, path in (
         (t("claude-code (project)"), project / ".mcp.json"),
         ("claude-desktop", _desktop_config()),
+        ("antigravity", _antigravity_config()),
     ):
-        if path.is_file():
+        try:
+            is_file = path.is_file()
+        except OSError:
+            is_file = False
+        if is_file:
             try:
                 entry = (json.loads(path.read_text(encoding="utf-8")).get("mcpServers") or {}).get(
                     NAME
                 )
-            except ValueError:
+            except (OSError, ValueError, AttributeError):
                 entry = None
             if entry:
                 out.append(
@@ -248,14 +274,18 @@ def _registered(project: Path) -> list[dict[str, Any]]:
                     }
                 )
     codex = _codex_config()
-    if codex.is_file():
+    try:
+        has_codex = codex.is_file()
+    except OSError:
+        has_codex = False
+    if has_codex:
         import tomllib
 
         try:
             entry = (tomllib.loads(codex.read_text(encoding="utf-8")).get("mcp_servers") or {}).get(
                 NAME
             )
-        except tomllib.TOMLDecodeError:
+        except (OSError, tomllib.TOMLDecodeError):
             entry = None
         if entry:
             out.append(
@@ -270,26 +300,59 @@ def _registered(project: Path) -> list[dict[str, Any]]:
 
 
 def _plugins() -> list[dict[str, Any]]:
-    """`pacxio setup` 装的插件：命令写在生成的插件 .mcp.json 里。"""
-    from pacxio.plugin_setup import _claude_state, _codex_state, plugin_home
+    """`pacxio setup` 装的插件：Claude Code / Codex 写在 .mcp.json，Antigravity 写在 mcp_config.json。"""
+    from pacxio.plugin_setup import (
+        _antigravity_state,
+        _claude_state,
+        _codex_state,
+        antigravity_plugin_dir,
+        plugin_home,
+    )
 
+    out: list[dict[str, Any]] = []
     mcp = plugin_home() / NAME / ".mcp.json"
     try:
         entry = json.loads(mcp.read_text(encoding="utf-8"))["mcpServers"][NAME]
     except (OSError, ValueError, KeyError, TypeError):
-        return []
-    out = []
-    for client, state in (
-        (t("claude-code (plugin)"), _claude_state),
-        (t("codex (plugin)"), _codex_state),
-    ):
-        if state()[1]:
-            out.append({"client": client, "file": str(mcp),
-                        "command": [entry.get("command"), *(entry.get("args") or [])]})  # fmt: skip
+        entry = None
+    if entry:
+        for client, state in (
+            (t("claude-code (plugin)"), _claude_state),
+            (t("codex (plugin)"), _codex_state),
+        ):
+            if state()[1]:
+                out.append({"client": client, "file": str(mcp),
+                            "command": [entry.get("command"), *(entry.get("args") or [])]})  # fmt: skip
+    agy_mcp = antigravity_plugin_dir() / "mcp_config.json"
+    if _antigravity_state()[1]:
+        try:
+            agy_entry = json.loads(agy_mcp.read_text(encoding="utf-8"))["mcpServers"][NAME]
+        except (OSError, ValueError, KeyError, TypeError):
+            agy_entry = None
+        if agy_entry:
+            out.append({
+                "client": t("antigravity (plugin)"),
+                "file": str(agy_mcp),
+                "command": [agy_entry.get("command"), *(agy_entry.get("args") or [])],
+            })  # fmt: skip
     return out
 
 
-def doctor(project: Path | None = None) -> Result:
+def doctor(project: Path | None = None, client: str | None = None) -> Result:
+    if client == "workbuddy":
+        from pacxio.workbuddy_setup import doctor as workbuddy_doctor
+
+        return workbuddy_doctor(project)
+    if client is not None:
+        return Result(command="mcp doctor").fail(
+            Issue(
+                id="ARG",
+                message=t(
+                    "Only workbuddy supports a targeted doctor check; omit --client to check existing agents"
+                ),
+            ),
+            2,
+        )
     r = Result(command="mcp doctor", job=None)
     cmd, args = server_command()
     here = _handshake([cmd, *args])
@@ -324,7 +387,7 @@ def doctor(project: Path | None = None) -> Result:
             Issue(
                 id="MCP",
                 message=t("Not installed in any agent yet"),
-                fix=t("pacxio setup --agent claude-code (or codex)"),
+                fix=t("pacxio setup --agent claude-code (or codex / antigravity)"),
             )
         )
     return r

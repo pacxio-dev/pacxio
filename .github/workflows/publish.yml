@@ -1,0 +1,167 @@
+name: Publish to PyPI and MCP Registry
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Verify release version and MCP metadata
+        run: |
+          set -euo pipefail
+          PY_VER="$(uv run python -c 'import tomllib, pathlib; print(tomllib.loads(pathlib.Path("pyproject.toml").read_text())["project"]["version"])')"
+          MOD_VER="$(uv run python -c 'import pacxio; print(pacxio.__version__)')"
+          SRV_VER="$(jq -r '.version' server.json)"
+          PKG_VER="$(jq -r '.packages[0].version' server.json)"
+          SRV_NAME="$(jq -r '.name' server.json)"
+
+          test "$PY_VER" = "$MOD_VER"
+          test "$PY_VER" = "$SRV_VER"
+          test "$PY_VER" = "$PKG_VER"
+          grep -Fq "<!-- mcp-name: ${SRV_NAME} -->" README.md
+
+          if [[ "${GITHUB_REF_TYPE:-}" == "tag" ]]; then
+            TAG_VER="${GITHUB_REF_NAME#v}"
+            test "$PY_VER" = "$TAG_VER"
+          fi
+
+      - name: Lint and type-check
+        run: |
+          uv run ruff check .
+          uv run mypy src
+
+      - name: Run test suite
+        run: uv run pytest
+
+      - name: Build distribution packages
+        run: uv build
+
+      - name: Verify built wheel contains bundled Skill and MCP marker
+        run: |
+          uv run python -c '
+          import zipfile, pathlib
+          wheels = list(pathlib.Path("dist").glob("pacxio-*.whl"))
+          assert len(wheels) == 1, wheels
+          with zipfile.ZipFile(wheels[0]) as zf:
+              names = set(zf.namelist())
+              assert "pacxio/_skill/packaging-prepress/SKILL.md" in names
+              meta = [n for n in names if n.endswith(".dist-info/METADATA")][0]
+              text = zf.read(meta).decode("utf-8")
+              assert "mcp-name: dev.pacxio/pacxio" in text
+          '
+
+      - name: Upload distribution artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish-pypi:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write # Required for PyPI Trusted Publishing and PEP 740 attestations
+      contents: read
+    steps:
+      - name: Download distribution artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publish package to PyPI (with attestations)
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          attestations: true
+
+  publish-mcp-registry:
+    needs: publish-pypi
+    runs-on: ubuntu-latest
+    environment: mcp-registry-publish
+    permissions:
+      contents: read
+    env:
+      MCP_PUBLISHER_VERSION: v1.8.16
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Wait for PyPI release metadata to propagate
+        run: |
+          set -euo pipefail
+          VERSION="$(jq -r '.version' server.json)"
+          SRV_NAME="$(jq -r '.name' server.json)"
+          URL="https://pypi.org/pypi/pacxio/${VERSION}/json"
+          for attempt in $(seq 1 24); do
+            if BODY="$(curl --fail --silent --show-error "$URL" 2>/dev/null)"; then
+              if printf '%s' "$BODY" | jq -er --arg m "mcp-name: ${SRV_NAME}" '.info.description | contains($m)' >/dev/null; then
+                echo "PyPI pacxio==${VERSION} is live with ownership marker."
+                exit 0
+              fi
+            fi
+            echo "Attempt ${attempt}/24: waiting for PyPI pacxio==${VERSION}..."
+            sleep 5
+          done
+          echo "Timed out waiting for PyPI pacxio==${VERSION}" >&2
+          exit 1
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+
+      - name: Download and verify mcp-publisher
+        run: |
+          set -euo pipefail
+          os="$(uname -s | tr '[:upper:]' '[:lower:]')"
+          arch="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')"
+          archive="mcp-publisher_${os}_${arch}.tar.gz"
+          base_url="https://github.com/modelcontextprotocol/registry/releases/download/${MCP_PUBLISHER_VERSION}"
+
+          curl --fail --location --silent --show-error --output "$archive" "$base_url/$archive"
+          curl --fail --location --silent --show-error --output "$archive.sigstore.json" "$base_url/$archive.sigstore.json"
+          cosign verify-blob \
+            --bundle "$archive.sigstore.json" \
+            --certificate-identity "https://github.com/modelcontextprotocol/registry/.github/workflows/release.yml@refs/tags/${MCP_PUBLISHER_VERSION}" \
+            --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+            "$archive"
+          tar xzf "$archive" mcp-publisher
+          rm -f "$archive" "$archive.sigstore.json"
+
+      - name: Validate server.json
+        run: ./mcp-publisher validate server.json
+
+      - name: Authenticate to MCP Registry (DNS)
+        env:
+          MCP_PRIVATE_KEY: ${{ secrets.MCP_PRIVATE_KEY }}
+        run: ./mcp-publisher login dns --domain pacxio.dev
+
+      - name: Publish server to MCP Registry
+        run: ./mcp-publisher publish server.json
+
+      - name: Verify live MCP Registry entry
+        run: |
+          set -euo pipefail
+          VERSION="$(jq -r '.version' server.json)"
+          curl --fail --silent --show-error \
+            "https://registry.modelcontextprotocol.io/v0.1/servers/dev.pacxio%2Fpacxio/versions/${VERSION}" \
+            | jq -e --arg v "$VERSION" '
+                .server.name == "dev.pacxio/pacxio"
+                and .server.version == $v
+                and ._meta["io.modelcontextprotocol.registry/official"].status == "active"
+              '

@@ -57,11 +57,30 @@ def _relief(size: tuple[int, int], geom: BaseGeometry, m: _Map, width_mm: float)
     return Image.fromarray(np.round(acc / RELIEF_STEPS).astype(np.uint8), "L")
 
 
+def _textured_height(size: tuple[int, int], amp: int) -> Image.Image:
+    """确定性棉纸 / 压纹细纤维高度图（全分辨率微幅颗粒，避免放大时出现粗凹凸斑块；精细肌理由 3D 着色器在物理毫米空间生成）。"""
+    w, h = size
+    rng = np.random.default_rng(0)
+    noise = rng.normal(0.0, 1.0, (h, w)).astype(np.float32)
+    fine = np.clip(np.rint(128.0 + noise * amp), 128 - amp, 128 + amp).astype(np.uint8)
+    return Image.fromarray(fine, "L")
+
+
 def roughness_map(layout: LayoutResult, size: tuple[int, int], m: _Map) -> Image.Image:
     """静态效果图反光用的粗糙度（0–255，L 图，和整张成品外观图同尺寸）：纸、覆膜 / 光油、局部 UV，
     值和 `atlases` 材质图的粗糙度通道一样。烫金不算（静态图里烫金的光泽已经画在颜色上）。"""
+    from pacxio_pro.export.preview import white_mask
+
     cfg = presets()
-    rough = Image.new("L", size, cfg["paper"][0])
+    paper_r = cfg["paper"][0]
+    face = layout.canvas.paper_face
+    finish = face.finish if face is not None else "paper"
+    base_r = cfg.get("paper_face", {}).get(finish, cfg["paper"])[0]
+    rough = Image.new("L", size, base_r)
+    if finish in ("metallic", "holographic", "pearl"):
+        white = white_mask(layout, size)
+        if white is not None:
+            rough.paste(paper_r, (0, 0, *size), white)
     for s in layout.surfaces:
         rough.paste(cfg[s.treatment.type][0], (0, 0, *size), _mask(size, s, m))
     for f in layout.finishes:
@@ -71,20 +90,45 @@ def roughness_map(layout: LayoutResult, size: tuple[int, int], m: _Map) -> Image
 
 
 def atlases(q: Prepared) -> tuple[dict[str, Image.Image], _Map, list[dict[str, Any]]]:
-    from pacxio_pro.export.preview import _base_image  # 闭源：只在服务器上跑（mockup 转发）
+    from pacxio_pro.export.preview import (  # 闭源：只在服务器上跑（mockup 转发）
+        _base_image,
+        white_mask,
+    )
     from pacxio_pro.finishes.regions import records
 
     cfg = presets()
     layout, dl = q.layout, q.dl
-    base = _base_image(layout, MOCKUP_DPI)
+    base = _base_image(layout, MOCKUP_DPI, sheen=False)  # 金属 / 珠光的明暗由光照出，不烘焙进底色
     m = _Map(layout, MOCKUP_DPI)
-    mat = Image.new("RGB", base.size, tuple(cfg["paper"][:3]))
+    paper = tuple(cfg["paper"][:3])
+    face = layout.canvas.paper_face  # 特种纸 / 镀铝膜 / 压纹基材（）
+    finish = face.finish if face is not None else "paper"
+    metal_face = finish in ("metallic", "holographic", "pearl")
+    mat = Image.new("RGB", base.size, tuple(cfg.get("paper_face", {}).get(finish, paper)[:3]))
     height = Image.new("L", base.size, 128)
     holo_mask = Image.new("L", base.size, 0)
+    if finish != "paper":
+        white_bin = white_mask(layout, base.size)  # 镭射遮罩按二值，白墨处恢复普通纸面
+        white_aa = white_mask(layout, base.size, aa=True)  # 材质通道按 2× 抗锯齿混合，消除小字锯齿反光边
+        if finish == "holographic":
+            holo_mask.paste(255, (0, 0, *base.size))
+            if white_bin is not None:
+                holo_mask.paste(0, (0, 0, *base.size), white_bin)
+        elif finish == "textured":
+            height = _textured_height(base.size, int(cfg.get("textured_height", 1)))
+        if white_aa is not None and metal_face:
+            mat.paste(paper, (0, 0, *base.size), white_aa)
     masks = {}
     for s in layout.surfaces:
         mask = _mask(base.size, s, m)
-        mat.paste(tuple(cfg[s.treatment.type][:3]), (0, 0, *base.size), mask)
+        if metal_face:
+            # 覆膜 / 光油改变粗糙度与透明涂层，保留底下金属 / 珠光基材的金属性（白墨处已归零）
+            r, metal, coat = mat.split()
+            r.paste(cfg[s.treatment.type][0], (0, 0, *base.size), mask)
+            coat.paste(cfg[s.treatment.type][2], (0, 0, *base.size), mask)
+            mat = Image.merge("RGB", (r, metal, coat))
+        else:
+            mat.paste(tuple(cfg[s.treatment.type][:3]), (0, 0, *base.size), mask)
         masks["region:" + s.treatment.id] = mask
     priority = {
         "white": 0,
@@ -102,10 +146,10 @@ def atlases(q: Prepared) -> tuple[dict[str, Image.Image], _Map, list[dict[str, A
         if f.type.startswith("foil_"):
             base.paste(tuple(cfg[f.type]["base"]), (0, 0, *base.size), mask)
             mat.paste(tuple(cfg[f.type]["material"][:3]), (0, 0, *base.size), mask)
-            if f.type == "foil_holo":
-                holo_mask.paste(255, (0, 0, *base.size), mask)
+            holo_mask.paste(255 if f.type == "foil_holo" else 0, (0, 0, *base.size), mask)
         elif f.type == "white":
-            base.paste(tuple(cfg["white"]), (0, 0, *base.size), mask)
+            if layout.canvas.paper_rgb is None:  # 无底色基材（白卡 / 透明膜）：手加白墨按亮白油墨画
+                base.paste(tuple(cfg["white"]), (0, 0, *base.size), mask)
         elif f.type == "spot_uv":
             # 只改变透明涂层与粗糙度，保留下面的金属性/底色。
             r, metal, coat = mat.split()
@@ -123,6 +167,7 @@ def atlases(q: Prepared) -> tuple[dict[str, Image.Image], _Map, list[dict[str, A
             tuple((x + y) // 2 for x, y in zip(mid, light, strict=True)), (0, 0, *base.size), mask
         )
         mat.paste(tuple(cfg["attachment"]["field"][:3]), (0, 0, *base.size), mask)
+        holo_mask.paste(0, (0, 0, *base.size), mask)
         ramp = _relief(base.size, a.world, m, cfg["attachment"]["edge_mm"])
         height.paste(cfg["attachment"]["height"], (0, 0, *base.size), ramp)
         if not a.relief.is_empty:

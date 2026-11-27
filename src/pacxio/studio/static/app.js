@@ -563,17 +563,6 @@ function viewerCard(card) {
       v.nextBackground();
     });
     bar.append(reset, bg);
-    v.ready.then((kind) => {
-      if (kind !== "enhanced" || !e.isConnected) return;
-      const standard = el("button", "vbtn", tr("Standard preview"));
-      standard.title = tr("Switch to the standard 3D preview for this view");
-      standard.addEventListener("click", (ev) => {
-        ev.stopPropagation();
-        v.useLegacy();
-        standard.remove();
-      });
-      bar.append(standard);
-    });
     v.buttons = btns;
   }
   if (v && card.data.version >= 2) {
@@ -1144,7 +1133,8 @@ async function checkAgent() {
   if (checkingAgent) return checkingAgent;
   checkingAgent = (async () => {
     try {
-      const response = await fetch(apiUrl("/api/agent"), { cache: "no-store", signal: AbortSignal.timeout(5000) });
+      const signal = typeof AbortSignal !== "undefined" && typeof AbortSignal.timeout === "function" ? AbortSignal.timeout(5000) : undefined;
+      const response = await fetch(apiUrl("/api/agent"), { cache: "no-store", signal });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       if (!["waiting", "notified", "received", "disconnected", "idle"].includes(data.status)) throw new Error("Invalid agent state");

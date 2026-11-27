@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Literal
 
 import yaml
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from pacxio.messages import document_language, lang, t
 
@@ -170,6 +170,54 @@ class AttachmentRules(_Strict):
     fold_clearance_mm: float = Field(default=3.0, ge=0)
 
 
+class WhiteUnderlayRules(_Strict):
+    """特种纸自动白墨打底规则（），全部【初值】。"""
+
+    choke_mm: float = Field(default=0.1, ge=0, le=0.5)
+    fine_width_mm: float = Field(default=0.5, ge=0, le=2.0)  # 细线 / 小字保护阈值（窄于此轻缩保护）
+    fine_choke_mm: float = Field(default=0.04, ge=0, le=0.5)  # 细线 / 小字轻缩量（仅去掉抗锯齿白晕，不吃掉笔画）
+    ink_threshold_pct: float = Field(default=8.0, ge=0, le=100)  # PP01：有墨判定门槛
+    check_erode_mm: float = Field(default=0.3, ge=0)  # PP01：允许白墨内缩的边
+    check_min_area_mm2: float = Field(default=4.0, gt=0)  # PP01：漏打底最小面积
+
+
+PaperFinish = Literal["paper", "metallic", "holographic", "pearl", "textured"]
+
+
+class PaperFace(_Strict):
+    """纸面本色与光泽（）：不写 = 常规白卡（旧 job 不变）。
+
+    rgb：印前预览和效果图里的纸面颜色（只作示意）；finish：金属 / 镭射 / 珠光 / 压纹光泽；
+    needs_white：不给时金属 / 镭射和深色纸（亮度 < 0.65）自动需要白墨打底；
+    back_rgb：背面颜色（金银卡 / 镭射卡背白、色卡 / 黑卡通体同色）；
+    name：给人看的纸面描述（规格书、效果图、概念图提示词用）。
+    """
+
+    rgb: tuple[int, int, int]
+    finish: PaperFinish = "paper"
+    needs_white: bool | None = None
+    back_rgb: tuple[int, int, int] | None = None
+    name: str | None = None
+
+    @field_validator("rgb", "back_rgb")
+    @classmethod
+    def _rgb(cls, v: tuple[int, int, int] | None) -> tuple[int, int, int] | None:
+        if v is not None and any(not 0 <= c <= 255 for c in v):
+            raise ValueError(t("RGB components must each be between 0 and 255"))
+        return v
+
+    def white_needed(self) -> bool:
+        if self.needs_white is not None:
+            return self.needs_white
+        if self.finish in ("metallic", "holographic"):
+            return True
+        r, g, b = self.rgb
+        return (0.299 * r + 0.587 * g + 0.114 * b) / 255.0 < 0.65
+
+    def back(self) -> tuple[int, int, int]:
+        return self.back_rgb if self.back_rgb is not None else self.rgb
+
+
 class DxfLayer(_Strict):
     name: str
     aci: int
@@ -212,6 +260,7 @@ class Profile(_Strict):
     finish_rules: FinishRules
     window: WindowRules | None = None  # 没有这一节的配置档不能开窗（v0.2）
     attachment: AttachmentRules = Field(default_factory=AttachmentRules)  # 配件检查（）
+    white_underlay: WhiteUnderlayRules = Field(default_factory=WhiteUnderlayRules)  # 特种纸自动白墨打底
     flexo: FlexoRules | None = None  # 柔印（瓦楞水印）的规则；没有时柔印也按胶印数值查（v0.2）
     labels: LabelRules | None = None  # 标签（C4）；没有这一节时用 LabelRules 的默认【初值】
     pouches: PouchRules | None = None  # 软包装（C5）；没有这一节时用 PouchRules 的默认【初值】
@@ -236,6 +285,8 @@ class MaterialPreset(_Strict):
     surface: Literal["coated", "uncoated"] | None = None
     # 膜类标签材料：clear 透明、metallized 镀铝（要白墨打底，L06）；纸类不写
     film: Literal["clear", "metallized", "white", "kraft"] | None = None
+    # 特种纸纸面本色与光泽（）；常规白卡不写
+    face: PaperFace | None = None
 
 
 class Material(BaseModel):
@@ -250,6 +301,8 @@ class Material(BaseModel):
     liner: Literal["kraft", "white"] | None = None
     # 标签膜材（C4）：clear 透明 / metallized 镀铝 / white 白膜；纸和旧 job 不写（指纹不变）
     film: Literal["clear", "metallized", "white", "kraft"] | None = None
+    # 特种纸纸面本色与光泽（）；常规白卡与旧 job 不写（指纹不变）
+    face: PaperFace | None = None
 
 
 PROFILE_DIR_ENV = "PACXIO_PROFILE_DIR"
@@ -308,4 +361,6 @@ def resolve_material(preset: str) -> Material:
     if preset not in presets:
         raise KeyError(preset)
     p = presets[preset]
-    return Material(preset=preset, type=p.type, caliper_mm=p.caliper_mm, flute=p.flute, film=p.film)
+    return Material(
+        preset=preset, type=p.type, caliper_mm=p.caliper_mm, flute=p.flute, film=p.film, face=p.face
+    )

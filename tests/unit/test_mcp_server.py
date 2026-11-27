@@ -178,8 +178,13 @@ def test_skill_docs_are_resources() -> None:
 def test_install_previews_then_writes_with_backup(tmp_path: Path, monkeypatch) -> None:  # type: ignore[no-untyped-def]
     import tomllib
 
-    from pacxio import mcp_install
+    from pacxio import mcp_install, plugin_setup
 
+    monkeypatch.setenv("PACXIO_HOME", str(tmp_path / ".pacxio"))
+    monkeypatch.setenv("ANTIGRAVITY_CONFIG_DIR", str(tmp_path / ".gemini" / "config"))
+    monkeypatch.setattr(plugin_setup, "_home_dir", lambda: tmp_path)
+    monkeypatch.setattr(plugin_setup, "_claude_dir", lambda: tmp_path / ".claude")
+    monkeypatch.setattr(plugin_setup, "_codex_dir", lambda: tmp_path / ".codex")
     monkeypatch.setattr(mcp_install, "_codex_config", lambda: tmp_path / "codex" / "config.toml")
     monkeypatch.setattr(
         mcp_install, "_desktop_config", lambda: tmp_path / "desktop" / "claude_desktop_config.json"
@@ -201,13 +206,42 @@ def test_install_previews_then_writes_with_backup(tmp_path: Path, monkeypatch) -
     assert cfg["model"] == "x" and set(cfg["mcp_servers"]) == {"other", "pacxio"}
     assert list(codex.parent.glob("config.toml.bak-*"))
     assert mcp_install.install("claude-desktop", yes=True).ok
+    assert mcp_install.install("antigravity", yes=True).ok
+    agy_entry = json.loads(
+        (tmp_path / ".gemini" / "config" / "mcp_config.json").read_text()
+    )["mcpServers"]["pacxio"]
+    assert "type" not in agy_entry
+    assert plugin_setup.build_antigravity_plugin()["dir"]
     doc = mcp_install.doctor(proj)
     assert doc.data["server"]["ok"] and doc.data["server"]["tools"] == len(TOOLS)
     assert {r["client"] for r in doc.data["registered"]} == {
         "claude-code（项目）",
         "codex",
         "claude-desktop",
+        "antigravity",
+        "antigravity（插件）",
     }
+
+
+def test_pacxio_run_validates_cli_schema_before_cloud_forwarding(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from pacxio.cloud import route
+
+    called = False
+
+    def fail_forward(*_args: object, **_kwargs: object) -> None:
+        nonlocal called
+        called = True
+        raise AssertionError("invalid CLI arguments must be rejected before forwarding")
+
+    monkeypatch.setattr(route, "maybe_forward", fail_forward)
+    data, images = _call(
+        "pacxio_run",
+        {"command": "art add", "args": [str(tmp_path), "--definitely-not-an-option", "1"]},
+    )
+    assert not data["ok"] and not images and not called
+    assert data["errors"][0]["id"] == "MCP"
 
 
 def test_errors_inside_a_tool_are_tool_results(tmp_path: Path) -> None:

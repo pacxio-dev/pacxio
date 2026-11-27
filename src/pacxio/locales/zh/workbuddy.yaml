@@ -1,0 +1,48 @@
+'WorkBuddy installation paths must not be symlinks: {path}': WorkBuddy 安装路径不能是软链接：{path}
+'Expected a Skill directory: {path}': 应当是技能目录：{path}
+mcpServers must be a JSON object: mcpServers 必须是 JSON 对象
+The WorkBuddy installation record does not match this project: WorkBuddy 安装记录与此项目不匹配
+The installed pacxio configuration or Skill was edited; keep those changes before reinstalling or removing: 已安装的
+  pacxio 配置或技能被修改；请保留这些改动后再重新安装或移除
+The generated Skill ZIP was edited; keep it before reinstalling or removing: 生成的技能
+  ZIP 被修改；请先保留它再重新安装或移除
+A pacxio entry or Skill already exists without an installation record; it will not be overwritten: 已有
+  pacxio 配置或技能，但没有安装记录；不会覆盖
+'Choose an existing WorkBuddy project directory: {path}': 请选择已存在的 WorkBuddy 项目目录：{path}
+Remove only the recorded WorkBuddy installation: 只移除有安装记录的 WorkBuddy 配置和技能
+Install the project Skill and merge the pacxio MCP entry: 安装项目技能并合并 pacxio MCP 配置
+Back up changed files; keep other MCP servers and Skills: 改动前备份文件；保留其他 MCP 服务和技能
+'Isolated test mode: production cloud access and automatic updates are disabled': 隔离测试模式：已禁用生产云端访问与自动更新
+Use pacxio cloud and detached local Workbench (PACXIO_STUDIO_DETACH=1): 使用 pacxio 云端服务与独立后台工作台（PACXIO_STUDIO_DETACH=1）
+The WorkBuddy MCP self-check failed; no installation files were changed: WorkBuddy
+  MCP 自检失败；未改动安装文件
+WorkBuddy configuration changed during setup; run the preview again: 安装期间 WorkBuddy
+  配置已变化；请重新预览
+WorkBuddy files are ready; open this project in WorkBuddy and verify a real tool call: WorkBuddy
+  文件已就绪；请在 WorkBuddy 打开此项目并验证一次真实工具调用
+WorkBuddy installation removed; test projects and runtime data were kept: WorkBuddy
+  安装已移除；测试项目和运行数据已保留
+'WorkBuddy setup stopped: {error}': WorkBuddy 安装或检查已停止：{error}
+Keep existing files, resolve the reported conflict, then run the preview again: 保留现有文件，解决报告中的冲突后重新预览
+No recorded WorkBuddy installation in this project: 此项目没有 WorkBuddy 安装记录
+The server handshake passed; this does not verify WorkBuddy client behavior: 服务握手通过；这尚不能证明
+  WorkBuddy 客户端已正常使用
+--project, --scope and --remove require --agent workbuddy: --project、--scope 和 --remove
+  需要搭配 --agent workbuddy
+Only workbuddy supports a targeted doctor check; omit --client to check existing agents: 只有
+  workbuddy 支持指定客户端检查；省略 --client 可检查已有的其他客户端
+workbuddy; omit to check existing agents: workbuddy；省略则检查已有的其他客户端
+WorkBuddy project directory: WorkBuddy 项目目录
+Remove the recorded WorkBuddy project installation; preview unless --yes: 移除有记录的 WorkBuddy
+  项目安装；不加 --yes 只预览
+pacxio packaging design: pacxio 包装设计
+Packaging design, dielines, previews and prepress workflow: 包装设计、刀版、预览与印前工作流
+WorkBuddy MCP scope must be project or user: WorkBuddy MCP 范围必须为 project 或 user
+Remove the recorded WorkBuddy installation before changing MCP scope: 请先移除已有的 WorkBuddy 安装，再切换 MCP 配置范围
+User MCP registration is visible in other WorkBuddy projects; keep tasks in the configured test directory: 用户级 MCP 在其他 WorkBuddy 项目也可见；请将测试限制在配置的独立目录中
+WorkBuddy 5.9.3 did not load project MCP files in desktop tests; explicit user scope may be required: WorkBuddy 5.9.3 客户端测试未加载项目 MCP 文件；可能需要显式选择 user 范围
+'WorkBuddy MCP: project (default) or user; Skill stays in the project': 'WorkBuddy MCP：project（默认）或 user；技能始终保存在项目内'
+'Test cloud URL must be http://127.0.0.1:PORT or http://[::1]:PORT': '测试云端地址必须为 http://127.0.0.1:端口 或 http://[::1]:端口'
+'--test-cloud-url cannot be combined with --remove': '--test-cloud-url 不能与 --remove 同时使用'
+'--test-cloud-url requires --agent workbuddy': '--test-cloud-url 需要搭配 --agent workbuddy'
+'WorkBuddy only: explicit loopback HTTP test service; disables production cloud': '仅 WorkBuddy：显式连接本机 HTTP 测试服务；禁用生产云端'

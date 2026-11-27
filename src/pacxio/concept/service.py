@@ -71,7 +71,7 @@ FACE_ALIASES = {"top": "top_lid", "bottom": "btm_lid", "left": "side_a", "right"
 # 简写 → 盒子模型的面（再按盒型找刀版面：底面在反插盒是 btm_lid、扣底盒是 btm_front、飞机盒是 base）
 FACE_KEYS = {"top": "top", "bottom": "bottom", "left": "side_a", "right": "side_b"}
 FACE_ROLES = {PanelRole.BODY, PanelRole.LID}
-NEW_FIELDS = ("view", "faces")  # 没给时不写进 meta：没标的图和以前的 meta 一模一样
+NEW_FIELDS = ("view", "faces", "visual_style", "category")  # 没给时不写进 meta：没标的图和以前的 meta 一模一样
 FACE_ZH = {"front": "正面", "back": "背面", "side_a": "左侧面", "side_b": "右侧面",
            "top_lid": "顶面", "btm_lid": "底面", "btm_front": "底面", "base": "底面",
            "top_tuck": "正面（插舌）"}  # fmt: skip  # 飞机盒合上后正面是插舌
@@ -111,6 +111,8 @@ class ConceptMeta(BaseModel):
     size_px: tuple[int, int]
     view: ConceptView | None = None  # 旧图没有：当主视角看待
     faces: list[str] | None = None  # 刀版面 id；平面图按图里从左到右的顺序
+    visual_style: str | None = None  # 可选：视觉风格包 id（审美方向总结）
+    category: str | None = None  # 可选：产品品类 id
 
 
 class Chosen(BaseModel):
@@ -466,10 +468,10 @@ ASSEMBLY_EN = {"tray_lid": "Show the box closed, with the lid on (the lid covers
 
 def _structure_lines(job: Job) -> list[str]:
     """盒子怎么摆（多部件盒型）、开窗这类结构说明（概念图要画出来）。刀版生成不了时不加窗口。"""
-    from pacxio.visual.prompts import liner_line
+    from pacxio.visual.prompts import paper_line
 
     lines = [ASSEMBLY_EN[job.style]] if job.style in ASSEMBLY_EN else []
-    lines += liner_line(job.material.liner)  # 牛皮面纸（开槽箱测试 R-01）
+    lines += paper_line(job.material)  # 牛皮面纸 / 特种纸 / 镀铝膜基材说明
     if job.style == "tray_lid":  # 全罩时 AI 爱画出一圈地盒（天地盖测试 F-07）
         meta = _set_meta(job)
         if meta and meta.get("full_cover"):
@@ -499,18 +501,47 @@ def _structure_lines(job: Job) -> list[str]:
 
 def generate_concepts(
     directory: Path,
-    design: str,
-    texts: list[str],
+    design: str | None = None,
+    texts: list[str] | None = None,
     n: int = 1,
     scene: str | None = None,
     provider_name: str = "openai",
     provider: ImageProvider | None = None,
+    visual_style: str | None = None,
+    category: str | None = None,
 ) -> Result:
     """出 n 张概念图（每张一次出图请求，花钱 / 消耗额度）。"""
+    from pacxio.concept.styles import compose_design, paper_fit_warning
+
     r = Result(command="concept gen", job=str(directory))
     job = _load(directory, r)
     if job is None:
         return r
+    effective_design, effective_scene, style_obj, cat_obj, issue, stale = compose_design(
+        design, scene, visual_style, category
+    )
+    if stale:
+        r.warnings.append(
+            Issue(
+                id="STYLES_CACHE",
+                message=stale,
+                fix=t("Run `pacxio concept styles --refresh` once back online to fetch updates"),
+            )
+        )
+    if issue is not None or effective_design is None:
+        code = 3 if issue is not None and issue.id == "STYLES_NET" else 2
+        return r.fail(
+            issue
+            or Issue(
+                id="ARG",
+                message=t("Provide --design or --style for the main-view concept"),
+            ),
+            code,
+        )
+    if style_obj is not None:
+        fit = paper_fit_warning(style_obj, job)
+        if fit is not None:
+            r.warnings.append(fit)
     if not 1 <= n <= MAX_CONCEPTS_PER_CALL:
         return r.fail(
             Issue(
@@ -531,8 +562,9 @@ def generate_concepts(
                 2,
             )
         provider = PROVIDERS[provider_name]()
+    words = list(texts or [])
     prompt = build_concept_prompt(
-        design, texts, job.style, _box_dims(job), scene, _structure_lines(job)
+        effective_design, words, job.style, _box_dims(job), effective_scene, _structure_lines(job)
     )
     made: list[str] = []
     for _ in range(n):
@@ -550,24 +582,28 @@ def generate_concepts(
             )
             break
         cid = _next_id(directory)
-        dest, meta = _save(
-            directory,
-            cid,
-            img,
-            {
-                "source_type": "openai" if provider.name == "openai" else "file",
-                "provider": provider.name,
-                "model": res.model,
-                "design": design,
-                "texts": texts,
-                "scene": scene,
-                "full_prompt": prompt,
-                "revised_prompt": res.revised_prompt,
-            },
-        )
+        meta_fields: dict[str, object] = {
+            "source_type": "openai" if provider.name == "openai" else "file",
+            "provider": provider.name,
+            "model": res.model,
+            "design": design or effective_design,
+            "texts": words,
+            "scene": effective_scene,
+            "full_prompt": prompt,
+            "revised_prompt": res.revised_prompt,
+        }
+        if style_obj is not None:
+            meta_fields["visual_style"] = style_obj.id
+        if cat_obj is not None:
+            meta_fields["category"] = cat_obj.id
+        dest, meta = _save(directory, cid, img, meta_fields)
         made.append(cid)
         r.artifacts += [str(dest), str(meta)]
     r.data = {"concepts": made, "prompt": prompt}
+    if style_obj is not None:
+        r.data["visual_style"] = style_obj.id
+    if cat_obj is not None:
+        r.data["category"] = cat_obj.id
     if made:
         r.warnings.append(
             Issue(
@@ -642,16 +678,23 @@ def import_concept(
     view: str | None = None,
     faces: list[str] | None = None,
     candidates: list[Path] | None = None,
+    visual_style: str | None = None,
+    category: str | None = None,
 ) -> Result:
     """导入别处做好的概念图（设计师 / 其它 AI 工具 / Codex 内置出图）。
 
     view：main 主视角 / back 背面 + 左侧视角 / flat 展开平面图；faces：图里的面（平面图必填，从左到右）。
     candidates：同一张平面图的几张备选（含 source），量比例后只导入最准的那张——AI 画平面图常把
     宽的面画得更宽，一次出两三张挑一张，比一张一张重出快。"""
+    from pacxio.concept.styles import resolve_style_tag
+
     r = Result(command="concept import", job=str(directory))
     job = _load(directory, r)
     if job is None:
         return r
+    style_id, cat_id, style_issue = resolve_style_tag(visual_style, category)
+    if style_issue is not None:
+        return r.fail(style_issue, 2)
     face_ids = _check_view(job, view, faces, r)
     if not r.ok:
         return r
@@ -718,6 +761,10 @@ def import_concept(
     fields: dict[str, object] = {"source_type": stype, "source_path": str(source)}
     if view is not None:
         fields.update(view=view, faces=face_ids)
+    if style_id is not None:
+        fields["visual_style"] = style_id
+    if cat_id is not None:
+        fields["category"] = cat_id
     dest, meta = _save(directory, cid, img, fields)
     r.artifacts = [str(dest), str(meta)]
     r.data = {"id": cid, "size_px": list(img.size)}
@@ -725,6 +772,10 @@ def import_concept(
         r.data["reused_flat_from"] = reuse
     if view is not None:
         r.data.update(view=view, faces=face_ids)
+    if style_id is not None:
+        r.data["visual_style"] = style_id
+    if cat_id is not None:
+        r.data["category"] = cat_id
     if rows:  # 没挑中的备选不导入，只在输出里列出各自的误差
         r.data["candidates"] = rows
     if view == "flat":
@@ -802,6 +853,8 @@ def list_concepts(directory: Path) -> Result:
                 # 同一组有几版、在用的是不是这张；不分版本的（主视角、别的方向）是 None
                 "versions": versioned.get(m.id),
                 "in_use": m.id in in_use.values() if m.id in versioned else None,
+                **({"visual_style": m.visual_style} if m.visual_style else {}),
+                **({"category": m.category} if m.category else {}),
             }  # fmt: skip
             for m in _metas(directory)
         ],
@@ -965,6 +1018,12 @@ def choose_concept(
     out.write_text(chosen.model_dump_json(indent=2) + "\n", encoding="utf-8")
     r.artifacts = [str(out)]
     r.data = {"id": cid, "palette": [_palette_row(pc) for pc in palette]}
+    if meta is not None and meta.visual_style:
+        from pacxio.concept.styles import rebuild_hints
+
+        hints = rebuild_hints(meta.visual_style)
+        if hints is not None:
+            r.data["style_hints"] = hints
     if region is None:
         r.warnings.append(
             Issue(

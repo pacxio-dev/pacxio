@@ -64,6 +64,10 @@ SVG knock-outs add `source` in that object, a path relative to the job or absolu
 
 Surface treatments appear on the confirmation image, in the spec sheet and as 3D materials; they add no print spot color. Local finishes keep their own spot plates. Other manufacturing requirements still go into manufacturing-notes.md, without claiming the engine checked them.
 
+## Specialty papers & automatic white ink underlay
+
+For metallic (`silver_card_350`, `gold_card_350`), holographic (`holo_card_350`), black (`black_card_350`), and dark colored (`color_card_300`) folding cartons, the engine automatically generates a `White_Ink` underlay spot layer (`white_auto`) beneath printed CMYK artwork and exports a separate `finish_white.pdf`. Broad color blocks and images are choked inward by `0.1 mm` (default profile `white_underlay.choke_mm`) to prevent white haloing on press, while fine strokes and small text (`< 0.5 mm`) keep their full width so fine lettering does not dim or break. Foil areas and metal badges are automatically knocked out of the white underlay. To intentionally let CMYK print translucent over metallic card without white ink, pass placement IDs to `pacxio job paper <job> --keep-metal bg,logo` (or `--keep-metal all`), or disable auto underlay with `--white off` (PP01 warns about un-underlaid CMYK ink). For labels (`label_metallized`, `label_pp_clear`) and pouches (`pouch_pet_vmpet_pe`, `pouch_pet_pe_clear`), white ink continues to use explicit `finish add --type white` (checked by LB06 / PO04).
+
 ## Checking areas and looks
 
 1. `render`: in ⑤ the "Finish areas" switch shows the real outlines; selecting an item in the list highlights its coverage, holes stay open; clear the highlight to see the artwork again. The legend and coverage notes sit outside the image and never go into the print plates.

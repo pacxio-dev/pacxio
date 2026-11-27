@@ -55,11 +55,23 @@ def _dead_port() -> int:
 
 
 def _run_blocked(cmds: list[list[str]], cwd: Path) -> list[dict]:
+    styles_file = cwd / "_test_styles.json"
+    styles_file.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "version": "1",
+                "styles": [{"id": "minimal", "name": "Minimal", "prompt_direction": "Clean minimal"}],
+            }
+        ),
+        encoding="utf-8",
+    )
     env = {k: v for k, v in os.environ.items() if not k.startswith("PACXIO_")}
     env.update({
         "PACXIO_HOME": str(cwd / "home"),
         "PACXIO_CLOUD_URL": f"http://127.0.0.1:{_dead_port()}",
         "PACXIO_CLOUD_TOKEN": "test-token",
+        "PACXIO_STYLES_URL": str(styles_file),
     })  # fmt: skip
     p = subprocess.run([sys.executable, "-c", DRIVER, json.dumps(cmds)], cwd=cwd, env=env,
                        capture_output=True, text=True, timeout=600)
@@ -100,10 +112,12 @@ def test_open_commands_run_locally_and_closed_commands_forward(tmp_path: Path) -
     local = [
         ["env", "check"],
         ["cloud", "status"],
+        ["telemetry", "status"],
         ["styles", "list"],
         ["structures", "show", "A20.20.03.01"],
         ["structures", "suggest", "--use", "电商"],
         ["job", "init", "j", "--style", "rte", "--L", "80", "--W", "50", "--H", "180"],
+        ["job", "paper", "j"],
         ["panels", "j"],
         ["next", "j"],
         ["content", "add", "j", "--category", "brand", "--text", "Hi"],
@@ -113,6 +127,7 @@ def test_open_commands_run_locally_and_closed_commands_forward(tmp_path: Path) -
         ["notes", "add", "j", "--text", "x"],
         ["visual", "import", "j", "a.png", "--role", "graphic", "--name", "mark"],
         ["visual", "symbol", "j", "pao", "--name", "pao-jar"],
+        ["concept", "styles"],
         ["concept", "import", "j", "a.png", "--name", "c1"],
         ["concept", "tag", "j", "c1", "--view", "main"],
         ["concept", "list", "j"],

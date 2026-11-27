@@ -25,14 +25,26 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _fixed_mtime_ns() -> str | None:
+    epoch = os.environ.get("SOURCE_DATE_EPOCH")
+    if epoch is None:
+        return None
+    return str(int(epoch) * 1_000_000_000)
+
+
 def _records(scene: dict[str, Any], root: Path) -> dict[str, dict[str, Any]]:
     records = {}
+    fixed_mtime = _fixed_mtime_ns()
     for part in scene["parts"]:
         for rel in part["textures"].values():
             p = (root / rel).resolve()
             p.relative_to(root.resolve())
             st = p.stat()
-            records[rel] = {"size": st.st_size, "mtime_ns": str(st.st_mtime_ns), "sha256": _sha(p)}
+            records[rel] = {
+                "size": st.st_size,
+                "mtime_ns": fixed_mtime if fixed_mtime is not None else str(st.st_mtime_ns),
+                "sha256": _sha(p),
+            }
     return records
 
 

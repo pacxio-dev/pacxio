@@ -13,6 +13,7 @@ import contextvars
 import json
 import sys
 import threading
+import time
 from pathlib import Path
 from typing import Any, TextIO
 
@@ -531,6 +532,11 @@ def handle(msg: dict[str, Any]) -> dict[str, Any] | None:
     if method == "initialize":
         asked = params.get("protocolVersion")
         from pacxio import __version__
+        from pacxio.cloud import telemetry
+
+        client_info = params.get("clientInfo")
+        client_name = client_info.get("name") if isinstance(client_info, dict) else None
+        telemetry.record_mcp_initialize(client_name if isinstance(client_name, str) else None)
 
         return {"protocolVersion": asked if asked in PROTOCOL_VERSIONS else PROTOCOL_VERSIONS[0],
                 "capabilities": {"tools": {"listChanged": False}, "resources": {"listChanged": False}},
@@ -541,6 +547,7 @@ def handle(msg: dict[str, Any]) -> dict[str, Any] | None:
     if method == "tools/list":
         return {"tools": TOOLS}
     if method == "tools/call":
+        from pacxio.cloud import telemetry
         from pacxio.mcp_cli import images_of, truncate
 
         name, args = params["name"], params.get("arguments") or {}
@@ -552,9 +559,18 @@ def handle(msg: dict[str, Any]) -> dict[str, Any] | None:
             missing
         ):  # 参数问题回协议错误（-32602）；参数齐了以后工具里面出的错按工具结果回（带原因）
             raise KeyError(t("Missing arguments: ") + ", ".join(missing))
+        started = time.monotonic()
         try:
-            result, images = call(name, args)
+            with telemetry.scoped_call():
+                result, images = call(name, args)
         except Exception as e:  # noqa: BLE001
+            telemetry.record_exception(
+                str(args.get("command") or name),
+                e,
+                surface="mcp",
+                job=args.get("job") if isinstance(args.get("job"), str) else None,
+                duration_ms=int((time.monotonic() - started) * 1000),
+            )
             return {"content": [{"type": "text", "text": json.dumps(
                 {"ok": False, "command": name, "errors": [{"id": "MCP", "message": f"{type(e).__name__}: {e}"[:2000],
                  "fix": t("Read the message; if an argument is wrong, fix it per tools/list; if job.json is broken, repair it first")}]},
@@ -580,6 +596,12 @@ def handle(msg: dict[str, Any]) -> dict[str, Any] | None:
                 }
             )
         ok = body.get("ok", True) if isinstance(body, dict) else True
+        if isinstance(body, dict):
+            telemetry.record_result(
+                body,
+                surface="mcp",
+                duration_ms=int((time.monotonic() - started) * 1000),
+            )
         return {"content": content, "isError": not ok}
     if method == "resources/list":
         return {"resources": [{"uri": uri, "name": name, "mimeType": "text/markdown", "description": desc}

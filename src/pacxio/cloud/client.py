@@ -212,6 +212,9 @@ class Client:
         url = self.url + path + query
         target = (self._base_path + path + query) or "/"
         headers = {"User-Agent": "pacxio-cli", "Connection": "keep-alive"}
+        from pacxio.cloud import telemetry
+
+        headers.update(telemetry.install_id_header())
         if auth and self.token:
             headers["Authorization"] = f"Bearer {self.token}"
         payload = data

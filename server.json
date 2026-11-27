@@ -1,0 +1,79 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "dev.pacxio/pacxio",
+  "title": "Pacxio",
+  "description": "Packaging prepress for coding agents: editable dielines, 3D, workbench, and print-ready files.",
+  "websiteUrl": "https://pacxio.dev",
+  "repository": {
+    "url": "https://github.com/pacxio-dev/pacxio",
+    "source": "github",
+    "id": "1456286439"
+  },
+  "version": "0.0.8",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "pacxio",
+      "version": "0.0.8",
+      "runtimeHint": "uvx",
+      "transport": {
+        "type": "stdio"
+      },
+      "packageArguments": [
+        {
+          "type": "positional",
+          "value": "mcp"
+        },
+        {
+          "type": "positional",
+          "value": "serve"
+        }
+      ],
+      "environmentVariables": [
+        {
+          "name": "PACXIO_LANG",
+          "description": "Output language for CLI, MCP, and workbench messages (en or zh).",
+          "default": "en",
+          "choices": [
+            "en",
+            "zh"
+          ],
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "PACXIO_HOME",
+          "description": "Directory for local pacxio state, cloud login credentials, fonts, and workbench preferences.",
+          "format": "filepath",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "PACXIO_CLOUD_TOKEN",
+          "description": "Optional bearer token for the pacxio cloud service (normally obtained via interactive `pacxio login`).",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "PACXIO_CLOUD_URL",
+          "description": "Optional override URL for the pacxio cloud service.",
+          "default": "https://api.pacxio.dev",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "PACXIO_AUTO_UPDATE",
+          "description": "Set to 0 to disable background auto-updates for unpinned `uv tool install pacxio` installations.",
+          "default": "1",
+          "choices": [
+            "1",
+            "0"
+          ],
+          "isRequired": false,
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}

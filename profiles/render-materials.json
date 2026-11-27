@@ -1,5 +1,5 @@
 {
-  "version": "5",
+  "version": "6",
   "note": "仅供视觉示意的材质预设；不是工厂实测或制造公差。roughness/metallic/clearcoat 为 0–255。relief_* 是击凸 / 压凹在屏幕上的显示参数，不是模具深度：relief_edge_mm 是沿轮廓一圈斜坡的宽度（里外各一半），relief_height_mm 是平顶高出纸面多少，relief_cavity 是凹处压暗的强度（0–1）。 attachment 是配件（金属标）：field 是底面（喷砂哑光，粗糙度高）、relief 是凸起图案（抛光），height 是标面在高度图里的值（128 平、255 最高），edge_mm 是外缘斜坡宽。 static_reflection 是静态效果图的影棚（只看，不随视角换灯）：左前方一块竖长柔光灯板（方向 strip_az_deg / strip_el_deg，0 正前、负值往左；距盒子中心 strip_distance、宽 strip_width、高 strip_height，都是盒子对角线的倍数）加浅色地面（往下看 floor_fade_deg 度提亮到最大）；灯板软边 edge + edge_per_rough × 粗糙度（对角线倍数）；粗糙度 ≥ rough_none 不反光、≤ rough_full 最强；strip_strength / floor_strength 是灯板、地面反光往白色混的最大比例。",
   "fold": {
     "crease_radius_caliper": 1.0
@@ -9,6 +9,29 @@
     0,
     0
   ],
+  "paper_face": {
+    "metallic": [
+      108,
+      224,
+      0
+    ],
+    "holographic": [
+      96,
+      216,
+      0
+    ],
+    "pearl": [
+      96,
+      45,
+      165
+    ],
+    "textured": [
+      210,
+      0,
+      0
+    ]
+  },
+  "textured_height": 1,
   "matte_lamination": [
     150,
     0,

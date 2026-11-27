@@ -86,7 +86,7 @@ def eligibility() -> dict[str, Any]:
         ).stdout.strip()
         if prefix != (Path(tool_dir) / "pacxio").resolve():
             return reject("not_uv_managed")
-        receipt = tomllib.loads((prefix / "uv-receipt.toml").read_text())
+        receipt = tomllib.loads((prefix / "uv-receipt.toml").read_text(encoding="utf-8"))
         tool = receipt["tool"]
         requirements = tool.get("requirements", [])
         if len(requirements) != 1:
@@ -112,7 +112,7 @@ def eligibility() -> dict[str, Any]:
 
 def _read_ready() -> dict[str, Any] | None:
     try:
-        value = json.loads((state_dir() / "ready.json").read_text())
+        value = json.loads((state_dir() / "ready.json").read_text(encoding="utf-8"))
         return value if isinstance(value, dict) else None
     except (OSError, ValueError):
         return None
@@ -416,7 +416,7 @@ def _main() -> None:
     if path.parent.resolve() != state_dir().resolve() or not path.name.startswith("context-"):
         return
     try:
-        context = json.loads(path.read_text())
+        context = json.loads(path.read_text(encoding="utf-8"))
     finally:
         path.unlink(missing_ok=True)
     current = eligibility()

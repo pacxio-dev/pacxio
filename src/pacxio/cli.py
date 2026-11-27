@@ -96,6 +96,157 @@ def update_status_cmd(json_out: JsonOpt = False) -> None:
     _emit(r, json_out)
 
 
+telemetry_app = typer.Typer(
+    help=t(
+        "Anonymous funnel telemetry and optional error reporting (local config, opt-out anytime; error details are opt-in)"
+    ),
+    no_args_is_help=True,
+)
+app.add_typer(telemetry_app, name="telemetry")
+
+
+@telemetry_app.command(
+    "status",
+    help=t(
+        "Show anonymous funnel telemetry and optional error-reporting settings without contacting the network."
+    ),
+)
+def telemetry_status_cmd(json_out: JsonOpt = False) -> None:
+    """查看匿名漏斗统计与可选错误上报设置（纯本地，不联网）。"""
+    from pacxio.cloud import telemetry
+
+    r = Result(command="telemetry status")
+    r.data = telemetry.effective_status()
+    if not json_out:
+        typer.echo(
+            t(
+                "Telemetry: {state} ({reason})  Error reports: {errors} ({error_reason})  Pending: {pending}",
+                state=t("on") if r.data["enabled"] else t("off"),
+                reason=r.data["reason"],
+                errors=t("on") if r.data["error_reports"] else t("off"),
+                error_reason=r.data["error_reports_reason"],
+                pending=r.data["pending_events"],
+            )
+        )
+    _emit(r, json_out)
+
+
+@telemetry_app.command(
+    "on",
+    help=t(
+        "Enable anonymous funnel telemetry (milestone counts only, no paths, prompts or brand text)."
+    ),
+)
+def telemetry_on_cmd(json_out: JsonOpt = False) -> None:
+    """开启匿名漏斗统计。"""
+    from pacxio.cloud import telemetry
+
+    r = Result(command="telemetry on")
+    r.data = telemetry.set_enabled(True)
+    if not json_out:
+        typer.echo(t("Anonymous funnel telemetry is now enabled."))
+    _emit(r, json_out)
+
+
+@telemetry_app.command(
+    "off",
+    help=t("Disable anonymous funnel telemetry and clear any buffered local events."),
+)
+def telemetry_off_cmd(json_out: JsonOpt = False) -> None:
+    """关闭匿名漏斗统计并清空本地尚未发送的缓冲事件。"""
+    from pacxio.cloud import telemetry
+
+    r = Result(command="telemetry off")
+    r.data = telemetry.set_enabled(False)
+    if not json_out:
+        typer.echo(t("Anonymous funnel telemetry is now disabled and buffered events were cleared."))
+    _emit(r, json_out)
+
+
+@telemetry_app.command(
+    "errors",
+    help=t("Enable or disable optional scrubbed error reports (off by default)."),
+)
+def telemetry_errors_cmd(
+    mode: Annotated[str, typer.Argument(help=t("on or off"))],
+    json_out: JsonOpt = False,
+) -> None:
+    """开启或关闭可选脱敏错误上报（默认关闭）。"""
+    from pacxio.cloud import telemetry
+
+    r = Result(command="telemetry errors")
+    norm = mode.strip().lower()
+    if norm not in ("on", "off"):
+        _emit(
+            r.fail(
+                Issue(
+                    id="ARG",
+                    message=t("Value must be `on` or `off`"),
+                    fix=t(
+                        "Pass `pacxio telemetry errors on` or `pacxio telemetry errors off`"
+                    ),
+                ),
+                2,
+            ),
+            json_out,
+        )
+    enabled = norm == "on"
+    r.data = telemetry.set_error_reports(enabled)
+    if not json_out:
+        typer.echo(
+            t("Optional scrubbed error reports are now enabled.")
+            if enabled
+            else t("Optional scrubbed error reports are now disabled.")
+        )
+    _emit(r, json_out)
+
+
+@telemetry_app.command(
+    "show",
+    help=t("Show locally buffered telemetry events before they are sent (zero PII)."),
+)
+def telemetry_show_cmd(
+    limit: Annotated[
+        int, typer.Option("--limit", help=t("Maximum number of recent buffered events to show"))
+    ] = 20,
+    json_out: JsonOpt = False,
+) -> None:
+    """展示本地缓冲的统计事件原文，便于用户核对零隐私收集。"""
+    from pacxio.cloud import telemetry
+
+    events = telemetry.read_spool(limit=max(0, limit))
+    r = Result(command="telemetry show", data={"count": len(events), "events": events})
+    if not json_out:
+        if not events:
+            typer.echo(t("No buffered telemetry events."))
+        else:
+            for ev in events:
+                typer.echo(json.dumps(ev, ensure_ascii=False))
+    _emit(r, json_out)
+
+
+@telemetry_app.command(
+    "flush",
+    help=t("Send locally buffered telemetry events now."),
+)
+def telemetry_flush_cmd(json_out: JsonOpt = False) -> None:
+    """立即上报本地缓冲的统计事件。"""
+    from pacxio.cloud import telemetry
+
+    r = Result(command="telemetry flush")
+    r.data = telemetry.flush_now(force=True)
+    if not json_out:
+        typer.echo(
+            t(
+                "Flushed {sent} event(s); {remaining} remaining ({status}).",
+                sent=r.data["sent"],
+                remaining=r.data["remaining"],
+                status=r.data["status"],
+            )
+        )
+    _emit(r, json_out)
+
+
 @mcp_app.command(
     "serve",
     help=t(
@@ -117,7 +268,7 @@ def mcp_serve() -> None:
 )
 def mcp_install_cmd(
     client: Annotated[
-        str, typer.Option("--client", help="claude-code | codex | claude-desktop")
+        str, typer.Option("--client", help="claude-code | codex | claude-desktop | antigravity")
     ] = "claude-code",
     scope: Annotated[
         str,
@@ -146,17 +297,25 @@ def mcp_install_cmd(
         "Self-check: start the MCP server once, do the handshake, count tools; list which agents have it and whether their registered command runs."
     ),
 )
-def mcp_doctor_cmd(json_out: JsonOpt = False) -> None:
+def mcp_doctor_cmd(
+    client: Annotated[
+        str | None, typer.Option("--client", help=t("workbuddy; omit to check existing agents"))
+    ] = None,
+    project: Annotated[
+        Path | None, typer.Option("--project", help=t("WorkBuddy project directory"))
+    ] = None,
+    json_out: JsonOpt = False,
+) -> None:
     """自检：起一次 MCP 服务走握手、数工具；列出装在哪些 agent 里、那边登记的命令能不能跑。"""
     from pacxio.mcp_install import doctor
 
-    _emit(doctor(), json_out)
+    _emit(doctor(project=project, client=client), json_out)
 
 
 @app.command(
     "setup",
     help=t(
-        "One-step install: add the pacxio plugin (Skill + MCP) to Claude Code / Codex (all found agents when --agent is not given), download fonts if missing, then self-check. Without --yes it only previews."
+        "One-step install: add the pacxio plugin (Skill + MCP) to Claude Code / Codex / Antigravity (all found agents when --agent is not given; WorkBuddy requires --agent workbuddy), download fonts if missing, then self-check. Without --yes it only previews."
     ),
 )
 def setup_cmd(
@@ -165,8 +324,32 @@ def setup_cmd(
         typer.Option(
             "--agent",
             help=t(
-                "claude-code | codex; leave out to install into every agent found on this machine"
+                "claude-code | codex | antigravity | workbuddy; leave out to detect Claude Code, Codex and Antigravity"
             ),
+        ),
+    ] = None,
+    project: Annotated[
+        Path | None, typer.Option("--project", help=t("WorkBuddy project directory"))
+    ] = None,
+    scope: Annotated[
+        str | None,
+        typer.Option(
+            "--scope",
+            help=t("WorkBuddy MCP: project (default) or user; Skill stays in the project"),
+        ),
+    ] = None,
+    remove: Annotated[
+        bool,
+        typer.Option(
+            "--remove",
+            help=t("Remove the recorded WorkBuddy project installation; preview unless --yes"),
+        ),
+    ] = False,
+    test_cloud_url: Annotated[
+        str | None,
+        typer.Option(
+            "--test-cloud-url",
+            help=t("WorkBuddy only: explicit loopback HTTP test service; disables production cloud"),
         ),
     ] = None,
     yes: Annotated[
@@ -182,10 +365,18 @@ def setup_cmd(
     ] = True,
     json_out: JsonOpt = False,
 ) -> None:
-    """一句话安装：把 pacxio 插件（Skill + MCP）装进 Claude Code / Codex（不给 --agent 时本机有几个装几个），缺字体时下载，最后自检。不加 --yes 只预览。"""
+    """一句话安装：把 pacxio 插件（Skill + MCP）装进 Claude Code / Codex / Antigravity（不给 --agent 时自动检测；WorkBuddy 需显式指定），缺字体时下载，最后自检。不加 --yes 只预览。"""
     from pacxio.plugin_setup import setup
 
-    r = setup(agent, yes, fonts)
+    r = setup(
+        agent,
+        yes,
+        fonts,
+        project=project,
+        scope=scope,
+        remove=remove,
+        test_cloud_url=test_cloud_url,
+    )
     if not json_out and r.data.get("steps"):
         typer.echo((t("To do") if not yes else t("Done")) + ":")
         for s in r.data["steps"]:
@@ -199,6 +390,10 @@ JsonOpt = Annotated[bool, typer.Option("--json", help=t("Print machine-readable 
 
 
 def _emit(result: Result, as_json: bool) -> None:
+    from pacxio.cloud import telemetry
+
+    if not telemetry.in_scoped_call():
+        telemetry.record_result(result, surface="cli")
     if as_json:
         typer.echo(result.model_dump_json(indent=2))
     else:
@@ -968,6 +1163,75 @@ def job_liner(
 ) -> None:
     """改瓦楞 job 的面纸：刀版确认图、3D 按纸色显示（油墨压在牛皮色上），规格书写明。"""
     _emit(api.set_liner(directory, liner), json_out)
+
+
+@job_app.command(
+    "paper",
+    help=t(
+        "View or update specialty paper face and automatic white ink underlay settings (silver/gold/holographic/black/colored/pearl/textured card)."
+    ),
+)
+def job_paper(
+    directory: Annotated[Path, typer.Argument(help=t("Job folder"))],
+    material: Annotated[
+        str | None,
+        typer.Option(
+            "--material",
+            help=t(
+                "Switch to a specialty or standard material preset (e.g. silver_card_350, black_card_350, sbs_350)"
+            ),
+        ),
+    ] = None,
+    color: Annotated[
+        str | None,
+        typer.Option("--color", help=t("Custom paper face color as #RRGGBB (screen reference only)")),
+    ] = None,
+    finish: Annotated[
+        str | None,
+        typer.Option("--finish", help=t("Paper surface finish: paper | metallic | holographic | pearl | textured")),
+    ] = None,
+    name: Annotated[
+        str | None,
+        typer.Option("--name", help=t("Paper color or stock name shown on the spec sheet")),
+    ] = None,
+    back: Annotated[
+        str | None,
+        typer.Option("--back", help=t("Paper back color as #RRGGBB (for inside surfaces in 3D)")),
+    ] = None,
+    white: Annotated[
+        str | None,
+        typer.Option("--white", help=t("Automatic white ink underlay: auto | off")),
+    ] = None,
+    choke: Annotated[
+        float | None,
+        typer.Option("--choke", help=t("White ink inward choke in mm (0–0.5, default from profile)")),
+    ] = None,
+    keep_metal: Annotated[
+        str | None,
+        typer.Option(
+            "--keep-metal",
+            help=t(
+                "Comma-separated placement IDs to leave without white underlay (e.g. bg,logo, all, or empty string to clear)"
+            ),
+        ),
+    ] = None,
+    json_out: JsonOpt = False,
+) -> None:
+    """查看或修改特种纸纸面与自动白墨打底设置。"""
+    _emit(
+        api.set_paper(
+            directory,
+            material=material,
+            color=color,
+            finish=finish,
+            name=name,
+            back=back,
+            white=white,
+            choke_mm=choke,
+            keep_metal=keep_metal,
+        ),
+        json_out,
+    )
 
 
 @app.command(
@@ -2471,6 +2735,97 @@ def visual_prepare(
 
 
 @concept_app.command(
+    "styles",
+    help=t(
+        "Browse visual style packs from pacxio.dev/styles (aesthetic direction summaries, not rigid templates), get a contrasting A/B pair by category or paper, or inspect one style."
+    ),
+)
+def concept_styles(
+    style_id: Annotated[
+        str | None,
+        typer.Argument(
+            help=t("Optional visual style id to inspect in detail (omit to list styles)")
+        ),
+    ] = None,
+    category: Annotated[
+        str | None,
+        typer.Option(
+            "--category",
+            help=t("Filter by product category id or keyword from the visual style catalog"),
+        ),
+    ] = None,
+    job: Annotated[
+        Path | None,
+        typer.Option(
+            "--job",
+            help=t(
+                "Optional job folder to rank styles that harmonize with the job's chosen paper stock"
+            ),
+        ),
+    ] = None,
+    full: Annotated[
+        bool,
+        typer.Option(
+            "--full",
+            help=t("Return full style summaries and group/category metadata"),
+        ),
+    ] = False,
+    refresh: Annotated[
+        bool,
+        typer.Option(
+            "--refresh",
+            help=t(
+                "Refresh the cached catalog from pacxio.dev/styles instead of using the local cache"
+            ),
+        ),
+    ] = False,
+    json_out: JsonOpt = False,
+) -> None:
+    """从官网 pacxio.dev/styles 读取视觉风格目录（审美方向总结），按品类或纸面推荐差异方向，或查看单套详情。"""
+    from pacxio.concept import styles as visual_styles
+
+    r = visual_styles.list_visual_styles(style_id, category, job, full, refresh=refresh)
+    if not json_out and r.ok:
+        if "style" in r.data:
+            s = r.data["style"]
+            p = s["printability"]
+            typer.echo(f"  {s['id']}  [{s['group_name']}]  {s['name']}")
+            typer.echo(t("  Aesthetic: {text}", text=s["aesthetic_summary"]))
+            typer.echo(t("  Palette: {text}", text=s["palette_philosophy"]))
+            typer.echo(t("  Typography: {text}", text=s["typography_mood"]))
+            typer.echo(t("  Visuals: {text}", text=s["visual_language"]))
+            typer.echo(t("  Avoid: {text}", text=s["avoid"]))
+            typer.echo(t("  Restore: {label} — {notes}", label=p["restore_label"], notes=p["notes"]))
+            typer.echo(t("  Fonts: {text}", text=p["font_pairing_hint"]))
+            typer.echo(
+                t(
+                    "  Papers: {papers}  |  Finishes: {finishes}",
+                    papers=", ".join(p["recommended_papers"]),
+                    finishes=", ".join(p["recommended_finishes"]),
+                )
+            )
+            typer.echo(t("  Starter prompt: {text}", text=s["starter_prompt"]))
+        else:
+            pair = r.data.get("recommended_pair") or []
+            if len(pair) == 2:
+                typer.echo(t("  Recommended A/B pair: {a}  vs  {b}", a=pair[0], b=pair[1]))
+            for s in r.data["styles"]:
+                typer.echo(
+                    t(
+                        "  {id:<18} [{group}] {name} — {tagline}",
+                        id=s["id"],
+                        group=s["group_name"],
+                        name=s["name"],
+                        tagline=s["tagline"],
+                    )
+                )
+            cats = ", ".join(c["id"] for c in r.data.get("categories") or [])
+            if cats:
+                typer.echo(t("  Categories: {cats}", cats=cats))
+    _emit(r, json_out)
+
+
+@concept_app.command(
     "gen",
     help=t(
         "Draw concept images with AI (the finished look; text allowed). The box style and real proportions go into the prompt."
@@ -2479,9 +2834,28 @@ def visual_prepare(
 def concept_gen(
     directory: Annotated[Path, typer.Argument(help=t("Job folder"))],
     design: Annotated[
-        str,
-        typer.Option("--design", help=t("Design description: style, colors, graphics, layout …")),
-    ],
+        str | None,
+        typer.Option(
+            "--design",
+            help=t("Design description (brand colors, motif, vibe …; optional when --style is given)"),
+        ),
+    ] = None,
+    style: Annotated[
+        str | None,
+        typer.Option(
+            "--style",
+            help=t(
+                "Optional visual style id from pacxio.dev/styles (aesthetic direction summary; run `pacxio concept styles` to browse)"
+            ),
+        ),
+    ] = None,
+    category: Annotated[
+        str | None,
+        typer.Option(
+            "--category",
+            help=t("Optional product category from the visual style catalog for shelf-hierarchy nuance"),
+        ),
+    ] = None,
     text: Annotated[
         list[str] | None,
         typer.Option(
@@ -2504,7 +2878,12 @@ def concept_gen(
     """用 AI 画概念图（成品样子，允许文字）。盒型与真实比例会写进提示词。"""
     from pacxio.concept import service
 
-    _emit(service.generate_concepts(directory, design, text or [], n, scene, provider), json_out)
+    _emit(
+        service.generate_concepts(
+            directory, design, text or [], n, scene, provider, visual_style=style, category=category
+        ),
+        json_out,
+    )
 
 
 @concept_app.command(
@@ -2534,15 +2913,42 @@ def concept_import(
     ] = False,
     view: ViewOpt = None,
     faces: FacesOpt = None,
+    style: Annotated[
+        str | None,
+        typer.Option(
+            "--style",
+            help=t(
+                "Optional visual style id recorded in concept metadata (for rebuild hints after choosing)"
+            ),
+        ),
+    ] = None,
+    category: Annotated[
+        str | None,
+        typer.Option(
+            "--category",
+            help=t("Optional product category recorded in concept metadata"),
+        ),
+    ] = None,
     json_out: JsonOpt = False,
 ) -> None:
     """导入别处做好的概念图（设计师、其它 AI 工具、Codex 内置出图）。"""
     from pacxio.concept import service
 
     files = sources or []
-    _emit(service.import_concept(directory, files[0] if files else None, name, codex_latest, view,
-                                 _names(faces), files),
-          json_out)  # fmt: skip
+    _emit(
+        service.import_concept(
+            directory,
+            files[0] if files else None,
+            name,
+            codex_latest,
+            view,
+            _names(faces),
+            files,
+            visual_style=style,
+            category=category,
+        ),
+        json_out,
+    )
 
 
 @concept_app.command(
@@ -2591,6 +2997,24 @@ def concept_prompt(
         typer.Option(
             "--design",
             help=t("Design language (English): colors, type style, graphics, photo mood …"),
+        ),
+    ] = None,
+    style: Annotated[
+        str | None,
+        typer.Option(
+            "--style",
+            help=t(
+                "(main) Optional visual style id from pacxio.dev/styles (aesthetic direction summary; makes --design optional)"
+            ),
+        ),
+    ] = None,
+    category: Annotated[
+        str | None,
+        typer.Option(
+            "--category",
+            help=t(
+                "(main) Optional product category from the visual style catalog for shelf-hierarchy nuance"
+            ),
         ),
     ] = None,
     back_view: Annotated[
@@ -2713,6 +3137,8 @@ def concept_prompt(
         separate,
         brief,
         ground,
+        style,
+        category,
     )
     if not json_out and r.ok:
         typer.echo(t("  {n} images in all; generate them first, then import:", n=r.data["images"]))
@@ -2850,6 +3276,16 @@ def concept_choose(
                     hex=c["hex"],
                     share=c["share"],
                     cmyk=c["cmyk"],
+                )
+            )
+        hints = r.data.get("style_hints")
+        if isinstance(hints, dict):
+            typer.echo(
+                t(
+                    "  Style hints ({name}): {restore} | fonts: {fonts}",
+                    name=hints["name"],
+                    restore=hints["restore_label"],
+                    fonts=hints["font_pairing_hint"],
                 )
             )
     _emit(r, json_out)
@@ -3501,10 +3937,19 @@ def export(
 
 
 def main() -> None:
+    import sys
+
+    from pacxio.cloud import telemetry
     from pacxio.cloud.route import main_hook
 
+    telemetry.begin_cli()
     main_hook()  # 闭源命令在云端模式下转给合成服务（）
-    app()
+    try:
+        app()
+    except Exception as exc:  # noqa: BLE001
+        words = [a for a in sys.argv[1:3] if not a.startswith("-")]
+        telemetry.record_exception(" ".join(words) or "cli", exc, surface="cli")
+        raise
 
 
 # ---------------- 云端（、）----------------

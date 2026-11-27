@@ -141,3 +141,5 @@ Tests that need the closed-source package are skipped in an open-source-only ins
 The code in this repository is licensed under [MIT](LICENSE). Cloud features are provided as a separate service.
 
 [Website](https://pacxio.dev/) · [Documentation](https://pacxio.dev/docs.html) · [Terms](https://pacxio.dev/terms.html) · [support@pacxio.dev](mailto:support@pacxio.dev)
+
+<!-- mcp-name: dev.pacxio/pacxio -->

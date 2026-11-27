@@ -124,6 +124,83 @@ def liner_line(liner: str | None, flat: bool = False) -> list[str]:
     return [KRAFT_LINER_FLAT if flat else KRAFT_LINER]
 
 
+def paper_line(material: object, flat: bool = False) -> list[str]:
+    """特种纸 / 牛皮纸 / 镀铝膜的基材说明句（用于概念图和平面图提示词；常规白卡不加）。"""
+    from pacxio.model.profile import Material
+    from pacxio.paper import display_paper_face
+
+    if not isinstance(material, Material):
+        return []
+    if material.liner == "kraft":
+        return liner_line("kraft", flat=flat)
+    face = display_paper_face(material)
+    if face is None:
+        return []
+    hexrgb = "#{:02X}{:02X}{:02X}".format(*face.rgb)
+    name = (face.name or "specialty paper").lower()
+    if material.preset == "kraft_350" or material.film == "kraft" or material.preset == "label_kraft":
+        if flat:
+            return [
+                f"The printed sheet is brown kraft stock: every unprinted area is a flat kraft brown {hexrgb} "
+                "without texture, inks print directly onto the kraft, and there is no white ink."
+            ]
+        return [
+            f"The packaging is made of natural brown kraft stock ({hexrgb}): unprinted areas show natural "
+            "matte kraft brown fiber and inks sit directly on the kraft without white ink."
+        ]
+    if face.finish == "metallic":
+        if flat:
+            return [
+                f"The substrate is {name} (base colour {hexrgb}): draw unprinted/metallic areas in flat {hexrgb} "
+                "with no metallic shine or lighting, and keep printed CMYK colours crisp and opaque (printed over white ink)."
+            ]
+        return [
+            f"The packaging is printed on {name} ({hexrgb}): bare unprinted areas show a subtle natural metallic "
+            "luster, while printed CMYK graphics and text sit over opaque white ink so colours stay vivid and crisp."
+        ]
+    if face.finish == "holographic":
+        if flat:
+            return [
+                f"The substrate is {name} (base colour {hexrgb}): draw bare holographic areas in flat silver-grey {hexrgb} "
+                "with no rainbow glow or lighting, and keep printed CMYK colours crisp and opaque (printed over white ink)."
+            ]
+        return [
+            f"The packaging is printed on {name}: bare unprinted areas catch a refined subtle holographic iridescent "
+            "sheen, while printed CMYK graphics and text sit over opaque white ink so colours remain crisp and legible."
+        ]
+    if face.finish == "pearl":
+        if flat:
+            return [
+                f"The substrate is {name}: unprinted background areas are flat warm pearlescent off-white {hexrgb} "
+                "without shimmer or texture."
+            ]
+        return [
+            f"The packaging is made of {name} ({hexrgb}) with a gentle satin pearlescent shimmer in unprinted areas."
+        ]
+    if face.finish == "textured":
+        if flat:
+            return [
+                f"The substrate is uncoated {name}: unprinted areas are flat {hexrgb} with no paper grain or texture."
+            ]
+        return [
+            f"The packaging is made of fine tactile {name} ({hexrgb}) with a subtle natural matte fiber finish."
+        ]
+    white_clause = (
+        "Printed graphics and light/vivid text sit over opaque white ink so colours stay crisp against the dark stock."
+        if face.white_needed()
+        else "Inks print directly onto the colored paper stock."
+    )
+    dyed = name if "dyed" in name else f"dyed-through {name}"
+    if flat:
+        return [
+            f"The substrate is {dyed}: every unprinted area is flat {hexrgb} without texture. {white_clause}"
+        ]
+    return [
+        f"The packaging is made of {dyed} ({hexrgb}): unprinted areas show the natural matte {hexrgb} "
+        f"paper stock. {white_clause}"
+    ]
+
+
 def is_flat_box(dims_mm: tuple[float, float, float]) -> bool:
     """扁平盒：高 ≤ 长、宽里较小那个的一半。主视角俯拍顶面，背面视角从底下看（抽屉测试 F-12）。"""
     w, d, h = dims_mm

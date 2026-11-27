@@ -476,6 +476,15 @@ class CornerFinish(_Strict):
     inner: float | None = Field(default=None, ge=0, le=5)
 
 
+class WhiteUnderlay(_Strict):
+    """特种纸自动白墨打底设置（）：不写时金属 / 镭射 / 深色纸自动生成。"""
+
+    auto: bool = True
+    choke_mm: float | None = Field(default=None, ge=0, le=0.5)
+    # 故意不打白墨、让颜色透出金属 / 镭射光泽的放置 id（或 ["all"] = 全版不打底，靠油墨自己露金属）
+    keep_metal: list[str] | None = None
+
+
 class Window(_Strict):
     """开窗（）：卡纸盒身面上的一个内部切口。
 
@@ -521,6 +530,8 @@ class Job(BaseModel):
     container: Container | None = None
     # 软袋装满效果（C5 第二步）：鼓起量；只给效果图和 PO05 用，不进确认指纹
     pouch: PouchView | None = None
+    # 特种纸白墨打底（）：不写 = 金属 / 镭射 / 深色纸自动生成；常规白卡无影响
+    white_underlay: WhiteUnderlay | None = None
 
     @field_validator("styles")
     @classmethod

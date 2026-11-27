@@ -107,7 +107,9 @@ def fold_clashes(dl: Dieline) -> list[Clash]:
         zone = zones.get(p.id)
         shapes[p.id] = full.difference(zone) if zone is not None else full
         inner[p.id] = shapes[p.id].buffer(-(t + EDGE_TOL_MM))
-    inverse: dict[str, Mat] = {pid: np.linalg.inv(m) for pid, m in mats.items()}
+    inverse: dict[str, Mat] = {
+        pid: np.asarray(np.linalg.inv(m), dtype=np.float64) for pid, m in mats.items()
+    }
     normals = {pid: m[:3, 2] for pid, m in mats.items()}  # 局部 +z（印刷面朝向）在合上后的方向
     found: dict[tuple[str, str], Clash] = {}
     for a, shape in shapes.items():

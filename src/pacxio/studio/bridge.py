@@ -64,7 +64,7 @@ def _folder(directory: Path) -> Path:
 
 def _read(directory: Path) -> dict[str, Any]:
     try:
-        value = json.loads((_folder(directory) / "agent.json").read_text())
+        value = json.loads((_folder(directory) / "agent.json").read_text(encoding="utf-8"))
         return value if isinstance(value, dict) else {}
     except (OSError, ValueError):
         return {}
@@ -84,7 +84,7 @@ def _write(directory: Path, status: str, stage: str | None, revision: str, ttl: 
     }
     fd, name = tempfile.mkstemp(prefix=".agent-", dir=folder)
     try:
-        with os.fdopen(fd, "w") as output:
+        with os.fdopen(fd, "w", encoding="utf-8") as output:
             json.dump(record, output)
         os.replace(name, folder / "agent.json")
     finally:
@@ -99,7 +99,7 @@ def agent_status(directory: Path) -> dict[str, Any]:
         if not expired and status == "waiting":
             try:
                 os.kill(int(record["pid"]), 0)
-            except (OSError, KeyError, ValueError):
+            except (OSError, SystemError, KeyError, ValueError):
                 expired = True
         if expired:
             status = "idle" if status == "received" else "disconnected"

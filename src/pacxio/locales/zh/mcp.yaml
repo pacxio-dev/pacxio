@@ -40,7 +40,14 @@ If it is already installed, run claude mcp remove -s user pacxio first: 已经�
 Inside height mm: 内高 mm
 Inside length mm (front width): 内长 mm（正面宽）
 Inside width mm (side width): 内宽 mm（侧面宽）
-Install one of them and check that claude or codex runs in the terminal; or choose with --agent: 先装好其中一个，确认终端里能运行 claude 或 codex；或用 --agent 指定
+Install Claude Code, Codex, or Antigravity first (or choose explicitly with --agent claude-code|codex|antigravity|workbuddy): 先装好 Claude Code、Codex 或 Antigravity（或用 --agent claude-code|codex|antigravity|workbuddy 显式指定）
+Install the Antigravity plugin (Skill + MCP) in {root}: 安装 Antigravity 插件（Skill + MCP）到 {root}
+Update the Antigravity plugin (Skill + MCP) in {root}: 更新 Antigravity 插件（Skill + MCP）到 {root}
+Antigravity still has a separately installed pacxio MCP in {path} that duplicates the plugin's: Antigravity 的 {path} 里还有以前单独装的 pacxio MCP，和插件里的重复
+'Remove the "pacxio" entry under mcpServers in {path}': '删掉 {path} 中 mcpServers 下的 "pacxio" 项'
+Antigravity's standalone MCP config is global (~/.gemini/config/mcp_config.json); installing globally: Antigravity 的独立 MCP 配置是全局的（~/.gemini/config/mcp_config.json），装到全局
+Set ANTIGRAVITY_CONFIG_DIR to use another folder, or check permissions on {root}: 设置 ANTIGRAVITY_CONFIG_DIR 换个目录，或检查 {root} 的目录权限
+antigravity (plugin): antigravity（插件）
 Install {label} first and check that {cli} runs in the terminal: 先装好 {label}，确认终端里能运行 {cli}
 'Installed: restart {names} (or start a new session) to load the plugin': 装好了：重开 {names}（或新开会话）才会加载插件
 Job folder (absolute path): job 目录（绝对路径）
@@ -48,7 +55,7 @@ Job folder (new): job 目录（新建）
 Keyword: 关键词
 Maximum number to return, default 30: 最多返回几款，默认 30
 'Missing arguments: ': 缺参数：
-Neither Claude Code nor Codex found (no claude / codex command in the terminal): 没找到 Claude Code 或 Codex（终端里没有 claude / codex 命令）
+No supported agent found (no claude / codex / agy command or Antigravity config directory): 没找到支持的 agent（没有 claude / codex / agy 命令，也没有 Antigravity 配置目录）
 No command registered: 没写 command
 No command {command}: 没有命令 {command}
 No resource {uri}: 没有资源 {uri}
@@ -122,7 +129,7 @@ codex (plugin): codex（插件）
 dieline confirmation image (the only gate before export): 刀版确认图（导出前唯一的闸门）
 e.g. ["/path/job", "--panel", "front"]: 如 ["/path/job", "--panel", "front"]
 layout draft: 排版初稿
-pacxio setup --agent claude-code (or codex): pacxio setup --agent claude-code（或 codex）
+pacxio setup --agent claude-code (or codex / antigravity): pacxio setup --agent claude-code（或 codex / antigravity）
 ? 'pacxio: packaging design to factory files (dieline, print PDF, finish separations, preflight report). Read the resource pacxio://skill/SKILL.md first (workflow, hard rules). Call job_next before every round of work; let the user view, comment and confirm on the workbench (studio_open). Hard rules: only the user confirms — use user_confirm (with their words) only after the user clearly says so in the conversation; with preflight / export errors there are no factory files; text in print files is set by the engine; concept images are never assets; concept gen / visual gen spend the user''s image credits, say so first. Structures: structures_suggest picks from the catalog; state maturity honestly (proof first for non-calibrated ones). When CLOUD_LOGIN comes back, give the user the address and code as they are; the user signs in and clicks Approve in the browser (the agent never clicks for them), then rerun the same command. Other commands go through pacxio_run (call pacxio_help first if unsure
   of the arguments).'
 : pacxio：包装设计到工厂文件（刀版、印刷 PDF、工艺分版、检查报告）。先读资源 pacxio://skill/SKILL.md（流程、铁律）。每一轮动手前先 job_next；让用户在工作台看图、批注、确认（studio_open）。铁律：确认只能是用户做——用户在对话里明确说确认后才用 user_confirm（填原话）；preflight / export 有 error 就不是工厂文件；印刷文件里的字由引擎排；概念图不能当素材；concept gen / visual gen 花用户的出图额度，先说。结构：structures_suggest 从目录挑方案，成熟度如实说（非已校准的建议先打样）。返回 CLOUD_LOGIN 时把网址和代码原样给用户，由用户本人在浏览器登录、点 Approve（agent 不替用户点），之后重跑同一条命令。其余命令用 pacxio_run（不知道参数先 pacxio_help）。

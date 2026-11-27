@@ -312,7 +312,9 @@ def calibrate(
         out.mkdir(parents=True, exist_ok=True)
         report_file = out / "calibration.json"
         overlay = out / "overlay.png"
-        report_file.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+        report_file.write_text(
+            json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
         allpaths = [p for dataset in (generated, ref) for paths in dataset.values() for p in paths]
         coords = [v for path in allpaths for v in path]
         x0, y0 = min(v.x for v in coords), min(v.y for v in coords)

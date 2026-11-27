@@ -194,6 +194,16 @@ def _style_and_params(job: Job) -> tuple[Any, Any, Profile | None, list[Issue]]:
     return style, params, profile, style.validate(params, job.material, profile)
 
 
+def _paper_back(dl: Dieline, job: Job) -> None:
+    """特种纸 / 牛皮卡的纸背颜色写入 style_meta，供 3D 效果图画盒内面 / 折舌背面；不改刀版几何。"""
+    if job.material.face is not None:
+        dl.style_meta["paper_back_rgb"] = list(job.material.face.back())
+    elif job.material.preset == "kraft_350":
+        from pacxio.paper import KRAFT_RGB
+
+        dl.style_meta["paper_back_rgb"] = list(KRAFT_RGB)
+
+
 def build_parts_for(job: Job) -> tuple[DielineSet | None, list[Issue]]:
     """job → 一套刀版（每个部件一张，各自加上自己的窗口）。有错时返回 (None, issues)。"""
     style, params, profile, issues = _style_and_params(job)
@@ -210,6 +220,7 @@ def build_parts_for(job: Job) -> tuple[DielineSet | None, list[Issue]]:
         )
         if dl is not None:  # 刀模圆角：卡纸默认外 2 / 内 1
             apply_finish(dl, job.material.type, job.corner_finish)
+            _paper_back(dl, job)
         return (DielineSet(job.style, {None: dl}) if dl is not None else None), issues
     issues = part_name_issues(job, parts)
     if issues:
@@ -230,6 +241,7 @@ def build_parts_for(job: Job) -> tuple[DielineSet | None, list[Issue]]:
                 for e in errs
             ]
         apply_finish(built, job.material.type, job.corner_finish)
+        _paper_back(built, job)
         out[part] = built
     return DielineSet(job.style, out, labels), []
 

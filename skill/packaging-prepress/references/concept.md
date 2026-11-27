@@ -23,6 +23,20 @@ The **image itself is not** a print asset: AI-written text may be wrong, the res
 
 **Multi-part styles** (`tray_lid`, `drawer`): back view, flats, straightening and `flat` comparison work as below, with full panel names, grouped by panels visible when closed (tray and lid: the lid's two pairs of walls, the lid top `lid.top`, the base bottom `base.bottom`; see `box-styles.md`). Main and back view sizes are the closed outside shape. Each part's dieline image is confirmed at the end; 3D is view only.
 
+## Using a style from pacxio.dev/styles (only when the user brings one)
+
+In a normal workflow started directly in chat, **do not query style packs** — write `--design` directly as below.
+
+Only when the user brings a style id / prompt copied from `pacxio.dev/styles` (or explicitly asks to browse styles from the website):
+
+```bash
+pacxio concept styles <style-id>                           # read the aesthetic summary for a style from pacxio.dev/styles (cached locally; --refresh to update)
+pacxio concept prompt jobs/x --step main --style <style-id> --design "<brand colors, product motif>" --name main-A --text …
+```
+
+- **Aesthetic summary, not a rigid template**: combine `--style` with the user's product specifics in `--design` so the result feels original rather than copied from a template.
+- **Main view only & offline safe**: pass `--style <id>` on `--step main` (and optionally on `concept import` so `concept choose` returns rebuild hints when cached); never inject photography/scene notes into `--step flat`. If offline with no cache, continue directly with `--design`.
+
 ## Making concept images
 
 ```bash

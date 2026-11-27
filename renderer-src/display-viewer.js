@@ -22,9 +22,17 @@ export async function createDisplayViewer(host, {manifest, assetURL, signal, onF
  async function fetchAsset(path){check();const r=await fetch(assetURL(path),{signal:local.signal});if(!r.ok)throw Error('Display asset unavailable');return r;}
  async function texture(path,srgb=false){
   const response=await fetchAsset(path), blob=await response.blob();check();
-  const bitmap=await createImageBitmap(blob,{imageOrientation:'flipY',premultiplyAlpha:'none',colorSpaceConversion:'none'});
-  if(dead||signal.aborted){bitmap.close();check();}
-  const t=ownTexture(new THREE.Texture(bitmap));t.flipY=false;t.colorSpace=srgb?THREE.SRGBColorSpace:THREE.NoColorSpace;
+  let source=null, flipY=false;
+  try{
+   source=await createImageBitmap(blob,{imageOrientation:'flipY',premultiplyAlpha:'none',colorSpaceConversion:'none'});
+  }catch(_){
+   const url=URL.createObjectURL(blob);
+   try{
+    const img=new Image();img.src=url;await img.decode();source=img;flipY=true;
+   }finally{URL.revokeObjectURL(url);}
+  }
+  if(dead||signal.aborted){source?.close?.();check();}
+  const t=ownTexture(new THREE.Texture(source));t.flipY=flipY;t.colorSpace=srgb?THREE.SRGBColorSpace:THREE.NoColorSpace;
   t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());t.needsUpdate=true;return t;
  }
  async function packed(d){if(!d)throw Error('Missing packed display asset');const r=await fetchAsset(d.url);const data=await decodePackedAsset(r.body,d);check();return data;}
@@ -46,7 +54,7 @@ export async function createDisplayViewer(host, {manifest, assetURL, signal, onF
   scene.environmentRotation.z=r;scene.environmentIntensity=.95*light.brightness;
   key.intensity=.7*light.brightness;softbox.intensity=2.2*light.brightness;
   const direction=new THREE.Vector3(-3.6,-3.8,6.5).applyAxisAngle(new THREE.Vector3(0,0,1),r);
-  key.position.copy(center).add(direction);key.target.position.copy(center);layers.setLight(direction);
+  key.position.copy(center).add(direction);key.target.position.copy(center);layers.setLight(direction,light.brightness,center,motionRadius||Math.hypot(...manifest.size)*S*.5);
   softbox.position.copy(center).add(new THREE.Vector3(-3.6,-3.8,5.7));softbox.lookAt(center);
   const span=fold===1?4:Math.max(4,Math.hypot(...state.size)*1.05);
   Object.assign(key.shadow.camera,{left:-span,right:span,top:span,bottom:-span});key.shadow.camera.updateProjectionMatrix();renderer.shadowMap.needsUpdate=true;
@@ -137,8 +145,8 @@ export async function createDisplayViewer(host, {manifest, assetURL, signal, onF
   for(let i=0;i<=28;i++)motionRadius=Math.max(motionRadius,Math.hypot(...live.setProgress(i/28).size)/2);
   for(const t of [0,1-1e-6]){applyFold(t);renderer.setScissor(0,0,1,1);renderer.setScissorTest(true);renderer.render(scene,camera);}
   renderer.setScissorTest(false);applyFold(initialFold);renderer.render(scene,camera);base.dispose();
-  const gl=renderer.getContext(),fence=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();
-  try{while(gl.clientWaitSync(fence,0,0)===gl.TIMEOUT_EXPIRED){await new Promise(resolve=>setTimeout(resolve,8));check();}}finally{gl.deleteSync(fence);}
+  const gl=renderer.getContext(),fence=gl.fenceSync?.(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();
+  if(fence){try{for(let i=0;i<250&&gl.clientWaitSync(fence,0,0)===gl.TIMEOUT_EXPIRED;i++){await new Promise(resolve=>setTimeout(resolve,8));check();}}finally{gl.deleteSync(fence);}}
   check();ready=true;observer=new ResizeObserver(resize);observer.observe(host);document.addEventListener('visibilitychange',visibility);wake();
   function animate(to,done){stopFold();frameMotion();if(Math.abs(to-fold)<1e-7){done?.();return;}animation={from:fold,to,elapsed:0,duration:Math.max(400,Math.abs(to-fold)*6500),done};last=performance.now();wake();}
   return {resize,view,setView,lighting:()=>({...light}),setLighting(change){light={...light,...change};poseLight(live.state());wake();},
