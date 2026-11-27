@@ -55,6 +55,10 @@ def _dead_port() -> int:
 
 
 def _run_blocked(cmds: list[list[str]], cwd: Path) -> list[dict]:
+    from tests.unit.fontkit import make_font
+
+    font_dir = cwd / "fonts"
+    make_font(font_dir / "SourceHanSansSC-Bold.ttf", "SourceHanSansSC-Bold")
     styles_file = cwd / "_test_styles.json"
     styles_file.write_text(
         json.dumps(
@@ -69,6 +73,7 @@ def _run_blocked(cmds: list[list[str]], cwd: Path) -> list[dict]:
     env = {k: v for k, v in os.environ.items() if not k.startswith("PACXIO_")}
     env.update({
         "PACXIO_HOME": str(cwd / "home"),
+        "PACXIO_FONT_DIR": str(font_dir),
         "PACXIO_CLOUD_URL": f"http://127.0.0.1:{_dead_port()}",
         "PACXIO_CLOUD_TOKEN": "test-token",
         "PACXIO_STYLES_URL": str(styles_file),

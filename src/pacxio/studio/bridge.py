@@ -48,12 +48,21 @@ def revision_of(directory: Path) -> str:
     )
     for name in sorted(files):
         digest.update(name.encode())
-        try:
-            raw = (directory / name).read_bytes()
-            value = json.loads(raw)
-            digest.update(json.dumps(value, sort_keys=True, ensure_ascii=False).encode())
-        except FileNotFoundError:
-            digest.update(b"<absent>")
+        path = directory / name
+        for attempt in range(4):
+            try:
+                raw = path.read_bytes()
+                value = json.loads(raw)
+                digest.update(json.dumps(value, sort_keys=True, ensure_ascii=False).encode())
+                break
+            except FileNotFoundError:
+                digest.update(b"<absent>")
+                break
+            except json.JSONDecodeError:
+                # Non-atomic concurrent writers briefly expose an empty/partial file; retry shortly.
+                if attempt == 3:
+                    raise
+                time.sleep(0.015)
         digest.update(b"\0")
     return digest.hexdigest()
 

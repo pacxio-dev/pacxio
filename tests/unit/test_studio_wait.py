@@ -70,7 +70,9 @@ def synthetic_cloud_choice(monkeypatch: pytest.MonkeyPatch) -> None:
             note=argv[argv.index("--note") + 1] if "--note" in argv else None,
         )
         record = directory / "concepts/chosen.json"
-        record.write_text(chosen.model_dump_json(indent=2) + "\n")
+        tmp = record.with_suffix(".tmp")
+        tmp.write_text(chosen.model_dump_json(indent=2) + "\n", encoding="utf-8")
+        tmp.replace(record)
         return Result(
             command="concept choose",
             job=str(directory),

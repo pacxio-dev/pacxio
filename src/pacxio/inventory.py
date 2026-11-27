@@ -7,6 +7,8 @@
 from __future__ import annotations
 
 import json
+import os
+import tempfile
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -403,7 +405,14 @@ def content_confirm(
     pending = [it.id for it in job.content.items if it.pending]
     c = Confirmation(by, note, _now(), job.content.fingerprint(), len(job.content.items), pending)
     path = directory / CONFIRM_FILE
-    path.write_text(json.dumps(asdict(c), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    payload = json.dumps(asdict(c), ensure_ascii=False, indent=2) + "\n"
+    fd, tmp_name = tempfile.mkstemp(prefix=".content-confirmed-", dir=directory)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
+            fh.write(payload)
+        os.replace(tmp_name, path)
+    finally:
+        Path(tmp_name).unlink(missing_ok=True)
     r.artifacts = [str(path)]
     r.data = {"status": "confirmed", **asdict(c)}
     if pending:

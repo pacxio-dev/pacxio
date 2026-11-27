@@ -164,6 +164,9 @@ def test_every_command_and_option_in_skill_md_exists_in_the_cli(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setenv("COLUMNS", "300")  # 帮助文字不折行，选项名不会被拆开
+    monkeypatch.setenv("NO_COLOR", "1")
+    monkeypatch.setenv("TERM", "dumb")
+    ansi_re = re.compile(r"\x1b\[[0-9;]*m")
     cmds = doc_commands()
     assert len(cmds) >= 12
     seen = set()
@@ -175,8 +178,9 @@ def test_every_command_and_option_in_skill_md_exists_in_the_cli(
             path.append(t)
         res = runner.invoke(app, [*path, "--help"])
         assert res.exit_code == 0, f"文档里的命令不存在：{' '.join(path)}"
+        plain = ansi_re.sub("", res.output)
         for opt in {t for t in tokens if t.startswith("--")}:
-            assert opt in res.output, f"`{' '.join(path)}` 没有选项 {opt}"
+            assert opt in plain, f"`{' '.join(path)}` 没有选项 {opt}"
         seen.add(" ".join(path))
     assert {"job init", "panels", "render", "art add", "finish add", "font add", "preflight", "export",
             "visual import", "visual gen", "visual prepare"} <= seen  # fmt: skip
