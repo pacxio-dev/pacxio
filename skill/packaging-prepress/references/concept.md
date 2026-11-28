@@ -214,7 +214,7 @@ With confirmed flats, they are the reference: straighten with `concept rectify -
 | Element | How to rebuild |
 |---|---|
 | Text (brand name, product name, slogan, selling points, body) | `art add --kind text`, one block at a time, size and hierarchy from the concept, with `--tag` |
-| Serif titles | `--font SourceHanSerifSC-Bold` (Source Han Serif; if not installed `scripts/fetch_fonts.py --with-serif`), or the user's brand font |
+| Serif titles | `--font SourceHanSerifSC-Bold` (Source Han Serif; built-in in cloud mode, no local download needed), or the user's brand font |
 | Wide-tracked small text | `--tracking 100`–`300` (1/1000 em); line spacing of multi-line text with `--line-height` |
 | Numbered lists, bullets (continuation lines aligned with the text after the marker) | `--hanging-indent auto` on the list style; when the flat has more space after the marker give the measured mm (see `fonts.md`) |
 | Color | Main colors from `concept choose` → `--color` / `--colors` (approximate CMYK; brand colors follow the guide) |

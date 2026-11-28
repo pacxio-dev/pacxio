@@ -4,14 +4,14 @@ All text is set by the engine and **outlined**: print files only contain outline
 
 ## Bundled open-source fonts
 
-All SIL OFL (free for commercial use), downloaded by `scripts/fetch_fonts.py` to `~/.pacxio/fonts` (needs the network once); they cover Latin and common Simplified Chinese characters:
+All SIL OFL / Apache 2.0 (free for commercial use). **In cloud mode** (when `check_env.py` reports `font: cloud`), all 4 Source Han Sans/Serif weights plus 92 open-source library fonts are **already pre-installed on the cloud server** — **do not run `scripts/fetch_fonts.py`**; use their font names directly. Only local offline `pacxio_pro` environments need `scripts/fetch_fonts.py` to download them into `~/.pacxio/fonts`:
 
-| Font | Font names | Download |
+| Font | Font names | Local offline download (skip in cloud mode) |
 |---|---|---|
-| Source Han Sans (sans-serif) | `SourceHanSansSC-Regular`, `SourceHanSansSC-Bold` | `scripts/fetch_fonts.py` (about 33 MB, required) |
-| Source Han Serif (serif) | `SourceHanSerifSC-Regular`, `SourceHanSerifSC-Bold` | `scripts/fetch_fonts.py --with-serif` (another 50 MB or so, optional) |
+| Source Han Sans (sans-serif) | `SourceHanSansSC-Regular`, `SourceHanSansSC-Bold` | `scripts/fetch_fonts.py` (about 33 MB; pre-installed in cloud) |
+| Source Han Serif (serif) | `SourceHanSerifSC-Regular`, `SourceHanSerifSC-Bold` | `scripts/fetch_fonts.py --with-serif` (about 50 MB; pre-installed in cloud) |
 
-"Elegant serif headlines" in a concept use Source Han Serif; `check_env.py` says whether it is installed. When a font is missing `art add` reports an error with the download command — downloading needs the network, so ask the user first.
+"Elegant serif headlines" in a concept use Source Han Serif; `check_env.py` reports `"cloud"` (ready on server) or the local path. Only download with `scripts/fetch_fonts.py` if running offline locally and a font is actually reported missing (ask the user first before downloading).
 
 ## Tracking and line spacing
 

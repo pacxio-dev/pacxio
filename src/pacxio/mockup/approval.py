@@ -80,13 +80,27 @@ def design_fingerprint(directory: Path, job: Job) -> str:
         )
     }
     fonts: dict[str, str] = {}
+    job_fonts_dir = directory / "fonts"
     for p in job.placements:
         if p.kind == "text" and p.font:
             for name in parse_font_chain(p.font):
+                has_job_font = any(
+                    (job_fonts_dir / f"{name}{s}").is_file() for s in ("", ".otf", ".ttf", ".ttc")
+                )
+                if is_cloud_builtin_font(name) and not has_job_font:
+                    pin = (job.font_pins or {}).get(name)
+                    if pin is not None and pin.sha256:
+                        fonts[name] = pin.sha256
+                        continue
+                    try:
+                        fonts[name] = _sha(find_font(name, directory, include_system=False))
+                    except TextError:
+                        fonts[name] = f"cloud:{name}"
+                    continue
                 try:
                     fonts[name] = _sha(find_font(name, directory))
                 except TextError:
-                    fonts[name] = f"cloud:{name}" if is_cloud_builtin_font(name) else "MISSING"
+                    fonts[name] = "MISSING"
     job_dump = job.model_dump(
         mode="json",
         exclude_none=True,

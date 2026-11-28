@@ -9,13 +9,13 @@
     "source": "github",
     "id": "1456286439"
   },
-  "version": "0.0.9",
+  "version": "0.0.10",
   "packages": [
     {
       "registryType": "pypi",
       "registryBaseUrl": "https://pypi.org",
       "identifier": "pacxio",
-      "version": "0.0.9",
+      "version": "0.0.10",
       "runtimeHint": "uvx",
       "transport": {
         "type": "stdio"

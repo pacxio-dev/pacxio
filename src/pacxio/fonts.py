@@ -262,11 +262,11 @@ def add_font(
         other = find_font(fname, include_system=False)
     except TextError:
         pass
-    if other is not None:
+    if other is not None or is_cloud_builtin_font(fname):
         return fail(
             Issue(
                 id="FONT",
-                message=t("Font name {name} conflicts with an installed font ({file})", name=fname, file=other),
+                message=t("Font name {name} conflicts with an installed font ({file})", name=fname, file=other or "cloud"),
                 fix=t("Choose a distinct --name so neither font hides the other"),
             )
         )
@@ -457,12 +457,19 @@ def _is_under(path: Path, parent: Path) -> bool:
         return False
 
 
+def _job_font_exists(name: str, directory: Path | None) -> bool:
+    if directory is None:
+        return False
+    job_fonts_dir = directory / JOB_FONT_DIR
+    return any((job_fonts_dir / f"{name}{s}").is_file() for s in ("", ".otf", ".ttf", ".ttc"))
+
+
 def is_open_library_font(name: str, directory: Path | None = None) -> bool:
     """是否为内置开源字体或 OFL / Apache 字体库字体（服务器自带，无需上传与授权确认）。"""
     try:
         path, _ = find_font_face(name, directory, include_system=False)
     except TextError:
-        return False
+        return is_cloud_builtin_font(name) and not _job_font_exists(name, directory)
     if directory is not None and _is_under(path, directory / JOB_FONT_DIR):
         return False
     if any(_is_under(path, d) for d in ephemeral_font_dirs(directory)):
@@ -709,11 +716,11 @@ def use_system_font(
         other = find_font(fname, include_system=False)
     except TextError:
         pass
-    if other is not None:
+    if other is not None or is_cloud_builtin_font(fname):
         return r.fail(
             Issue(
                 id="FONT",
-                message=t("Font name {name} conflicts with an installed font ({file})", name=fname, file=other),
+                message=t("Font name {name} conflicts with an installed font ({file})", name=fname, file=other or "cloud"),
                 fix=t("Choose a distinct --name so neither font hides the other"),
             ),
             2,
@@ -962,12 +969,12 @@ def verify_job_font_pins(job: Job, directory: Path) -> list[Issue]:
     errors: list[Issue] = []
     for name in sorted(referenced_fonts(job) & set(job.font_pins)):
         pin = job.font_pins[name]
+        if pin.source != "job" and is_cloud_builtin_font(name) and not _job_font_exists(name, directory):
+            continue
         wanted = _pin_label(pin.version, pin.sha256)
         try:
             path, face_index = find_font_face(name, directory)
         except TextError:
-            if pin.source == "open" and is_cloud_builtin_font(name):
-                continue
             errors.append(
                 Issue(
                     id="FONT",
@@ -1027,11 +1034,11 @@ def sync_font_pins(job: Job, directory: Path, *, refresh: bool = False) -> list[
     for name in sorted(used):
         if name in pins:
             continue
+        if is_cloud_builtin_font(name) and not _job_font_exists(name, directory):
+            continue
         try:
             path, face_index = find_font_face(name, directory)
         except TextError as e:
-            if is_cloud_builtin_font(name):
-                continue
             errors.append(e.issue)
             continue
         info = describe_font(path, directory, face_index=face_index)
