@@ -443,7 +443,10 @@ def setup(
         plan[a] = _agent_commands(a, root, installed[a], has_market)
     if has_agy:
         _, installed["antigravity"] = _antigravity_state()
-    need_fonts = fonts and not _fonts_ready()
+    from pacxio.cloud.config import closed_available
+
+    cloud_mode = not closed_available()
+    need_fonts = fonts and not cloud_mode and not _fonts_ready()
     steps: list[str] = []
     if cli_agents:
         steps.append(t("Build the plugin (Skill + MCP) in {root}", root=root))
@@ -458,6 +461,8 @@ def setup(
         [
             t("Download the open-source Source Han Sans fonts (about 33 MB)")
             if need_fonts
+            else t("Fonts: provided by the cloud (local annotations use system fonts)")
+            if fonts and cloud_mode
             else t("Fonts: already there, skipped")
             if fonts
             else t("Fonts: skipped (--no-fonts)"),
@@ -526,6 +531,8 @@ def setup(
             )
     if need_fonts:
         r.data["fonts"] = _fetch_fonts(r)
+    elif fonts and cloud_mode:
+        r.data["fonts"] = "cloud"
     elif fonts:
         r.data["fonts"] = "ready"
     from pacxio.mcp_install import _handshake
@@ -541,7 +548,7 @@ def setup(
         Issue(
             id="SETUP",
             message=t(
-                "Installed: restart {names} (or start a new session) to load the plugin",
+                "Installed: fully quit and restart {names} to load the plugin tools (the current chat session cannot see newly registered MCP tools until restarted)",
                 names=names,
             ),
         )

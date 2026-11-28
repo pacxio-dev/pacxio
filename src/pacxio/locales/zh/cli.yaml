@@ -562,6 +562,9 @@ has CJK: 有中文
 here: 本机
 hero | pattern | texture | logo | icon | graphic (flat-color shapes, to be traced as vectors): hero | pattern | texture | logo | icon | graphic（纯色形状，之后描成矢量）
 'image / placeholder: clip shape SVG': image / placeholder：裁切形状 SVG
+'image / placeholder: clip shape SVG or built-in shape (arch | circle | oval | pill | rounded:<mm>)': image / placeholder：裁切形状 SVG 或内置形状（arch | circle | oval | pill | rounded:<mm>）
+'Transparent photo window cutout <shape>:x,y,w,h (panel-local mm, repeatable; e.g. arch:14,22,52,78): keeps arch frame and foreground illustration while punching a transparent window for an underlying photo': 透明照片挖窗 <形状>:x,y,w,h（面局部坐标 mm，可重复，如 arch:14,22,52,78）：保留拱门边框与前景插画，同时把照片窗内部抠成透明供底层照片透出
+'Use a built-in clip shape (arch, circle, oval, pill, rounded:<mm>) or a path to an SVG file': 使用内置裁切形状（arch、circle、oval、pill、rounded:<mm>）或指向 SVG 文件的路径
 'image / placeholder: clip with an SVG shape (e.g. arch, rounded top-right)': image / placeholder：用 SVG 形状裁切（如拱形、右上圆角）
 'image | vector (default: by file extension)': image | vector（不给时按文件后缀判断）
 in the cloud: 云端

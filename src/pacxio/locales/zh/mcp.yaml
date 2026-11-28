@@ -35,6 +35,7 @@ FEFCO / ECMA code (one of code, recipe, job): FEFCO / ECMA 编号（和 recipe�
 Folder for the preview images: 预览图写到哪个目录
 'Font download failed: ': 字体没下载成功：
 'Fonts: already there, skipped': 字体：已有，跳过
+'Fonts: provided by the cloud (local annotations use system fonts)': 字体：云端已预装开源字体（本机标注直接使用系统字体，无需下载）
 'Fonts: skipped (--no-fonts)': 字体：跳过（--no-fonts）
 If it is already installed, run claude mcp remove -s user pacxio first: 已经装过就先 claude mcp remove -s user pacxio
 Inside height mm: 内高 mm
@@ -50,6 +51,8 @@ Set ANTIGRAVITY_CONFIG_DIR to use another folder, or check permissions on {root}
 antigravity (plugin): antigravity（插件）
 Install {label} first and check that {cli} runs in the terminal: 先装好 {label}，确认终端里能运行 {cli}
 'Installed: restart {names} (or start a new session) to load the plugin': 装好了：重开 {names}（或新开会话）才会加载插件
+? 'Installed: fully quit and restart {names} to load the plugin tools (the current chat session cannot see newly registered MCP tools until restarted)'
+: 装好了：请**完全退出并重启 {names}** 才会加载原生插件工具（当前会话不会自动出现新注册的 MCP 工具）
 Job folder (absolute path): job 目录（绝对路径）
 Job folder (new): job 目录（新建）
 Keyword: 关键词
@@ -77,7 +80,11 @@ Read the message; if an argument is wrong, fix it per tools/list; if job.json is
 : 跑任意一条 pacxio 命令（和命令行同一个函数，自动带 --json），返回 {ok, command, job, artifacts, data, errors, warnings}；刀版确认图、效果图、结构预览会把图一并返回。command 写命令全名（如 "art add"、"render"、"export"），args 和命令行一样（路径用绝对路径）。不知道参数先 pacxio_help。确认类命令不能用它（用 user_confirm）。concept gen / visual gen 要花用户的出图额度：先告诉用户再跑。
 'Run it by hand: ': 手动运行：
 Run pacxio env check: 运行 pacxio env check
-Run studio status with pacxio_run to check: pacxio_run 跑 studio status 看看
+'Run studio status with pacxio_run to check': pacxio_run 跑 studio status 看看
+? "One-click full restoration pipeline (R3-1): rebuilds or refines the final print layout from confirmed flats, runs automatic iterations, renders the dieline confirmation image, checks preflight, and writes flat --diff. Never spends image credits automatically (lists any photos needing redraw approval in action_required). In cloud mode, waits up to wait_s (default 90s) per call so it never hits client MCP timeouts: if data.status == 'running', do NOT treat it as an error or switch to manual steps — tell the user it is still working and call restore_run again with the same job and data.run_id until complete."
+: "一键全自动还原流水线（R3-1）：从已确认的展开平面图重建或精修正式印刷稿、跑多轮自动微调、出刀版确认图、跑印前检查并写 flat --diff。绝不自动花出图额度（需重画的照片列在 action_required 等用户同意）。云端模式下每次最多等 wait_s（默认 90 秒）避免撞 MCP 超时：若返回 data.status == 'running'，切勿当报错或改手动重拼——向用户汇报一句进展后，带同一个 job 和 data.run_id 再次调用 restore_run 续等直至完成。"
+Continue waiting on an in-progress cloud restore_run (pass data.run_id from the previous running response): 接续等待仍在运行中的云端 restore_run（传入上次 running 返回的 data.run_id，不会重跑）
+Seconds to wait per cloud poll window before returning running status (default 90, max 180): 云端单次轮询等待窗口秒数（默认 90，上限 180），到期仍在运行则返回 running 状态以便续等
 Run this command by hand to see the full error; the plugin folder is {root}: 可以手动运行这条命令看完整报错；插件目录在 {root}
 Say which concept image is being confirmed: 要说确认的是哪张概念图
 ? Search the structure catalog (FEFCO, public ECMA codes and common combinations), calibrated first. Returns code, description, maturity, how it closes, whether it recloses, whether it needs tape, use tags.

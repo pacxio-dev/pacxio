@@ -18,7 +18,7 @@ from pacxio import dielines
 from pacxio.cloud.config import closed_available
 from pacxio.concept.service import concept_guard_issue
 from pacxio.export import dieline_to_svg
-from pacxio.fontfiles import TextError, find_font, parse_font_chain
+from pacxio.fontfiles import TextError, find_font, is_cloud_builtin_font, parse_font_chain
 from pacxio.jobfiles import import_asset as _import_asset
 from pacxio.jobfiles import is_concept as _is_concept
 from pacxio.layout.errors import LayoutError
@@ -105,26 +105,32 @@ def check_env() -> Result:
     try:
         checks["font"] = str(find_font(DEFAULT_FONT))
     except TextError as e:
-        checks["font"] = None
-        r.warnings.append(e.issue)  # 没有字体时 text 放置会失败；其余功能不受影响
+        if not local:
+            checks["font"] = "cloud"
+        else:
+            checks["font"] = None
+            r.warnings.append(e.issue)  # 没有字体时 text 放置会失败；其余功能不受影响
     try:
         checks["serif_font"] = str(find_font(SERIF_FONT))
     except TextError:
-        checks["serif_font"] = None  # 可选：衬线字体（思源宋体），不装也能用，只提示
-        r.warnings.append(
-            Issue(
-                id="FONT",
-                message=t(
-                    "Optional: no serif font (Source Han Serif); only needed for serif headings"
-                ),
-                fix=t(
-                    "To use serif headings, put Source Han Serif in a font directory or set PACXIO_FONT_DIR"
-                ),
+        if not local:
+            checks["serif_font"] = "cloud"
+        else:
+            checks["serif_font"] = None  # 可选：衬线字体（思源宋体），不装也能用，只提示
+            r.warnings.append(
+                Issue(
+                    id="FONT",
+                    message=t(
+                        "Optional: no serif font (Source Han Serif); only needed for serif headings"
+                    ),
+                    fix=t(
+                        "To use serif headings, put Source Han Serif in a font directory or set PACXIO_FONT_DIR"
+                    ),
+                )
             )
-        )
     gs = shutil.which("gs")
-    checks["ghostscript"] = gs
-    # 开源版（local 为假）：分色、ICC 都在云端，本机不用装
+    # 开源版（local 为假）：分色、ICC、开源印刷字体都在云端，本机不用装
+    checks["ghostscript"] = gs if local else "cloud"
     checks["composition"] = "local" if local else "cloud"
     if gs is None and local:
         r.warnings.append(
@@ -1709,14 +1715,31 @@ ART_ARG_FIX = t(
 
 def _check_art_files(directory: Path, placement: Placement, job: Job) -> list[Issue]:
     """SVG 素材 / 裁切形状在添加时就检查能否印刷；返回提醒（如颜色要自动换算）。"""
+    from pacxio.layout.clipshapes import is_builtin_clip, parse_builtin_clip
     from pacxio.visual.meta import is_illustration, read_meta
     from pacxio_pro.color import ColorConverter  # 闭源（）：`art` 转给云端
     from pacxio_pro.color.icc import resolve_icc
     from pacxio_pro.layout.compose import resolve_colors
-    from pacxio_pro.layout.svgart import load_svg_art
+    from pacxio_pro.layout.svgart import SvgArtError, load_svg_art
 
     warnings: list[Issue] = []
-    svgs = [placement.clip] if placement.clip else []
+    svgs: list[str] = []
+    if placement.clip:
+        if is_builtin_clip(placement.clip):
+            try:
+                parse_builtin_clip(placement.clip)
+            except ValueError as e:
+                raise SvgArtError(
+                    Issue(
+                        id="ARG",
+                        message=str(e),
+                        fix=t(
+                            "Use a built-in clip shape (arch, circle, oval, pill, rounded:<mm>) or a path to an SVG file"
+                        ),
+                    )
+                ) from e
+        else:
+            svgs.append(placement.clip)
     source = job.source_of(placement)
     if placement.kind == "vector" and source:
         svgs.append(source)
@@ -1816,9 +1839,13 @@ def art_add(directory: Path, fields: dict[str, Any]) -> Result:
         # 铺底色 / 平铺按 scope 铺满整个面，panel / box 不起作用：给了会以为是局部色块，其实盖住整面
         return _fail(r, [Issue(id="ARG", message=t("kind={kind} fills the whole panel by --scope; {opts} have no effect (it covers the whole panel, not a part)", kind=fields["kind"], opts=" / ".join(local)),
                                fix=t("To fill a whole panel use --scope panel_id; draw a partial color block as a rectangle SVG and place it with kind=vector in --box"))], 2)  # fmt: skip
+    from pacxio.layout.clipshapes import is_builtin_clip
+
     for key in ("source", "clip"):
         given = fields.get(key)
         if given is None:
+            continue
+        if key == "clip" and is_builtin_clip(str(given)):
             continue
         if _is_concept(directory, Path(str(given))):
             return _fail(r, [concept_guard_issue(t("layout placement"))], 2)
@@ -1905,7 +1932,11 @@ def art_add(directory: Path, fields: dict[str, Any]) -> Result:
         font = placement.font or (job.styles or {})[str(placement.style)].font
         try:
             for font_name in parse_font_chain(font):
-                find_font(font_name, directory)
+                try:
+                    find_font(font_name, directory)
+                except TextError:
+                    if not is_cloud_builtin_font(font_name):
+                        raise
         except TextError as e:
             return _fail(r, [e.issue], 2)
     try:

@@ -856,72 +856,6 @@ def _fonts_card(directory: Path, job: Job) -> Card | None:
     )
 
 
-def _lettering_cards(directory: Path, job: Job) -> list[Card]:
-    """R2-4 艺术字并排对照图（flat/lettering.json 存在时显示在刀版确认阶段）。"""
-    from pacxio.visual.meta import validate_lettering_record
-
-    report = _read_json(directory / flat_mod.FLAT_DIR / "lettering.json")
-    if not isinstance(report, dict):
-        return []
-    by_id = {p.id: p for p in job.placements}
-    cards: list[Card] = []
-    for cand in report.get("candidates") or []:
-        if not isinstance(cand, dict):
-            continue
-        rel = cand.get("comparison_image")
-        pid = str(cand.get("id") or "")
-        if not rel or not pid:
-            continue
-        img_path = directory / str(rel)
-        if not img_path.is_file():
-            continue
-        pl = by_id.get(pid)
-        text = str(cand.get("text") or "").replace("\n", " / ")
-        decision = str(cand.get("decision") or "")
-        badges: list[str] = []
-        card_action: Action | None = None
-        if pl is not None and pl.lettering is not None:
-            why = validate_lettering_record(
-                directory, job, pl.lettering.model_dump(), require_confirmed=False
-            )
-            if why is None and pl.lettering.status == "auto_traced":
-                badges.append(t("Auto-traced · confirmed with dieline approval"))
-            elif why is None:
-                badges.append(t("Confirmed · {by}", by=pl.lettering.confirmed_by or USER))
-            else:
-                badges.append(t("Changed, needs confirming again"))
-            if pl.lettering.fallback_text:
-                card_action = Action(
-                    id="lettering_revert",
-                    target=pid,
-                    label=t("Revert to font"),
-                )
-        elif decision == "recommend_trace":
-            badges.append(t("Recommend trace"))
-            card_action = Action(
-                id="lettering_trace",
-                target=pid,
-                label=t("Trace as smooth vector"),
-            )
-        elif decision == "gray_zone":
-            badges.append(t("Gray zone"))
-        title = t("Display lettering · {id} ({text})", id=pid, text=text)
-        caption = str(cand.get("reason") or "") or None
-        cards.append(
-            _image_card(
-                directory,
-                img_path,
-                f"design:lettering:{pid}",
-                title,
-                caption=caption,
-                badges=badges,
-                action=card_action,
-                group=t("Display lettering comparisons"),
-            )
-        )
-    return cards
-
-
 def _design(
     directory: Path, job: Job, fp: str, parts: tuple[str, ...], labels: dict[str, str]
 ) -> Stage:
@@ -978,7 +912,6 @@ def _design(
         st.cards.append(fonts_card)
     if job.key_colors:  # 关键颜色只是给工厂对色的标注：在这里核对，不影响确认
         st.cards.append(_key_colors_card(job))
-    st.cards += _lettering_cards(directory, job)
     state = approval_state(directory, job, fp)
     label = t("Confirm dieline again") if state.approval is not None else t("Confirm dieline")
     if state.status == "approved":

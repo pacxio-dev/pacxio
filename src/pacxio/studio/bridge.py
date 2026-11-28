@@ -71,17 +71,30 @@ def _folder(directory: Path) -> Path:
     return directory / "studio"
 
 
-def _read(directory: Path) -> dict[str, Any]:
+def _read_json_file(path: Path) -> dict[str, Any]:
     try:
-        value = json.loads((_folder(directory) / "agent.json").read_text(encoding="utf-8"))
+        value = json.loads(path.read_text(encoding="utf-8"))
         return value if isinstance(value, dict) else {}
     except (OSError, ValueError):
         return {}
 
 
+def _read(directory: Path) -> dict[str, Any]:
+    return _read_json_file(_folder(directory) / "agent.json")
+
+
+def _write_json_atomic(path: Path, record: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, name = tempfile.mkstemp(prefix=f".{path.stem}-", dir=path.parent)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as output:
+            json.dump(record, output, ensure_ascii=False)
+        os.replace(name, path)
+    finally:
+        Path(name).unlink(missing_ok=True)
+
+
 def _write(directory: Path, status: str, stage: str | None, revision: str, ttl: float) -> None:
-    folder = _folder(directory)
-    folder.mkdir(parents=True, exist_ok=True)
     now = time.time()
     record = {
         "status": status,
@@ -91,13 +104,56 @@ def _write(directory: Path, status: str, stage: str | None, revision: str, ttl: 
         "updated_at": now,
         "expires_at": now + ttl,
     }
-    fd, name = tempfile.mkstemp(prefix=".agent-", dir=folder)
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8") as output:
-            json.dump(record, output)
-        os.replace(name, folder / "agent.json")
-    finally:
-        Path(name).unlink(missing_ok=True)
+    _write_json_atomic(_folder(directory) / "agent.json", record)
+
+
+def write_task(
+    directory: Path,
+    command: str,
+    *,
+    run_id: str | None = None,
+    started_at: float | None = None,
+    detail: str | None = None,
+    ttl: float = 180.0,
+) -> None:
+    """Record an active long-running cloud or local task so the Workbench shows live progress."""
+    now = time.time()
+    record = {
+        "status": "running",
+        "command": command,
+        "run_id": run_id,
+        "started_at": started_at if started_at is not None else now,
+        "updated_at": now,
+        "expires_at": now + ttl,
+        "detail": detail,
+    }
+    _write_json_atomic(_folder(directory) / "task.json", record)
+
+
+def clear_task(directory: Path) -> None:
+    """Clear the active task marker when the command finishes or fails."""
+    (_folder(directory) / "task.json").unlink(missing_ok=True)
+
+
+def active_task(directory: Path) -> dict[str, Any] | None:
+    """Return the currently running local or cloud task if still fresh, otherwise None."""
+    now = time.time()
+    for path in (_folder(directory) / "task.json", directory / ".cloud" / "active_run.json"):
+        record = _read_json_file(path)
+        if record.get("status") != "running":
+            continue
+        if now >= float(record.get("expires_at") or 0):
+            continue
+        started = float(record.get("started_at") or record.get("updated_at") or now)
+        return {
+            "status": "running",
+            "command": str(record.get("command") or record.get("cmd") or ""),
+            "run_id": record.get("run_id") or record.get("rid"),
+            "started_at": started,
+            "elapsed_s": max(0, int(now - started)),
+            "detail": record.get("detail"),
+        }
+    return None
 
 
 def agent_status(directory: Path) -> dict[str, Any]:
@@ -118,6 +174,7 @@ def agent_status(directory: Path) -> dict[str, Any]:
         "revision": record.get("revision"),
         "updated_at": record.get("updated_at"),
         "expires_at": record.get("expires_at"),
+        "task": active_task(directory),
     }
 
 
@@ -160,12 +217,17 @@ def _lock(directory: Path) -> Iterator[bool]:
 
 def acknowledge(directory: Path, revision: str) -> None:
     """A real next/job_next call acknowledges a delivered result, not a UI refresh."""
-    if _read(directory).get("status") != "notified":
+    cur_status = _read(directory).get("status")
+    if cur_status not in ("notified", "disconnected"):
         return
     with _lock(directory) as locked:
+        if not locked:
+            return
         record = _read(directory)
-        if locked and record.get("status") == "notified" and revision_of(directory) == revision:
+        if record.get("status") == "notified" and revision_of(directory) == revision:
             _write(directory, "received", record.get("stage"), revision, RECEIPT_S)
+        elif record.get("status") == "disconnected":
+            _write(directory, "idle", record.get("stage"), revision, 0)
 
 
 def wait_for_user(

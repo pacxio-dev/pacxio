@@ -38,12 +38,57 @@ def _tag(tag: str | None) -> str:
     return tag if tag and tag != UNTAGGED else t("Untagged")
 
 
+_SYSTEM_CJK_FONTS: tuple[str, ...] = (
+    # macOS (screen-only annotation fallback; never embedded in print PDFs)
+    "/System/Library/Fonts/PingFang.ttc",
+    "/System/Library/Fonts/Hiragino Sans GB.ttc",
+    "/System/Library/Fonts/STHeiti Medium.ttc",
+    "/System/Library/Fonts/Supplemental/Songti.ttc",
+    "/Library/Fonts/Arial Unicode.ttf",
+    # Windows
+    "C:/Windows/Fonts/msyh.ttc",
+    "C:/Windows/Fonts/simhei.ttf",
+    "C:/Windows/Fonts/msyhbd.ttc",
+    # Linux
+    "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+    "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",
+    "/usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc",
+    "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",
+)
+_SYSTEM_LATIN_FONTS: tuple[str, ...] = (
+    "/System/Library/Fonts/Helvetica.ttc",
+    "/System/Library/Fonts/SFNS.ttf",
+    "C:/Windows/Fonts/segoeui.ttf",
+    "C:/Windows/Fonts/arial.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+)
+
+
+def _system_fallback_font(size: int, *, need_cjk: bool) -> ImageFont.FreeTypeFont | None:
+    from pathlib import Path
+
+    candidates = _SYSTEM_CJK_FONTS if need_cjk else (*_SYSTEM_CJK_FONTS, *_SYSTEM_LATIN_FONTS)
+    for raw in candidates:
+        p = Path(raw)
+        if not p.is_file():
+            continue
+        try:
+            return ImageFont.truetype(str(p), size)
+        except OSError:
+            continue
+    return None
+
+
 @lru_cache(maxsize=16)
 def _font(size: int, bold: bool) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
     name = "SourceHanSansSC-Bold" if bold else "SourceHanSansSC-Regular"
     try:
         return ImageFont.truetype(str(find_font(name)), size)
     except (TextError, OSError):
+        fallback = _system_fallback_font(size, need_cjk=lang() == "zh")
+        if fallback is not None:
+            return fallback
         return ImageFont.load_default(size)
 
 
@@ -52,7 +97,7 @@ def fonts_available() -> bool:
         find_font("SourceHanSansSC-Regular")
         return True
     except TextError:
-        return False
+        return _system_fallback_font(BODY_PT, need_cjk=lang() == "zh") is not None
 
 
 def _wrap_chars(

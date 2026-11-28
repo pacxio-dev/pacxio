@@ -1061,6 +1061,16 @@ function reconcileConfirmation(st, requestedAt = null) {
 }
 
 function handoffMessage() {
+  const task = agentLink.task;
+  if (task && task.status === "running") {
+    const secs = Number.isFinite(task.elapsed_s) ? Math.max(0, Math.round(task.elapsed_s)) : 0;
+    const label = secs >= 60 ? `${Math.floor(secs / 60)}m ${secs % 60}s` : `${secs}s`;
+    return {
+      tone: "wait",
+      title: tr("Working in the cloud ({1})…", label),
+      detail: task.detail || tr("Generating artwork and dieline confirmation in the background. New results will appear here automatically."),
+    };
+  }
   if (state && !state.now_who) return null;
   const status = agentStatus();
   const currentConfirmation = savedConfirmation && matchesConfirmation();
@@ -1083,18 +1093,18 @@ function handoffMessage() {
   if (status === "loading") return {
     tone: "mute", title: tr("Checking automatic continuation…"), detail: "",
   };
-  if (savedConfirmation && !savedConfirmation.received && ["received", "notified", "idle"].includes(status)) return {
+  if (savedConfirmation && !savedConfirmation.received) return {
     tone: "mute", title: tr("Confirmation saved"),
-    detail: tr("Return to the original agent conversation to continue from this updated choice."),
+    detail: tr("Return to your agent conversation and say \"continue\" to proceed with this saved choice."),
   };
   if (!state?.now_who && !savedConfirmation) return null;
-  if (status === "idle" && state?.now_who === "agent") return {
+  if (state?.now_who === "agent") return {
     tone: "mute", title: tr("The next step is with your agent"),
     detail: tr("Check the original agent conversation for progress. New results will appear here."),
   };
   return {
-    tone: "warn", title: savedConfirmation ? tr("Confirmation saved · agent disconnected") : tr("Automatic continuation is not connected"),
-    detail: tr("Return to the original agent conversation and ask it to reconnect. Your saved choices are kept."),
+    tone: "mute", title: tr("Confirm here or in chat"),
+    detail: tr("Selections made here are saved automatically. Return to your agent conversation and say \"continue\" afterward."),
   };
 }
 

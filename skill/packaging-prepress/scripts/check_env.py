@@ -130,7 +130,10 @@ def main() -> int:
                 problems.append(e["message"])
                 if e.get("fix"):
                     install.append(e["fix"])
-            if not data.get("font"):
+            cloud = (
+                data.get("composition") == "cloud"
+            )  # open-source edition: typography, separations and ICC run in the cloud
+            if not data.get("font") and not cloud:
                 problems.append(
                     _t(
                         "Source Han Sans not found: layouts with text cannot be set",
@@ -138,7 +141,7 @@ def main() -> int:
                     )
                 )
                 install.append(INSTALL_FONT)
-            if "serif_font" in data and not data.get("serif_font"):
+            if "serif_font" in data and not data.get("serif_font") and not cloud:
                 warnings.append(
                     _t(
                         "Optional: no serif font (Source Han Serif) — only needed for serif titles",
@@ -146,9 +149,6 @@ def main() -> int:
                     )
                 )
                 install.append(INSTALL_SERIF)
-            cloud = (
-                data.get("composition") == "cloud"
-            )  # open-source edition: separations and ICC run in the cloud
             if not data.get("ghostscript") and not cloud:
                 warnings.append(
                     _t(

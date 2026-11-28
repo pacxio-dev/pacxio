@@ -54,3 +54,4 @@ job.json changed on this machine while the cloud run was going; it was not overw
 'Font {font} ({origin}) requires your one-time upload authorization before cloud typesetting': '非开源字体 {font}（{origin}）在云端排字前需要先做一次上传授权确认'
 'Confirm that your license permits uploading glyph subsets for cloud outlining with `pacxio font authorize <job> {font} --by <your-name>`': '请确认你的字体授权允许上传字形子集供云端转曲后运行 `pacxio font authorize <job> {font} --by <你的名字>`'
 'Wait a moment and try again; too many concurrent requests or queued jobs': '稍等片刻再试；当前并发请求或排队任务过多'
+'Cloud task is still running ({elapsed}s elapsed). Tell the user it is working, then call restore_run again with the same job and run_id={rid} to continue waiting.': '云端任务仍在正常运行中（已耗时 {elapsed} 秒）。请告知用户正在处理中，然后用同一个 job 和 run_id={rid} 再次调用 restore_run 继续等待即可。'

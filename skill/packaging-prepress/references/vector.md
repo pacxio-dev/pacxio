@@ -10,7 +10,7 @@
 | An illustration on one panel (top, bottom, mailer panels) | Trace from the flats: `restore face <panel>` → `visual trace` → `--kind vector --panel <panel>` |
 | Curved color areas, wavy bands, geometric shapes | SVG → `--kind vector` |
 | Icons (leaf, house, tick, eco mark) | SVG → `--kind vector` (one-color icons add `--color` to print in one color) |
-| A photo inside an arch / circle / custom frame | Photo `--kind image` + `--clip shape.svg` |
+| A photo inside an arch / circle / rounded frame | Photo `--kind image` + built-in `--clip arch` (`arch`, `circle`, `oval`, `pill`, `rounded:<mm>`) or `--clip shape.svg`; when framed by a full-panel illustration with overlapping foliage/borders, use the 3-layer punched-window workflow below |
 | A curve wrapping from the front onto the side, a band around the box | `--kind vector --space body` |
 | A graphic running from the front onto the bottom / top lid | `--kind vector --space blank` |
 | Gradients, light and shade, textures, photos | Bitmap assets (`visual gen` / supplied by the user) |
@@ -57,6 +57,21 @@ pacxio restore face jobs/x bottom               # → assets/btm_lid-face.png (r
 pacxio visual trace jobs/x assets/btm_lid-face.png
 pacxio art add jobs/x --kind vector --source assets/btm_lid-face.traced.svg --panel btm_lid \
     --box <the box in data.place of the output> --fit stretch
+```
+
+**Photos framed inside a full-panel illustration (arch / circle / rounded window with overlapping border or foreground foliage)**:
+Do **not** draw an isolated standalone arch outline on top of a rectangle photo, and do **not** spend an extra image generation creating a separate frame sticker. Keep the frame, surrounding illustration and overlapping leaves unified from the confirmed flat in **3 stacked layers**:
+
+```bash
+# 1. Bottom layer: independent text-free high-res photo, clipped with a built-in shape (1–2 mm larger than the inner opening so no gap shows)
+pacxio art add jobs/x --kind image --source assets/photo.prepared.png --panel front \
+    --box 13,21,54,80 --fit cover --clip arch
+# 2. Middle layer: punch only the inner photo opening as transparent, then trace the whole panel illustration (arch frame + overlapping foliage stay intact above the photo)
+pacxio restore face jobs/x front --punch arch:14,22,52,78 --name front-framed
+pacxio visual trace jobs/x assets/front-framed.png --name front-framed
+pacxio art add jobs/x --kind vector --source assets/front-framed.svg --panel front \
+    --box <the box in data.place of the output> --fit stretch
+# 3. Top layer: engine-set text / traced display lettering
 ```
 
 - When `restore score` reports BREAK / KINK / SPIKE / FOLD, fix them before showing the user (positions are in the warnings, circled red on `flat/score_<panel>.png`):

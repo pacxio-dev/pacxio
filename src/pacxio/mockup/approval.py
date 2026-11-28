@@ -23,7 +23,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel
 
-from pacxio.fontfiles import TextError, find_font, parse_font_chain
+from pacxio.fontfiles import TextError, find_font, is_cloud_builtin_font, parse_font_chain
 from pacxio.model.job import Job
 from pacxio.styles import get_style
 from pacxio.visual.meta import now_iso
@@ -67,11 +67,13 @@ def _sha(path: Path) -> str:
 
 
 def design_fingerprint(directory: Path, job: Job) -> str:
+    from pacxio.layout.clipshapes import is_builtin_clip
+
     assets = {
         s: _sha(directory / s)
         for s in sorted(
             {p.source for p in job.placements if p.source}
-            | {p.clip for p in job.placements if p.clip}
+            | {p.clip for p in job.placements if p.clip and not is_builtin_clip(p.clip)}
             | {f.source for f in job.finishes if f.source}
             | {e.source for s in job.surface_treatments or [] for e in s.exclusions if e.source}
             | {x for a in job.attachments or [] for x in (a.source, a.relief) if x}
@@ -84,7 +86,7 @@ def design_fingerprint(directory: Path, job: Job) -> str:
                 try:
                     fonts[name] = _sha(find_font(name, directory))
                 except TextError:
-                    fonts[name] = "MISSING"
+                    fonts[name] = f"cloud:{name}" if is_cloud_builtin_font(name) else "MISSING"
     job_dump = job.model_dump(
         mode="json",
         exclude_none=True,

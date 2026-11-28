@@ -35,6 +35,120 @@ LIBRARY_OFF_ENV = "PACXIO_FONT_LIBRARY"
 CHAIN_SEP = ","
 NAME_VERSION = 5  # OpenType nameID 5（Version string）
 
+# 生产云端（api.pacxio.dev）预装的 52 族开源字体（2 族基础思源 + 50 族 OFL/Apache 字体库）。
+# 纯开源云端模式下，客户端本机无需下载 33 MB 思源字体，样式校验与确认指纹直接识别这些内置云端字体名。
+CLOUD_BUILTIN_FONTS: frozenset[str] = frozenset(
+    {
+        "SourceHanSansSC-Regular",
+        "SourceHanSansSC-Bold",
+        "SourceHanSerifSC-Regular",
+        "SourceHanSerifSC-Bold",
+        "AbrilFatface-Regular",
+        "AlfaSlabOne-Regular",
+        "Anton-Regular",
+        "Archivo-Bold",
+        "Archivo-Regular",
+        "ArchivoCondensed-Black",
+        "ArchivoCondensed-Bold",
+        "Arvo-Bold",
+        "Arvo-Regular",
+        "Baloo2-ExtraBold",
+        "Baloo2-Regular",
+        "BarlowCondensed-Black",
+        "BarlowCondensed-Bold",
+        "BarlowCondensed-Regular",
+        "BebasNeue-Regular",
+        "BodoniModa-Black",
+        "BodoniModa-Bold",
+        "BodoniModa-Regular",
+        "BreeSerif-Regular",
+        "Caveat-Bold",
+        "Caveat-Regular",
+        "Chewy-Regular",
+        "CormorantGaramond-Bold",
+        "CormorantGaramond-Regular",
+        "DMSans-Bold",
+        "DMSans-Regular",
+        "DMSerifDisplay-Regular",
+        "DancingScript-Bold",
+        "DancingScript-Regular",
+        "EBGaramond-Bold",
+        "EBGaramond-Regular",
+        "Fraunces-Black",
+        "Fraunces-Bold",
+        "Fraunces-Regular",
+        "Fredoka-Bold",
+        "Fredoka-Regular",
+        "GreatVibes-Regular",
+        "Inter-Black",
+        "Inter-Bold",
+        "Inter-Regular",
+        "JosefinSans-Light",
+        "JosefinSans-SemiBold",
+        "Jost-Bold",
+        "Jost-Regular",
+        "KaushanScript-Regular",
+        "LXGWWenKai-Regular",
+        "LeagueGothic-Regular",
+        "LibreBaskerville-Bold",
+        "LibreBaskerville-Regular",
+        "LilitaOne-Regular",
+        "Lobster-Regular",
+        "LuckiestGuy-Regular",
+        "MaShanZheng-Regular",
+        "Manrope-ExtraBold",
+        "Manrope-Regular",
+        "Montserrat-Black",
+        "Montserrat-Bold",
+        "Montserrat-Regular",
+        "Nunito-Black",
+        "Nunito-Regular",
+        "Oswald-Bold",
+        "Oswald-Regular",
+        "Pacifico-Regular",
+        "PlayfairDisplay-Black",
+        "PlayfairDisplay-Bold",
+        "PlayfairDisplay-Regular",
+        "Poppins-Black",
+        "Poppins-Bold",
+        "Poppins-Light",
+        "Poppins-Regular",
+        "Raleway-Bold",
+        "Raleway-ExtraLight",
+        "Raleway-Regular",
+        "RobotoSlab-Black",
+        "RobotoSlab-Bold",
+        "RobotoSlab-Regular",
+        "SmileySans-Oblique",
+        "SourceSans3-Bold",
+        "SourceSans3-Light",
+        "SourceSans3-Regular",
+        "SourceSerif4-Bold",
+        "SourceSerif4-Regular",
+        "TitanOne-Regular",
+        "VarelaRound-Regular",
+        "WorkSans-Bold",
+        "WorkSans-Light",
+        "WorkSans-Regular",
+        "ZCOOLKuaiLe-Regular",
+        "ZCOOLQingKeHuangYou-Regular",
+        "ZCOOLXiaoWei-Regular",
+        "ZillaSlab-Bold",
+        "ZillaSlab-Regular",
+    }
+)
+_CLOUD_BUILTIN_LOWER: frozenset[str] = frozenset(n.lower() for n in CLOUD_BUILTIN_FONTS)
+
+
+def is_cloud_builtin_font(name: str) -> bool:
+    """纯开源云端模式下，字体名是否属于云端已预装的开源字体（本机无需下载）。"""
+    from pacxio.cloud.config import closed_available
+
+    if closed_available():
+        return False
+    stem = Path(name.strip()).stem if Path(name.strip()).suffix.lower() in FONT_SUFFIXES else name.strip()
+    return stem.lower() in _CLOUD_BUILTIN_LOWER
+
 
 class TextError(Exception):
     def __init__(self, issue: Issue) -> None:

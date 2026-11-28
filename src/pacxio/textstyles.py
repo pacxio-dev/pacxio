@@ -12,7 +12,7 @@ from typing import Any
 from pydantic import ValidationError
 
 from pacxio import dielines
-from pacxio.fontfiles import TextError, find_font, parse_font_chain
+from pacxio.fontfiles import TextError, find_font, is_cloud_builtin_font, parse_font_chain
 from pacxio.model.common import Issue, Result
 from pacxio.model.job import STYLE_NAME, Job, TextStyle
 
@@ -51,7 +51,11 @@ def style_set(directory: Path, name: str, fields: dict[str, Any]) -> Result:
         )
     try:
         for font_name in parse_font_chain(style.font):
-            find_font(font_name, directory)
+            try:
+                find_font(font_name, directory)
+            except TextError:
+                if not is_cloud_builtin_font(font_name):
+                    raise
     except TextError as e:
         return r.fail(e.issue, 2)
     styles[name] = style

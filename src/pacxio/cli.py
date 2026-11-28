@@ -1739,7 +1739,11 @@ def art_set(
     ] = None,
     fit: Annotated[str | None, typer.Option("--fit", help="cover | contain | stretch")] = None,
     clip: Annotated[
-        str | None, typer.Option("--clip", help=t("image / placeholder: clip shape SVG"))
+        str | None,
+        typer.Option(
+            "--clip",
+            help=t("image / placeholder: clip shape SVG or built-in shape (arch | circle | oval | pill | rounded:<mm>)"),
+        ),
     ] = None,
     source: Annotated[
         str | None, typer.Option("--source", help=t("Replace the asset file"))
@@ -4803,6 +4807,15 @@ def restore_face(
             ),
         ),
     ] = None,
+    punch: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--punch",
+            help=t(
+                "Transparent photo window cutout <shape>:x,y,w,h (panel-local mm, repeatable; e.g. arch:14,22,52,78): keeps arch frame and foreground illustration while punching a transparent window for an underlying photo"
+            ),
+        ),
+    ] = None,
     json_out: JsonOpt = False,
 ) -> None:
     """单个面（顶、底、飞机盒各面）：展开平面图上这个面按真实尺寸拉正、去文字，给 visual trace 描。"""
@@ -4814,7 +4827,7 @@ def restore_face(
         boxes.append((x, y, w, h))
     c = _floats(crop, 4, "--crop") if crop else None
     region = (c[0], c[1], c[2], c[3]) if c else None
-    _emit(face_asset(directory, face, name, px_per_mm, boxes, region), json_out)
+    _emit(face_asset(directory, face, name, px_per_mm, boxes, region, punch=punch), json_out)
 
 
 @restore_app.command(

@@ -34,6 +34,7 @@ from pacxio.fontfiles import (
     font_sha256,
     font_version,
     invalidate_cached_lookups,
+    is_cloud_builtin_font,
     parse_font_chain,
 )
 from pacxio.fontsubset import verify_subset_source_sha
@@ -965,6 +966,8 @@ def verify_job_font_pins(job: Job, directory: Path) -> list[Issue]:
         try:
             path, face_index = find_font_face(name, directory)
         except TextError:
+            if pin.source == "open" and is_cloud_builtin_font(name):
+                continue
             errors.append(
                 Issue(
                     id="FONT",
@@ -1027,6 +1030,8 @@ def sync_font_pins(job: Job, directory: Path, *, refresh: bool = False) -> list[
         try:
             path, face_index = find_font_face(name, directory)
         except TextError as e:
+            if is_cloud_builtin_font(name):
+                continue
             errors.append(e.issue)
             continue
         info = describe_font(path, directory, face_index=face_index)

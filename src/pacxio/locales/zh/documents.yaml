@@ -153,6 +153,13 @@ No problems found.: 没有发现问题。
 ? 'No standard ICC found on this computer: photos are converted to print colors with a simple formula; the proof is the color reference'
 : 本机没找到标准 ICC：照片按简单公式转成印刷色，颜色以打样为准
 No standard ICC found on this computer; {plain}: 本机没找到标准 ICC；{plain}
+? 'No standard ICC profile is configured on the print server: photos are converted to print colors with a simple formula; the proof is the color reference'
+: 云端印刷服务未配置标准 ICC：照片按简单公式转成印刷色，颜色以打样为准
+No standard ICC profile is configured on the print server; {plain}: 云端印刷服务未配置标准 ICC；{plain}
+? If the factory supplies its own ICC profile, set icc.path in the profile; confirm colors on a physical proof before mass production
+: 工厂给了自己的 ICC 时可填到配置档 icc.path；量产前请以实物打样核对颜色
+'Background color drifts between adjacent panels {a} and {b} (ΔE {de}, CMYK {ca} vs {cb})': 相邻盒面 {a} 与 {b} 的底色存在色差漂移（ΔE {de}，CMYK {ca} 对比 {cb}）
+Use one shared background fill (`art add --kind fill`) and keep traced vector backgrounds bound to the same CMYK: 改用统一的全盒底色填充（`art add --kind fill`），并让各面描摹矢量底色绑定同一组 CMYK
 No {spot} plate after separating the print file: 印刷文件分色后没有 {spot} 色版
 Once the image is ready, replace the placeholder with `pacxio art fill <job> {id} --source <image>`: 出好图后 `pacxio art fill <job> {id} --source 图片` 换掉占位框
 Outline the text in your design software and export the SVG again: 在设计软件里把文字转曲后重新导出 SVG

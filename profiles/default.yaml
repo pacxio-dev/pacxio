@@ -18,10 +18,14 @@ min_text_pt: 6                 # 最小字号（pt），小于它给 T05 提醒�
 icc:
   path: null                   # 工厂给了自己的 ICC 时填：嵌入生产文件、声明 PDF/X-4
   name: null
-  auto:                        # 没填 path 时按纸张自动选本机已有的标准 ICC（）：
-    coated:   [JapanColor2001Coated.icc, CoatedFOGRA39.icc]       # 只用来把照片转成印刷色，
-    uncoated: [JapanColor2001Uncoated.icc, UncoatedFOGRA29.icc]   # 不嵌入、不声明 PDF/X-4
-  search_dirs:                 # 装了 Adobe 软件就有；ICC 文件不进代码仓库（CLAUDE.md）
+  auto:                        # 没填 path 时按纸张自动选已有的标准 ICC（）：
+    coated:   [JapanColor2001Coated.icc, CoatedFOGRA39.icc, ISOcoated_v2_300_eci.icc, ISOcoated_v2_eci.icc, PSOcoated_v3.icc, FOGRA39L_coated.icc, CoatedGRACoL2006.icc, default_cmyk.icc]       # 只用来把照片转成印刷色，
+    uncoated: [JapanColor2001Uncoated.icc, UncoatedFOGRA29.icc, PSOuncoated_v3_FOGRA52.icc, ISOuncoated.icc, FOGRA29L_uncoated.icc, default_cmyk.icc]   # 不嵌入、不声明 PDF/X-4
+  search_dirs:                 # 本机 Adobe / 系统 / 云端 Linux 容器目录；ICC 文件不进代码仓库（CLAUDE.md）
+    - /app/icc
+    - /usr/share/color/icc
+    - /usr/share/color/icc/ghostscript
+    - /usr/share/color/icc/colord
     - /Library/Application Support/Adobe/Color/Profiles/Recommended
     - /Library/Application Support/Adobe/Color/Profiles
     - /Library/ColorSync/Profiles

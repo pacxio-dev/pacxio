@@ -6,10 +6,15 @@
 
 from __future__ import annotations
 
+import contextvars
+import inspect
 import json
+import os
 import random
 import sys
+import tempfile
 import time
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any
@@ -49,6 +54,11 @@ CLOUD_COMMANDS: frozenset[tuple[str, ...]] = frozenset({
 
 POLL_S = 0.5
 RUN_TIMEOUT_S = 30 * 60
+PROGRESS_INTERVAL_S = 8.0
+PROGRESS_CALLBACK: contextvars.ContextVar[Callable[[int, str], None] | None] = (
+    contextvars.ContextVar("pacxio_cloud_progress", default=None)
+)
+ACTIVE_RUN_FILE = "active_run.json"
 
 
 def command_of(argv: list[str]) -> tuple[str, ...] | None:
@@ -275,7 +285,41 @@ def prepare_ephemeral_fonts(
 # ---------------- 转发 ----------------
 
 
-def forward(argv: list[str], cwd: Path) -> Result:
+def _active_run_path(job: Path) -> Path:
+    return job / ".cloud" / ACTIVE_RUN_FILE
+
+
+def _read_active_run(job: Path) -> dict[str, Any]:
+    try:
+        data = json.loads(_active_run_path(job).read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def _write_active_run(job: Path, data: dict[str, Any]) -> None:
+    p = _active_run_path(job)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp = tempfile.mkstemp(prefix=".active-run-", dir=p.parent)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False)
+        os.replace(tmp, p)
+    finally:
+        Path(tmp).unlink(missing_ok=True)
+
+
+def _clear_active_run(job: Path) -> None:
+    _active_run_path(job).unlink(missing_ok=True)
+
+
+def forward(
+    argv: list[str],
+    cwd: Path,
+    *,
+    wait_budget_s: float | None = None,
+    resume_run_id: str | None = None,
+) -> Result:
     cmd = " ".join(command_of(argv) or ())
     res = Result(command=cmd)
     if cmd == "export" and any(a == "--out" or a.startswith("--out=") for a in argv):
@@ -287,43 +331,126 @@ def forward(argv: list[str], cwd: Path) -> Result:
                               fix=t("Pass the job folder as an argument, e.g. `pacxio render jobs/<name>`")), 2)  # fmt: skip
     job = prep.job
     res.job = str(job)
-    font_blobs, ephemeral_fonts, font_errors = prepare_ephemeral_fonts(job)
-    if font_errors:
-        res.errors += font_errors
-        res.ok, res.exit_code = False, 2
-        return res
+    if resume_run_id is None:
+        font_blobs, ephemeral_fonts, font_errors = prepare_ephemeral_fonts(job)
+        if font_errors:
+            res.errors += font_errors
+            res.ok, res.exit_code = False, 2
+            return res
+    else:
+        font_blobs, ephemeral_fonts = [], []
     try:
         login = auth.ensure()
     except CloudError as e:
         return res.fail(Issue(id=e.id, message=e.message, fix=e.fix), 3)
     client = Client(login.url, login.token)
+    still_running = False
     try:
-        jid = push_with_retry(client, job)
-        inbox_items: list[tuple[str, str, bytes]] = []
-        for key, path in prep.inbox.items():
-            sha, _, name = key.partition("/")
-            inbox_items.append((sha, name, path.read_bytes()))
-        inbox_items.extend(font_blobs)
-        if len(inbox_items) <= 1:
-            for sha, name, payload in inbox_items:
-                client.put_inbox(jid, sha, name, payload)
+        if resume_run_id is not None:
+            saved = _read_active_run(job)
+            jid = str(saved.get("jid") or "")
+            if not jid:
+                from pacxio.cloud.sync import read_state
+
+                jid = str(read_state(job).get("job") or "")
+            before = saved.get("before_sha")
+            started_at = float(saved.get("started_at") or time.time())
+            inbox_map = {k: Path(v) for k, v in (saved.get("inbox") or {}).items()}
+            rid = resume_run_id
         else:
-            with ThreadPoolExecutor(max_workers=min(SYNC_WORKERS, len(inbox_items))) as pool:
-                for _ in pool.map(lambda it: client.put_inbox(jid, it[0], it[1], it[2]), inbox_items):
-                    pass
-        before = _sha(job / "job.json")
-        rid = (
-            client.start_run(jid, prep.argv, ephemeral_fonts=ephemeral_fonts)
-            if ephemeral_fonts
-            else client.start_run(jid, prep.argv)
+            jid = push_with_retry(client, job)
+            inbox_items: list[tuple[str, str, bytes]] = []
+            for key, path in prep.inbox.items():
+                sha, _, name = key.partition("/")
+                inbox_items.append((sha, name, path.read_bytes()))
+            inbox_items.extend(font_blobs)
+            if len(inbox_items) <= 1:
+                for sha, name, payload in inbox_items:
+                    client.put_inbox(jid, sha, name, payload)
+            else:
+                with ThreadPoolExecutor(max_workers=min(SYNC_WORKERS, len(inbox_items))) as pool:
+                    for _ in pool.map(lambda it: client.put_inbox(jid, it[0], it[1], it[2]), inbox_items):
+                        pass
+            before = _sha(job / "job.json")
+            started_at = time.time()
+            inbox_map = prep.inbox
+            rid = (
+                client.start_run(jid, prep.argv, ephemeral_fonts=ephemeral_fonts)
+                if ephemeral_fonts
+                else client.start_run(jid, prep.argv)
+            )
+        now_ts = time.time()
+        _write_active_run(
+            job,
+            {
+                "status": "running",
+                "rid": rid,
+                "run_id": rid,
+                "jid": jid,
+                "command": cmd,
+                "before_sha": before,
+                "started_at": started_at,
+                "updated_at": now_ts,
+                "expires_at": now_ts + 180.0,
+                "detail": None,
+                "inbox": {k: str(v) for k, v in inbox_map.items()},
+            },
         )
-        run = _wait(client, rid)
+        wait_params = inspect.signature(_wait).parameters
+        if "budget_s" in wait_params or any(
+            p.kind is inspect.Parameter.VAR_KEYWORD for p in wait_params.values()
+        ):
+            run = _wait(
+                client,
+                rid,
+                budget_s=wait_budget_s,
+                job=job,
+                cmd=cmd,
+                started_at=started_at,
+            )
+        else:
+            run = _wait(client, rid)
+        if run.get("status") == "running":
+            still_running = True
+            elapsed = max(1, int(time.time() - started_at))
+            stage = run.get("stage") or run.get("message")
+            now_ts = time.time()
+            _write_active_run(
+                job,
+                {
+                    "status": "running",
+                    "rid": rid,
+                    "run_id": rid,
+                    "jid": jid,
+                    "command": cmd,
+                    "before_sha": before,
+                    "started_at": started_at,
+                    "updated_at": now_ts,
+                    "expires_at": now_ts + 180.0,
+                    "detail": str(stage) if stage else None,
+                    "inbox": {k: str(v) for k, v in inbox_map.items()},
+                },
+            )
+            res.ok = True
+            res.data = {
+                "status": "running",
+                "run_id": rid,
+                "elapsed_s": elapsed,
+                "stage": stage,
+                "message": t(
+                    "Cloud task is still running ({elapsed}s elapsed). Tell the user it is working, then call restore_run again with the same job and run_id={rid} to continue waiting.",
+                    elapsed=elapsed,
+                    rid=rid,
+                ),
+            }
+            return res
         if run["status"] != "done":
             return res.fail(Issue(id="CLOUD_RUN", message=t("The cloud run did not finish: {why}", why=run.get("error") or run["status"]),
                                   fix=t("Run it again; if it keeps failing, send us this message")))  # fmt: skip
-        changed_locally = _sha(job / "job.json") != before
+        changed_locally = before is not None and _sha(job / "job.json") != before
         keep = {"job.json"} if changed_locally else set()
-        pull(client, jid, job, run.get("files") or {}, keep=keep)
+        if jid:
+            pull(client, jid, job, run.get("files") or {}, keep=keep)
     except CloudError as e:
         if e.id == "CLOUD_AUTH":
             e = auth.relogin_after_401(login)
@@ -333,11 +460,13 @@ def forward(argv: list[str], cwd: Path) -> Result:
         )
     finally:
         client.close()
+        if not still_running:
+            _clear_active_run(job)
     data = run.get("result")
     if not isinstance(data, dict):
         return res.fail(Issue(id="CLOUD_RUN", message=t("The cloud command returned no result: {tail}", tail=(run.get("error") or "")[-800:]),
                               fix=t("Run it again; if it keeps failing, send us this message")))  # fmt: skip
-    data = _local_paths(data, job, prep.inbox)
+    data = _local_paths(data, job, inbox_map)
     out = Result.model_validate(data)
     out.exit_code = int(run.get("exit_code") or 0)
     if cmd == "mockup" and out.ok and not changed_locally:
@@ -358,8 +487,20 @@ def _sha(p: Path) -> str | None:
     return sha256_bytes(p.read_bytes()) if p.is_file() else None
 
 
-def _wait(client: Client, rid: str) -> dict[str, Any]:
-    deadline = time.monotonic() + RUN_TIMEOUT_S
+def _wait(
+    client: Client,
+    rid: str,
+    *,
+    budget_s: float | None = None,
+    job: Path | None = None,
+    cmd: str = "",
+    started_at: float | None = None,
+) -> dict[str, Any]:
+    now_mono = time.monotonic()
+    deadline = now_mono + RUN_TIMEOUT_S
+    budget_deadline = (now_mono + budget_s) if budget_s is not None else None
+    t0 = started_at if started_at is not None else time.time()
+    last_progress = now_mono
     delay = POLL_S
     transient_errs = 0
     while True:
@@ -378,11 +519,40 @@ def _wait(client: Client, rid: str) -> dict[str, Any]:
             continue
         if run.get("status") in ("done", "failed"):
             return run
-        if time.monotonic() > deadline:
+        now_mono = time.monotonic()
+        stage = run.get("stage") or run.get("message")
+        if now_mono - last_progress >= PROGRESS_INTERVAL_S:
+            last_progress = now_mono
+            elapsed = max(1, int(time.time() - t0))
+            if job is not None:
+                cur = _read_active_run(job)
+                now_ts = time.time()
+                cur.update(
+                    {
+                        "status": "running",
+                        "rid": rid,
+                        "run_id": rid,
+                        "command": cmd,
+                        "started_at": t0,
+                        "updated_at": now_ts,
+                        "expires_at": now_ts + 180.0,
+                        "detail": str(stage) if stage else None,
+                    }
+                )
+                _write_active_run(job, cur)
+            cb = PROGRESS_CALLBACK.get()
+            if cb is not None:
+                cb(elapsed, str(stage) if stage else f"{cmd or 'cloud'} ({elapsed}s)")
+        if budget_deadline is not None and now_mono >= budget_deadline:
+            return {"status": "running", "run_id": rid, "stage": stage}
+        if now_mono > deadline:
             raise CloudError(
                 "CLOUD_TIMEOUT", t("The cloud run timed out"), t("Try the same command again later")
             )
-        time.sleep(delay * (0.85 + 0.3 * random.random()))
+        sleep_s = delay * (0.85 + 0.3 * random.random())
+        if budget_deadline is not None:
+            sleep_s = min(sleep_s, max(0.05, budget_deadline - now_mono))
+        time.sleep(sleep_s)
         delay = min(delay * 1.5, 3.0)
 
 

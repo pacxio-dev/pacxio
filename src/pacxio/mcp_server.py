@@ -257,7 +257,7 @@ TOOLS: list[dict[str, Any]] = [
     {
         "name": "restore_run",
         "description": t(
-            "One-click full restoration pipeline (R3-1): rebuilds or refines the final print layout from confirmed flats, runs automatic iterations, renders the dieline confirmation image, checks preflight, and writes flat --diff. Never spends image credits automatically (lists any photos needing redraw approval in action_required)."
+            "One-click full restoration pipeline (R3-1): rebuilds or refines the final print layout from confirmed flats, runs automatic iterations, renders the dieline confirmation image, checks preflight, and writes flat --diff. Never spends image credits automatically (lists any photos needing redraw approval in action_required). In cloud mode, waits up to wait_s (default 90s) per call so it never hits client MCP timeouts: if data.status == 'running', do NOT treat it as an error or switch to manual steps — tell the user it is still working and call restore_run again with the same job and data.run_id until complete."
         ),
         "inputSchema": _schema(
             {
@@ -301,6 +301,18 @@ TOOLS: list[dict[str, Any]] = [
                 "dry_run": {
                     "type": "boolean",
                     "description": t("Simulate without modifying job.json"),
+                },
+                "run_id": {
+                    "type": "string",
+                    "description": t(
+                        "Continue waiting on an in-progress cloud restore_run (pass data.run_id from the previous running response)"
+                    ),
+                },
+                "wait_s": {
+                    "type": "integer",
+                    "description": t(
+                        "Seconds to wait per cloud poll window before returning running status (default 90, max 180)"
+                    ),
                 },
             },
             ["job"],
@@ -456,7 +468,30 @@ def call(name: str, a: dict[str, Any]) -> tuple[Any, list[str]]:
             argv.append("--force")
         if a.get("dry_run") is True:
             argv.append("--dry-run")
-        return mcp_cli.run("restore run", argv), []
+        from pacxio.cloud import config as cloud_config
+        from pacxio.cloud import route as cloud_route
+
+        if cloud_config.use_cloud():
+            raw_wait = a.get("wait_s")
+            wait_s = 90.0 if raw_wait is None else float(min(max(10, int(raw_wait)), 180))
+            run_id = str(a["run_id"]).strip() if a.get("run_id") else None
+            return (
+                cloud_route.forward(
+                    ["restore", "run", *argv],
+                    Path.cwd(),
+                    wait_budget_s=wait_s,
+                    resume_run_id=run_id,
+                ),
+                [],
+            )
+        from pacxio.studio.bridge import clear_task, write_task
+
+        job_dir = Path(a["job"])
+        write_task(job_dir, "restore run")
+        try:
+            return mcp_cli.run("restore run", argv), []
+        finally:
+            clear_task(job_dir)
     if name == "pacxio_help":
         try:
             return mcp_cli.help_text(a.get("command")), []
@@ -637,8 +672,30 @@ def serve(stdin: TextIO = sys.stdin, stdout: TextIO = sys.stdout) -> None:
             _respond(stdout, msg_id, result, error)
 
     def process(msg: dict[str, Any], cancel: threading.Event | None = None) -> None:
+        from pacxio.cloud.route import PROGRESS_CALLBACK
+
         msg_id = msg.get("id")
+        meta = (msg.get("params") or {}).get("_meta") if isinstance(msg.get("params"), dict) else None
+        progress_token = meta.get("progressToken") if isinstance(meta, dict) else None
+
+        def _notify_progress(progress: int, message: str) -> None:
+            if progress_token is None:
+                return
+            payload = {
+                "jsonrpc": "2.0",
+                "method": "notifications/progress",
+                "params": {
+                    "progressToken": progress_token,
+                    "progress": progress,
+                    "message": message,
+                },
+            }
+            with output_lock:
+                stdout.write(json.dumps(payload, ensure_ascii=False) + "\n")
+                stdout.flush()
+
         token = WAIT_CANCEL.set(cancel)
+        prog_token = PROGRESS_CALLBACK.set(_notify_progress if progress_token is not None else None)
         try:
             result = handle(msg)
         except UnknownMethod as e:
@@ -655,6 +712,7 @@ def serve(stdin: TextIO = sys.stdin, stdout: TextIO = sys.stdout) -> None:
             if msg_id is not None and result is not None:
                 respond(msg_id, result)
         finally:
+            PROGRESS_CALLBACK.reset(prog_token)
             WAIT_CANCEL.reset(token)
 
     try:
